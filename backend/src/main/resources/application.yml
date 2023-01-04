@@ -1,0 +1,21 @@
+spring:
+  profiles:
+    active: ${PROFILE}
+  main:
+    allow-bean-definition-overriding: true
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
+jwt:
+    secret: randomTestValueItisNotUsedInProdEnv
+    expiration: 1800000
+    # 30 minutes
+    refresh:
+        expiration: 604800000
+    # 7 days
+
+admin:
+  email : test@gmail.com,test1@gmail.com
+
+
