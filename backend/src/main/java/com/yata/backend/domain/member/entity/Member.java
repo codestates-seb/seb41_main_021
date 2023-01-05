@@ -21,31 +21,10 @@ public class Member extends Auditable {
     private String email;
     @Column(nullable = false, length = 100)
     private String password;
-    @Column(length = 20)
-    private String fullName;
+
     @Column(nullable = false, length = 20)
     private String displayName;
-    @Column(length = 50)
-    @ColumnDefault("''")
-    private String location;
-    @Column(length = 30)
-    @ColumnDefault("''")
-    private String aboutMeTitle;
-    @Lob
-    private String aboutMe;
-    @Column(length = 100)
-    @ColumnDefault("''")
-    private String githubLink;
 
-    @Column( length = 100)
-    @ColumnDefault("''")
-    private String twitterLink;
-    @Column( length = 100)
-    @ColumnDefault("''")
-    private String websiteLink;
-    @Column(length = 100)
-    @ColumnDefault("'https://cdn-icons-png.flaticon.com/512/14/14660.png'")
-    private String imgUrl;
 
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20, nullable = false)
