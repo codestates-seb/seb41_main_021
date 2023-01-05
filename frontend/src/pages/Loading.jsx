@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import mainLogo from '../images/mainLogo.png';
+import Logo from '../images/Logo.svg';
 
 export default function Loading() {
   return (
     <>
       <Container>
         <LogoBox>
-          <img src={mainLogo} alt="mainLogo"></img>{' '}
+          <img src={Logo} alt="logo"></img>
         </LogoBox>
       </Container>
     </>
