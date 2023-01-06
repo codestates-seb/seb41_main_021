@@ -1,0 +1,22 @@
+<?xml version="1.0" ?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg width="800px" height="800px" viewBox="0 0 64 64" data-name="Layer 1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"><defs><style>
+      .cls-1 {
+        fill: #f5dd90;
+      }
+
+      .cls-2 {
+        fill: #ffbc0a;
+      }
+
+      .cls-3 {
+        fill: #a3cef1;
+      }
+
+      .cls-4 {
+        fill: #6096ba;
+      }
+
+      .cls-5 {
+        fill: #274c77;
+      }
+    </style></defs><path class="cls-5" d="M32,59h-3l-2-2H10v-24h4v18s12.15-3,18,8Z"/><path class="cls-5" d="M50,51v-18h4v24h-17s-2,2-2,2h-3c5.85-11,18-8,18-8Z"/><path class="cls-4" d="M32,59c-5.85-11-18-8-18-8V30l6-2v19c6.63,0,12,5.37,12,12Z"/><path class="cls-4" d="M44,28l6,2v21s-12.15-3-18,8c0-6.63,5.37-12,12-12V28Z"/><path class="cls-3" d="M32,39c0-6.63-5.37-12-12-12v20c6.63,0,12,5.37,12,12,0-6.63,5.37-12,12-12V27c-6.63,0-12,5.37-12,12Z"/><circle class="cls-2" cx="32" cy="17" r="12"/><rect class="cls-1" height="10" width="2" x="31" y="14"/><rect class="cls-1" height="2" width="2" x="31" y="11"/></svg>

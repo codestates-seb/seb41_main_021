@@ -8,7 +8,7 @@ const fontSizes = {
   xl: calcRem(20),
   xxl: calcRem(22),
   xxxl: calcRem(24),
-  titleSize: calcRem(50),
+  titleSize: calcRem(40),
 };
 
 const paddings = {
@@ -49,10 +49,9 @@ const deviceSizes = {
 };
 
 const colors = {
-  black: "#000000",
-  white: "#FFFFFF",
-  gray_1: "#222222",
-  gray_2: "#767676",
+  light_gray: "#d5d7da",
+  gray: "#acafb3",
+  dark_gray: "#5b5d5f",
   main_blue: "#73b2d9",
   dark_blue: "#5e88bf",
   darker_blue: "#537bc3",
