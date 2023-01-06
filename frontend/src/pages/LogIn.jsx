@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import NavBar from '../components/NavBar';
 import Button from '../components/common/Button';
 import Input from '../components/common/Input';
 import Logo from '../images/Logo.svg';
+import LinkTo from '../components/common/LinkTo';
+import backgroundImg from '../images/login_bg.webp';
+import backgroundImgPC from '../images/login_bg_pc.webp';
 
 export default function Login() {
   const [id, setId] = useState('');
@@ -44,7 +46,7 @@ export default function Login() {
                 </PwWrapper>
                 <SubmitButton>로그인</SubmitButton>
               </LoginForm>
-              <LinkToSign message="회원이 아니신가요?" link="/signup" linkText="회원가입" />
+              <LinkTo message="회원이 아니신가요?" link="/signup" linkText="회원가입" />
             </Contents>
           </Container>
         </>
@@ -60,10 +62,14 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-image: url(${backgroundImg});
+  background-size: cover;
 
   // 태블릿 : 1200px ~ 768px :: 768px 이상 적용되는 css
   @media only screen and (min-width: 768px) {
-    background-color: red;
+    /* background-color: red; */
+    background-image: url(${backgroundImgPC});
+    background-size: cover;
   }
   // PC : 1200px 이상 :: 1200px 이상 적용되는 css
   /* @media only screen and (min-width: 1200px) {
@@ -103,26 +109,4 @@ const ErrorMsg = styled.p`
 const SubmitButton = styled(Button)`
   height: 3rem;
   margin: 2rem 0;
-`;
-
-const LinkToSign = props => {
-  const { message, link, linkText } = props;
-  return (
-    <StyledLinkToSign>
-      {message}{' '}
-      <Link to={link}>
-        <StyledSpan>{linkText}</StyledSpan>
-      </Link>
-    </StyledLinkToSign>
-  );
-};
-
-const StyledLinkToSign = styled.div`
-  margin: 1.5rem;
-  text-align: center;
-`;
-
-const StyledSpan = styled.span`
-  color: ${props => props.theme.colors.dark_blue};
-  font-weight: bold;
 `;
