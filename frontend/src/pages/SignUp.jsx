@@ -138,7 +138,6 @@ const Wrapper = styled.div``;
 const PasswordWrapper = styled.div`
   display: flex;
   align-items: flex-end;
-  grid-template-columns: 22rem 1px;
   position: relative;
 `;
 

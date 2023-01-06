@@ -1,5 +1,4 @@
 import { createGlobalStyle } from 'styled-components';
-import kotra from '../fonts/kotra.ttf';
 import AppleNormal from '../fonts/AppleSDGothicNeoL.ttf';
 import AppleBold from '../fonts/AppleSDGothicNeoB.ttf';
 
@@ -27,13 +26,6 @@ const GlobalStyle = createGlobalStyle`
         font-style: bold;
         src: url(${AppleBold}) format('truetype');
   }
-  @font-face {
-        font-family: 'kotra';
-        font-display: block;
-        src: local('kotra'), local('kotra');
-        font-style: normal;
-        src: url(${kotra}) format('truetype');
-  }
 
  html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -53,7 +45,7 @@ const GlobalStyle = createGlobalStyle`
     border: 0;
     font-size: calc( 10px + 0.4vw );
     vertical-align: baseline;
-    font-family: 'Apple SD', 'kotra';
+    font-family: 'Apple SD';
     /* background-color: #FBFBFB; */
     /* overflow-y: auto;  */
     /* overflow: overlay; */

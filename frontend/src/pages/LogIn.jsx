@@ -3,10 +3,14 @@ import styled from 'styled-components';
 import NavBar from '../components/NavBar';
 import Button from '../components/common/Button';
 import Input from '../components/common/Input';
-import Logo from '../images/Logo.svg';
 import LinkTo from '../components/common/LinkTo';
+import Logo from '../images/Logo.svg';
+import yata from '../images/name.png';
 import backgroundImg from '../images/login_bg.webp';
 import backgroundImgPC from '../images/login_bg_pc.webp';
+import facebook from '../images/facebook_icon.svg';
+import google from '../images/google_icon.svg';
+import kakao from '../images/kakao_icon.png';
 
 export default function Login() {
   const [id, setId] = useState('');
@@ -33,8 +37,19 @@ export default function Login() {
         <>
           <NavBar />
           <Container>
-            <Contents>
+            <TitleContainer>
+              <Title className="pc">
+                <MainTitle>Welcome back!</MainTitle>
+                <SubTitle>언제 어디서나 YATA와 함께하세요</SubTitle>
+              </Title>
               <Img src={Logo} alt="logo" />
+              <TitleImg src={yata} alt="title" />
+            </TitleContainer>
+            <Contents>
+              <Title className="mobile">
+                <MainTitle>Welcome back!</MainTitle>
+                <SubTitle>언제 어디서나 YATA와 함께하세요</SubTitle>
+              </Title>
               <LoginForm onSubmit={handleSubmit}>
                 <IdWrapper>
                   <Input label="아이디" state={id} setState={setId} />
@@ -46,8 +61,25 @@ export default function Login() {
                 </PwWrapper>
                 <SubmitButton>로그인</SubmitButton>
               </LoginForm>
-              <LinkTo message="회원이 아니신가요?" link="/signup" linkText="회원가입" />
+              <SNSLoginContainer>
+                <LineText>SNS LOGIN</LineText>
+                <SNSButtonContainer>
+                  <SNSContent>
+                    <SNSImage src={facebook} alt="facebook" />
+                    <SNSText>Facebook</SNSText>
+                  </SNSContent>
+                  <SNSContent>
+                    <SNSImage src={google} alt="google" />
+                    <SNSText>google</SNSText>
+                  </SNSContent>
+                  <SNSContent>
+                    <SNSImage src={kakao} alt="kakao" />
+                    <SNSText>kakaotalk</SNSText>
+                  </SNSContent>
+                </SNSButtonContainer>
+              </SNSLoginContainer>
             </Contents>
+            <LinkTo message="회원이 아니신가요?" link="/signup" linkText="회원가입" />
           </Container>
         </>
       )}
@@ -61,15 +93,30 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   background-image: url(${backgroundImg});
   background-size: cover;
 
+  .pc {
+    display: none;
+  }
+
   // 태블릿 : 1200px ~ 768px :: 768px 이상 적용되는 css
   @media only screen and (min-width: 768px) {
-    /* background-color: red; */
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     background-image: url(${backgroundImgPC});
     background-size: cover;
+
+    .mobile {
+      display: none;
+    }
+    .pc {
+      display: flex;
+    }
   }
   // PC : 1200px 이상 :: 1200px 이상 적용되는 css
   /* @media only screen and (min-width: 1200px) {
@@ -77,16 +124,53 @@ const Container = styled.div`
   } */
 `;
 
-const Img = styled.img`
-  width: 100%;
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 1rem;
 `;
 
+const Img = styled.img`
+  width: 30%;
+  background-color: white;
+  border-radius: 2rem;
+  margin-top: 2rem;
+`;
+
+const TitleImg = styled.img`
+  width: 30%;
+  margin-bottom: ${props => props.theme.margins.xxxl};
+`;
+const Title = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const MainTitle = styled.h1`
+  margin-top: 1.5rem;
+  font-size: 3rem;
+`;
+const SubTitle = styled.span`
+  font-size: ${props => props.theme.fontSizes.xl};
+  color: ${props => props.theme.colors.dark_gray};
+  margin-bottom: 1.5rem;
+`;
 const Contents = styled.div`
-  width: 60%;
+  width: 80%;
   max-width: 600px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: white;
+  padding: 2.5rem;
+  border-radius: 5rem;
+  box-shadow: -20px 10px 30px rgba(0, 0, 0, 0.3);
+  margin-bottom: 1rem;
   @media screen and (min-width: 800px) {
     margin-top: 10rem;
   }
@@ -94,8 +178,8 @@ const Contents = styled.div`
 
 const LoginForm = styled.form`
   width: 100%;
+  height: 22rem;
   min-width: 22rem;
-  height: 300px;
   display: grid;
 `;
 
@@ -109,4 +193,56 @@ const ErrorMsg = styled.p`
 const SubmitButton = styled(Button)`
   height: 3rem;
   margin: 2rem 0;
+`;
+
+const LineText = styled.div`
+  font-weight: 700;
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+  color: black;
+  margin: 8px;
+  &::before {
+    content: '';
+    flex-grow: 1;
+    background: black;
+    height: 1px;
+    font-size: 0px;
+    line-height: 0px;
+    margin-right: 16px;
+  }
+  &::after {
+    content: '';
+    flex-grow: 1;
+    background: black;
+    height: 1px;
+    font-size: 0px;
+    line-height: 0px;
+    margin-left: 16px;
+  }
+`;
+
+const SNSLoginContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const SNSButtonContainer = styled.div`
+  display: flex;
+`;
+
+const SNSContent = styled.div`
+  display: flex;
+  flex: 1;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const SNSImage = styled.img`
+  width: 50%;
+  margin: 1rem;
+`;
+
+const SNSText = styled.span`
+  font-weight: 700;
 `;
