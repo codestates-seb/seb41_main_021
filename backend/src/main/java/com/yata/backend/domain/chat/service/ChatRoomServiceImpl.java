@@ -7,5 +7,5 @@ import javax.transaction.Transactional;
 @Transactional
 public class ChatRoomServiceImpl implements ChatRoomService {
 
-   
+
 }
