@@ -1,11 +1,9 @@
 package com.yata.backend.domain.yata.entity;
 
+import com.yata.backend.domain.checklist.entity.Checklist;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -18,4 +16,12 @@ public class YataChecklist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long YataChecklistId;
+
+    @ManyToOne
+    @JoinColumn(name = "YATA_ID")
+    private Yata yata;
+
+    @ManyToOne
+    @JoinColumn(name = "CHECKLIST_ID")
+    private Checklist checklist;
 }
