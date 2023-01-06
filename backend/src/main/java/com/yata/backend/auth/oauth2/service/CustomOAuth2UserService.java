@@ -67,12 +67,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .password("oauth2")
                 .roles(Collections.singletonList(Member.MemberRole.ROLE_PASSANGER.name()))
                 .providerType(providerType)
+                .memberStatus(Member.MemberStatus.MEMBER_ACTIVE)
                 .genders(Member.Gender.NOT_CHECKED)
                 .imgUrl(userInfo.getImageUrl())
+                .name(userInfo.getName())
                 .nickname(userInfo.getName())
                 .build();
 
-        // 멤버 info 도 같이 만들기
         return memberRepository.saveAndFlush(user);
     }
 
