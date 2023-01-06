@@ -12,7 +12,7 @@ export default function Footer() {
           </Title>
           <Info>
             <p>
-              <b>사업자</b> 야타
+              <b>사업자</b> YATA(야 타)
             </p>
             <p>
               <b>대표이사</b> 이현지 문재웅 위현우 유형찬 주현주 김채은
@@ -63,9 +63,10 @@ const Container = styled.div`
 const ContentContainer = styled.div`
   width: 100%;
   height: 150px;
-  padding: 40px 182px 72px;
-  /* position: absolute;
-  bottom: 0; */
+  padding: 0 180px 0 180px;
+  box-shadow: 0 -5px 10px -8px lightgrey;
+  position: absolute;
+  bottom: 0;
   color: ${({ theme }) => theme.colors.main_blue};
   background-color: #fff;
 
@@ -102,6 +103,7 @@ const Bottom = styled.div`
   display: flex;
   color: #656b71;
   font-size: 13px;
+  margin-bottom: 10px;
   p {
     margin-right: 10px;
   }

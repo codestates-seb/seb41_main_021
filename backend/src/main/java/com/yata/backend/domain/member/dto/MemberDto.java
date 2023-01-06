@@ -28,7 +28,6 @@ public class MemberDto {
     @Getter
     @Setter
     @NoArgsConstructor
-    @AllArgsConstructor
     @Builder
     public static class Response {
 

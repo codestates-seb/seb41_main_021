@@ -7,6 +7,7 @@ import mainImg from '../images/car.png';
 import wallet from '../images/wallet.png';
 import heartwithhands from '../images/heartwithhands.png';
 import location from '../images/location_ping.png';
+import brandname from '../images/name.png';
 
 export default function HomePage() {
   return (
@@ -17,7 +18,7 @@ export default function HomePage() {
           <Main>
             <TextContainer>
               <h3>카쉐어링 서비스</h3>
-              <h1>YATA</h1>
+              <img src={brandname} alt="brand name" />
               <p>
                 언제 어디서나 안심하고 <br />
                 사용할 수 있는 카 쉐어링 서비스
@@ -42,15 +43,16 @@ export default function HomePage() {
               <p>언제 어디서나 출발하고 도착</p>
             </div>
           </Sub>
-          <Footer />
         </ContentContainer>
+        <Footer />
       </Container>
     </>
   );
 }
 
 const Container = styled.div`
-  width: 100vh;
+  width: 100%;
+  height: auto;
 
   // 태블릿 : 1200px ~ 768px :: 768px 이상 적용되는 css
   @media only screen and (min-width: 768px) {
@@ -60,37 +62,120 @@ const Container = styled.div`
   // PC : 1200px 이상 :: 1200px 이상 적용되는 css
   @media only screen and (min-width: 1200px) {
     width: 100%;
-    height: 100vh;
+    height: 100%;
   }
 `;
 
 const ContentContainer = styled.div`
-  background-image: url(${backgroundImg});
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: top 60px center;
+  width: 100%;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  background: linear-gradient(147deg, #ffe8ee, #80b1d5);
+
+  @media only screen and (min-width: 768px) {
+    height: auto;
+    background-image: url(${backgroundImg});
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top 60px center;
+  }
+  // PC : 1200px 이상 :: 1200px 이상 적용되는 css
+  @media only screen and (min-width: 1200px) {
+  }
 `;
 const Main = styled.div`
   width: 80%;
-  height: 400px;
-  margin-top: 180px;
+  height: 1000px;
+  margin-top: 130px;
+  padding: 10px;
   display: flex;
+  flex-direction: row-reverse;
   align-items: center;
-  justify-content: flex-end;
-  /* background-color: blue; */
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 15px;
 
   img {
-    width: 400px;
+    width: 150px;
+  }
+
+  p {
+    overflow: visible;
+  }
+
+  @media only screen and (min-width: 768px) {
+    margin-top: 180px;
+    background-color: rgba(255, 255, 255, 0);
+    height: 100%;
+
+    img {
+      width: 300px;
+    }
+
+    @media only screen and (min-width: 1200px) {
+      img {
+        width: 400px;
+      }
+    }
   }
 `;
 
 const TextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  h3 {
+    font-size: 15px;
+    margin-left: 8px;
+  }
+
   p {
     color: gray;
+    font-size: 10px;
+    margin-left: 8px;
+  }
+
+  img {
+    width: 100px;
+  }
+
+  @media only screen and (min-width: 768px) {
+    margin-left: 20px;
+    h3 {
+      font-size: 15px;
+      margin-left: 8px;
+    }
+
+    p {
+      font-size: 15px;
+      margin-left: 8px;
+    }
+
+    img {
+      width: 200px;
+    }
+  }
+
+  @media only screen and (min-width: 1200px) {
+    margin-top: 30px;
+    margin-left: 50px;
+    h3 {
+      font-size: 20px;
+      margin-left: 8px;
+    }
+
+    p {
+      font-size: 20px;
+      margin-left: 8px;
+    }
+
+    img {
+      width: 300px;
+    }
   }
 `;
 
@@ -101,11 +186,11 @@ const Sub = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  /* background-color: red; */
 
-  img {
-    width: 150px;
-    margin: 10px;
+  img,
+  h3,
+  p {
+    display: none;
   }
 
   div {
@@ -115,11 +200,42 @@ const Sub = styled.div`
     justify-content: center;
   }
 
-  h3 {
-    margin: 10px;
-  }
+  @media only screen and (min-width: 768px) {
+    img {
+      display: block;
+      width: 140px;
+      margin-top: 50px;
+    }
 
-  p {
-    margin: 10px;
+    h3 {
+      display: block;
+      margin: 10px;
+    }
+
+    p {
+      display: block;
+      margin: 10px;
+      font-size: 13px;
+    }
+  }
+  // PC : 1200px 이상 :: 1200px 이상 적용되는 css
+  @media only screen and (min-width: 1200px) {
+    img {
+      display: block;
+      width: 150px;
+      margin-top: 100px;
+    }
+    h3 {
+      display: block;
+      margin: 10px;
+      margin-top: 20px;
+      font-size: 30px;
+    }
+
+    p {
+      display: block;
+      margin: 10px;
+      font-size: 20px;
+    }
   }
 `;
