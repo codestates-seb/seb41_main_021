@@ -7,6 +7,15 @@ import lombok.*;
 @ToString
 public class YataDto {
 
+    @AllArgsConstructor
+    @Getter
+    @Setter
+    @ToString
+    @Builder
+    public static class NeotaPost{
+
+    }
+
     @Getter
     @ToString
     @Builder

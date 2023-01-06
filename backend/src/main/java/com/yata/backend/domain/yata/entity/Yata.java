@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -19,12 +20,11 @@ public class Yata extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long yataId;
 
-    //분까지만 받고 싶은데 무슨 타입으로 받아야 할까요??
     @Column(nullable = false)
-    private LocalDateTime departureTime;
+    private Date departureTime;
 
     @Column(nullable = false)
-    private LocalDateTime timeOfArrival;
+    private Date timeOfArrival;
 
     @Column(nullable = false)
     private int maxWaitingTime;

@@ -1,12 +1,9 @@
 package com.yata.backend.domain.yata.entity;
 
-import com.yata.backend.domain.checklist.entity.ChecklistEntity;
-import com.yata.backend.domain.member.entity.Member;
+import com.yata.backend.domain.checklist.entity.Checklist;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -18,16 +15,13 @@ import java.util.List;
 public class YataChecklist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long YTCId;
+    private Long YataChecklistId;
 
     @ManyToOne
     @JoinColumn(name = "YATA_ID")
     private Yata yata;
 
-    public void addYata(Yata yata){
-        this.yata = yata;
-    }
-
-//    @OneToMany(mappedBy = "")
-//    private List<ChecklistEntity> checkListList = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "CHECKLIST_ID")
+    private Checklist checklist;
 }

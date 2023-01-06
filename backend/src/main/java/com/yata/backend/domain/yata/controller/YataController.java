@@ -1,9 +1,13 @@
 package com.yata.backend.domain.yata.controller;
 
+import com.yata.backend.domain.yata.dto.YataDto;
+import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.service.YataService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @Validated
@@ -18,8 +22,9 @@ public class YataController {
 
     //너타생성
     @PostMapping("/neota")
-    public ResponseEntity postNeota(){
-        return null;
+    public ResponseEntity postNeota(@Valid @RequestBody YataDto.NeotaPost neotaPost){
+        Yata yata = yataService.createNeota();
+
     }
 
     //나타생성
