@@ -6,5 +6,5 @@ import javax.persistence.Id;
 @Entity
 public class ReviewChecklistEntity {
     @Id
-    private Long rCId; // reviewChecklistId
+    private Long reviewCheckId; // reviewChecklistId
 }
