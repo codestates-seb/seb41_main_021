@@ -13,17 +13,17 @@ export default function Navbar() {
             <AiOutlineHome className='home-icon'/>
             <span className='home-txt'>Home</span>
           </NavLink>
-          <NavLink className={({ isActive }) => (isActive ? "active" : "not")} to="/chattinglist">
-            <AiOutlineComment className='msg-icon'/>
-            <span className='msg-txt'>Messages</span>
+          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/chattinglist">
+            <AiOutlineComment className="msg-icon" />
+            <span className="msg-txt">Messages</span>
           </NavLink>
-          <NavLink className={({ isActive }) => (isActive ? "active" : "not")} to="/notification">
-            <AiOutlineBell className='noti-icon'/>
-            <span className='noti-txt'>Notification</span>
+          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/notification">
+            <AiOutlineBell className="noti-icon" />
+            <span className="noti-txt">Notification</span>
           </NavLink>
-          <NavLink className={({ isActive }) => (isActive ? "active" : "not")} to="/mypage">
-            <AiOutlineUser className='mypage-icon'/>
-            <span className='mypage-txt'>My Page</span>
+          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/mypage">
+            <AiOutlineUser className="mypage-icon" />
+            <span className="mypage-txt">My Page</span>
           </NavLink>
         </NavContainer>
       </Container>
@@ -73,6 +73,7 @@ const NavContainer = styled.div`
 
   a {
     color: ${({ theme }) => theme.colors.main_blue};
+  }
 
 		&:hover {
       color: ${({ theme }) => theme.colors.darker_blue};
