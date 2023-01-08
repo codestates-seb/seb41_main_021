@@ -32,7 +32,7 @@ jobs:
           script: |
             whoami
             cd /home/ubuntu/main21/seb41_main_021
-            git pull origin develop
+            git pull origin feature/be/gitactionssh
             cd ..
             sudo sh deployServer.sh
 

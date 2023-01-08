@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class ReviewChecklistEntity {
+public class ReviewChecklist {
     @Id
     private Long reviewCheckId; // reviewChecklistId
 }

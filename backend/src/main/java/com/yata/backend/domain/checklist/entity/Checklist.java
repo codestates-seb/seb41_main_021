@@ -1,6 +1,6 @@
 package com.yata.backend.domain.checklist.entity;
 
-import com.yata.backend.domain.review.entity.ReviewChecklistEntity;
+import com.yata.backend.domain.review.entity.ReviewChecklist;
 import com.yata.backend.domain.yata.entity.YataChecklist;
 import lombok.Getter;
 
@@ -35,7 +35,8 @@ public class Checklist {
 
     @OneToMany(mappedBy = "checklist", cascade = CascadeType.ALL)
     private List<YataChecklist> yataChecklists = new ArrayList<>();
+    // TODO 연결 후에 해요 ^^
+    /*@OneToMany(mappedBy = "checklist", cascade = CascadeType.ALL)
+    private List<ReviewChecklist> reviewChecklists = new ArrayList<>();*/
 
-    @OneToMany(mappedBy = "checklist", cascade = CascadeType.ALL)
-    private List<ReviewChecklistEntity> reviewChecklists = new ArrayList<>();
 }

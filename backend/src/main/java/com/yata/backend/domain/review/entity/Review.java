@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class ReviewEntity extends Auditable {
+public class Review extends Auditable {
     @Id
     private Long reviewId;
 }
