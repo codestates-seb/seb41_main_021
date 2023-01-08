@@ -35,7 +35,8 @@ public class Checklist {
 
     @OneToMany(mappedBy = "checklist", cascade = CascadeType.ALL)
     private List<YataChecklist> yataChecklists = new ArrayList<>();
+    // TODO 연결 후에 해요 ^^
+    /*@OneToMany(mappedBy = "checklist", cascade = CascadeType.ALL)
+    private List<ReviewChecklist> reviewChecklists = new ArrayList<>();*/
 
-    @OneToMany(mappedBy = "checklist", cascade = CascadeType.ALL)
-    private List<ReviewChecklist> reviewChecklists = new ArrayList<>();
 }

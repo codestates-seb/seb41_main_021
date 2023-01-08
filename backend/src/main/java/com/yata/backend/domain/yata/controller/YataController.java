@@ -24,12 +24,13 @@ public class YataController {
     @PostMapping("/neota")
     public ResponseEntity postNeota(@Valid @RequestBody YataDto.NeotaPost neotaPost){
         Yata yata = yataService.createNeota();
-
+return null;
     }
 
     //나타생성
     @PostMapping("/nata")
-    public ResponseEntity postNata(){
+    public ResponseEntity postNata(@Valid @RequestBody YataDto.NataPost nataPost){
+        Yata yata = yataService.createNata();
         return null;
     }
 

@@ -21,12 +21,13 @@ public class Member extends Auditable {
     private String email;
     @Column(nullable = false, length = 100) // 기본 로그인을 위한 패스워드
     private String password;
-
+    @Column(nullable = false, length = 100) // 이름
+    private String name;
     @Column(nullable = false, length = 50) // 보여질 닉네임
     private String nickname;
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20, nullable = false) // 성별
-    private Gender gender;
+    private Gender genders;
 
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20, nullable = false) // Oauth2 제공자
@@ -39,9 +40,9 @@ public class Member extends Auditable {
     @ElementCollection(fetch = FetchType.EAGER) // 권한 목록
     private List<String> roles;
 
-    @Column(nullable = false, length = 100) // 프로필 이미지
+    @Column// 프로필 이미지
     private String imgUrl;
-    @Column(nullable = false, length = 100) // 차량 이미지
+    @Column // 차량 이미지
     private String carImgUrl;
 
     @Column(nullable = false) // 연료탱크

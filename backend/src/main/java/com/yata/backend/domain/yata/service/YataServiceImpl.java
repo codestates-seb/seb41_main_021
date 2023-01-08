@@ -1,6 +1,7 @@
 package com.yata.backend.domain.yata.service;
 
 import com.yata.backend.domain.yata.entity.Yata;
+import com.yata.backend.domain.yata.repository.yataRepo.JpaYataRepository;
 import com.yata.backend.domain.yata.repository.yataRepo.YataRepository;
 import org.springframework.stereotype.Service;
 
@@ -10,14 +11,17 @@ import javax.transaction.Transactional;
 @Transactional
 public class YataServiceImpl {
 
-    YataRepository yataRepository;
+    JpaYataRepository jpayataRepository;
 
-    public YataServiceImpl(YataRepository yataRepository){
-        this.yataRepository =yataRepository;
+    public YataServiceImpl(JpaYataRepository jpayataRepository){
+        this.jpayataRepository = jpayataRepository;
     }
-    Yata createNeota(Yata yata){
-        //
-        return yataRepository.save();
+    public Yata createNeota(Yata yata){
+        return jpayataRepository.save(yata);
+    }
+
+    public Yata createNata(Yata yata){
+        return null;
     }
 
     Yata updateNeota(){

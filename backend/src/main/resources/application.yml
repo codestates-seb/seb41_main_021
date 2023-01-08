@@ -6,6 +6,44 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: forTesting
+            client-secret: forTesting
+            scope:
+              - email
+              - profile
+              - openid
+            redirect-uri: "{baseUrl}/oauth2/callback/google"
+            client-name: Google
+          kakao:
+            clientId: forTesting
+            clientSecret: forTesting
+            clientAuthenticationMethod: post
+            authorizationGrantType: authorization_code
+            redirectUri: "{baseUrl}/oauth2/callback/kakao"
+            scope:
+              - profile_nickname
+              - profile_image
+              - account_email
+            clientName: Kakao
+          facebook:
+            clientId: forTesting
+            clientSecret: forTesting
+            redirect-uri: "{baseUrl}/oauth2/callback/facebook"
+            scope:
+              - email
+              - public_profile
+            clientName: Facebook
+        provider:
+          kakao:
+            authorization_uri: https://kauth.kakao.com/oauth/authorize
+            token_uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user_name_attribute: id
 
 jwt:
     secret: randomTestValueItisNotUsedInProdEnv
