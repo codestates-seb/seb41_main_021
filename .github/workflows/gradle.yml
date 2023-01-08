@@ -34,5 +34,5 @@ jobs:
             cd /home/ubuntu/main21/seb41_main_021
             git pull origin develop
             cd ..
-            sudo sh deploy.sh
+            sudo sh deployServer.sh
 
