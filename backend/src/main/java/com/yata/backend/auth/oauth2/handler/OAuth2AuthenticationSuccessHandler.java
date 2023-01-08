@@ -7,10 +7,10 @@ import com.yata.backend.auth.oauth2.dto.ProviderType;
 import com.yata.backend.auth.oauth2.info.OAuth2UserInfo;
 import com.yata.backend.auth.oauth2.info.OAuth2UserInfoFactory;
 import com.yata.backend.auth.oauth2.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
+import com.yata.backend.auth.service.RefreshService;
 import com.yata.backend.auth.token.AuthToken;
 import com.yata.backend.auth.token.AuthTokenProvider;
 import com.yata.backend.auth.utils.CookieUtil;
-import com.yata.backend.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -21,14 +21,12 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +42,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final AuthTokenProvider tokenProvider;
     private final JwtConfig jwtConfig;
     private final OAuth2AuthorizationRequestBasedOnCookieRepository authorizationRequestRepository;
+    private final RefreshService refreshService;
     private static final String AUTHORIZATION = "token";
 
     @Override
@@ -77,6 +76,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         Collection<? extends GrantedAuthority> authorities = ((OidcUser) authentication.getPrincipal()).getAuthorities();
 
         List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).toList();
+        System.out.println("roles = " + roles);
         AuthToken accessToken = tokenProvider.createAccessToken(
                 userInfo.getEmail(),
                 roles
@@ -85,18 +85,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
 
         AuthToken refreshToken = tokenProvider.createRefreshToken(
-                jwtConfig.getSecret()
+                userInfo.getEmail()
         );
         // TODO : refresh 토큰 저장
         // DB 저장
-      /*  UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByUserId(userInfo.getId());
-        if (userRefreshToken != null) {
-            userRefreshToken.setRefreshToken(refreshToken.getToken());
-        } else {
-            userRefreshToken = new UserRefreshToken(userInfo.getId(), refreshToken.getToken());
-
-        }
-        userRefreshTokenRepository.saveAndFlush(userRefreshToken);*/
+        refreshService.saveRefreshToken(userInfo.getEmail() , refreshToken);
 
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam(AUTHORIZATION, accessToken.getToken())
@@ -124,18 +117,13 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private boolean isAuthorizedRedirectUri(String uri) {
         URI clientRedirectUri = URI.create(uri);
-        log.info("clientRedirectUri : {}", clientRedirectUri);
-        log.info("jwtConfig.getRedirectUri() : {}", jwtConfig.getOauth2().getAuthorizedRedirectUris());
         return jwtConfig.getOauth2().getAuthorizedRedirectUris()
                 .stream()
                 .anyMatch(authorizedRedirectUri -> {
                     // Only validate host and port. Let the clients use different paths if they want to
                     URI authorizedURI = URI.create(authorizedRedirectUri);
-                    if(authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
-                            && authorizedURI.getPort() == clientRedirectUri.getPort()) {
-                        return true;
-                    }
-                    return false;
+                    return authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
+                            && authorizedURI.getPort() == clientRedirectUri.getPort();
                 });
     }
 }

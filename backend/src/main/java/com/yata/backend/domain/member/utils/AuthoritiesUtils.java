@@ -31,7 +31,7 @@ public class AuthoritiesUtils {
                     .toList();
         }
 
-        return List.of(Member.MemberRole.ROLE_PASSANGER.name());
+        return List.of(Member.MemberRole.PASSANGER.name());
     }
 
     public static List<GrantedAuthority> getAuthorities(List<String> roles) {

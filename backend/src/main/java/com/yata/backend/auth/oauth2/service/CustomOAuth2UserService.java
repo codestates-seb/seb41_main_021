@@ -65,7 +65,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         Member user = Member.builder()
                 .email(userInfo.getEmail())
                 .password("oauth2")
-                .roles(Collections.singletonList(Member.MemberRole.ROLE_PASSANGER.name()))
+                .roles(Collections.singletonList(Member.MemberRole.PASSANGER.name()))
                 .providerType(providerType)
                 .memberStatus(Member.MemberStatus.MEMBER_ACTIVE)
                 .genders(Member.Gender.NOT_CHECKED)

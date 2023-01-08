@@ -16,7 +16,6 @@ spring:
             scope:
               - email
               - profile
-              - openid
             redirect-uri: "{baseUrl}/oauth2/callback/google"
             client-name: Google
           kakao:
