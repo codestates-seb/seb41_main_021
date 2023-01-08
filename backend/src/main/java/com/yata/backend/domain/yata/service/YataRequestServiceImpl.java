@@ -6,7 +6,7 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class YataRequestServiceImpl {
+public class YataRequestServiceImpl implements YataRequestService{
 
 
 }
