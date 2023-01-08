@@ -4,6 +4,7 @@ package com.yata.backend.auth.oauth2.info;
 
 
 import com.yata.backend.auth.oauth2.dto.ProviderType;
+import com.yata.backend.auth.oauth2.info.impl.FacebookOAuth2UserInfo;
 import com.yata.backend.auth.oauth2.info.impl.GoogleOAuth2UserInfo;
 import com.yata.backend.auth.oauth2.info.impl.KakaoOAuth2UserInfo;
 
@@ -14,6 +15,7 @@ public class OAuth2UserInfoFactory {
         switch (providerType) {
             case GOOGLE: return new GoogleOAuth2UserInfo(attributes);
             case KAKAO: return new KakaoOAuth2UserInfo(attributes);
+            case FACEBOOK: return new FacebookOAuth2UserInfo(attributes);
             default: throw new IllegalArgumentException("Invalid Provider Type.");
         }
     }

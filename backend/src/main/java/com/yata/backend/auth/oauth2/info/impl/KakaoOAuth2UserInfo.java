@@ -32,7 +32,7 @@ public class KakaoOAuth2UserInfo extends OAuth2UserInfo {
     @Override
     public String getEmail() {
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
-        if((String) kakaoAccount.get("email") == null){
+        if(kakaoAccount.get("email") == null){
             throw new CustomLogicException(ExceptionCode.EMAIL_NONE);
         }
         return (String) kakaoAccount.get("email");
