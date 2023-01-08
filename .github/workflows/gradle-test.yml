@@ -7,6 +7,8 @@ on:
       - 'feature/be/*'
       - 'develop'
       - 'master'
+    path:
+      - 'backend/**'
 
 # 참고사항
 # push가 일어난 브랜치에 PR이 존재하면, push에 대한 이벤트와 PR에 대한 이벤트 모두 발생합니다.
@@ -14,6 +16,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest # 실행 환경 지정
+    defaults:
+      run:
+        working-directory: ./backend # 작업 디렉토리 지정
 
     steps:
       - uses: actions/checkout@v2 # github action 버전 지정(major version)
