@@ -4,7 +4,7 @@ import Button from '../components/common/Button';
 import ListItem from '../components/ListItem';
 import DestinationInput from '../components/DestinationInput';
 
-export default function RegisterDetail() {
+export default function RegisterCheckList() {
   return (
     <>
       <Container>

@@ -3,7 +3,13 @@ import KakaoMap from '../components/KakaoMap';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button';
 
+import { useNavigate } from 'react-router-dom';
+
 export default function TabnidaAdd() {
+  const navigate = useNavigate();
+  const next = () => {
+    navigate('/tabnidaadddetail');
+  };
   return (
     <>
       <Container>
@@ -12,7 +18,7 @@ export default function TabnidaAdd() {
           <Input label="출발지" />
           <Input label="도착지" />
           <Button>경유지 추가 +</Button>
-          <Button>다음</Button>
+          <Button onClick={next}>다음</Button>
         </DestinationForm>
       </Container>
     </>
