@@ -68,6 +68,9 @@ public class Yata extends Auditable {
     @JoinColumn(name = "EMAIL")
     private Member member;
 
+    @OneToMany(mappedBy = "yata")
+    private List<YataRequest> yataRequests = new ArrayList<>();
+
     public enum YataStatus {
         YATA_NEOTA("너타"),
         YATA_NATA("나타");
@@ -78,21 +81,26 @@ public class Yata extends Auditable {
         YataStatus(String status) {
             this.status = status;
         }
+
     }
 
     public enum PostStatus {
-        POST_WAITING("예약 전"),
-        POST_RESERVED("예약 완료"),
-        POST_MOVING("가는 중"),
-        POST_CLOSED("마감"),
-        POST_WARNING("경고"),
-        POST_ACCEPTED("수락"),
-        POST_DENIED("거절");
+        POST_WAITING(1,"예약 전"),
+        POST_RESERVED(2,"예약 완료"),
+        POST_MOVING(3,"가는 중"),
+        POST_CLOSED(4,"마감"),
+        POST_WARNING(5,"경고"),
+        POST_ACCEPTED(6,"수락"),
+        POST_DENIED(7,"거절");
+
+        @Getter
+        private int statusNumber;
 
         @Getter
         private String status;
 
-        PostStatus(String status){this.status = status; }
+        PostStatus(int statusNumber, String status){this.status = status;
+        this.statusNumber=statusNumber;}
     }
 
 }

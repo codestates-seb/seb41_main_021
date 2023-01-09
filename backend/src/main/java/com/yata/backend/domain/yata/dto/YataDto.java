@@ -37,11 +37,18 @@ public class YataDto {
         @NotBlank(message = "제시가격은 공백이 아니어야 합니다.")
         private long amount;
 
-        //strPoint,destination
+        @Valid
+        @NotNull
+        private LocationDto.Post strPoint;
 
         @Valid
-        @NotNull(message = "체크리스트 입력은 필수입니다.")
-        private List<YataChecklistDto> yataChecklists;
+        @NotNull
+        private LocationDto.Post destination;
+
+//todo 체크리스트 생성 후 채우기
+//        @Valid
+//        @NotNull(message = "체크리스트 입력은 필수입니다.")
+//        private List<YataChecklistDto> yataChecklists;
 
 
 
@@ -71,7 +78,18 @@ public class YataDto {
         @NotBlank(message = "제시가격은 공백이 아니어야 합니다.")
         private long amount;
 
-        //strPoint,destination
+        @Valid
+        @NotNull
+        private LocationDto.Post strPoint;
+
+        @Valid
+        @NotNull
+        private LocationDto.Post destination;
+
+        //todo 체크리스트 생성 후 채우기
+//        @Valid
+//        @NotNull(message = "체크리스트 입력은 필수입니다.")
+//        private List<YataChecklistDto> yataChecklists;
 
 
 
