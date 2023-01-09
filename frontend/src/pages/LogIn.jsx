@@ -38,15 +38,11 @@ export default function Login() {
           <NavBar />
           <Container>
             <TitleContainer>
-              <Title className="pc">
-                <MainTitle>Welcome back!</MainTitle>
-                <SubTitle>언제 어디서나 YATA와 함께하세요</SubTitle>
-              </Title>
               <Img src={Logo} alt="logo" />
               <TitleImg src={yata} alt="title" />
             </TitleContainer>
             <Contents>
-              <Title className="mobile">
+              <Title>
                 <MainTitle>Welcome back!</MainTitle>
                 <SubTitle>언제 어디서나 YATA와 함께하세요</SubTitle>
               </Title>
@@ -95,33 +91,6 @@ const Container = styled.div`
   align-items: center;
   background-image: url(${backgroundImg});
   background-size: cover;
-
-  .pc {
-    display: none;
-  }
-
-  // 태블릿 : 1200px ~ 768px :: 768px 이상 적용되는 css
-  @media only screen and (min-width: 768px) {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    background-image: url(${backgroundImgPC});
-    background-size: cover;
-
-    .mobile {
-      display: none;
-    }
-    .pc {
-      display: flex;
-    }
-  }
-  // PC : 1200px 이상 :: 1200px 이상 적용되는 css
-  /* @media only screen and (min-width: 1200px) {
-    background-color: blue;
-  } */
 `;
 
 const TitleContainer = styled.div`
@@ -171,9 +140,6 @@ const Contents = styled.div`
   border-radius: 5rem;
   box-shadow: -20px 10px 30px rgba(0, 0, 0, 0.3);
   margin-bottom: 1rem;
-  @media screen and (min-width: 800px) {
-    margin-top: 10rem;
-  }
 `;
 
 const LoginForm = styled.form`
