@@ -5,8 +5,9 @@ import com.yata.backend.global.audit.Auditable;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -59,6 +60,9 @@ public class Yata extends Auditable {
 
     public void addDestination(Location destination) {
         this.destination = destination;}
+
+    @OneToMany(mappedBy = "yata")
+    private List<YataChecklist> yataChecklists = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "EMAIL")
