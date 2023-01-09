@@ -1,8 +1,10 @@
 package com.yata.backend.domain.member.dto;
 
+import com.yata.backend.auth.oauth2.dto.ProviderType;
 import com.yata.backend.domain.member.entity.Member;
 import lombok.*;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.List;
@@ -42,8 +44,19 @@ public class MemberDto {
     @Setter
     @NoArgsConstructor
     @Builder
+    @AllArgsConstructor
     public static class Response {
+        private String email;
+        private String name;
+        private String nickname;
+        private Member.Gender genders;
+        private String imgUrl;
 
+        private ProviderType providerType;
+        private String carImgUrl;
+
+        private Member.MemberStatus memberStatus;
+        private List<String> roles;
 
     }
 

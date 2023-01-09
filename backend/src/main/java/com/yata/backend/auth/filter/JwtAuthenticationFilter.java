@@ -23,10 +23,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private final AuthenticationManager authenticationManager;
     private final RefreshService refreshService;
 
+
     public JwtAuthenticationFilter(AuthTokenProvider authTokenProvider, AuthenticationManager authenticationManager, RefreshService refreshService) {
         this.authTokenProvider = authTokenProvider;
         this.authenticationManager = authenticationManager;
         this.refreshService = refreshService;
+
     }
 
     @Override
@@ -38,7 +40,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
+        System.out.println("loginDto = " + loginDto);
+        UsernamePasswordAuthenticationToken authenticationToken
+                = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
         return authenticationManager.authenticate(authenticationToken);
     }
 
