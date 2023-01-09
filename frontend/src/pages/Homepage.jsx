@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import React from 'react';
 import NavBar from '../components/NavBar';
-import Footer from '../components/Footer';
 import backgroundImg from '../images/Landing_page.webp';
 import mainImg from '../images/car.png';
 import wallet from '../images/wallet.png';
@@ -44,7 +43,6 @@ export default function HomePage() {
             </div>
           </Sub>
         </ContentContainer>
-        <Footer />
       </Container>
     </>
   );
