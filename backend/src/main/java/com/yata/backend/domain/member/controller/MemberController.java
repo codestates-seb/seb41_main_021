@@ -1,16 +1,18 @@
 package com.yata.backend.domain.member.controller;
 
+import com.yata.backend.auth.dto.MemberPrincipal;
 import com.yata.backend.domain.member.dto.MemberDto;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.mapper.MemberMapper;
 import com.yata.backend.domain.member.service.MemberService;
+import com.yata.backend.global.response.SingleResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
@@ -26,9 +28,14 @@ public class MemberController {
       this.memberMapper = memberMapper;
    }
    @PostMapping("/signup")
-   public ResponseEntity signup(@RequestBody MemberDto.Post memberPostDto) {
+   public ResponseEntity signup(@Valid @RequestBody MemberDto.Post memberPostDto) {
       Member member = memberService.createMember(memberMapper.memberPostDtoToMember(memberPostDto));
       return ResponseEntity.created(URI.create(BASE_URL)).build();
+   }
+   @GetMapping
+   public ResponseEntity getMember(@AuthenticationPrincipal User principal) {
+      Member member = memberService.findMember(principal.getUsername());
+      return ResponseEntity.ok(new SingleResponse<>(memberMapper.memberToResponseMemberDto(member)));
    }
 
 

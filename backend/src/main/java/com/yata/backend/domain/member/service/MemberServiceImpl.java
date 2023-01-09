@@ -37,7 +37,7 @@ public class MemberServiceImpl implements MemberService {
 
    @Override
    public Member findMember(String email) {
-      return null;
+      return verifyMember(email);
    }
 
    @Override
