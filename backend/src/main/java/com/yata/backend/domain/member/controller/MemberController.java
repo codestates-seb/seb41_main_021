@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
+
 @RestController
 @RequestMapping("/api/v1/members")
 @Validated
 public class MemberController {
    private final MemberService memberService;
    private final MemberMapper memberMapper;
+   private static final String BASE_URL = "/api/v1/members";
 
    public MemberController(MemberService memberService, MemberMapper memberMapper) {
       this.memberService = memberService;
@@ -25,7 +28,7 @@ public class MemberController {
    @PostMapping("/signup")
    public ResponseEntity signup(@RequestBody MemberDto.Post memberPostDto) {
       Member member = memberService.createMember(memberMapper.memberPostDtoToMember(memberPostDto));
-      return ResponseEntity.ok().body(member);
+      return ResponseEntity.created(URI.create(BASE_URL)).build();
    }
 
 

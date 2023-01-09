@@ -18,6 +18,22 @@ v1.0.0, 2022.12.20
 
 === 로그인
 
+== MemberController
+=== 회원 가입
+
+
+.http-request
+include::{snippets}/member-create/http-request.adoc[]
+.request-body
+include::{snippets}/member-create/request-body.adoc[]
+.request-fields
+include::{snippets}/member-create/request-fields.adoc[]
+.http-response
+include::{snippets}/member-create/http-response.adoc[]
+.response-headers
+include::{snippets}/member-create/response-headers.adoc[]
+
+
 
 
 
