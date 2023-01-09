@@ -20,6 +20,10 @@ public class Checklist {
     @Column(nullable = false)
     private boolean checkPN;
 
+    @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false)
+    private CheckKind checkKind;
+
     private enum CheckKind {
         REVIEW("리뷰"),
         NEOTA("운전자"),

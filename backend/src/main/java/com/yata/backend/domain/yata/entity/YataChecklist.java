@@ -24,4 +24,12 @@ public class YataChecklist {
     @ManyToOne
     @JoinColumn(name = "CHECKLIST_ID")
     private Checklist checklist;
+
+    public void addYata(Yata yata){
+        this.yata =yata;
+    }
+
+    public void addChecklist(Checklist checklist){
+        this.checklist = checklist;
+    }
 }
