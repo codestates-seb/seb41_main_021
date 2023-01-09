@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import { AiOutlineHome, AiOutlineComment, AiOutlineBell, AiOutlineUser } from 'react-icons/ai';
+import { AiOutlineHome, AiOutlineComment, AiOutlineBell, AiOutlineUser, AiOutlineCar } from 'react-icons/ai';
+import { TbSteeringWheel } from 'react-icons/tb';
+import { FaRegHandshake } from 'react-icons/fa';
+
 
 export default function Navbar() {
   return (
@@ -8,20 +11,24 @@ export default function Navbar() {
       <Container>
         <NavContainer>
           <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/">
-            <AiOutlineHome className="home-icon" />
+            <AiOutlineHome/>
+            <p>홈</p>
           </NavLink>
-          {/* <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/chattinglist">
-            <AiOutlineComment className="msg-icon" />
-          </NavLink> */}
-          {/* 임시용 fath login */}
-          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/login">
-            <AiOutlineComment className="msg-icon" />
+          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/taeoondalist">
+            <TbSteeringWheel/>
+            <p>태웁니다</p>
           </NavLink>
-          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/notification">
-            <AiOutlineBell className="noti-icon" />
+          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/tabnidalist">
+            <AiOutlineCar />
+            <p>탑니다</p>
+          </NavLink>
+          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/registerlist">
+            <FaRegHandshake />
+            <p>요청 내역</p>
           </NavLink>
           <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/mypage">
-            <AiOutlineUser className="mypage-icon" />
+            <AiOutlineUser />
+            <p>마이페이지</p>
           </NavLink>
         </NavContainer>
       </Container>
@@ -50,6 +57,10 @@ const NavContainer = styled.div`
   }
 
   a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
     color: ${({ theme }) => theme.colors.main_blue};
 
     &:hover {
@@ -57,10 +68,13 @@ const NavContainer = styled.div`
     }
     &.active {
       color: ${({ theme }) => theme.colors.dark_blue};
+    }  
+
+    p {
+      margin-top: 0.3rem;
     }
   }
 
-  // 태블릿 : 1200px ~ 768px :: 768px 이상 적용되는 css
   @media only screen and (min-width: 470px) {
     width: 470px;
     display: flex;
