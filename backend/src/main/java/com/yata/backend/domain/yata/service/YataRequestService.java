@@ -1,7 +1,16 @@
 package com.yata.backend.domain.yata.service;
 
+import com.yata.backend.domain.yata.entity.YataRequest;
+import org.springframework.data.domain.Page;
 
-// TODO @Service 어노테이션은 구현체에 다는 걸로 해요 (아니면 에러나요... 에러 안날때 PR 해주세요)
+import java.util.Optional;
 
 public interface YataRequestService {
+    public YataRequest createRequest(YataRequest yataRequest);
+    public YataRequest createInvitation();
+    public Page<YataRequest> findRequests(int page, int size);
+    public void deleteRequest(long yataRequestId);
+    public void verifyRequest(YataRequest yataRequest);
+    public void verifyInvitation(YataRequest yataRequest);
+    public void verifyApproval(YataRequest yataRequest);
 }

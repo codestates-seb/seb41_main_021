@@ -1,10 +1,19 @@
 package com.yata.backend.domain.yata.controller;
 
+import com.yata.backend.domain.yata.dto.YataRequestDto;
+import com.yata.backend.domain.yata.entity.YataRequest;
 import com.yata.backend.domain.yata.mapper.YataRequestMapper;
 import com.yata.backend.domain.yata.service.YataRequestService;
+import com.yata.backend.global.response.SingleResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 
 @RestController
 @Validated
@@ -16,5 +25,37 @@ public class YataRequestController {
     public YataRequestController(YataRequestService yataRequestService, YataRequestMapper mapper) {
         this.yataRequestService = yataRequestService;
         this.mapper = mapper;
+    }
+
+    // TODO Yata 신청 - 201
+    @PostMapping("/apply/{yataId}")
+    public ResponseEntity postRequest(@PathVariable("yata-id") @Positive long yataId,
+                                     @Valid @RequestBody YataRequestDto.Post requestBody,
+                                     @AuthenticationPrincipal User authMember) {
+        YataRequest yataRequest = yataRequestService.createRequest(mapper.yataRequestPostDtoToYataRequest(yataId, requestBody));
+        return new ResponseEntity<>(
+                new SingleResponse<>(mapper.yataRequestToYataRequestResponse(yataRequest)), HttpStatus.CREATED);
+    }
+
+    // TODO Yata 초대 - 201
+    @PostMapping("/invite/{yataId}")
+    public ResponseEntity postInvitation(@PathVariable("yata-id") @Positive long yataId,
+                                      @Valid @RequestBody YataRequestDto.Post requestBody,
+                                      @AuthenticationPrincipal User authMember) {
+        return null;
+    }
+
+    // TODO Yata 신청 목록 조회 - 200
+    @GetMapping("/apply/{yataId}")
+    public ResponseEntity getRequests(@PathVariable("yata-id") @Positive long yataId,
+                                     @AuthenticationPrincipal User authMember) {
+        return null;
+    }
+
+    // TODO Yata 신청 or 초대 승인 후 삭제 - 204
+    @GetMapping("/apply/{yataId}")
+    public ResponseEntity deleteRequest(@PathVariable("yata-id") @Positive long yataId,
+                                      @AuthenticationPrincipal User authMember) {
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
