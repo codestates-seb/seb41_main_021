@@ -37,7 +37,7 @@ public class YataController {
     @PostMapping("/nata")
     public ResponseEntity postNata(@Valid @RequestBody YataDto.NataPost requestBody){
         Yata yata = yataService.createNata(mapper.nataPostDtoToYata(requestBody));
-        return null;
+        return new ResponseEntity<>((mapper.yataToYataResponse(yata)), HttpStatus.OK);
     }
 
     @PatchMapping("/{yata_id}")

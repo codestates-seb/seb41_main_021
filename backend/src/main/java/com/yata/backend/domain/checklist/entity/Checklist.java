@@ -20,7 +20,7 @@ public class Checklist {
     @Column(nullable = false)
     private boolean checkPN;
 
-    @Enumerated
+    @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
     private CheckKind checkKind;
 
