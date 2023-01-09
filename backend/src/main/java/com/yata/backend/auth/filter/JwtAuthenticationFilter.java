@@ -1,12 +1,12 @@
 package com.yata.backend.auth.filter;
 
 import com.google.gson.Gson;
-
 import com.yata.backend.auth.dto.LoginDto;
 import com.yata.backend.auth.service.RefreshService;
 import com.yata.backend.auth.token.AuthToken;
 import com.yata.backend.auth.token.AuthTokenProvider;
 import com.yata.backend.domain.member.entity.Member;
+import lombok.SneakyThrows;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

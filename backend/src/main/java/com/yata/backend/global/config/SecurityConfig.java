@@ -105,8 +105,6 @@ public class SecurityConfig {
 
         );
     }
-
-
     /*
      * Oauth 인증 실패 핸들러
      * */

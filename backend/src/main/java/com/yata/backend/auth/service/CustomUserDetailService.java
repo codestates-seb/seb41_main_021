@@ -34,6 +34,6 @@ public class CustomUserDetailService implements UserDetailsService {
    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
        Member member =  memberRepository.findByEmail(username)
               .orElseThrow(() -> new CustomLogicException(ExceptionCode.MEMBER_NONE));
-         return new MemberPrincipal(member);
+         return  MemberPrincipal.create(member);
    }
 }

@@ -19,7 +19,7 @@ public class Member extends Auditable {
     @Id
     @Column(nullable = false,updatable = false, unique = true, length = 100) // 이메일 식별자
     private String email;
-    @Column(nullable = false, length = 100) // 기본 로그인을 위한 패스워드
+    @Column(nullable = false, length = 100)
     private String password;
     @Column(nullable = false, length = 100) // 이름
     private String name;
