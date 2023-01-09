@@ -4,14 +4,13 @@ import Button from '../components/common/Button';
 import ListItem from '../components/ListItem';
 import DestinationInput from '../components/DestinationInput';
 
-export default function TabnidaList() {
+export default function RegisterList() {
   return (
     <>
       <Navbar />
       <Container>
-        <DestinationInput />
         <ListItem></ListItem>
-        <Button>내 여정 등록하기</Button>
+        <ListItem></ListItem>
       </Container>
     </>
   );

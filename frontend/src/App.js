@@ -20,9 +20,12 @@ import SignUp from './pages/SignUp';
 import TabnidaList from './pages/TabnidaList';
 import TabnidaDetail from './pages/TabnidaDetail';
 import TabnidaAdd from './pages/TabnidaAdd';
+import TabnidaAddDetail from './pages/TabnidaAddDetail';
 import TaeoondaAdd from './pages/TaeoondaAdd';
 import TaeoondaDetail from './pages/TaeoondaDetail';
 import TaeoondaList from './pages/TaeoondaList';
+import RegisterList from './pages/RegisterList';
+import RegisterDetail from './pages/RegisterDetail';
 
 function App() {
   return (
@@ -48,8 +51,11 @@ function App() {
             <Route path="/tabnidadetail" element={<TabnidaDetail />}></Route>
             <Route path="/tabnidalist" element={<TabnidaList />}></Route>
             <Route path="/taeoondaadd" element={<TaeoondaAdd />}></Route>
+            <Route path="/tabnidaadddetail" element={<TabnidaAddDetail />}></Route>
             <Route path="/taeoondadetail" element={<TaeoondaDetail />}></Route>
             <Route path="/taeoondalist" element={<TaeoondaList />}></Route>
+            <Route path="/registerlist" element={<RegisterList />}></Route>
+            <Route path="/registerdetail" element={<RegisterDetail />}></Route>
           </Routes>
         </Screen>
       </ThemeProvider>
