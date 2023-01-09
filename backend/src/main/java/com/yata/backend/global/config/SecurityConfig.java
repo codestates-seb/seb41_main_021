@@ -8,6 +8,7 @@ import com.yata.backend.auth.oauth2.handler.OAuth2AuthenticationFailureHandler;
 import com.yata.backend.auth.oauth2.handler.OAuth2AuthenticationSuccessHandler;
 import com.yata.backend.auth.oauth2.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.yata.backend.auth.oauth2.service.CustomOAuth2UserService;
+import com.yata.backend.auth.service.RefreshService;
 import com.yata.backend.auth.token.AuthTokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,11 +26,13 @@ public class SecurityConfig {
     private final CustomOAuth2UserService oAuth2UserService;
     private final AuthTokenProvider tokenProvider;
     private final JwtConfig jwtConfig;
-    public SecurityConfig(CustomFilterConfigurer customFilterConfigurer, CustomOAuth2UserService oAuth2UserService, AuthTokenProvider tokenProvider, JwtConfig jwtConfig) {
+    private final RefreshService refreshService;
+    public SecurityConfig(CustomFilterConfigurer customFilterConfigurer, CustomOAuth2UserService oAuth2UserService, AuthTokenProvider tokenProvider, JwtConfig jwtConfig, RefreshService refreshService) {
         this.customFilterConfigurer = customFilterConfigurer;
         this.oAuth2UserService = oAuth2UserService;
         this.tokenProvider = tokenProvider;
         this.jwtConfig = jwtConfig;
+        this.refreshService = refreshService;
     }
 
 
@@ -90,7 +93,9 @@ public class SecurityConfig {
         return new OAuth2AuthenticationSuccessHandler(
                 tokenProvider,
                 jwtConfig,
-                oAuth2AuthorizationRequestBasedOnCookieRepository()
+                oAuth2AuthorizationRequestBasedOnCookieRepository(),
+                refreshService
+
         );
     }
 

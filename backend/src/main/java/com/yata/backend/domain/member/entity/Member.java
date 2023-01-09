@@ -66,9 +66,9 @@ public class Member extends Auditable {
         }
     }
     public enum MemberRole {
-        ROLE_DRIVER,
-        ROLE_PASSANGER,
-        ROLE_ADMIN,
+        DRIVER,
+        PASSANGER,
+        ADMIN,
     }
     public enum Gender{
         MAN("남자"),
