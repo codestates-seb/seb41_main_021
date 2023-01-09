@@ -3,15 +3,16 @@ package com.yata.backend.domain.member.service;
 
 import com.yata.backend.domain.member.entity.Member;
 
+import java.util.Optional;
+
 public interface MemberService {
 
     Member createMember(Member member);
     Member findMember(String email);
-    Member findMember(Long id);
-
+    Optional<Member> findMemberByEmail(String email);
+    Member verifyMember(String email);
+    void duplicateMember(String email);
 
     Member updateMember(Member member, Member patchMemberDtoToMember);
 
-    Member updateMemberTags(Member member, String tag, boolean isFollow);
-    Member deleteMemberTags(Member member, String tag);
 }

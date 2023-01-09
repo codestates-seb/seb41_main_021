@@ -27,7 +27,7 @@ const StyledDiv = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  @media screen and (max-width: 470px) {
+  @media screen and (max-width: 800px) {
     flex-direction: column;
     align-items: normal;
   }
@@ -37,7 +37,7 @@ const StyledLabel = styled.label`
   font-size: ${props => props.theme.fontSizes.xxl};
   font-weight: bold;
   margin: 0 1.5rem 0 0;
-  @media screen and (max-width: 470px) {
+  @media screen and (max-width: 800px) {
     margin-bottom: 7px;
   }
 `;
@@ -50,7 +50,7 @@ const StyledInput = styled.input`
     outline: none;
     border-color: ${props => props.theme.colors.dark_blue};
   }
-  @media screen and (min-width: 470px) {
+  @media screen and (min-width: 800px) {
     width: 60%;
   }
 `;
