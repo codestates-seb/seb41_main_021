@@ -5,6 +5,7 @@ import com.yata.backend.domain.member.utils.AuthoritiesUtils;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +20,7 @@ import java.util.Map;
 @Getter
 @Setter
 // 인증 정보를 담을 클래스
+@Slf4j
 public class MemberPrincipal extends Member implements UserDetails , OAuth2User , OidcUser {
     private Map<String, Object> attributes;
     public MemberPrincipal(Member member) {
@@ -61,10 +63,7 @@ public class MemberPrincipal extends Member implements UserDetails , OAuth2User 
      *
      * @return the password
      */
-    @Override
-    public String getPassword() {
-        return null;
-    }
+
 
 
     @Override

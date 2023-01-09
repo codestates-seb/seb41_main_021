@@ -1,9 +1,11 @@
 package com.yata.backend.domain.member.controller;
 
 import com.google.gson.Gson;
+import com.yata.backend.common.token.GeneratedToken;
 import com.yata.backend.domain.AbstractControllerTest;
 import com.yata.backend.domain.member.dto.MemberDto;
 import com.yata.backend.domain.member.entity.Member;
+import com.yata.backend.domain.member.factory.MemberFactory;
 import com.yata.backend.domain.member.mapper.MemberMapper;
 import com.yata.backend.domain.member.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -21,10 +24,10 @@ import static com.yata.backend.util.ApiDocumentUtils.getResponsePreProcessor;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -77,5 +80,44 @@ class MemberControllerTest extends AbstractControllerTest {
                 )
 
         ));
+    }
+
+    @Test
+    @DisplayName("내 정보 조회")
+    @WithMockUser
+    void getMyInfo() throws Exception {
+        // given
+        Member member = MemberFactory.createMember(new BCryptPasswordEncoder());
+        given(memberService.findMember(any())).willReturn(member);
+        given(mapper.memberToResponseMemberDto(any())).willReturn(MemberFactory.createMemberResponseDto(member));
+        // when
+        ResultActions resultActions = mockMvc.perform(get(BASE_URL)
+                        .contentType("application/json")
+                        .headers(GeneratedToken.getMockHeaderToken())
+                        .with(csrf()))
+                .andExpect(status().isOk());
+        // then
+        resultActions.andDo(print());
+        resultActions.andDo(
+                document("member-get",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        requestHeaders(
+                                headerWithName("Authorization").description("JWT 토큰")
+                        ),
+                        responseFields(
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("회원 정보"),
+                                fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
+                                fieldWithPath("data.name").type(JsonFieldType.STRING).description("이름 실명"),
+                                fieldWithPath("data.nickname").type(JsonFieldType.STRING).description("닉네임"),
+                                fieldWithPath("data.genders").type(JsonFieldType.STRING).description("성별"),
+                                fieldWithPath("data.imgUrl").type(JsonFieldType.STRING).description("프로필 이미지"),
+                                fieldWithPath("data.carImgUrl").type(JsonFieldType.STRING).description("자동차 이미지"),
+                                fieldWithPath("data.providerType").type(JsonFieldType.STRING).description("로그인 타입"),
+                                fieldWithPath("data.roles").type(JsonFieldType.ARRAY).description("로그인 권한 정보 리스트"),
+                                fieldWithPath("data.roles[]").type(JsonFieldType.ARRAY).description("로그인 권한 정보 DRIVER,PASSANGER ,ADMIN"),
+                                fieldWithPath("data.memberStatus").type(JsonFieldType.STRING).description("맴버 상태")
+                        )
+                ));
     }
 }

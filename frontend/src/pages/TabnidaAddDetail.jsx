@@ -5,20 +5,20 @@ import Button from '../components/common/Button';
 
 import { useNavigate } from 'react-router-dom';
 
-export default function TabnidaAdd() {
+export default function TabnidaAddDetail() {
   const navigate = useNavigate();
   const next = () => {
-    navigate('/tabnidaadddetail');
+    navigate('/');
   };
   return (
     <>
       <Container>
         <KakaoMap></KakaoMap>
         <DestinationForm>
-          <Input label="출발지" />
-          <Input label="도착지" />
-          <Button>경유지 추가 +</Button>
-          <Button onClick={next}>다음</Button>
+          <Input label="출발 시간" />
+          <Input label="탑승 인원" />
+          <Input label="특이사항" />
+          <Button onClick={next}>등록하기</Button>
         </DestinationForm>
       </Container>
     </>

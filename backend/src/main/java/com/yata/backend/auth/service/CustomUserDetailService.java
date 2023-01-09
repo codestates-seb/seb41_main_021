@@ -8,8 +8,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class CustomUserDetailService implements UserDetailsService {
    private final JpaMemberRepository memberRepository;
 
@@ -33,6 +34,6 @@ public class CustomUserDetailService implements UserDetailsService {
    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
        Member member =  memberRepository.findByEmail(username)
               .orElseThrow(() -> new CustomLogicException(ExceptionCode.MEMBER_NONE));
-         return new MemberPrincipal(member);
+         return  MemberPrincipal.create(member);
    }
 }
