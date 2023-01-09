@@ -5,6 +5,7 @@ import com.yata.backend.domain.member.dto.MemberDto;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.mapper.MemberMapper;
 import com.yata.backend.domain.member.service.MemberService;
+import com.yata.backend.global.response.SingleResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
@@ -34,7 +35,7 @@ public class MemberController {
    @GetMapping
    public ResponseEntity getMember(@AuthenticationPrincipal User principal) {
       Member member = memberService.findMember(principal.getUsername());
-      return ResponseEntity.ok(memberMapper.memberToResponseMemberDto(member));
+      return ResponseEntity.ok(new SingleResponse<>(memberMapper.memberToResponseMemberDto(member)));
    }
 
 
