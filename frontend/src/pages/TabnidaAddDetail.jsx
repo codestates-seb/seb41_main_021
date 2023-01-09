@@ -3,16 +3,16 @@ import KakaoMap from '../components/KakaoMap';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button';
 
-export default function TabnidaAdd() {
+export default function TabnidaAddDetail() {
   return (
     <>
       <Container>
         <KakaoMap></KakaoMap>
         <DestinationForm>
-          <Input label="출발지" />
-          <Input label="도착지" />
-          <Button>경유지 추가 +</Button>
-          <Button>다음</Button>
+          <Input label="출발 시간" />
+          <Input label="탑승 인원" />
+          <Input label="특이사항" />
+          <Button>등록하기</Button>
         </DestinationForm>
       </Container>
     </>
