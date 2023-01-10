@@ -10,8 +10,8 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface YataRequestMapper {
 
-    YataRequest yataRequestPostDtoToYataRequest(YataRequestDto.Post requestBody);
-    default YataRequestDto.Response yataRequestToYataRequestResponse(YataRequest yataRequest) {
+    YataRequest yataRequestPostDtoToYataRequest(YataRequestDto.RequestPost requestBody);
+    default YataRequestDto.RequestResponse yataRequestToYataRequestResponse(YataRequest yataRequest) {
         if (yataRequest == null) {
             return null;
         }
@@ -25,9 +25,11 @@ public interface YataRequestMapper {
         int maxPeople = yataRequest.getYata().getMaxPeople();
         // TODO 출발지 / 도착지 추가
 
-        YataRequestDto.Response response = new YataRequestDto.Response(
+        YataRequestDto.RequestResponse response = new YataRequestDto.RequestResponse(
                 yataRequestId, title, departureTime, timeOfArrival, maxWatingTime, carModel, maxPeople);
         return response;
     }
-    List<YataRequestDto.Response> yataRequestsToYataRequestResponses(List<YataRequest> yataRequests);
+    List<YataRequestDto.RequestResponse> yataRequestsToYataRequestResponses(List<YataRequest> yataRequests);
+    YataRequest yataInvitationPostDtoToYataInvitation(YataRequestDto.InvitationPost requestBody);
+    YataRequestDto.InvitationResponse yataInvitationToYataInvitationResponse(YataRequest yataRequest);
 }
