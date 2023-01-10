@@ -65,7 +65,7 @@ public class YataRequestServiceImpl implements YataRequestService {
     // 이미 신청한 게시물인지 검증
     @Override
     public void verifyRequest(YataRequest yataRequest) {
-        Optional<YataRequest> optionalYataRequest = Optional.ofNullable(jpaYataRequestRepository.findByMemberEmailAndYataId(yataRequest.getMember().getEmail(), yataRequest.getYata().getYataId()));
+        Optional<YataRequest> optionalYataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(yataRequest.getMember().getEmail(), yataRequest.getYata().getYataId());
         optionalYataRequest.ifPresent(
                 yr -> {throw new CustomLogicException(ExceptionCode.ALREADY_APPLIED);}
         );
@@ -74,7 +74,7 @@ public class YataRequestServiceImpl implements YataRequestService {
     // 이미 초대한 게시물인지 검증
     @Override
     public void verifyInvitation(YataRequest yataRequest) {
-        Optional<YataRequest> optionalYataRequest = Optional.ofNullable(jpaYataRequestRepository.findByMemberEmailAndYataId(yataRequest.getMember().getEmail(), yataRequest.getYata().getYataId()));
+        Optional<YataRequest> optionalYataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(yataRequest.getMember().getEmail(), yataRequest.getYata().getYataId());
         optionalYataRequest.ifPresent(
                 yr -> {throw new CustomLogicException(ExceptionCode.ALREADY_INVITED);}
         );
