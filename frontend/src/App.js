@@ -20,8 +20,9 @@ import SignUp from './pages/SignUp';
 import TabnidaList from './pages/TabnidaList';
 import TabnidaDetail from './pages/TabnidaDetail';
 import TabnidaAdd from './pages/TabnidaAdd';
-import TabnidaAddDetail from './pages/TabnidaAddDetail';
 import TaeoondaAdd from './pages/TaeoondaAdd';
+import TabnidaEdit from './pages/TabnidaEdit';
+import TaeoondaEdit from './pages/TaeoondaEdit';
 import TaeoondaDetail from './pages/TaeoondaDetail';
 import TaeoondaList from './pages/TaeoondaList';
 import RegisterList from './pages/RegisterList';
@@ -48,10 +49,11 @@ function App() {
             <Route path="/ratinglist" element={<RatingList />}></Route>
             <Route path="/signup" element={<SignUp />}></Route>
             <Route path="/tabnidaadd" element={<TabnidaAdd />}></Route>
+            <Route path="/tabnidaedit" element={<TabnidaEdit />}></Route>
             <Route path="/tabnidadetail" element={<TabnidaDetail />}></Route>
             <Route path="/tabnidalist" element={<TabnidaList />}></Route>
             <Route path="/taeoondaadd" element={<TaeoondaAdd />}></Route>
-            <Route path="/tabnidaadddetail" element={<TabnidaAddDetail />}></Route>
+            <Route path="/taeoondaedit" element={<TaeoondaEdit />}></Route>
             <Route path="/taeoondadetail" element={<TaeoondaDetail />}></Route>
             <Route path="/taeoondalist" element={<TaeoondaList />}></Route>
             <Route path="/registerlist" element={<RegisterList />}></Route>
