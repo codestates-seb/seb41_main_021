@@ -8,7 +8,7 @@ public interface YataService {
 
     Yata createNata(Yata yata);
 
-    Yata updateNeota();
+    Yata updateNeota(long yataId,Yata yata);
 
     Yata deleteNeota();
 
