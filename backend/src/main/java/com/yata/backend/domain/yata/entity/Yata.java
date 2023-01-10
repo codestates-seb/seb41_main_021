@@ -21,11 +21,12 @@ public class Yata extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long yataId;
 
-//    @Column(nullable = false)
-//    private Date departureTime;
-//
-//    @Column(nullable = false)
-//    private Date timeOfArrival;
+    //아직 yata에는 departureTime , timeOfArrival 안넣어서 (nullable = false) 일단 뺄게용
+    @Column
+    private Date departureTime;
+
+    @Column
+    private Date timeOfArrival;
 
     @Column(nullable = false,length = 50)
     private String title;
