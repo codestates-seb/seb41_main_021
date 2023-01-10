@@ -21,7 +21,7 @@ public class Yata extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long yataId;
 
-    //아직 yata에는 departureTime , timeOfArrival 안넣어서 (nullable = false) 일단 뺄게용
+    //todo departureTime date타입으로 바꾸기
     @Column
     private String departureTime;
 

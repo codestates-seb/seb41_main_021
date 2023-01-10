@@ -16,6 +16,8 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.text.SimpleDateFormat;
+
 import static com.yata.backend.domain.Yata.factory.YataFactory.createNeotaPostDto;
 import static com.yata.backend.util.ApiDocumentUtils.getRequestPreProcessor;
 import static com.yata.backend.util.ApiDocumentUtils.getResponsePreProcessor;
@@ -54,11 +56,19 @@ public class YataControllerTest extends AbstractControllerTest {
         YataDto.YataPost post = createNeotaPostDto();
 
         String json = gson.toJson(post);
+
+//        SimpleDateFormat transFormat = new SimpleDateFormat("EEE MMM dd hh:mm:ss z yyyy");
+//        //Date to = transFormat.parse(from);
+//        transFormat.parse(post.getDepartureTime());
+
         Yata expected = Yata.builder()
                 .title(post.getTitle())
                 .content(post.getContent())
-                .departureTime("2019-09-01 23:19:45")
-                .timeOfArrival("2019-09-01 23:19:45")
+//todo date타입으로 받기
+//                  .departureTime(transFormat.parse(post.getDepartureTime()))
+//                .timeOfArrival(transFormat.parse(post.getTimeOfArrival()))
+                .departureTime(post.getDepartureTime())
+                .timeOfArrival(post.getTimeOfArrival())
                 .amount(post.getAmount())
                 .carModel(post.getCarModel())
                 .maxPeople(post.getMaxPeople())

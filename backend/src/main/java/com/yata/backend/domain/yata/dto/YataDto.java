@@ -33,7 +33,6 @@ public class YataDto {
         @NotBlank(message = "출발시간은 공백이 아니어야 합니다.")
         private String departureTime;
 
-        @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd HH:mm:ss")
         @NotBlank(message = "도착시간은 공백이 아니어야 합니다.")
         private String timeOfArrival;
 
