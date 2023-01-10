@@ -39,6 +39,9 @@ public class AuthTokenProvider {
     public AuthToken createAccessToken(String id , List<String> role) {
         return new AuthToken(id,role, new Date(System.currentTimeMillis() + tokenValidTime), key);
     }
+    public AuthToken createExpiredAccessToken(String id , List<String> role){
+        return new AuthToken(id,role, new Date(System.currentTimeMillis() - tokenValidTime), key);
+    }
     public AuthToken createRefreshToken(String id) {
         return new AuthToken(id, new Date(System.currentTimeMillis() + refreshTokenValidTime), key);
     }

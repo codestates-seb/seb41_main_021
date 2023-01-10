@@ -8,9 +8,13 @@ import com.yata.backend.auth.oauth2.handler.OAuth2AuthenticationFailureHandler;
 import com.yata.backend.auth.oauth2.handler.OAuth2AuthenticationSuccessHandler;
 import com.yata.backend.auth.oauth2.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.yata.backend.auth.oauth2.service.CustomOAuth2UserService;
+import com.yata.backend.auth.service.CustomUserDetailService;
+import com.yata.backend.auth.service.RefreshService;
 import com.yata.backend.auth.token.AuthTokenProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,18 +29,24 @@ public class SecurityConfig {
     private final CustomOAuth2UserService oAuth2UserService;
     private final AuthTokenProvider tokenProvider;
     private final JwtConfig jwtConfig;
-    public SecurityConfig(CustomFilterConfigurer customFilterConfigurer, CustomOAuth2UserService oAuth2UserService, AuthTokenProvider tokenProvider, JwtConfig jwtConfig) {
+    private final RefreshService refreshService;
+    private final CustomUserDetailService customUserDetailService;
+    public SecurityConfig(CustomFilterConfigurer customFilterConfigurer, CustomOAuth2UserService oAuth2UserService, AuthTokenProvider tokenProvider, JwtConfig jwtConfig, RefreshService refreshService, CustomUserDetailService customUserDetailService) {
         this.customFilterConfigurer = customFilterConfigurer;
         this.oAuth2UserService = oAuth2UserService;
         this.tokenProvider = tokenProvider;
         this.jwtConfig = jwtConfig;
+        this.refreshService = refreshService;
+        this.customUserDetailService = customUserDetailService;
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+
     }
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
@@ -90,10 +100,11 @@ public class SecurityConfig {
         return new OAuth2AuthenticationSuccessHandler(
                 tokenProvider,
                 jwtConfig,
-                oAuth2AuthorizationRequestBasedOnCookieRepository()
+                oAuth2AuthorizationRequestBasedOnCookieRepository(),
+                refreshService
+
         );
     }
-
     /*
      * Oauth 인증 실패 핸들러
      * */

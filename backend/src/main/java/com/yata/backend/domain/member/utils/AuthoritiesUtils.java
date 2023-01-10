@@ -26,12 +26,12 @@ public class AuthoritiesUtils {
 
     public static List<String> createRoles(String email) {
         if (ADMINS_EMAIL != null && ADMINS_EMAIL.contains(email)) {
-            return Stream.of(Member.MemberStatus.values())
-                    .map(Member.MemberStatus::name)
+            return Stream.of(Member.MemberRole.values())
+                    .map(Member.MemberRole::name)
                     .toList();
         }
 
-        return List.of(Member.MemberRole.ROLE_PASSANGER.name());
+        return List.of(Member.MemberRole.PASSANGER.name());
     }
 
     public static List<GrantedAuthority> getAuthorities(List<String> roles) {

@@ -1,9 +1,23 @@
 import styled from 'styled-components';
+import Navbar from '../components/NavBar';
+import Button from '../components/common/Button';
+import ListItem from '../components/ListItem';
+import DestinationInput from '../components/DestinationInput';
+import { useNavigate } from 'react-router-dom';
 
 export default function TabnidaList() {
+  const navigate = useNavigate();
+  const add = () => {
+    navigate('/tabnidaadd');
+  };
   return (
     <>
-      <Container></Container>
+      <Navbar />
+      <Container>
+        <DestinationInput />
+        <ListItem></ListItem>
+        <Button onClick={add}>내 여정 등록하기</Button>
+      </Container>
     </>
   );
 }
@@ -14,13 +28,4 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  // 태블릿 : 1200px ~ 768px :: 768px 이상 적용되는 css
-  @media only screen and (min-width: 768px) {
-    background-color: red;
-  }
-  // PC : 1200px 이상 :: 1200px 이상 적용되는 css
-  @media only screen and (min-width: 1200px) {
-    background-color: blue;
-  }
 `;

@@ -17,8 +17,55 @@ v1.0.0, 2022.12.20
 == AuthController
 
 === 로그인
+POST /api/v1/auth/login
 
+.http-request
+include::{snippets}/auth-login/http-request.adoc[]
+.request-body
+include::{snippets}/auth-login/request-body.adoc[]
+.request-fields
+include::{snippets}/auth-login/request-fields.adoc[]
+.response-body
+include::{snippets}/auth-login/response-body.adoc[]
+.response-headers
+include::{snippets}/auth-login/response-headers.adoc[]
 
+=== Token Refresh
+POST /api/v1/auth/refresh
+
+.http-request
+include::{snippets}/auth-refresh/http-request.adoc[]
+.request-body
+include::{snippets}/auth-refresh/request-body.adoc[]
+.response-body
+include::{snippets}/auth-refresh/response-body.adoc[]
+.response-headers
+include::{snippets}/auth-refresh/response-headers.adoc[]
+
+== MemberController
+=== 회원 가입
+.http-request
+include::{snippets}/member-create/http-request.adoc[]
+.request-body
+include::{snippets}/member-create/request-body.adoc[]
+.request-fields
+include::{snippets}/member-create/request-fields.adoc[]
+.http-response
+include::{snippets}/member-create/http-response.adoc[]
+.response-headers
+include::{snippets}/member-create/response-headers.adoc[]
+
+=== 내 정보 조회
+.http-request
+include::{snippets}/member-get/http-request.adoc[]
+.http-response
+include::{snippets}/member-get/http-response.adoc[]
+.request-headers
+include::{snippets}/member-get/request-headers.adoc[]
+.response-body
+include::{snippets}/member-get/response-body.adoc[]
+.response-fields
+include::{snippets}/member-get/response-fields.adoc[]
 
 
 
