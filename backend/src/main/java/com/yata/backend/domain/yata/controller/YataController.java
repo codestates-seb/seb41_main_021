@@ -32,7 +32,7 @@ public class YataController {
     @PostMapping("/neota")
     public ResponseEntity postNeota(@Valid @RequestBody YataDto.NeotaPost requestBody){
         Yata yata = yataService.createNeota(mapper.neotaPostDtoToYata(requestBody));
-        return new ResponseEntity<>((mapper.yataToYataResponse(yata)), HttpStatus.OK);
+        return new ResponseEntity<>((mapper.yataToYataResponse(yata)), HttpStatus.CREATED);
     }
 
     //나타생성

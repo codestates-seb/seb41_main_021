@@ -27,6 +27,12 @@ public class Yata extends Auditable {
 //    @Column(nullable = false)
 //    private Date timeOfArrival;
 
+    @Column(nullable = false,length = 50)
+    private String title;
+
+    @Column(nullable = false,length = 100)
+    private String content;
+
     @Column(nullable = false)
     private int maxWaitingTime;
 

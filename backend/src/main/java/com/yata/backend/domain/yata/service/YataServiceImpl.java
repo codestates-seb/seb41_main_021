@@ -97,7 +97,8 @@ public class YataServiceImpl implements YataService{
         Yata findYata = verifyYata(yataId);
         int statusNumber = findYata.getPostStatus().getStatusNumber();
         //예약 전 상태가 아니면 게시물 변경 못하게
-        if(statusNumber>1){throw new CustomLogicException(ExceptionCode.YATA_IS_NOT_MODIFIABLE_STATUS);}
+        if(statusNumber>1){throw new CustomLogicException(ExceptionCode.YATA_IS_NOT_MODIFIABLE_STATUS);
+        }
     }
 
 }

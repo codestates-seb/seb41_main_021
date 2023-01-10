@@ -1,5 +1,6 @@
 package com.yata.backend.domain.yata.dto;
 
+import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataChecklist;
 import lombok.*;
 
@@ -21,6 +22,12 @@ public class YataDto {
     @ToString
     @Builder
     public static class NeotaPost{
+
+        @NotBlank
+        private String title;
+
+        @NotBlank
+        private String content;
 
 //        @NotBlank(message = "출발시간은 공백이 아니어야 합니다.")
 //        private Date departureTime;
@@ -66,6 +73,12 @@ public class YataDto {
     @ToString
     @Builder
     public static class NataPost{
+
+        @NotBlank
+        private String title;
+
+        @NotBlank
+        private String content;
 //        @NotBlank(message = "출발시간은 공백이 아니어야 합니다.")
 //        private Date departureTime;
 //
@@ -113,11 +126,12 @@ public class YataDto {
     @Builder
     public static class Response {
 
+        private String title;
+        private String content;
         private int maxWaitingTime;
         private int maxPeople;
         private long amount;
         private String carModel;
-
 
     }
 
