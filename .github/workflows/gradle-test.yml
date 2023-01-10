@@ -42,4 +42,4 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: ${{ always() }} # test가 실패해도 report를 남기기 위해 설정
         with:
-          files: build/test-results/**/TEST-*.xml
+          files: build/test-results/test/**/*.xml
