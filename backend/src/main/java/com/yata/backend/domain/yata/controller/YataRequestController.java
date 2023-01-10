@@ -30,7 +30,7 @@ public class YataRequestController {
     // TODO Yata 신청 - 201
     @PostMapping("/apply/{yataId}")
     public ResponseEntity postRequest(@PathVariable("yataId") @Positive long yataId,
-                                     @Valid @RequestBody YataRequestDto.Post requestBody,
+                                     @Valid @RequestBody YataRequestDto.RequestPost requestBody,
                                      @AuthenticationPrincipal User authMember) throws Exception {
         YataRequest yataRequest = yataRequestService.createRequest(mapper.yataRequestPostDtoToYataRequest(requestBody), authMember.getUsername(), yataId);
         return new ResponseEntity<>(
@@ -39,12 +39,12 @@ public class YataRequestController {
 
     // TODO Yata 초대 - 201
     @PostMapping("/invite/{yataId}")
-    public ResponseEntity postInvitation(@PathVariable("yata-id") @Positive long yataId,
-                                      @Valid @RequestBody YataRequestDto.Post requestBody,
+    public ResponseEntity postInvitation(@PathVariable("yataId") @Positive long yataId,
+                                      @Valid @RequestBody YataRequestDto.InvitationPost requestBody,
                                       @AuthenticationPrincipal User authMember) throws Exception {
-        YataRequest yataRequest = yataRequestService.createInvitation(mapper.yataRequestPostDtoToYataRequest(requestBody), authMember.getUsername(), yataId);
+        YataRequest yataRequest = yataRequestService.createInvitation(mapper.yataInvitationPostDtoToYataInvitation(requestBody), authMember.getUsername(), yataId);
         return new ResponseEntity<>(
-                new SingleResponse<>(mapper.yataRequestToYataRequestResponse(yataRequest)), HttpStatus.CREATED);
+                new SingleResponse<>(mapper.yataInvitationToYataInvitationResponse(yataRequest)), HttpStatus.CREATED);
     }
 
     // TODO Yata 신청 목록 조회 - 200
@@ -55,7 +55,7 @@ public class YataRequestController {
         return null;
     }
 
-    // TODO Yata 신청 or 초대 승인 후 삭제 - 204
+    // TODO Yata 신청 or 초대 전 or 승인 후 삭제 - 204
     @GetMapping("/apply/{yataId}")
     public ResponseEntity deleteRequest(@PathVariable("yata-id") @Positive long yataId,
                                       @AuthenticationPrincipal User authMember) {

@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @WebMvcTest(YataRequestController.class)
 //@AutoConfigureRestDocs
 public class YataRequestControllerTest {
-    private final String BASE_URL = "/api/v1/yata/apply/1";
+    private final String BASE_URL = "/api/v1/yata";
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -43,8 +43,8 @@ public class YataRequestControllerTest {
     @WithMockUser(username = "test@gmail.com", roles = "USER")
     void postYataRequestTest() throws Exception {
         //given
-        YataRequestDto.Post post = YataRequestFactory.createYataRequestPostDto();
-        YataRequestDto.Response response = new YataRequestDto.Response(1L,"태워주세욥", "2019-09-01 23:19:45",
+        YataRequestDto.RequestPost post = YataRequestFactory.createYataRequestPostDto();
+        YataRequestDto.RequestResponse response = new YataRequestDto.RequestResponse(1L,"태워주세욥", "2019-09-01 23:19:45",
                 "2019-09-01 23:19:45", 10, "lamborghini", 3);
 
         given(yataRequestService.createRequest(Mockito.any(),Mockito.any(),Mockito.anyLong())).willReturn(new YataRequest());
@@ -53,7 +53,31 @@ public class YataRequestControllerTest {
         String content = gson.toJson(post);
 
         //when
-        ResultActions actions = mockMvc.perform(post(BASE_URL)
+        ResultActions actions = mockMvc.perform(post(BASE_URL + "/apply/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                        .content(content))
+                .andExpect(status().isCreated());
+
+        //then
+        actions.andDo(print());
+    }
+
+    @Test
+    @DisplayName("Yata 초대")
+    @WithMockUser(username = "test@gmail.com", roles = "USER")
+    void postYataInvitationTest() throws Exception {
+        //given
+        YataRequestDto.InvitationPost post = YataRequestFactory.createYataInvitationPostDto();
+        YataRequestDto.InvitationResponse response = new YataRequestDto.InvitationResponse(1L);
+
+        given(yataRequestService.createRequest(Mockito.any(),Mockito.any(),Mockito.anyLong())).willReturn(new YataRequest());
+        given(mapper.yataInvitationToYataInvitationResponse(Mockito.any(YataRequest.class))).willReturn(response);
+
+        String content = gson.toJson(post);
+
+        //when
+        ResultActions actions = mockMvc.perform(post(BASE_URL + "/invite/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
                         .content(content))

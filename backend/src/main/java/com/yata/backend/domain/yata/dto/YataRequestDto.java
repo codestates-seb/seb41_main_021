@@ -12,12 +12,11 @@ import java.util.List;
 @Setter
 @ToString
 public class YataRequestDto {
-    // TODO dto 수정
     @AllArgsConstructor
     @Getter
     @ToString
     @Builder
-    public static class Post {
+    public static class RequestPost {
         @NotNull(message = "제목을 입력하세요.")
         private String title;
 //        private List<String> checklists;
@@ -40,7 +39,7 @@ public class YataRequestDto {
     @Getter
     @ToString
     @Builder
-    public static class Response {
+    public static class RequestResponse {
         private Long yataRequestId;
         private String title;
         //        private List<String> checklists;
@@ -54,5 +53,22 @@ public class YataRequestDto {
 
 //        private Location destination;
         private int maxPeople;
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    @ToString
+    @Builder
+    public static class InvitationPost {
+        private Long yataId;
+    }
+
+    @AllArgsConstructor
+    @Getter
+    @ToString
+    @Builder
+    public static class InvitationResponse {
+        private Long yataId;
     }
 }
