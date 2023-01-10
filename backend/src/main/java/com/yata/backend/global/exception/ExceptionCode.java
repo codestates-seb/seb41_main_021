@@ -3,6 +3,8 @@ package com.yata.backend.global.exception;
 import lombok.Getter;
 @Getter
 public enum ExceptionCode {
+   PAYMENT_NOT_FOUND(404, "PAYMENT_NOT_FOUND"),
+   PAYMENT_AMOUNT_EXP(400 , "PAYMENT_AMOUNT_NOT_EQUAL"),
 
    TITLE_NONE(400, "TITLE_NONE"),
    MEMBER_NONE(404, "MEMBER_NONE"),

@@ -38,3 +38,4 @@ out/
 /src/main/resources/static/docs/index.html
 /src/main/resources/application-oauth2.yml
 /src/main/resources/application-hi.yml
+/src/main/resources/application-payment.yml
