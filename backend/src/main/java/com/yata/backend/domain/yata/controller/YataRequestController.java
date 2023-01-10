@@ -37,12 +37,14 @@ public class YataRequestController {
                 new SingleResponse<>(mapper.yataRequestToYataRequestResponse(yataRequest)), HttpStatus.CREATED);
     }
 
-    // TODO Yata 초대 - 201
+    // TODO Yata 초대 - 201 ( yata 로직이랑 합쳐지면 여기도 throw Exception 빼기 )
     @PostMapping("/invite/{yataId}")
     public ResponseEntity postInvitation(@PathVariable("yata-id") @Positive long yataId,
                                       @Valid @RequestBody YataRequestDto.Post requestBody,
-                                      @AuthenticationPrincipal User authMember) {
-        return null;
+                                      @AuthenticationPrincipal User authMember) throws Exception {
+        YataRequest yataRequest = yataRequestService.createInvitation(mapper.yataRequestPostDtoToYataRequest(requestBody), authMember.getUsername(), yataId);
+        return new ResponseEntity<>(
+                new SingleResponse<>(mapper.yataRequestToYataRequestResponse(yataRequest)), HttpStatus.CREATED);
     }
 
     // TODO Yata 신청 목록 조회 - 200

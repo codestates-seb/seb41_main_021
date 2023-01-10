@@ -44,7 +44,7 @@ public class YataRequestControllerTest {
     private YataRequestMapper mapper;
 
     @Test
-//    @DisplayName("Yata 신청")
+    @DisplayName("Yata 신청")
     @WithMockUser(username = "test@gmail.com", roles = "USER")
     void postYataRequestTest() throws Exception {
         //given
