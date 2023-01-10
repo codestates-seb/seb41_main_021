@@ -1,10 +1,12 @@
 package com.yata.backend.domain.yata.controller;
 
+import com.yata.backend.domain.yata.dto.LocationDto;
 import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.mapper.YataMapper;
 import com.yata.backend.domain.yata.service.YataService;
 import com.yata.backend.domain.yata.service.YataServiceImpl;
+import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -30,7 +32,7 @@ public class YataController {
     @PostMapping("/neota")
     public ResponseEntity postNeota(@Valid @RequestBody YataDto.NeotaPost requestBody){
         Yata yata = yataService.createNeota(mapper.neotaPostDtoToYata(requestBody));
-        return new ResponseEntity<>((mapper.yataToYataResponse(yata)), HttpStatus.OK);
+        return new ResponseEntity<>((mapper.yataToYataResponse(yata)), HttpStatus.CREATED);
     }
 
     //나타생성

@@ -4,18 +4,17 @@ import { AiOutlineHome, AiOutlineComment, AiOutlineBell, AiOutlineUser, AiOutlin
 import { TbSteeringWheel } from 'react-icons/tb';
 import { FaRegHandshake } from 'react-icons/fa';
 
-
 export default function Navbar() {
   return (
     <>
       <Container>
         <NavContainer>
           <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/">
-            <AiOutlineHome/>
+            <AiOutlineHome />
             <p>홈</p>
           </NavLink>
           <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/taeoondalist">
-            <TbSteeringWheel/>
+            <TbSteeringWheel />
             <p>태웁니다</p>
           </NavLink>
           <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/tabnidalist">
@@ -68,7 +67,7 @@ const NavContainer = styled.div`
     }
     &.active {
       color: ${({ theme }) => theme.colors.dark_blue};
-    }  
+    }
 
     p {
       margin-top: 0.3rem;
