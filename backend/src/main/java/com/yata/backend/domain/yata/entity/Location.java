@@ -11,6 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+// @Embeddable
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

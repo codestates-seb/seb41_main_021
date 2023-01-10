@@ -42,7 +42,7 @@ public class Yata extends Auditable {
     private YataStatus yataStatus;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(length = 20)
+    @Column(length = 20, nullable = false)
     private PostStatus postStatus = PostStatus.POST_WAITING;
 
 
@@ -55,23 +55,27 @@ public class Yata extends Auditable {
     @Column(length = 10,nullable = false)
     private long amount;
 
-//    @OneToOne
+//    @OneToOne(cascade = CascadeType.ALL)
  //       @JoinColumn(name = "YATA_ID")
 //    private Location strPoint;
 //
 //    public void addStrPoint(Location strPoint) {
 //        this.strPoint = strPoint;}
 //
-//    @OneToOne
+//    @OneToOne(cascade = CascadeType.ALL)
  //       @JoinColumn(name = "YATA_ID")
 //    private Location destination;
 //
 //    public void addDestination(Location destination) {
 //        this.destination = destination;}
 
-//    @OneToMany(mappedBy = "yata")
+//    @OneToMany(mappedBy = "yata",cascade = CascadeType.ALL)
 //    private List<YataChecklist> yataChecklists = new ArrayList<>();
 
+
+//    @OneToMany(mappedBy = "yata" , cascade = CascadeType.ALL)
+//    private List<Location> waypoints = new ArrayList<>();
+//
     @ManyToOne
     @JoinColumn(name = "EMAIL")
     private Member member;
@@ -89,7 +93,6 @@ public class Yata extends Auditable {
         YataStatus(String status) {
             this.status = status;
         }
-
     }
 
     public enum PostStatus {

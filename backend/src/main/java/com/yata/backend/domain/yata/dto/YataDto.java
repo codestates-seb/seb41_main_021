@@ -47,7 +47,7 @@ public class YataDto {
         @NotBlank
         private String carModel;
 
-//        @Valid
+        //        @Valid
 //        @NotNull
 //        private LocationDto.Post strPoint;
 //
@@ -55,15 +55,12 @@ public class YataDto {
 //        @NotNull
 //        private LocationDto.Post destination;
 
-//todo 체크리스트 생성 후 채우기
+       //todo 체크리스트 생성 후 채우기
 //        @Valid
 //        @NotNull(message = "체크리스트 입력은 필수입니다.")
-//        private List<YataChecklistDto> yataChecklists;
-
-
-
-
-
+//        private List<YataChecklistDto> plusCheckList;
+//        private List<YataChecklistDto> minusCheckList;
+//
 
     }
 
