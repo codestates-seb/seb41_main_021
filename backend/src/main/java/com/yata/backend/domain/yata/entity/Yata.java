@@ -21,11 +21,11 @@ public class Yata extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long yataId;
 
-    @Column(nullable = false)
-    private Date departureTime;
-
-    @Column(nullable = false)
-    private Date timeOfArrival;
+//    @Column(nullable = false)
+//    private Date departureTime;
+//
+//    @Column(nullable = false)
+//    private Date timeOfArrival;
 
     @Column(nullable = false)
     private int maxWaitingTime;
@@ -36,7 +36,7 @@ public class Yata extends Auditable {
     private YataStatus yataStatus;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(length = 20, nullable = false)
+    @Column(length = 20)
     private PostStatus postStatus = PostStatus.POST_WAITING;
 
 
@@ -49,20 +49,22 @@ public class Yata extends Auditable {
     @Column(length = 10,nullable = false)
     private long amount;
 
-    @OneToOne(mappedBy = "yata")
-    private Location strPoint;
+//    @OneToOne
+ //       @JoinColumn(name = "YATA_ID")
+//    private Location strPoint;
+//
+//    public void addStrPoint(Location strPoint) {
+//        this.strPoint = strPoint;}
+//
+//    @OneToOne
+ //       @JoinColumn(name = "YATA_ID")
+//    private Location destination;
+//
+//    public void addDestination(Location destination) {
+//        this.destination = destination;}
 
-    public void addStrPoint(Location strPoint) {
-        this.strPoint = strPoint;}
-
-    @OneToOne(mappedBy = "yata")
-    private Location destination;
-
-    public void addDestination(Location destination) {
-        this.destination = destination;}
-
-    @OneToMany(mappedBy = "yata")
-    private List<YataChecklist> yataChecklists = new ArrayList<>();
+//    @OneToMany(mappedBy = "yata")
+//    private List<YataChecklist> yataChecklists = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "EMAIL")

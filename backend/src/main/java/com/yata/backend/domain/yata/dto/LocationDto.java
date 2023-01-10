@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -16,10 +17,10 @@ public class LocationDto {
     @ToString
     @Builder
     public static class Post {
-        @NotBlank
+        @NotNull
         private double longitude;
 
-        @NotBlank
+        @NotNull
         private double latitude;
 
         @NotBlank

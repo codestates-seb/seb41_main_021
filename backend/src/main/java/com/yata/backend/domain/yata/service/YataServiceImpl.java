@@ -46,27 +46,28 @@ public class YataServiceImpl implements YataService{
     @Override
     public Yata updateNeota(long yataId,Yata yata) {
 
-        //존재하는 게시물인지 확인
-        Yata findYata = verifyYata(yataId);
-
-        //예완 상태 아닌 게시물인지 확인
-        //예안 게시물이면 -> 예외
-        modifiableYata(yataId);
-
-        //수정 내용이 있다면 바꿔서 저장해주기
-        //todo 출발지,도착지,체크리스트,...
-        Optional.ofNullable(yata.getAmount())
-                .ifPresent(amount -> findYata.setAmount(amount));
-        Optional.ofNullable(yata.getMaxPeople())
-                .ifPresent(n -> findYata.setMaxPeople(n));
-        Optional.ofNullable(yata.getDepartureTime())
-                .ifPresent(n -> findYata.setDepartureTime(n));
-        Optional.ofNullable(yata.getTimeOfArrival())
-                .ifPresent(n -> findYata.setTimeOfArrival(n));
-        Optional.ofNullable(yata.getCarModel())
-                .ifPresent(n -> findYata.setCarModel(n));
-
-    return jpayataRepository.save(findYata);
+//        //존재하는 게시물인지 확인
+//        Yata findYata = verifyYata(yataId);
+//
+//        //예완 상태 아닌 게시물인지 확인
+//        //예안 게시물이면 -> 예외
+//        modifiableYata(yataId);
+//
+//        //수정 내용이 있다면 바꿔서 저장해주기
+//        //todo 출발지,도착지,체크리스트,...
+//        Optional.ofNullable(yata.getAmount())
+//                .ifPresent(amount -> findYata.setAmount(amount));
+//        Optional.ofNullable(yata.getMaxPeople())
+//                .ifPresent(n -> findYata.setMaxPeople(n));
+////        Optional.ofNullable(yata.getDepartureTime())
+////                .ifPresent(n -> findYata.setDepartureTime(n));
+////        Optional.ofNullable(yata.getTimeOfArrival())
+////                .ifPresent(n -> findYata.setTimeOfArrival(n));
+//        Optional.ofNullable(yata.getCarModel())
+//                .ifPresent(n -> findYata.setCarModel(n));
+//
+//    return jpayataRepository.save(findYata);
+    return null;
     }
 
     @Override

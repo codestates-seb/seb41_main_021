@@ -22,28 +22,31 @@ public class YataDto {
     @Builder
     public static class NeotaPost{
 
-        @NotBlank(message = "출발시간은 공백이 아니어야 합니다.")
-        private Date departureTime;
+//        @NotBlank(message = "출발시간은 공백이 아니어야 합니다.")
+//        private Date departureTime;
+//
+//        @NotBlank(message = "도착시간은 공백이 아니어야 합니다.")
+//        private Date timeOfArrival;
 
-        @NotBlank(message = "도착시간은 공백이 아니어야 합니다.")
-        private Date timeOfArrival;
-
-        @NotBlank(message = "최대대기시간은 공백이 아니어야 합니다.")
+        @NotNull
         private int maxWaitingTime;
 
-        @NotBlank(message = "차종은 공백이 아니어야 합니다.")
+        @NotNull
         private int maxPeople;
 
-        @NotBlank(message = "제시가격은 공백이 아니어야 합니다.")
+        @NotNull
         private long amount;
 
-        @Valid
-        @NotNull
-        private LocationDto.Post strPoint;
+        @NotBlank
+        private String carModel;
 
-        @Valid
-        @NotNull
-        private LocationDto.Post destination;
+//        @Valid
+//        @NotNull
+//        private LocationDto.Post strPoint;
+//
+//        @Valid
+//        @NotNull
+//        private LocationDto.Post destination;
 
 //todo 체크리스트 생성 후 채우기
 //        @Valid
@@ -63,11 +66,11 @@ public class YataDto {
     @ToString
     @Builder
     public static class NataPost{
-        @NotBlank(message = "출발시간은 공백이 아니어야 합니다.")
-        private Date departureTime;
-
-        @NotBlank(message = "도착시간은 공백이 아니어야 합니다.")
-        private Date timeOfArrival;
+//        @NotBlank(message = "출발시간은 공백이 아니어야 합니다.")
+//        private Date departureTime;
+//
+//        @NotBlank(message = "도착시간은 공백이 아니어야 합니다.")
+//        private Date timeOfArrival;
 
         @NotBlank(message = "최대대기시간은 공백이 아니어야 합니다.")
         private int maxWaitingTime;
@@ -78,13 +81,13 @@ public class YataDto {
         @NotBlank(message = "제시가격은 공백이 아니어야 합니다.")
         private long amount;
 
-        @Valid
-        @NotNull
-        private LocationDto.Post strPoint;
-
-        @Valid
-        @NotNull
-        private LocationDto.Post destination;
+//        @Valid
+//        @NotNull
+//        private LocationDto.Post strPoint;
+//
+//        @Valid
+//        @NotNull
+//        private LocationDto.Post destination;
 
         //todo 체크리스트 생성 후 채우기
 //        @Valid
@@ -106,8 +109,16 @@ public class YataDto {
     @Getter
     @Setter
     @NoArgsConstructor
+    @AllArgsConstructor
     @Builder
     public static class Response {
+
+        private int maxWaitingTime;
+        private int maxPeople;
+        private long amount;
+        private String carModel;
+
+
     }
 
 }

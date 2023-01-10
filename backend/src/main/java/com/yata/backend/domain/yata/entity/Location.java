@@ -25,12 +25,11 @@ public class Location {
     @Column(length = 100,nullable = false)
     private String address;
 
-    @OneToOne
-    @JoinColumn(name = "YATA_ID")//Location 테이블에서 사용할 외래키명
-    private Yata yata;
+//    @OneToOne(mappedBy = "location")
+//    private Yata yata;
 
-    public void addYata(Yata yata) {
-        this.yata = yata;
-    }
+//    public void addYata(Yata yata) {
+//        this.yata = yata;
+//    }
 
 }
