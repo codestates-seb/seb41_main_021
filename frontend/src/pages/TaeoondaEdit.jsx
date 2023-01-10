@@ -2,12 +2,11 @@ import styled from 'styled-components';
 import KakaoMap from '../components/KakaoMap';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button';
-import { useNavigate } from 'react-router-dom';
+import Header from '../components/Header';
 import { useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
-import Header from '../components/Header';
 
-export default function TabnidaAdd() {
+export default function TaeoondaEdit() {
   // const navigate = useNavigate();
   // const next = () => {
   //   navigate('/tabnidaadddetail');
@@ -22,7 +21,7 @@ export default function TabnidaAdd() {
   return (
     <>
       <Container>
-        <Header title={'tabnidaAdd'} />
+        <Header />
         <KakaoMap />
         <DestinationForm>
           <Input label="출발지" />
@@ -38,7 +37,7 @@ export default function TabnidaAdd() {
               className="register-btn"
               // onClick={next}
             >
-              등록하기
+              수정하기
             </Button>
           </ButtonContainer>
         </DestinationForm>
@@ -51,6 +50,7 @@ const Container = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
+  z-index: 1;
 `;
 
 const DestinationForm = styled.div`
