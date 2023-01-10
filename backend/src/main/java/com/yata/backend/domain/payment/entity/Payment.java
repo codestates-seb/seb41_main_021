@@ -36,6 +36,11 @@ public class Payment extends Auditable {
     private String paymentKey;
     @Column
     private String failReason;
+
+    @Column
+    private boolean cancelYN;
+    @Column
+    private String cancelReason;
     public PaymentResDto toPaymentResDto() {
         return PaymentResDto.builder()
                 .payType(payType.getDescription())
@@ -45,8 +50,11 @@ public class Payment extends Auditable {
                 .customerEmail(customer.getEmail())
                 .customerName(customer.getName())
                 .createdAt(getCreatedAt().toString())
+                .cancelYN(cancelYN)
+                .failReason(failReason)
                 .build();
     }
+
 
 
 }

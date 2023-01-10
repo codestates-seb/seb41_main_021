@@ -16,5 +16,9 @@ public class PaymentResDto {
     private String customerName;
     private String successUrl;
     private String failUrl;
+
+    private String failReason;
+    private boolean cancelYN;
+    private String cancelReason;
     private String createdAt;
 }

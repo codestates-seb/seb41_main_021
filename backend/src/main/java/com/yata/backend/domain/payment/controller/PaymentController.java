@@ -4,7 +4,7 @@ import com.yata.backend.domain.payment.config.TossPaymentConfig;
 import com.yata.backend.domain.payment.dto.PaymentDto;
 import com.yata.backend.domain.payment.dto.PaymentFailDto;
 import com.yata.backend.domain.payment.dto.PaymentResDto;
-import com.yata.backend.domain.payment.service.PaymentService;
+import com.yata.backend.domain.payment.service.PaymentServiceImpl;
 import com.yata.backend.global.response.SingleResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,10 +18,10 @@ import javax.validation.Valid;
 @Validated
 @RequestMapping("/api/v1/payments")
 public class PaymentController {
-    private final PaymentService paymentService;
+    private final PaymentServiceImpl paymentService;
     private final TossPaymentConfig tossPaymentConfig;
 
-    public PaymentController(PaymentService paymentService, TossPaymentConfig tossPaymentConfig) {
+    public PaymentController(PaymentServiceImpl paymentService, TossPaymentConfig tossPaymentConfig) {
         this.paymentService = paymentService;
         this.tossPaymentConfig = tossPaymentConfig;
     }
@@ -56,5 +56,13 @@ public class PaymentController {
                 .errorMessage(message)
                 .orderId(orderId)
                 .build());
+    }
+    @PostMapping("/toss/cancel/point")
+    public ResponseEntity tossPaymentCancelPoint(
+            @AuthenticationPrincipal User principal,
+            @RequestParam String paymentKey,
+            @RequestParam String cancelReason
+    ) {
+        return ResponseEntity.ok().body(paymentService.cancelPaymentPoint(principal.getUsername(),paymentKey, cancelReason));
     }
 }
