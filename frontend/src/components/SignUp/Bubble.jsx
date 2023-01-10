@@ -5,6 +5,9 @@ const Bubble = ({ type }) => {
   const errors = {
     password: '영문, 숫자, 특수문자 포함 8글자 이상이어야 합니다.',
     passwordCheck: '비밀번호가 일치하지 않습니다.',
+    name: '2글자 이상 5글자 이하로 입력해주세요.',
+    number: '올바른 전화번호 형식이 아닙니다.',
+    email: '올바른 이메일 형식이 아닙니다',
   };
   return <StyledBubble className="bubble">{errors[typeKey]}</StyledBubble>;
 };
@@ -16,8 +19,9 @@ const StyledBubble = styled.div`
   height: 4rem;
   text-align: center;
   line-height: 1.15rem;
-  background-color: #f1f1f1;
-  border: gray 1px solid;
+  background-color: ${props => props.theme.colors.main_blue};
+  border: ${props => props.theme.colors.dark_blue} 1px solid;
+  color: white;
   padding: 5px;
   border-radius: 5px;
   position: relative;
