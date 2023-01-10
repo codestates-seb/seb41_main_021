@@ -49,7 +49,7 @@ public class Payment extends Auditable {
                 .orderId(orderId)
                 .customerEmail(customer.getEmail())
                 .customerName(customer.getName())
-                .createdAt(getCreatedAt().toString())
+                .createdAt(String.valueOf(getCreatedAt()))
                 .cancelYN(cancelYN)
                 .failReason(failReason)
                 .build();

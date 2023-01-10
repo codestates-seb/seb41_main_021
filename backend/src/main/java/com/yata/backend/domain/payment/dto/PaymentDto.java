@@ -11,9 +11,11 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PaymentDto {
-
+    @NonNull
     private PayType payType;
+    @NonNull
     private Long amount;
+    @NonNull
     private String orderName;
 
 
