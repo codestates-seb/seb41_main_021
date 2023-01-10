@@ -23,15 +23,11 @@ import java.util.Optional;
 public class YataRequestServiceImpl implements YataRequestService {
     private final JpaYataRequestRepository jpaYataRequestRepository;
     private final MemberService memberService;
-    private final JpaMemberRepository jpaMemberRepository;
-    private final JpaYataRepository jpaYataRepository;
     private final YataServiceImpl yataService;
 
-    public YataRequestServiceImpl(JpaYataRequestRepository jpaYataRequestRepository, MemberService memberService, JpaMemberRepository jpaMemberRepository, JpaYataRepository jpaYataRepository, YataServiceImpl yataService) {
+    public YataRequestServiceImpl(JpaYataRequestRepository jpaYataRequestRepository, MemberService memberService, YataServiceImpl yataService) {
         this.jpaYataRequestRepository = jpaYataRequestRepository;
         this.memberService = memberService;
-        this.jpaMemberRepository = jpaMemberRepository;
-        this.jpaYataRepository = jpaYataRepository;
         this.yataService = yataService;
     }
 
@@ -43,10 +39,7 @@ public class YataRequestServiceImpl implements YataRequestService {
         Yata yata = yataService.verifyYata(yataId);
         // TODO 체크리스트 추가
         YataRequest request = YataRequest.create(yataRequest, member, yata);
-
-        // 신청 이후 신청자 list 에 추가됨
-        List<YataRequest> yataRequests = new ArrayList<>();
-        yataRequests.add(request);
+        // 신청 이후 yata 에서 신청자 list 에 추가됨
 
         return jpaYataRequestRepository.save(request);
     }
@@ -58,7 +51,7 @@ public class YataRequestServiceImpl implements YataRequestService {
         verifyInvitation(yataRequest); // 초대를 이미 했었는지 확인하고
         Yata yata = yataService.verifyYata(yataId);
         YataRequest request = YataRequest.create(yataRequest, member, yata);
-        // TODO 초대를 하면 (자신의 게시물이 있다는 전제로) --> 탑승자가 그 게시물을 보고 승인 --> 해당 게시물의 탑승자 list 에 추가
+        // 초대 이후 (자신의 게시물이 있다는 전제로) --> 탑승자가 그 게시물을 보고 승인 --> yata 에서 해당 게시물의 탑승자 list 에 추가
 
         return jpaYataRequestRepository.save(request);
     }
