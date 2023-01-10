@@ -5,9 +5,10 @@ import org.springframework.data.domain.Page;
 
 public interface YataRequestService {
     YataRequest createRequest(YataRequest yataRequest, String userName, long yataId) throws Exception;
-    YataRequest createInvitation();
+    YataRequest createInvitation(YataRequest yataRequest, String userName, long yataId) throws Exception;
     Page<YataRequest> findRequests(int page, int size);
     void deleteRequest(long yataRequestId);
+    YataRequest createApproval();
     void verifyRequest(YataRequest yataRequest);
     void verifyInvitation(YataRequest yataRequest);
 }
