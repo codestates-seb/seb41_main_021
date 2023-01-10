@@ -56,3 +56,9 @@ admin:
   email : test@gmail.com,test1@gmail.com
 
 
+payment:
+  toss:
+    test_client_api_key : test_ck_testesttetst
+    test_secrete_api_key : test_sk_Lsetestestest
+    success_url : "http://localhost:8080/api/v1/payments/toss/success"
+    fail_url : "http://localhost:8080/api/v1/payments/toss/fail"

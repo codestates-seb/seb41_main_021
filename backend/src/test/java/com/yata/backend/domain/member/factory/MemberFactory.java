@@ -52,4 +52,5 @@ public class MemberFactory {
                 .genders(member.getGenders())
                 .build();
     }
+
 }
