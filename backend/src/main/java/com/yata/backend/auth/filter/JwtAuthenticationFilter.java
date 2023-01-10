@@ -1,12 +1,12 @@
 package com.yata.backend.auth.filter;
 
 import com.google.gson.Gson;
-
 import com.yata.backend.auth.dto.LoginDto;
 import com.yata.backend.auth.service.RefreshService;
 import com.yata.backend.auth.token.AuthToken;
 import com.yata.backend.auth.token.AuthTokenProvider;
 import com.yata.backend.domain.member.entity.Member;
+import lombok.SneakyThrows;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,10 +23,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private final AuthenticationManager authenticationManager;
     private final RefreshService refreshService;
 
+
     public JwtAuthenticationFilter(AuthTokenProvider authTokenProvider, AuthenticationManager authenticationManager, RefreshService refreshService) {
         this.authTokenProvider = authTokenProvider;
         this.authenticationManager = authenticationManager;
         this.refreshService = refreshService;
+
     }
 
     @Override
@@ -38,7 +40,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
+        UsernamePasswordAuthenticationToken authenticationToken
+                = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
         return authenticationManager.authenticate(authenticationToken);
     }
 

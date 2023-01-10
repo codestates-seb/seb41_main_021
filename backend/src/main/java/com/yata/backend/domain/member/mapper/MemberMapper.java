@@ -6,5 +6,18 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface MemberMapper {
- Member memberPostDtoToMember(MemberDto.Post memberPostDto);
+    default Member memberPostDtoToMember(MemberDto.Post memberPostDto){
+        if (memberPostDto == null) {
+            return null;
+        }
+        return Member.builder()
+                .email(memberPostDto.getEmail())
+                .name(memberPostDto.getName())
+                .nickname(memberPostDto.getNickname())
+                .password(memberPostDto.getPassword())
+                .genders(memberPostDto.getGenders())
+                .build();
+    }
+
+    MemberDto.Response memberToResponseMemberDto(Member member);
 }
