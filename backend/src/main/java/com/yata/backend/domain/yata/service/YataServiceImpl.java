@@ -86,7 +86,7 @@ public class YataServiceImpl implements YataService{
     }
 
     /*검증로직*/
-    private Yata verifyYata(long yataId) {
+    public Yata verifyYata(long yataId) {
         Optional<Yata> optionalYata = jpayataRepository.findById(yataId);
         Yata findYata = optionalYata.orElseThrow(() ->
                 new CustomLogicException(ExceptionCode.YATA_NONE));

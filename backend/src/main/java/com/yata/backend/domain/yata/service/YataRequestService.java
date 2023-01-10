@@ -8,6 +8,7 @@ public interface YataRequestService {
     YataRequest createInvitation(YataRequest yataRequest, String userName, long yataId) throws Exception;
     Page<YataRequest> findRequests(int page, int size);
     void deleteRequest(long yataRequestId);
+
     void verifyRequest(YataRequest yataRequest);
     void verifyInvitation(YataRequest yataRequest);
 }

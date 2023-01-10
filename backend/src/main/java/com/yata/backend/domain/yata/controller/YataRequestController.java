@@ -27,7 +27,7 @@ public class YataRequestController {
         this.mapper = mapper;
     }
 
-    // TODO Yata 신청 - 201 ( yata 로직이랑 합쳐지면 여기도 throw Exception 빼기 )
+    // TODO Yata 신청 - 201
     @PostMapping("/apply/{yataId}")
     public ResponseEntity postRequest(@PathVariable("yataId") @Positive long yataId,
                                      @Valid @RequestBody YataRequestDto.Post requestBody,
@@ -37,7 +37,7 @@ public class YataRequestController {
                 new SingleResponse<>(mapper.yataRequestToYataRequestResponse(yataRequest)), HttpStatus.CREATED);
     }
 
-    // TODO Yata 초대 - 201 ( yata 로직이랑 합쳐지면 여기도 throw Exception 빼기 )
+    // TODO Yata 초대 - 201
     @PostMapping("/invite/{yataId}")
     public ResponseEntity postInvitation(@PathVariable("yata-id") @Positive long yataId,
                                       @Valid @RequestBody YataRequestDto.Post requestBody,
