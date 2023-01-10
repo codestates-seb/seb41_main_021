@@ -21,7 +21,7 @@ export default function TaeoondaAdd() {
   return (
     <>
       <Container>
-        <Header />
+        <Header title={'TaeoondaAdd'} />
         <KakaoMap />
         <DestinationForm>
           <Input label="출발지" />

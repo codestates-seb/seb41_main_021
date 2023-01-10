@@ -22,7 +22,7 @@ export default function TabnidaAdd() {
   return (
     <>
       <Container>
-        <Header />
+        <Header title={'tabnidaAdd'} />
         <KakaoMap />
         <DestinationForm>
           <Input label="출발지" />
