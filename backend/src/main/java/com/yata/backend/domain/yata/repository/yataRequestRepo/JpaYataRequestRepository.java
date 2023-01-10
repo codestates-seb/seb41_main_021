@@ -9,7 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface JpaYataRequestRepository extends JpaRepository<YataRequest, Long>, YataRequestRepository {
-    Page<YataRequest> findAllByRequestStatus(Pageable pageable, YataRequest requestStatus); // TODO 쿼리로 status 가 ~~인 애들만 가져오기
-
-    List<YataRequest> findByRequest(YataRequest yataRequest);
+    YataRequest findByMemberEmailAndYataId(String memberEmail, Long yataId);
 }

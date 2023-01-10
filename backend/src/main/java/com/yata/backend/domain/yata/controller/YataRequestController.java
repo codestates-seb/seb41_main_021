@@ -27,12 +27,12 @@ public class YataRequestController {
         this.mapper = mapper;
     }
 
-    // TODO Yata 신청 - 201
+    // TODO Yata 신청 - 201 ( yata 로직이랑 합쳐지면 여기도 throw Exception 빼기 )
     @PostMapping("/apply/{yataId}")
-    public ResponseEntity postRequest(@PathVariable("yata-id") @Positive long yataId,
+    public ResponseEntity postRequest(@PathVariable("yataId") @Positive long yataId,
                                      @Valid @RequestBody YataRequestDto.Post requestBody,
-                                     @AuthenticationPrincipal User authMember) {
-        YataRequest yataRequest = yataRequestService.createRequest(mapper.yataRequestPostDtoToYataRequest(yataId, requestBody));
+                                     @AuthenticationPrincipal User authMember) throws Exception {
+        YataRequest yataRequest = yataRequestService.createRequest(mapper.yataRequestPostDtoToYataRequest(requestBody), authMember.getUsername(), yataId);
         return new ResponseEntity<>(
                 new SingleResponse<>(mapper.yataRequestToYataRequestResponse(yataRequest)), HttpStatus.CREATED);
     }
@@ -46,7 +46,8 @@ public class YataRequestController {
     }
 
     // TODO Yata 신청 목록 조회 - 200
-    @GetMapping("/apply/{yataId}")
+    // 파라미터가 저런데 이 값을 어떻게 받을지 생각
+    @GetMapping("/apply/{yataId}?acceptable=true")
     public ResponseEntity getRequests(@PathVariable("yata-id") @Positive long yataId,
                                      @AuthenticationPrincipal User authMember) {
         return null;
