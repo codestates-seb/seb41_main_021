@@ -23,10 +23,10 @@ public class Yata extends Auditable {
 
     //아직 yata에는 departureTime , timeOfArrival 안넣어서 (nullable = false) 일단 뺄게용
     @Column
-    private Date departureTime;
+    private String departureTime;
 
     @Column
-    private Date timeOfArrival;
+    private String timeOfArrival;
 
     @Column(nullable = false,length = 50)
     private String title;

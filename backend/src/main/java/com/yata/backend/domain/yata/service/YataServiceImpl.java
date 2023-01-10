@@ -24,24 +24,19 @@ public class YataServiceImpl implements YataService{
     }
 
     @Override
-    public Yata createNeota(Yata yata) {
+    public Yata createYata(Yata yata,String yataStatus, String userName) {
 
         //이메일로 멤버 찾고
         //yata에 멤버 추가해줌 addmember
-        //게시물 상태는 너타
-        yata.setYataStatus(Yata.YataStatus.YATA_NEOTA);
+
+        //쿼리가 neota일떄 게시물 상태는 너타
+        if (yataStatus.equals("neota")){yata.setYataStatus(Yata.YataStatus.YATA_NEOTA);}
+        //쿼리가 nata일때 게시물 상태는 나타
+        else if(yataStatus.equals("nata")){yata.setYataStatus(Yata.YataStatus.YATA_NATA);}
 
         return jpayataRepository.save(yata);
     }
 
-    @Override
-    public Yata createNata(Yata yata) {
-        //이메일로 멤버 찾고
-        //yata에 멤버 추가해줌 addmember
-        //게시물 상태는 나타
-        yata.setYataStatus(Yata.YataStatus.YATA_NATA);
-        return jpayataRepository.save(yata);
-    }
 
     @Override
     public Yata updateNeota(long yataId,Yata yata) {

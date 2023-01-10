@@ -5,10 +5,10 @@ import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.mapper.YataMapper;
 import com.yata.backend.domain.yata.service.YataService;
-import com.yata.backend.domain.yata.service.YataServiceImpl;
-import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,18 +28,13 @@ public class YataController {
         this.mapper=mapper;
     }
 
-    //너타생성
-    @PostMapping("/neota")
-    public ResponseEntity postNeota(@Valid @RequestBody YataDto.NeotaPost requestBody){
-        Yata yata = yataService.createNeota(mapper.neotaPostDtoToYata(requestBody));
+    //게시물 생성
+    @PostMapping
+    public ResponseEntity postNeota(@Valid @RequestBody YataDto.YataPost requestBody,
+                                    @RequestParam String yataStatus,
+                                    @AuthenticationPrincipal User authMember){
+        Yata yata = yataService.createYata(mapper.yataPostDtoToYata(requestBody),yataStatus,authMember.getUsername());
         return new ResponseEntity<>((mapper.yataToYataResponse(yata)), HttpStatus.CREATED);
-    }
-
-    //나타생성
-    @PostMapping("/nata")
-    public ResponseEntity postNata(@Valid @RequestBody YataDto.NataPost requestBody){
-        Yata yata = yataService.createNata(mapper.nataPostDtoToYata(requestBody));
-        return new ResponseEntity<>((mapper.yataToYataResponse(yata)), HttpStatus.OK);
     }
 
     @PatchMapping("/{yata_id}")

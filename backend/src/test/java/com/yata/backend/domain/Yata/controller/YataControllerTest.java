@@ -49,23 +49,27 @@ public class YataControllerTest extends AbstractControllerTest {
     @WithMockUser(username = "test@gmail.com", roles = "USER")
     @DisplayName("너타생성")
     void createNeota() throws Exception{
+
         //given
-        YataDto.NeotaPost post = createNeotaPostDto();
+        YataDto.YataPost post = createNeotaPostDto();
 
         String json = gson.toJson(post);
         Yata expected = Yata.builder()
                 .title(post.getTitle())
                 .content(post.getContent())
+                .departureTime("2019-09-01 23:19:45")
+                .timeOfArrival("2019-09-01 23:19:45")
                 .amount(post.getAmount())
                 .carModel(post.getCarModel())
                 .maxPeople(post.getMaxPeople())
                 .maxWaitingTime(post.getMaxWaitingTime())
                 .build();
 
-        given(yataService.createNeota(any())).willReturn(expected);
+        given(yataService.createYata(any(),any(),any())).willReturn(expected);
+
         //when
         ResultActions resultActions = mockMvc.perform(
-                post(BASE_URL + "/neota")
+                post(BASE_URL + "?yataStatus=neota")
                         .contentType("application/json")
                         .with(csrf()) //csrf토큰 생성
                         .content(json))
