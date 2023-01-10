@@ -13,15 +13,18 @@ export default function SignUp() {
   const [password, setPassword] = useState('');
   const [pwCheck, setPwCheck] = useState('');
   const [number, setNumber] = useState('');
-  const [validity, setValidity] = useState(false);
+  const [nameValidity, setNameValidity] = useState(false);
+  const [emailValidity, setEmailValidity] = useState(false);
+  const [pwValidity, setPwValidity] = useState(false);
+  const [pwCheckValidity, setPwCheckValidity] = useState(false);
+  const [numberValidity, setNumberValidity] = useState(false);
 
   //임시
   const isLogin = false;
 
   const handleSubmit = e => {
     e.preventDefault();
-
-    if ([name, nickname, email, password, pwCheck, number].indexOf('') !== -1) {
+    if (nameValidity || nickname === '' || emailValidity || pwValidity || pwCheckValidity || numberValidity) {
       return console.log('fail');
     }
 
@@ -29,14 +32,54 @@ export default function SignUp() {
     console.log([name, nickname, email, password, pwCheck, number]);
   };
 
-  useEffect(() => {
-    if (password !== pwCheck) {
-      setValidity(true);
+  // 이름 유효성 검사
+  const nameValidation = e => {
+    setName(e.target.value.replace(/[a-z0-9]|[ \[\]{}()<>?|`~!@#$%^&*-_+=,.;:\"'\\]/g, ''));
+    if (name.length < 2 || name.length > 5) {
+      setNameValidity(true);
     } else {
-      setValidity(false);
+      setNameValidity(false);
+    }
+  };
+  // 이메일 유효성 검사
+  const emailValidation = e => {
+    setEmail(e.target.value);
+    const emailRegex = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+    if (e.target.value && !emailRegex.test(e.target.value)) {
+      setEmailValidity(true);
+    } else {
+      setEmailValidity(false);
+    }
+  };
+  //오토 하이픈, 유효성 검사
+  const autoHyphen = e => {
+    setNumber(
+      e.target.value
+        .replace(/[^0-9]/g, '')
+        .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
+        .replace(/(\-{1,2})$/g, ''),
+    );
+    if (e.target.value && e.target.value.length !== 13) {
+      setNumberValidity(true);
+    } else {
+      setNumberValidity(false);
+    }
+  };
+  // 비밀번호, 비밀번호 확인 유효성 검사
+  useEffect(() => {
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+    if (password && !passwordRegex.test(password)) {
+      setPwValidity(true);
+    } else {
+      setPwValidity(false);
+    }
+
+    if (password !== pwCheck) {
+      setPwCheckValidity(true);
+    } else {
+      setPwCheckValidity(false);
     }
   }, [password, pwCheck]);
-
   return (
     <>
       {isLogin || (
@@ -47,15 +90,17 @@ export default function SignUp() {
               <Title>회원가입</Title>
               <SignupForm onSubmit={handleSubmit}>
                 <Wrapper>
-                  <Input label="이름" state={name} setState={setName} />
+                  <Input label="이름" state={name} onChange={nameValidation} />
+                  {nameValidity && <Validity type={'name'} />}
                 </Wrapper>
                 <Wrapper>
                   <Input label="닉네임" state={nickname} setState={setNickname} />
                 </Wrapper>
                 <Wrapper>
-                  <Input label="email" state={email} setState={setEmail} />
+                  <Input label="email" state={email} onChange={emailValidation} />
+                  {emailValidity && <Validity type={'email'} />}
                 </Wrapper>
-                <PasswordWrapper>
+                <Wrapper>
                   <Input
                     label="비밀번호"
                     state={password}
@@ -63,20 +108,15 @@ export default function SignUp() {
                     type="password"
                     placeholder="영문, 숫자, 특수문자 포함 8글자"
                   />
-                  {/* {validity && <Validity type={'password'} />} */}
-                </PasswordWrapper>
-                <PasswordWrapper>
-                  <Input
-                    label="비밀번호 확인"
-                    state={pwCheck}
-                    setState={setPwCheck}
-                    type="password"
-                    placeholder="영문, 숫자, 특수문자 포함 8글자"
-                  />
-                  {validity && <Validity type={'passwordCheck'} />}
-                </PasswordWrapper>
+                  {pwValidity && <Validity type={'password'} />}
+                </Wrapper>
                 <Wrapper>
-                  <Input label="전화번호" state={number} setState={setNumber} />
+                  <Input label="비밀번호 확인" state={pwCheck} setState={setPwCheck} type="password" />
+                  {pwCheckValidity && <Validity type={'passwordCheck'} />}
+                </Wrapper>
+                <Wrapper>
+                  <Input type="tel" label="전화번호" state={number} onChange={autoHyphen} />
+                  {numberValidity && <Validity type={'number'} />}
                 </Wrapper>
                 <SubmitButton>회원가입</SubmitButton>
               </SignupForm>
@@ -95,7 +135,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 
   // 태블릿 : 1200px ~ 768px :: 768px 이상 적용되는 css
   @media only screen and (min-width: 768px) {
@@ -108,11 +147,12 @@ const Container = styled.div`
 `;
 
 const Contents = styled.div`
-  width: 60%;
+  width: 80%;
   max-width: 600px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 3rem;
   @media screen and (min-width: 800px) {
     margin-top: 10rem;
   }
@@ -120,22 +160,19 @@ const Contents = styled.div`
 
 const Title = styled.span`
   font-size: ${props => props.theme.fontSizes.titleSize};
+  margin-bottom: 1rem;
 `;
 
 const SignupForm = styled.form`
   width: 100%;
   max-width: 800px;
-  margin-top: 2rem;
+  padding-top: 3rem;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  @media screen and (max-width: 800px) {
-    gap: 0;
-  }
+  border-top: 1px solid gray;
 `;
 
-const Wrapper = styled.div``;
-const PasswordWrapper = styled.div`
+const Wrapper = styled.div`
   display: flex;
   align-items: flex-end;
   position: relative;

@@ -15,7 +15,11 @@ export default function TabnidaList() {
       <Navbar />
       <Container>
         <DestinationInput />
-        <ListItem></ListItem>
+        <ListItem
+          date={'1월 3일 (화) 7:00PM'}
+          journeyStart={'성수 SPOT 01 외'}
+          journeyEnd={'용산 HUB'}
+          transit="1"></ListItem>
         <Button onClick={add}>내 여정 등록하기</Button>
       </Container>
     </>
