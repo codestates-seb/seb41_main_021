@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const Input = props => {
-  const { label, state, setState, type, placeholder, maxLength, min, max } = props;
+  const { label, state, setState, type, placeholder, maxLength, onChange, min, max } = props;
 
   const handleChange = e => {
     setState?.(e.target.value);
@@ -9,16 +9,29 @@ const Input = props => {
   return (
     <StyledDiv>
       <StyledLabel htmlFor={label}>{label}</StyledLabel>
-      <StyledInput
-        id={label}
-        type={type}
-        min={min}
-        max={max}
-        value={state}
-        onChange={handleChange}
-        placeholder={placeholder}
-        maxLength={maxLength}
-      />
+      {onChange ? (
+        <StyledInput
+          id={label}
+          type={type}
+          min={min}
+          max={max}
+          value={state}
+          onChange={onChange}
+          placeholder={placeholder}
+          maxLength={maxLength}
+        />
+      ) : (
+        <StyledInput
+          id={label}
+          type={type}
+          min={min}
+          max={max}
+          value={state}
+          onChange={handleChange}
+          placeholder={placeholder}
+          maxLength={maxLength}
+        />
+      )}
     </StyledDiv>
   );
 };

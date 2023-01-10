@@ -37,10 +37,10 @@ export default function Login() {
         <>
           <NavBar />
           <Container>
-            <TitleContainer>
+            <LogoContainer>
               <Img src={Logo} alt="logo" />
               <TitleImg src={yata} alt="title" />
-            </TitleContainer>
+            </LogoContainer>
             <Contents>
               <Title>
                 <MainTitle>Welcome back!</MainTitle>
@@ -91,15 +91,19 @@ const Container = styled.div`
   align-items: center;
   background-image: url(${backgroundImg});
   background-size: cover;
+  @media only screen and (max-height: 800px) {
+    justify-content: center;
+  }
 `;
 
-const TitleContainer = styled.div`
+const LogoContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  margin-bottom: 1rem;
+  @media only screen and (max-height: 800px) {
+    display: none;
+  }
 `;
 
 const Img = styled.img`
@@ -120,10 +124,13 @@ const Title = styled.div`
   justify-content: center;
 `;
 
-const MainTitle = styled.h1`
-  margin-top: 1.5rem;
-  font-size: 3rem;
+const MainTitle = styled.span`
+  font-weight: bold;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-size: 2.7rem;
 `;
+
 const SubTitle = styled.span`
   font-size: ${props => props.theme.fontSizes.xl};
   color: ${props => props.theme.colors.dark_gray};
@@ -136,7 +143,7 @@ const Contents = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: white;
-  padding: 2.5rem;
+  padding: 2rem;
   border-radius: 5rem;
   box-shadow: -20px 10px 30px rgba(0, 0, 0, 0.3);
   margin-bottom: 1rem;
