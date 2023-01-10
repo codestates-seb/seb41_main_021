@@ -39,7 +39,6 @@ public class Yata extends Auditable {
     @Column(length = 20, nullable = false)
     private PostStatus postStatus = PostStatus.POST_WAITING;
 
-
     @Column(length = 20, nullable = false)
     private String carModel;
 
@@ -49,20 +48,16 @@ public class Yata extends Auditable {
     @Column(length = 10,nullable = false)
     private long amount;
 
-    @OneToOne(mappedBy = "yata")
+    @OneToOne(cascade = CascadeType.ALL)
     private Location strPoint;
 
-    public void addStrPoint(Location strPoint) {
-        this.strPoint = strPoint;}
-
-    @OneToOne(mappedBy = "yata")
+    @OneToOne(cascade = CascadeType.ALL)
     private Location destination;
 
-    public void addDestination(Location destination) {
-        this.destination = destination;}
-
-    @OneToMany(mappedBy = "yata")
+    @OneToMany(mappedBy = "yata" , cascade = CascadeType.ALL)
     private List<YataChecklist> yataChecklists = new ArrayList<>();
+    @OneToMany(mappedBy = "yata" , cascade = CascadeType.ALL)
+    private List<Location> waypoints = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "EMAIL")

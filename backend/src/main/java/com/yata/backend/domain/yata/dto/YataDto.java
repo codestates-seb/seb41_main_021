@@ -41,11 +41,8 @@ public class YataDto {
 
         @Valid
         @NotNull(message = "체크리스트 입력은 필수입니다.")
-        private List<YataChecklistDto> yataChecklists;
-
-
-
-
+        private List<YataChecklistDto> plusCheckList;
+        private List<YataChecklistDto> minusCheckList;
 
 
     }
