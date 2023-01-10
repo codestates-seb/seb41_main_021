@@ -41,7 +41,7 @@ public class PaymentController {
             @RequestParam Long amount
     ) {
 
-        return ResponseEntity.ok().body(paymentService.tossPaymentSuccess(paymentKey, orderId, amount));
+        return ResponseEntity.ok().body(new SingleResponse<>(paymentService.tossPaymentSuccess(paymentKey, orderId, amount)));
     }
 
     @GetMapping("/toss/fail")
@@ -51,18 +51,23 @@ public class PaymentController {
             @RequestParam String orderId
     ) {
         paymentService.tossPaymentFail(code, message, orderId);
-        return ResponseEntity.ok().body(PaymentFailDto.builder()
-                .errorCode(code)
-                .errorMessage(message)
-                .orderId(orderId)
-                .build());
+        return ResponseEntity.ok().body(new SingleResponse<>(
+                PaymentFailDto.builder()
+                        .errorCode(code)
+                        .errorMessage(message)
+                        .orderId(orderId)
+                        .build()
+        ));
     }
+
     @PostMapping("/toss/cancel/point")
     public ResponseEntity tossPaymentCancelPoint(
             @AuthenticationPrincipal User principal,
             @RequestParam String paymentKey,
             @RequestParam String cancelReason
     ) {
-        return ResponseEntity.ok().body(paymentService.cancelPaymentPoint(principal.getUsername(),paymentKey, cancelReason));
+        return ResponseEntity.ok().body(new SingleResponse<>(
+                paymentService
+                        .cancelPaymentPoint(principal.getUsername(), paymentKey, cancelReason)));
     }
 }

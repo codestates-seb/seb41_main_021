@@ -94,12 +94,14 @@ public class PaymentServiceImpl implements PaymentService {
             throw new CustomLogicException(ExceptionCode.PAYMENT_NOT_FOUND);
         });
         // 취소 할려는데 포인트가 그만큼 없으면 환불 몬하지~
-        if(payment.getCustomer().getPoint() < payment.getAmount()) {
-            throw new CustomLogicException(ExceptionCode.PAYMENT_NOT_ENOUGH_POINT);
+        if(payment.getCustomer().getPoint() >= payment.getAmount()) {
+            payment.setCancelYN(true);
+            payment.setCancelReason(cancelReason);
+            payment.getCustomer().setPoint(payment.getCustomer().getPoint() - payment.getAmount());
+            return tossPaymentCancel(paymentKey, cancelReason);
         }
-        payment.setCancelYN(true);
-        payment.setCancelReason(cancelReason);
-        return tossPaymentCancel(paymentKey, cancelReason);
+
+        throw new CustomLogicException(ExceptionCode.PAYMENT_NOT_ENOUGH_POINT);
     }
 
     public Map tossPaymentCancel(String paymentKey, String cancelReason) {
