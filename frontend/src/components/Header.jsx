@@ -2,7 +2,8 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 
-export default function Header() {
+const Header = props => {
+  const { title } = props;
   const navigate = useNavigate();
 
   return (
@@ -10,12 +11,12 @@ export default function Header() {
       <Container>
         <BackButtonContainer>
           <AiOutlineArrowLeft onClick={() => navigate(-1)} />
-          <h1>Header</h1>
+          <h1>{title}</h1>
         </BackButtonContainer>
       </Container>
     </>
   );
-}
+};
 
 const Container = styled.div`
   width: 100%;
@@ -44,3 +45,5 @@ const BackButtonContainer = styled.div`
     width: 470px;
   }
 `;
+
+export default Header;
