@@ -35,10 +35,7 @@ POST /api/v1/auth/refresh
 
 .http-request
 include::{snippets}/auth-refresh/http-request.adoc[]
-.request-body
-include::{snippets}/auth-refresh/request-body.adoc[]
-.response-body
-include::{snippets}/auth-refresh/response-body.adoc[]
+
 .response-headers
 include::{snippets}/auth-refresh/response-headers.adoc[]
 
@@ -66,6 +63,54 @@ include::{snippets}/member-get/request-headers.adoc[]
 include::{snippets}/member-get/response-body.adoc[]
 .response-fields
 include::{snippets}/member-get/response-fields.adoc[]
+
+== PaymentController
+토스 결제 API를 사용하여 결제를 진행합니다.
+
+=== 결제 Data 요청
+.http-request
+include::{snippets}/payment-toss/http-request.adoc[]
+.request-body
+include::{snippets}/payment-toss/request-body.adoc[]
+.request-fields
+include::{snippets}/payment-toss/request-fields.adoc[]
+.request-headers
+include::{snippets}/payment-toss/request-headers.adoc[]
+.http-response
+include::{snippets}/payment-toss/http-response.adoc[]
+.response-body
+include::{snippets}/payment-toss/response-body.adoc[]
+.response-fields
+include::{snippets}/payment-toss/response-fields.adoc[]
+
+=== 토스 결제 redirect success
+직접 호출할 일은 없을 듯
+.http-request
+include::{snippets}/payment-toss-success/http-request.adoc[]
+.request-headers
+include::{snippets}/payment-toss-success/request-headers.adoc[]
+.request-params
+include::{snippets}/payment-toss-success/request-parameters.adoc[]
+.http-response
+include::{snippets}/payment-toss-success/http-response.adoc[]
+.response-body
+include::{snippets}/payment-toss-success/response-body.adoc[]
+.response-fields
+include::{snippets}/payment-toss-success/response-fields.adoc[]
+
+=== 토스 결제 취소
+.http-request
+include::{snippets}/payment-toss-cancel-point/http-request.adoc[]
+.request-headers
+include::{snippets}/payment-toss-cancel-point/request-headers.adoc[]
+.request-params
+include::{snippets}/payment-toss-cancel-point/request-parameters.adoc[]
+.http-response
+데이터 반환이 되기는 하는데 너무 길어서 제외 했습니다. 필요 없긴 해보여서!
+include::{snippets}/payment-toss-cancel-point/http-response.adoc[]
+
+
+
 
 
 
