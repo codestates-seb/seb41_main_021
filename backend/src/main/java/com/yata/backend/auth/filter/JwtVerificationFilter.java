@@ -4,6 +4,7 @@ package com.yata.backend.auth.filter;
 import com.yata.backend.auth.token.AuthToken;
 import com.yata.backend.auth.token.AuthTokenProvider;
 import com.yata.backend.auth.utils.HeaderUtil;
+import com.yata.backend.global.utils.RedisUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -17,9 +18,11 @@ import java.io.IOException;
 // 토큰의 유효성을 검증하고, 유효한 토큰이라면 SecurityContext에 인증 정보를 저장합니다.
 public class JwtVerificationFilter extends OncePerRequestFilter {
    private final AuthTokenProvider tokenProvider;
+   private final RedisUtils redisUtils;
 
-   public JwtVerificationFilter(AuthTokenProvider tokenProvider) {
+   public JwtVerificationFilter(AuthTokenProvider tokenProvider, RedisUtils redisUtils) {
       this.tokenProvider = tokenProvider;
+      this.redisUtils = redisUtils;
    }
 
    @Override
@@ -31,7 +34,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
       String tokenStr = HeaderUtil.getAccessToken(request);
       AuthToken token = tokenProvider.convertAuthToken(tokenStr);
 
-      if (token.validate()) {
+      if (token.validate() && !redisUtils.hasKeyBlackList(tokenStr)) {
          Authentication authentication = tokenProvider.getAuthentication(token);
          SecurityContextHolder.getContext().setAuthentication(authentication);
       }
