@@ -20,9 +20,7 @@ export default function TaeoondaList() {
       <Header title="TaeoondaList" />
       <Navbar />
       <Container>
-        <IputContainer>
-          <DestinationInput />
-        </IputContainer>
+        <DestinationInput />
         <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
       </Container>
       <CircleButton onClick={add} open={open}>
@@ -38,9 +36,4 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const IputContainer = styled.div`
-  width: 100%;
-  padding: 1rem;
 `;

@@ -21,9 +21,12 @@ export default function TabnidaList() {
       <Header title="TabnidaList" />
       <Navbar />
       <Container>
-        <IputContainer>
-          <DestinationInput />
-        </IputContainer>
+        <DestinationInput />
+        <ListItem
+          date={'1월 3일 (화) 7:00PM'}
+          journeyStart={'성수 SPOT 01 외'}
+          journeyEnd={'용산 HUB'}
+          transit="1"></ListItem>
         <ListItem
           date={'1월 3일 (화) 7:00PM'}
           journeyStart={'성수 SPOT 01 외'}
@@ -43,9 +46,4 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const IputContainer = styled.div`
-  width: 100%;
-  padding: 1rem;
 `;

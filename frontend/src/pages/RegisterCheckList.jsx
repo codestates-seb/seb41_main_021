@@ -1,27 +1,30 @@
 import styled from 'styled-components';
+import Header from '../components/Header';
 import Navbar from '../components/NavBar';
 import Button from '../components/common/Button';
-import ListItem from '../components/ListItem';
-import DestinationInput from '../components/DestinationInput';
+import RegisterListView from '../components/registerList/RegisterListView';
 
 export default function RegisterCheckList() {
   return (
     <>
-      <Container>
-        <p>유저 정보</p>
-        <p>출발지</p>
-        <p>경유지</p>
-        <p>도착지</p>
-        <p>출발시간</p>
-        <p>탑승 인원</p>
-        <p>특이사항</p>
+      <Header title="RegisterCheckList" />
+      <Navbar />
+      <Content>
+        <RegisterListView />
         <Button>수락하기</Button>
-      </Container>
+      </Content>
     </>
   );
 }
 
-const Container = styled.div`
+const Content = styled.div`
   width: 100%;
-  background-color: pink;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  button {
+    margin-top: 2rem;
+  }
 `;

@@ -10,8 +10,8 @@ const CircleButton = styled.button`
   }
   z-index: 5;
   cursor: pointer;
-  width: 60px;
-  height: 60px;
+  width: 5rem;
+  height: 5rem;
   display: block;
   align-items: center;
   justify-content: center;
