@@ -14,11 +14,7 @@ export default function RegisterList() {
     <>
       <Navbar />
       <Container>
-        <ListItem
-          date={'1월 3일 (화) 7:00PM'}
-          journeyStart={'성수 SPOT 01 외'}
-          journeyEnd={'용산 HUB'}
-          transit="1"></ListItem>
+        <ListItem date={'1월 3일 (화) 7:00PM'} journeyStart={'서울'} journeyEnd={'부산'} transit="1"></ListItem>
         <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
         <Button onClick={login}>임시용 로그인 페이지로 이동</Button>
       </Container>
