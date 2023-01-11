@@ -6,6 +6,7 @@ import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 // 토큰을 생성하고 검증하는 클래스
+@Getter
 public class AuthTokenProvider {
 
     private final Key key;

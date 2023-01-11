@@ -6,15 +6,20 @@ import Header from '../components/Header';
 
 export default function RegisterList() {
   const navigate = useNavigate();
-  const login = () => {
-    navigate('/login');
+  const go = () => {
+    navigate('/registerchecklist');
   };
   return (
     <>
+      <Header title="요청 내역" />
       <Navbar />
       <Container>
-        <Header title="요청 내역" />
-        <ListItem date={'1월 3일 (화) 7:00PM'} journeyStart={'서울'} journeyEnd={'부산'} transit="1"></ListItem>
+        <ListItem
+          onClick={go}
+          date={'1월 3일 (화) 7:00PM'}
+          journeyStart={'서울'}
+          journeyEnd={'부산'}
+          transit="1"></ListItem>
         <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
       </Container>
     </>
@@ -27,8 +32,4 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  //임시
-  button {
-    margin: 3rem;
-  }
 `;

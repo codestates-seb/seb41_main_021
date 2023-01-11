@@ -1,33 +1,28 @@
 package com.yata.backend.domain.Yata.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.yata.backend.domain.AbstractControllerTest;
 import com.yata.backend.domain.yata.controller.YataController;
 import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.mapper.YataMapper;
 import com.yata.backend.domain.yata.service.YataService;
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.text.SimpleDateFormat;
+import java.util.Date;
 
-import static com.yata.backend.domain.Yata.factory.YataFactory.createNeotaPostDto;
-import static com.yata.backend.util.ApiDocumentUtils.getRequestPreProcessor;
-import static com.yata.backend.util.ApiDocumentUtils.getResponsePreProcessor;
+import static com.yata.backend.domain.Yata.factory.YataFactory.createYataPostDto;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -44,36 +39,30 @@ public class YataControllerTest extends AbstractControllerTest {
     @MockBean
     private YataMapper mapper;
 
-    @Autowired
-    private Gson gson;
+    private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+
 
     @Test
     @WithMockUser(username = "test@gmail.com", roles = "USER")
-    @DisplayName("너타생성")
-    void createNeota() throws Exception{
+    @DisplayName("야타 게시글 생성")
+    void createYata() throws Exception{
 
         //given
-        YataDto.YataPost post = createNeotaPostDto();
+        YataDto.YataPost post = createYataPostDto();
 
         String json = gson.toJson(post);
 
-//        SimpleDateFormat transFormat = new SimpleDateFormat("EEE MMM dd hh:mm:ss z yyyy");
-//        //Date to = transFormat.parse(from);
-//        transFormat.parse(post.getDepartureTime());
-
         Yata expected = Yata.builder()
-                .title(post.getTitle())
-                .content(post.getContent())
-//todo date타입으로 받기
-//                  .departureTime(transFormat.parse(post.getDepartureTime()))
-//                .timeOfArrival(transFormat.parse(post.getTimeOfArrival()))
-                .departureTime(post.getDepartureTime())
-                .timeOfArrival(post.getTimeOfArrival())
-                .amount(post.getAmount())
-                .carModel(post.getCarModel())
-                .maxPeople(post.getMaxPeople())
-                .maxWaitingTime(post.getMaxWaitingTime())
+                .title("부산까지 같이가실 분~")
+                .content("같이 노래들으면서 가요~")
+                .departureTime(new Date())
+                .timeOfArrival(new Date())
+                .amount(2000)
+                .carModel("bmw")
+                .maxPeople(3)
+                .maxWaitingTime(20)
                 .build();
+
 
         given(yataService.createYata(any(),any(),any())).willReturn(expected);
 

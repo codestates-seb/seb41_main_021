@@ -6,6 +6,7 @@ import com.yata.backend.auth.token.AuthToken;
 import com.yata.backend.auth.token.AuthTokenProvider;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
+import com.yata.backend.global.utils.RedisUtils;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,10 +22,13 @@ import static com.yata.backend.auth.utils.HeaderUtil.getHeaderRefreshToken;
 public class RefreshService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final AuthTokenProvider authTokenProvider;
+    private final RedisUtils redisUtils;
 
-    public RefreshService(RefreshTokenRepository refreshTokenRepository, AuthTokenProvider authTokenProvider) {
+    public RefreshService(RefreshTokenRepository refreshTokenRepository,
+                          AuthTokenProvider authTokenProvider, RedisUtils redisUtils) {
         this.refreshTokenRepository = refreshTokenRepository;
         this.authTokenProvider = authTokenProvider;
+        this.redisUtils = redisUtils;
     }
 
     public void saveRefreshToken(String email, AuthToken authToken) {
@@ -76,5 +80,14 @@ public class RefreshService {
         if (!refreshToken.getToken().equals(headerRefreshToken.getToken())) {
             throw new CustomLogicException(ExceptionCode.REFRESH_TOKEN_NOT_MATCH);
         }
+    }
+
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        AuthToken accessToken = authTokenProvider.convertAuthToken(getAccessToken(request));
+        if (!accessToken.validate()) throw new CustomLogicException(ExceptionCode.TOKEN_INVALID);
+        String userEmail = accessToken.getTokenClaims().getSubject();
+        long time = accessToken.getTokenClaims().getExpiration().getTime() - System.currentTimeMillis();
+        redisUtils.setBlackList(accessToken.getToken(), userEmail, time);
+        refreshTokenRepository.deleteById(userEmail);
     }
 }

@@ -54,7 +54,7 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
     // redis
     // embedded redis
-    implementation group: 'it.ozimov', name: 'embedded-redis', version: '0.7.1'
+    implementation group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2'
 }
 
 tasks.named('test') {

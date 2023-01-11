@@ -30,14 +30,13 @@ public class SecurityConfig {
     private final AuthTokenProvider tokenProvider;
     private final JwtConfig jwtConfig;
     private final RefreshService refreshService;
-    private final CustomUserDetailService customUserDetailService;
-    public SecurityConfig(CustomFilterConfigurer customFilterConfigurer, CustomOAuth2UserService oAuth2UserService, AuthTokenProvider tokenProvider, JwtConfig jwtConfig, RefreshService refreshService, CustomUserDetailService customUserDetailService) {
+    public SecurityConfig(CustomFilterConfigurer customFilterConfigurer, CustomOAuth2UserService oAuth2UserService,
+                          AuthTokenProvider tokenProvider, JwtConfig jwtConfig, RefreshService refreshService) {
         this.customFilterConfigurer = customFilterConfigurer;
         this.oAuth2UserService = oAuth2UserService;
         this.tokenProvider = tokenProvider;
         this.jwtConfig = jwtConfig;
         this.refreshService = refreshService;
-        this.customUserDetailService = customUserDetailService;
     }
 
     @Bean

@@ -26,8 +26,7 @@ public class YataServiceImpl implements YataService{
 
     @Override
     public Yata createYata(Yata yata,String yataStatus, String userName) {
-        //이메일로 멤버 찾고
-        //yata에 멤버 추가해줌 addmember
+
         switch (yataStatus){
             case "neota" -> yata.setYataStatus(YataStatus.YATA_NEOTA);
             case "nata" -> yata.setYataStatus(YataStatus.YATA_NATA);
@@ -39,10 +38,10 @@ public class YataServiceImpl implements YataService{
 
 
     @Override
-    public Yata updateNeota(long yataId,Yata yata) {
+    public Yata updateYata(long yataId,Yata yata) {
 
-//        //존재하는 게시물인지 확인
-//        Yata findYata = verifyYata(yataId);
+        //존재하는 게시물인지 확인
+        Yata findYata = verifyYata(yataId);
 //
 //        //예완 상태 아닌 게시물인지 확인
 //        //예안 게시물이면 -> 예외
@@ -54,15 +53,14 @@ public class YataServiceImpl implements YataService{
 //                .ifPresent(amount -> findYata.setAmount(amount));
 //        Optional.ofNullable(yata.getMaxPeople())
 //                .ifPresent(n -> findYata.setMaxPeople(n));
-////        Optional.ofNullable(yata.getDepartureTime())
-////                .ifPresent(n -> findYata.setDepartureTime(n));
-////        Optional.ofNullable(yata.getTimeOfArrival())
-////                .ifPresent(n -> findYata.setTimeOfArrival(n));
+//        Optional.ofNullable(yata.getDepartureTime())
+//                .ifPresent(n -> findYata.setDepartureTime(n));
+//        Optional.ofNullable(yata.getTimeOfArrival())
+//                .ifPresent(n -> findYata.setTimeOfArrival(n));
 //        Optional.ofNullable(yata.getCarModel())
 //                .ifPresent(n -> findYata.setCarModel(n));
 //
-//    return jpayataRepository.save(findYata);
-    return null;
+    return jpayataRepository.save(findYata);
     }
 
     @Override
