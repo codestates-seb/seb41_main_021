@@ -64,7 +64,7 @@ const InfoContainer = styled.div`
 `;
 const DateBox = styled.div`
   width: 100%;
-  height: 15%;
+  height: auto;
   background-color: ${props => props.theme.colors.dark_blue};
   padding: 1rem 1rem 1rem 1rem;
   color: #fff;
