@@ -1,6 +1,7 @@
 package com.yata.backend.domain.yata.service;
 
 import com.yata.backend.domain.yata.entity.Yata;
+import com.yata.backend.domain.yata.entity.YataStatus;
 import com.yata.backend.domain.yata.repository.yataRepo.JpaYataRepository;
 import com.yata.backend.domain.yata.repository.yataRepo.YataRepository;
 import com.yata.backend.global.exception.CustomLogicException;
@@ -25,14 +26,13 @@ public class YataServiceImpl implements YataService{
 
     @Override
     public Yata createYata(Yata yata,String yataStatus, String userName) {
-
         //이메일로 멤버 찾고
         //yata에 멤버 추가해줌 addmember
-
-        //쿼리가 neota일떄 게시물 상태는 너타
-        if (yataStatus.equals("neota")){yata.setYataStatus(Yata.YataStatus.YATA_NEOTA);}
-        //쿼리가 nata일때 게시물 상태는 나타
-        else if(yataStatus.equals("nata")){yata.setYataStatus(Yata.YataStatus.YATA_NATA);}
+        switch (yataStatus){
+            case "neota" -> yata.setYataStatus(YataStatus.YATA_NEOTA);
+            case "nata" -> yata.setYataStatus(YataStatus.YATA_NATA);
+            default ->  throw new CustomLogicException(ExceptionCode.YATA_STATUS_NONE);
+        }
 
         return jpayataRepository.save(yata);
     }

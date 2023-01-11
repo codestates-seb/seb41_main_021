@@ -78,17 +78,6 @@ public class Yata extends Auditable {
     @OneToMany(mappedBy = "yata")
     private List<YataRequest> yataRequests = new ArrayList<>();
 
-    public enum YataStatus {
-        YATA_NEOTA("너타"),
-        YATA_NATA("나타");
-
-        @Getter
-        private String status;
-
-        YataStatus(String status) {
-            this.status = status;
-        }
-    }
 
     public enum PostStatus {
         POST_WAITING(1,"예약 전"),

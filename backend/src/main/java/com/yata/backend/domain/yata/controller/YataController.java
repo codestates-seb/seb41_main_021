@@ -5,6 +5,7 @@ import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.mapper.YataMapper;
 import com.yata.backend.domain.yata.service.YataService;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -33,6 +34,8 @@ public class YataController {
     public ResponseEntity postNeota(@Valid @RequestBody YataDto.YataPost requestBody,
                                     @RequestParam String yataStatus,
                                     @AuthenticationPrincipal User authMember){
+
+
         Yata yata = yataService.createYata(mapper.yataPostDtoToYata(requestBody),yataStatus,authMember.getUsername());
         return new ResponseEntity<>((mapper.yataToYataResponse(yata)), HttpStatus.CREATED);
     }
