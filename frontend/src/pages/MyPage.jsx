@@ -201,6 +201,7 @@ const ListContainer = styled.div`
   width: 100%;
   height: auto;
   box-shadow: 0px -2px 2px -2px ${props => props.theme.colors.light_gray};
+  overflow: scroll;
 `;
 const JourneyRecord = styled.div`
   width: 100%;

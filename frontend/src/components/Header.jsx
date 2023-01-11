@@ -9,10 +9,14 @@ const Header = props => {
   return (
     <>
       <Container>
-        <BackButtonContainer>
-          <AiOutlineArrowLeft onClick={() => navigate(-1)} />
-          <h1>{title}</h1>
-        </BackButtonContainer>
+        <div className="content-container">
+          <div className="back-btn-container">
+            <AiOutlineArrowLeft onClick={() => navigate(-1)} />
+          </div>
+          <div className="title-container">
+            <h1>{title}</h1>
+          </div>
+        </div>
       </Container>
     </>
   );
@@ -20,29 +24,41 @@ const Header = props => {
 
 const Container = styled.div`
   width: 100%;
-  height: 50px;
-`;
+  height: 5rem;
+  box-shadow: 0 5px 10px -8px lightgrey;
 
-const BackButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-
-  div {
-    background-color: #fff;
+  .content-container {
+    width: 100%;
+    height: 5rem;
     position: absolute;
     top: 0;
-    box-shadow: 0 -5px 10px -8px lightgrey;
+    display: flex;
+    align-items: center;
   }
 
-  svg {
-    font-size: 2rem;
-    cursor: pointer;
-    margin: 1rem;
+  .back-btn-container {
+    svg {
+      font-size: 2rem;
+      cursor: pointer;
+      margin: 1rem;
+    }
+
+    @media only screen and (min-width: 470px) {
+      width: 470px;
+    }
   }
 
-  @media only screen and (min-width: 470px) {
-    width: 470px;
+  .title-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    h1 {
+      font-size: 1.3rem;
+    }
   }
 `;
 
