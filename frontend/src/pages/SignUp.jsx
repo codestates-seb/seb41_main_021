@@ -4,6 +4,7 @@ import Navbar from '../components/NavBar';
 import Button from '../components/common/Button';
 import Input from '../components/common/Input';
 import LinkTo from '../components/common/LinkTo';
+import Header from '../components/Header';
 import Validity from '../components/SignUp/Validity';
 
 export default function SignUp() {
@@ -86,8 +87,8 @@ export default function SignUp() {
         <>
           <Navbar />
           <Container>
+            <Header title={'SignUp'} />
             <Contents>
-              <Title>회원가입</Title>
               <SignupForm onSubmit={handleSubmit}>
                 <Wrapper>
                   <Input label="이름" state={name} onChange={nameValidation} />
@@ -158,18 +159,11 @@ const Contents = styled.div`
   }
 `;
 
-const Title = styled.span`
-  font-size: ${props => props.theme.fontSizes.titleSize};
-  margin-bottom: 1rem;
-`;
-
 const SignupForm = styled.form`
   width: 100%;
   max-width: 800px;
-  padding-top: 3rem;
   display: flex;
   flex-direction: column;
-  border-top: 1px solid gray;
 `;
 
 const Wrapper = styled.div`
