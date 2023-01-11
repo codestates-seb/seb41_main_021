@@ -10,15 +10,16 @@ export default function TabnidaDetail() {
         <InfoContainer>
           <DateBox>
             <div>출발일: 2023년 1월 09일 (월)</div>
+            <div>출발 시간: 14 : 00</div>
           </DateBox>
           <DestinationBox>
             <Departure>
-              <div>서울</div>
-              <div className="time">14 : 00</div>
+              <Title>출발지</Title>
+              <Address>서울역 3번출구</Address>
             </Departure>
-            <div>→</div>
             <Destination>
-              <div>대전</div>
+              <Title>도착지</Title>
+              <Address>대전 서구 둔산동 345-4</Address>
             </Destination>
           </DestinationBox>
         </InfoContainer>
@@ -54,11 +55,8 @@ const Container = styled.div`
 `;
 const InfoContainer = styled.div`
   width: 100%;
-  height: 25%;
+  height: 30%;
   background-color: #fafbfc;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   box-shadow: 0px 4px 4px -4px #a4a3a4;
   border-radius: 1rem;
 `;
@@ -66,56 +64,45 @@ const DateBox = styled.div`
   width: 100%;
   height: auto;
   background-color: ${props => props.theme.colors.dark_blue};
-  padding: 1rem 1rem 1rem 1rem;
+  padding: 1rem 1rem 1rem 2rem;
   color: #fff;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   box-shadow: 0px 4px 4px -4px #3f5179;
   div {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
+    line-height: 2.2rem;
   }
 `;
 const DestinationBox = styled.div`
   width: 100%;
-  height: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  div {
-    font-size: 2rem;
-    color: ${props => props.theme.colors.darker_blue};
-  }
+  height: 70%;
+  padding: 1rem;
 `;
 const Departure = styled.div`
-  width: 40%;
-  height: 100%;
+  width: 100%;
+  height: 50%;
+  padding: 1rem;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  div {
-    color: ${props => props.theme.colors.darker_blue};
-    font-weight: bold;
-    position: relative;
-    top: 1.2rem;
-  }
-  .time {
-    font-size: 1.5rem;
-    margin-top: 1rem;
-    color: ${props => props.theme.colors.main_blue};
-  }
+  box-shadow: 0px 1px 1px -1px #a4a3a4;
 `;
 const Destination = styled.div`
-  width: 40%;
-  height: 100%;
+  width: 100%;
+  height: 50%;
+  padding: 1rem;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  div {
-    color: ${props => props.theme.colors.darker_blue};
-    font-weight: bold;
-  }
+`;
+const Title = styled.div`
+  width: 30%;
+  height: 100%;
+  color: ${props => props.theme.colors.darker_blue};
+  font-weight: bold;
+  font-size: 1.5rem;
+`;
+const Address = styled.div`
+  width: 100%;
+  height: 100%;
+  font-size: 1.5rem;
 `;
 const BottomContainer = styled.div`
   width: 100%;
@@ -156,7 +143,7 @@ const Body = styled.div`
   justify-content: center;
   font-size: 1.3rem;
   color: black;
-  font-weight: bold;
+  /* font-weight: bold; */
 `;
 const SpecialNote = styled.div`
   width: 100%;
