@@ -37,7 +37,7 @@ const Input = props => {
 };
 const StyledDiv = styled.div`
   width: 100%;
-  margin-top: 10px;
+  margin-top: 1.5rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -49,10 +49,10 @@ const StyledDiv = styled.div`
 `;
 const StyledLabel = styled.label`
   white-space: nowrap;
-  font-size: ${props => props.theme.fontSizes.xxl};
+  font-size: ${props => props.theme.fontSizes.xl};
   font-weight: bold;
   @media screen and (max-width: 470px) {
-    margin-bottom: 7px;
+    margin-bottom: 1rem;
   }
 `;
 const StyledInput = styled.input`
