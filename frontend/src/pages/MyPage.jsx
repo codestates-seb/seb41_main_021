@@ -1,12 +1,11 @@
 import styled from 'styled-components';
 import NavBar from '../components/NavBar';
-import profile from '../images/mypage/profile.png';
-import oil from '../images/mypage/oil.png';
-import help from '../images/mypage/help.png';
-import carpool from '../images/mypage/carpool.png';
-import like from '../images/mypage/like.png';
-import arrow from '../images/mypage/arrow.png';
 import { NavLink } from 'react-router-dom';
+import { MdOutlineAccountBox } from 'react-icons/md';
+import { BiTrip, BiLike } from 'react-icons/bi';
+import { RiOilLine } from 'react-icons/ri';
+import { IoIosArrowForward } from 'react-icons/io';
+import { GrMoney } from 'react-icons/gr';
 
 export default function MyPage() {
   return (
@@ -16,7 +15,7 @@ export default function MyPage() {
         <MyPageContainer>
           <ProfileContainer>
             <Profile>
-              <img src={profile} alt="profileImage" width={100} height={100}></img>
+              <MdOutlineAccountBox />
               <Info>
                 <div className="text">
                   <b>문재웅</b>
@@ -26,41 +25,48 @@ export default function MyPage() {
                 <div className="text">abcde@gmail.com</div>
               </Info>
             </Profile>
+            <PointContainer>
+              <div className="point-text-container">
+                <GrMoney />
+                <div className="point-text">포인트</div>
+              </div>
+              <div className="point-amount">5,000원</div>
+            </PointContainer>
           </ProfileContainer>
-          <OilContainer>
+          <SummaryContainer>
             <TripNumber>
-              <img src={carpool} alt="car" width={35} height={35}></img>
+              <BiTrip />
               <div className="title">여정 횟수</div>
               <div className="bottom">30</div>
             </TripNumber>
             <OilLevel>
-              <img src={oil} alt="oil" width={35} height={35}></img>
+              <RiOilLine />
               <div className="title">기름통 레벨</div>
               <div className="bottom"> 70L </div>
             </OilLevel>
             <Compliment>
-              <img src={like} alt="thumbsUp" width={35} height={35}></img>
+              <BiLike />
               <div className="title">많이 받은 칭찬</div>
-              <div className="bottom body">친절해요</div>
+              <div className="bottom">친절해요</div>
             </Compliment>
-          </OilContainer>
+          </SummaryContainer>
           <ListContainer>
+            <JourneyRecord>
+              <div className="title">포인트 충전하기</div>
+              <IoIosArrowForward />
+            </JourneyRecord>
             <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journeylist">
               <JourneyRecord>
                 <div className="title">여정 내역</div>
-                <img src={arrow} alt="arrow" width={30}></img>
+                <IoIosArrowForward />
               </JourneyRecord>
             </NavLink>
             <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/ratinglist">
               <JourneyRecord>
                 <div className="title">받은 매너 평가</div>
-                <img src={arrow} alt="arrow" width={30}></img>
+                <IoIosArrowForward />
               </JourneyRecord>
             </NavLink>
-            <JourneyRecord>
-              <div className="title">-</div>
-              <img src={arrow} alt="arrow" width={30}></img>
-            </JourneyRecord>
           </ListContainer>
         </MyPageContainer>
       </Container>
@@ -71,17 +77,6 @@ export default function MyPage() {
 const Container = styled.div`
   width: 100%;
   height: 100vh;
-
-  // 태블릿 : 1200px ~ 768px :: 768px 이상 적용되는 css
-  @media only screen and (min-width: 768px) {
-    width: 100%;
-    height: 100vh;
-  }
-  // PC : 1200px 이상 :: 1200px 이상 적용되는 css
-  @media only screen and (min-width: 1200px) {
-    width: 100%;
-    height: 100vh;
-  }
 `;
 
 const MyPageContainer = styled.div`
@@ -93,19 +88,39 @@ const MyPageContainer = styled.div`
 `;
 const ProfileContainer = styled.div`
   width: 100%;
-  height: 25%;
+  height: 100%;
   background-color: ${props => props.theme.colors.main_blue};
   box-shadow: 0px 4px 4px -4px #3f5179;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  @media only screen and (min-height: 667px) {
+    height: 35%;
+  }
 `;
 const Profile = styled.div`
   width: 100%;
-  height: 100%;
+  height: 40%;
   padding: 0 7rem 0 7rem;
   position: relative;
   bottom: 3rem;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  svg {
+    font-size: 7rem;
+    color: #26264c;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0px 4px 4px -4px #3f5179;
+  }
+
+  @media only screen and (max-height: 667px) {
+    height: 30%;
+  }
 `;
 const Info = styled.div`
   width: 60%;
@@ -120,7 +135,26 @@ const Info = styled.div`
     font-size: 1.2rem;
   }
 `;
-const OilContainer = styled.div`
+
+const PointContainer = styled.div`
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: bold;
+
+  svg {
+    font-size: 1.2rem;
+    margin-right: 0.3rem;
+  }
+
+  .point-text-container {
+    display: flex;
+    align-items: center;
+  }
+`;
+
+const SummaryContainer = styled.div`
   width: 90%;
   height: 12rem;
   background-color: #fff;
@@ -132,48 +166,37 @@ const OilContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
+
   .title {
-    font-weight: 600;
-    margin: 0.5rem 0 0.5rem 0;
     color: ${props => props.theme.colors.main_blue};
+    font-weight: bold;
+    margin: 0.5rem 0 0.5rem 0;
   }
   .bottom {
-    color: ${props => props.theme.colors.gray};
-    font-size: 1.8rem;
+    color: ${props => props.theme.colors.dark_gray};
+    font-size: 1.2rem;
     font-weight: 600;
   }
-`;
-const OilLevel = styled.div`
-  width: 7rem;
-  height: 7rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-const TripNumber = styled.div`
-  width: 7rem;
-  height: 7rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-const Compliment = styled.div`
-  width: 7rem;
-  height: 7rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  bottom: 0.2rem;
-  .body {
-    color: ${props => props.theme.colors.gray};
-    font-size: 1.4rem;
-    font-weight: 600;
+
+  svg {
+    font-size: 8rem;
+    color: #26264c;
+  }
+
+  div {
+    width: 7rem;
+    height: 7rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
   }
 `;
+
+const OilLevel = styled.div``;
+const TripNumber = styled.div``;
+const Compliment = styled.div``;
+
 const ListContainer = styled.div`
   width: 100%;
   height: auto;
