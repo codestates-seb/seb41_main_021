@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 
 @RestController
 @Validated
@@ -35,14 +36,16 @@ public class YataController {
                                     @RequestParam String yataStatus,
                                     @AuthenticationPrincipal User authMember){
 
-
+        System.out.println(requestBody.getDepartureTime());
         Yata yata = yataService.createYata(mapper.yataPostDtoToYata(requestBody),yataStatus,authMember.getUsername());
         return new ResponseEntity<>((mapper.yataToYataResponse(yata)), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{yata_id}")
-    public ResponseEntity patchNeota(){
-        return null;
+    public ResponseEntity patchYata(@PathVariable("yata_id") @Positive long yataId,
+                                     @Valid @RequestBody YataDto.Patch requestbody){
+        Yata yata = this.yataService.updateYata(yataId,this.mapper.yataPatchToYata(requestbody));
+        return new ResponseEntity<>(mapper.yataToYataResponse(yata),HttpStatus.OK);
     }
 
     @DeleteMapping("/{yata_id}")

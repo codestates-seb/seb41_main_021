@@ -28,6 +28,18 @@ public class LocationDto {
     }
 
     @Getter
+    @ToString
+    @Builder
+    public static class Patch{
+
+        private double longitude;
+
+        private double latitude;
+
+        private String address;
+    }
+
+    @Getter
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
