@@ -1,17 +1,24 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import Navbar from '../components/NavBar';
-import Button from '../components/common/Button';
+import Header from '../components/Header';
+import CircleButton from '../components/common/CircleButton';
 import ListItem from '../components/ListItem';
 import DestinationInput from '../components/DestinationInput';
 import { useNavigate } from 'react-router-dom';
+import { MdAdd } from 'react-icons/md';
 
 export default function TabnidaList() {
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const add = () => {
+    setOpen(!open);
     navigate('/tabnidaadd');
   };
+
   return (
     <>
+      <Header title="TabnidaList" />
       <Navbar />
       <Container>
         <IputContainer>
@@ -22,7 +29,9 @@ export default function TabnidaList() {
           journeyStart={'성수 SPOT 01 외'}
           journeyEnd={'용산 HUB'}
           transit="1"></ListItem>
-        <Button onClick={add}>내 여정 등록하기</Button>
+        <CircleButton onClick={add} open={open}>
+          <MdAdd />
+        </CircleButton>
       </Container>
     </>
   );
