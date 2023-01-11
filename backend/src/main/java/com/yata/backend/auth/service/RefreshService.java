@@ -84,12 +84,10 @@ public class RefreshService {
 
     public void logout(HttpServletRequest request, HttpServletResponse response) {
         AuthToken accessToken = authTokenProvider.convertAuthToken(getAccessToken(request));
-        if(!accessToken.validate()) throw new CustomLogicException(ExceptionCode.TOKEN_INVALID);
+        if (!accessToken.validate()) throw new CustomLogicException(ExceptionCode.TOKEN_INVALID);
         String userEmail = accessToken.getTokenClaims().getSubject();
         long time = accessToken.getTokenClaims().getExpiration().getTime() - System.currentTimeMillis();
-        if(time > 0){
-            redisUtils.setBlackList(accessToken.getToken(),userEmail , time);
-        }
+        redisUtils.setBlackList(accessToken.getToken(), userEmail, time);
         refreshTokenRepository.deleteById(userEmail);
     }
 }

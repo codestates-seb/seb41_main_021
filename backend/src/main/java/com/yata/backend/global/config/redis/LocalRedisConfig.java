@@ -11,19 +11,21 @@ import javax.annotation.PreDestroy;
 import java.io.IOException;
 
 @Slf4j
-@Profile("local")
+@Profile("!prod")
 @Configuration
 public class LocalRedisConfig {
     @Value("${spring.redis.port}")
     private int redisPort;
 
-    private RedisServer redisServer;
+    private static RedisServer redisServer;
 
     @PostConstruct
     public void redisServer() throws IOException {
-        redisServer = new RedisServer(redisPort);
-        redisServer.start();
-        log.info("Redis Server Start");
+        if(redisServer == null) {
+            redisServer = new RedisServer(redisPort);
+            redisServer.start();
+            log.info("Redis Server Start");
+        }
     }
 
     @PreDestroy

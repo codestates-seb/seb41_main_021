@@ -10,6 +10,7 @@ import com.yata.backend.common.token.GeneratedToken;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.factory.MemberFactory;
 import com.yata.backend.domain.member.repository.JpaMemberRepository;
+import com.yata.backend.global.utils.RedisUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,9 +23,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Date;
 
 import static com.yata.backend.util.ApiDocumentUtils.getRequestPreProcessor;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -49,6 +52,8 @@ class AuthControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private AuthTokenProvider authTokenProvider;
+    @Autowired
+    private RedisUtils redisUtils;
 
     private final String API_URL = "/api/v1/auth";
 
@@ -56,6 +61,7 @@ class AuthControllerTest {
     public void tearDown() {
         jpaMemberRepository.deleteAll();
         refreshTokenRepository.deleteAll();
+        redisUtils.deleteAll();
     }
     @Test
     @DisplayName("로그인 성공")
@@ -93,7 +99,6 @@ class AuthControllerTest {
         AuthToken accessToken = GeneratedToken.createExpiredToken(authTokenProvider, member.getEmail() , Member.MemberRole.PASSANGER.name());
         RefreshToken refreshToken = refreshTokenRepository
                 .save(new RefreshToken(member.getEmail(), authTokenProvider.createRefreshToken(member.getEmail()).getToken() , new Date(System.currentTimeMillis())));
-
         // when
         ResultActions resultActions = mockMvc.perform(post(API_URL+ "/refresh")
                         .contentType("application/json")
@@ -109,4 +114,23 @@ class AuthControllerTest {
         ));
     }
 
+    @Test
+    @DisplayName("Redis Logout 성공")
+    void logout() throws Exception {
+        Member member = MemberFactory.createMember(passwordEncoder);
+        jpaMemberRepository.save(member);
+        AuthToken accessToken =  authTokenProvider.createAccessToken(member.getEmail(), Collections.singletonList(Member.MemberRole.PASSANGER.name()));
+        refreshTokenRepository
+                .save(new RefreshToken(member.getEmail(), authTokenProvider.createRefreshToken(member.getEmail()).getToken() , new Date(System.currentTimeMillis())));
+
+        // when
+        ResultActions resultActions = mockMvc.perform(post(API_URL+ "/logout")
+                        .contentType("application/json")
+                        .header("Authorization", "Bearer " + accessToken.getToken()))
+                .andExpect(status().isOk());
+        assertThat(redisUtils.hasKeyBlackList(accessToken.getToken())).isTrue();
+        resultActions.andDo(document("auth-logout",
+                getRequestPreProcessor()
+        ));
+    }
 }
