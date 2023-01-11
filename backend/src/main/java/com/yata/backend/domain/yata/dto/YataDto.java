@@ -48,13 +48,11 @@ public class YataDto {
         @NotBlank
         private String carModel;
 
-        //        @Valid
-//        @NotNull
-//        private LocationDto.Post strPoint;
-//
-//        @Valid
-//        @NotNull
-//        private LocationDto.Post destination;
+        @Valid
+        private LocationDto.Post strPoint;
+
+        @Valid
+        private LocationDto.Post destination;
 
        //todo 체크리스트 생성 후 채우기
 //        @Valid
@@ -89,6 +87,8 @@ public class YataDto {
         private int maxPeople;
         private long amount;
         private String carModel;
+        private LocationDto.Response strPoint;
+        private LocationDto.Response destination;
 
     }
 
