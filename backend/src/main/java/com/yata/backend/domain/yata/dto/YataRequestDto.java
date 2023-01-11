@@ -37,6 +37,7 @@ public class YataRequestDto {
 
     @AllArgsConstructor
     @Getter
+    @Setter
     @ToString
     @Builder
     public static class RequestResponse {
