@@ -139,6 +139,7 @@ const Info = styled.div`
 const PointContainer = styled.div`
   width: 80%;
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   font-weight: bold;

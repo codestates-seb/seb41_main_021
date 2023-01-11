@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 import Navbar from '../components/NavBar';
+import Header from '../components/Header';
 
 export default function RatingList() {
   return (
     <>
       <Navbar></Navbar>
+
       <Container>
-        <TopContainer>
-          <div className="title">매너 평가</div>
-        </TopContainer>
+        <Header title={'매너 평가'}></Header>
         <GoodContainer>
           <Title>
             <div>👍 좋았던 점</div>
@@ -51,19 +51,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-const TopContainer = styled.div`
-  width: 100%;
-  height: 5rem;
-  box-shadow: 0px 3px 3px -3px ${props => props.theme.colors.gray};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  .title {
-    color: ${props => props.theme.colors.main_blue};
-    font-size: 1.7rem;
-    font-weight: bold;
-  }
 `;
 const GoodContainer = styled.div`
   width: 90%;
