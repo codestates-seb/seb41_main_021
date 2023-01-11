@@ -33,7 +33,6 @@ public class PaymentController {
         paymentResDto.setFailUrl(tossPaymentConfig.getFailUrl());
         return ResponseEntity.ok().body(new SingleResponse<>(paymentResDto));
     }
-
     @GetMapping("/toss/success")
     public ResponseEntity tossPaymentSuccess(
             @RequestParam String paymentKey,

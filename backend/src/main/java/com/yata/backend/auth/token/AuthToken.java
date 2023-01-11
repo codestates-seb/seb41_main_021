@@ -6,7 +6,9 @@ import com.yata.backend.global.exception.ExceptionCode;
 import io.jsonwebtoken.*;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisHash;
 
+import javax.persistence.Id;
 import java.security.Key;
 import java.util.Date;
 import java.util.List;
@@ -14,7 +16,6 @@ import java.util.List;
 @Slf4j
 // 토큰 데이터 클래스
 public class AuthToken {
-
     @Getter
     private final String token;
     private final Key key;
