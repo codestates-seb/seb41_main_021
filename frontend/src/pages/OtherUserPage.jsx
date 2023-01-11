@@ -12,6 +12,7 @@ export default function MyPage() {
     <>
       <Container>
         <NavBar />
+        <Header title={'다른 유저'}></Header>
         <MyPageContainer>
           <ProfileContainer>
             <Profile>
@@ -60,15 +61,13 @@ export default function MyPage() {
     </>
   );
 }
-
 const Container = styled.div`
   width: 100%;
   height: 100vh;
 `;
-
 const MyPageContainer = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 90vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -119,7 +118,6 @@ const Info = styled.div`
     font-size: 1.2rem;
   }
 `;
-
 const SummaryContainer = styled.div`
   width: 90%;
   height: 12rem;
