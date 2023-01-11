@@ -70,6 +70,10 @@ const DestinationForm = styled.div`
   border-radius: 10% 10% 0 0;
   overflow: scroll;
 
+  @media only screen and (min-width: 470px) {
+    width: 470px;
+  }
+
   @media screen and (min-height: 470px) {
     height: 58%;
   }
@@ -80,11 +84,16 @@ const DestinationForm = styled.div`
 
   .destinationInput svg {
     position: absolute;
-    top: 2.9rem;
+    top: 3rem;
     right: 1rem;
     font-size: 1.7rem;
     padding: 0.2rem;
     color: #6f6f6f;
+
+    @media only screen and (min-width: 470px) {
+      top: 0.8rem;
+      right: 1rem;
+    }
   }
 
   .plus-icon {

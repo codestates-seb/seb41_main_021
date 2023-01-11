@@ -1,13 +1,11 @@
 import styled from 'styled-components';
-import Logo from '../images/Logo.svg';
+import Logo from '../images/Full_Logo.svg';
 
 export default function Loading() {
   return (
     <>
       <Container>
-        <LogoBox>
-          <img src={Logo} alt="logo"></img>
-        </LogoBox>
+        <img src={Logo} alt="logo"></img>
       </Container>
     </>
   );
@@ -20,19 +18,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
 
-  // 태블릿 : 1200px ~ 768px :: 768px 이상 적용되는 css
-  @media only screen and (min-width: 768px) {
-    background-color: red;
+  img {
+    width: 60%;
   }
-  // PC : 1200px 이상 :: 1200px 이상 적용되는 css
-  @media only screen and (min-width: 1200px) {
-    background-color: blue;
-  }
-`;
-const LogoBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 15.625rem;
-  height: 15.625rem;
 `;
