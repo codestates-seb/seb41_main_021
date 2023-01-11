@@ -17,7 +17,7 @@ export default function TaeoondaList() {
   };
   return (
     <>
-      <Header title="TaeoondaList" />
+      <Header title="태웁니다" />
       <Navbar />
       <Container>
         <DestinationInput />

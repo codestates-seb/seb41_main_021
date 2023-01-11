@@ -18,7 +18,7 @@ export default function TabnidaList() {
 
   return (
     <>
-      <Header title="TabnidaList" />
+      <Header title="탑니다" />
       <Navbar />
       <Container>
         <DestinationInput />
