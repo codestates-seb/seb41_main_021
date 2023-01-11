@@ -50,10 +50,11 @@ export default function TabnidaEdit() {
 }
 const Container = styled.div`
   width: 100%;
-  height: 100%;
+  height: 100vh;
 
   .map-container {
-    height: 60%;
+    width: 100%;
+    height: 50%;
   }
 `;
 
