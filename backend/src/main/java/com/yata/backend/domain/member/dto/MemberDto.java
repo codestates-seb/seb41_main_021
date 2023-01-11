@@ -38,7 +38,8 @@ public class MemberDto {
     @ToString
     @Builder
     public static class Patch{
-
+        private Member.Gender genders;
+        private String nickname;
     }
     @Getter
     @Setter

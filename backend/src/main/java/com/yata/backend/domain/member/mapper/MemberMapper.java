@@ -20,4 +20,6 @@ public interface MemberMapper {
     }
 
     MemberDto.Response memberToResponseMemberDto(Member member);
+
+    Member memberPatchDtoToMember(MemberDto.Patch memberPatchDto);
 }

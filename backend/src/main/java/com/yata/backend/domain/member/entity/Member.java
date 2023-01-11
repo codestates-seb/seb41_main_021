@@ -47,11 +47,13 @@ public class Member extends Auditable {
 
     @Column(nullable = false) // 연료탱크
     @ColumnDefault("30")
-    private double fuelTank = 30;
+    private Double fuelTank = 30.0;
 
     @Column(nullable = false) // 포인트
     @ColumnDefault("0")
-    private long point;
+    private Long point;
+
+    // TODO phoneNumbers add
 
     public enum MemberStatus {
         MEMBER_ACTIVE("활동중"),

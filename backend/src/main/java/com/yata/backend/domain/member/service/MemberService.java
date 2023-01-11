@@ -13,5 +13,5 @@ public interface MemberService {
     Member verifyMember(String email);
     void duplicateMember(String email);
 
-    Member updateMember(Member member, Member patchMemberDtoToMember);
+    Member updateMember(String email, Member patchMemberDtoToMember);
 }

@@ -37,6 +37,11 @@ public class MemberController {
       Member member = memberService.findMember(principal.getUsername());
       return ResponseEntity.ok(new SingleResponse<>(memberMapper.memberToResponseMemberDto(member)));
    }
+   @PatchMapping
+   public ResponseEntity updateMember(@AuthenticationPrincipal User principal, @Valid @RequestBody MemberDto.Patch memberPatchDto) {
+      Member member = memberService.updateMember(principal.getUsername(), memberMapper.memberPatchDtoToMember(memberPatchDto));
+      return ResponseEntity.ok(new SingleResponse<>(memberMapper.memberToResponseMemberDto(member)));
+   }
 
 
 }
