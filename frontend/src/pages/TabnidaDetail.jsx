@@ -49,7 +49,7 @@ export default function TabnidaDetail() {
 
 const Container = styled.div`
   width: 100%;
-  height: auto;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -71,8 +71,9 @@ const DateBox = styled.div`
   display: flex;
   flex-direction: column;
   box-shadow: 0px 4px 4px -4px #3f5179;
+
   div {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     line-height: 2.2rem;
   }
 `;
