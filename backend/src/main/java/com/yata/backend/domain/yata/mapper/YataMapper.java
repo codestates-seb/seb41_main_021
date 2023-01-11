@@ -10,13 +10,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-//date to String
-//Date from = new Date();
-//
-//SimpleDateFormat transFormat = new SimpleDateFormat("yyyyMMdd HH:mm");
-//
-//String to = transFormat.format(from);
-
 @Mapper(componentModel = "spring")
 public interface YataMapper {
 //    Yata yataPostDtoToYata(YataDto.YataPost requestBody);
