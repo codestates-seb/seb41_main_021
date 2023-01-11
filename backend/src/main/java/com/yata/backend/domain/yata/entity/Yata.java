@@ -21,12 +21,12 @@ public class Yata extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long yataId;
 
-    //아직 yata에는 departureTime , timeOfArrival 안넣어서 (nullable = false) 일단 뺄게용
+    //todo departureTime date타입으로 바꾸기
     @Column
-    private Date departureTime;
+    private String departureTime;
 
     @Column
-    private Date timeOfArrival;
+    private String timeOfArrival;
 
     @Column(nullable = false,length = 50)
     private String title;
@@ -43,7 +43,7 @@ public class Yata extends Auditable {
     private YataStatus yataStatus;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(length = 20, nullable = false)
+    @Column(length = 20)
     private PostStatus postStatus = PostStatus.POST_WAITING;
 
 
@@ -56,19 +56,13 @@ public class Yata extends Auditable {
     @Column(length = 10,nullable = false)
     private long amount;
 
-//    @OneToOne(cascade = CascadeType.ALL)
- //       @JoinColumn(name = "YATA_ID")
-//    private Location strPoint;
-//
-//    public void addStrPoint(Location strPoint) {
-//        this.strPoint = strPoint;}
-//
-//    @OneToOne(cascade = CascadeType.ALL)
- //       @JoinColumn(name = "YATA_ID")
-//    private Location destination;
-//
-//    public void addDestination(Location destination) {
-//        this.destination = destination;}
+    @OneToOne( mappedBy = "yata",cascade = CascadeType.ALL)
+    private Location strPoint;
+
+    @OneToOne( mappedBy = "yata",cascade = CascadeType.ALL)
+    private Location destination;
+
+
 
 //    @OneToMany(mappedBy = "yata",cascade = CascadeType.ALL)
 //    private List<YataChecklist> yataChecklists = new ArrayList<>();
@@ -84,17 +78,6 @@ public class Yata extends Auditable {
     @OneToMany(mappedBy = "yata")
     private List<YataRequest> yataRequests = new ArrayList<>();
 
-    public enum YataStatus {
-        YATA_NEOTA("너타"),
-        YATA_NATA("나타");
-
-        @Getter
-        private String status;
-
-        YataStatus(String status) {
-            this.status = status;
-        }
-    }
 
     public enum PostStatus {
         POST_WAITING(1,"예약 전"),
@@ -114,5 +97,11 @@ public class Yata extends Auditable {
         PostStatus(int statusNumber, String status){this.status = status;
         this.statusNumber=statusNumber;}
     }
+
+    public void addStrPoint(Location strPoint) {
+        this.strPoint = strPoint;}
+
+    public void addDestination(Location destination) {
+        this.destination = destination;}
 
 }
