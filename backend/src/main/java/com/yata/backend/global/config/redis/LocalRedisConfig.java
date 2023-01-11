@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 @Slf4j
-@Profile("local")
+@Profile("!prod")
 @Configuration
 public class LocalRedisConfig {
     @Value("${spring.redis.port}")
@@ -25,7 +25,10 @@ public class LocalRedisConfig {
     @PostConstruct
     public void redisServer() throws IOException {
         int port = isRedisRunning() ? findAvailablePort() : redisPort;
-        redisServer = new RedisServer(port);
+        redisServer = RedisServer.builder()
+                .port(port)
+                .setting("maxmemory 128M")
+                .build();
         redisServer.start();
     }
 
@@ -41,7 +44,6 @@ public class LocalRedisConfig {
      * Embedded Redis가 현재 실행중인지 확인
      */
     private boolean isRedisRunning() throws IOException {
-        log.info("Embedded Redis is running check");
         return isRunning(executeGrepProcessCommand(redisPort));
     }
 
@@ -65,9 +67,8 @@ public class LocalRedisConfig {
      */
     private Process executeGrepProcessCommand(int port) throws IOException {
         String OS = System.getProperty("os.name").toLowerCase();
-        log.info("OS: {}", OS);
         if (OS.contains("win")) {
-            log.info("OS is Windows");
+            log.info("OS is  " + OS + " " + port);
             String command = String.format("netstat -nao | find \"LISTEN\" | find \"%d\"", port);
             String[] shell = {"cmd.exe", "/y", "/c", command};
             return Runtime.getRuntime().exec(shell);
