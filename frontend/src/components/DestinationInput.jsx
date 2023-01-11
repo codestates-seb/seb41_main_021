@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { IoEllipseOutline, IoEllipse } from 'react-icons/io5';
 export default function DestinationInput() {
   return (
-    <>
-      <InputContainer>
+    <IputContainer>
+      <InputContent>
         <InputForm>
           <IoEllipseOutline />
           <StyleInput placeholder="출발지"></StyleInput>
@@ -12,18 +12,26 @@ export default function DestinationInput() {
           <IoEllipse />
           <StyleInput placeholder="도착지"></StyleInput>
         </InputForm>
-      </InputContainer>
-    </>
+      </InputContent>
+    </IputContainer>
   );
 }
 
-const InputContainer = styled.form`
+const IputContainer = styled.div`
+  display: flex;
+  justify-content: center;
   width: 100%;
+  padding: 2rem 1rem;
+  border-bottom: 3px solid ${props => props.theme.colors.light_gray};
+`;
+
+const InputContent = styled.form`
+  width: 95%;
   display: flex;
   flex-direction: column;
   align-items: center;
   color: white;
-  padding: 1rem;
+  padding: 0 1rem;
   border: 1px solid ${props => props.theme.colors.light_gray};
   border-radius: 1rem;
   /* background-color: ${props => props.theme.colors.dark_blue}; */
@@ -54,7 +62,7 @@ const InputForm = styled.div`
 
 const StyleInput = styled.input`
   width: 100%;
-  padding: 10px 15px;
+  padding: 1rem 1.25rem;
   :focus {
     outline: none;
   }

@@ -23,35 +23,33 @@ const Header = props => {
 };
 
 const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 5rem;
   box-shadow: 0 5px 10px -8px lightgrey;
 
+  @media only screen and (min-width: 470px) {
+    width: 470px;
+  }
   .content-container {
-    width: 100%;
-    height: 5rem;
-    position: absolute;
-    top: 0;
+    flex: 1;
     display: flex;
     align-items: center;
   }
 
   .back-btn-container {
+    position: absolute;
     svg {
       font-size: 2rem;
       cursor: pointer;
       margin: 1rem;
     }
-
-    @media only screen and (min-width: 470px) {
-      width: 470px;
-    }
   }
 
   .title-container {
-    width: 100%;
-    height: 100%;
-    position: absolute;
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
