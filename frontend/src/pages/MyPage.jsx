@@ -139,6 +139,7 @@ const Info = styled.div`
 const PointContainer = styled.div`
   width: 80%;
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   font-weight: bold;
@@ -201,6 +202,7 @@ const ListContainer = styled.div`
   width: 100%;
   height: auto;
   box-shadow: 0px -2px 2px -2px ${props => props.theme.colors.light_gray};
+  overflow: scroll;
 `;
 const JourneyRecord = styled.div`
   width: 100%;
