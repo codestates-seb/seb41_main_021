@@ -1,25 +1,33 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import Navbar from '../components/NavBar';
-import Button from '../components/common/Button';
+import Header from '../components/Header';
+import CircleButton from '../components/common/CircleButton';
 import ListItem from '../components/ListItem';
 import DestinationInput from '../components/DestinationInput';
 import { useNavigate } from 'react-router-dom';
+import { MdAdd } from 'react-icons/md';
 
 export default function TaeoondaList() {
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const add = () => {
+    setOpen(!open);
     navigate('/taeoondaadd');
   };
   return (
     <>
+      <Header title="TaeoondaList" />
       <Navbar />
       <Container>
         <IputContainer>
           <DestinationInput />
         </IputContainer>
         <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
-        <Button onClick={add}>내 여정 등록하기</Button>
       </Container>
+      <CircleButton onClick={add} open={open}>
+        <MdAdd />
+      </CircleButton>
     </>
   );
 }
