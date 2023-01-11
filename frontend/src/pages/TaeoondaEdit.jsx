@@ -2,9 +2,10 @@ import styled from 'styled-components';
 import KakaoMap from '../components/KakaoMap';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button';
-import Header from '../components/Header';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
+import Header from '../components/Header';
 
 export default function TaeoondaEdit() {
   // const navigate = useNavigate();
@@ -21,8 +22,10 @@ export default function TaeoondaEdit() {
   return (
     <>
       <Container>
-        <Header />
-        <KakaoMap />
+        <Header title="태웁니다 수정하기" />
+        <div className="map-container">
+          <KakaoMap />
+        </div>
         <DestinationForm>
           <Input label="출발지" />
           <div className="destinationInput">
@@ -48,16 +51,28 @@ export default function TaeoondaEdit() {
 const Container = styled.div`
   width: 100%;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
-  z-index: 1;
+
+  .map-container {
+    width: 100%;
+    height: 50%;
+  }
 `;
 
 const DestinationForm = styled.div`
   padding: 2rem 3rem;
   width: 100%;
-  height: 100vh;
-  box-shadow: 5px 5px 10px -8px lightgrey;
+  height: 40%;
+  position: absolute;
+  bottom: 0;
+  z-index: 1;
+  box-shadow: 0px -10px 10px -10px lightgrey;
+  background-color: white;
+  border-radius: 10% 10% 0 0;
+  overflow: scroll;
+
+  @media screen and (min-height: 470px) {
+    height: 58%;
+  }
 
   .destinationInput {
     position: relative;
@@ -65,7 +80,7 @@ const DestinationForm = styled.div`
 
   .destinationInput svg {
     position: absolute;
-    top: 0.7rem;
+    top: 2.9rem;
     right: 1rem;
     font-size: 1.7rem;
     padding: 0.2rem;
@@ -78,8 +93,11 @@ const DestinationForm = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  height: 5rem;
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
+  button {
+    margin: 10px 0;
+  }
 `;

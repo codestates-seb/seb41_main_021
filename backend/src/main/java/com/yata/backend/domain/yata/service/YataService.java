@@ -4,9 +4,7 @@ import com.yata.backend.domain.yata.entity.Yata;
 import org.springframework.stereotype.Service;
 
 public interface YataService {
-    Yata createNeota(Yata yata);
-
-    Yata createNata(Yata yata);
+    Yata createYata(Yata yata,String yataStatus, String userName);
 
     Yata updateNeota(long yataId,Yata yata);
 

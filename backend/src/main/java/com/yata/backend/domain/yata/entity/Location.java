@@ -26,11 +26,12 @@ public class Location {
     @Column(length = 100,nullable = false)
     private String address;
 
-//    @OneToOne(mappedBy = "location")
-//    private Yata yata;
+    @OneToOne
+    @JoinColumn(name = "YATA_ID")
+    private Yata yata;
 
-//    public void addYata(Yata yata) {
-//        this.yata = yata;
-//    }
+    public void addYata(Yata yata) {
+        this.yata = yata;
+    }
 
 }

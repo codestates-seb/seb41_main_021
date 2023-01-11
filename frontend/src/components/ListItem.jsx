@@ -3,10 +3,10 @@ import { IoIosArrowForward, IoIosArrowRoundForward } from 'react-icons/io';
 
 const ListItem = props => {
   // api 응답 어떻게 올지 몰라서 대충 넣어놓음
-  const { date, journeyStart, journeyEnd, transit } = props;
+  const { date, journeyStart, journeyEnd, transit, onClick } = props;
   return (
     <>
-      <Container>
+      <Container onClick={onClick}>
         <TextContainer>
           <DateContainer>{date}</DateContainer>
           <JourneyContainer>
@@ -27,6 +27,7 @@ const ListItem = props => {
 const Container = styled.div`
   width: 100%;
   height: 8rem;
+
   border-bottom: 1px solid ${props => props.theme.colors.light_gray};
   @media only screen and (min-width: 800px) {
   }

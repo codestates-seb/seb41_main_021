@@ -27,6 +27,11 @@ public class LocationDto {
         private String address;
     }
 
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
     public static class Response {
         private double longitude;
 

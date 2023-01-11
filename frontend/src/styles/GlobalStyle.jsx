@@ -51,9 +51,11 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     border: 0;
-    /* font-size: calc( 10px + 0.4vw ); */
+    font-size: calc( 10px + 0.4vw );
     /* 임시용 470px 기준 font size */
+  @media only screen and (min-width: 470px) {
     font-size: 12px;
+  }
     vertical-align: baseline;
     font-family: 'ONE Mobile';
     /* background-color: #FBFBFB; */
