@@ -70,6 +70,28 @@ public class YataDto {
     @ToString
     @Builder
     public static class Patch{
+
+        private String title;
+
+        private String content;
+
+        private String departureTime;
+
+        private String timeOfArrival;
+
+        private int maxWaitingTime;
+
+        private int maxPeople;
+
+        private long amount;
+
+        private String carModel;
+
+        @Valid
+        private LocationDto.Post strPoint;
+
+        @Valid
+        private LocationDto.Post destination;
     }
 
     @Getter
@@ -79,8 +101,8 @@ public class YataDto {
     @Builder
     public static class Response {
 
-        private String departureTime;
-        private String timeOfArrival;
+        private Date departureTime;
+        private Date timeOfArrival;
         private String title;
         private String content;
         private int maxWaitingTime;

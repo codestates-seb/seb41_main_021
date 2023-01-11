@@ -13,18 +13,12 @@ public class YataFactory {
 
     public static YataDto.YataPost createNeotaPostDto() throws ParseException {
 
-        // 문자열
-        String dateStr = "2021년 06월 19일 21시 05분 07초";
-        // 포맷터
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분 ss초");
-        // 문자열 -> Date
-        //Date date = formatter.parse(dateStr);
 
         return YataDto.YataPost.builder()
                 .title("부산까지 같이가실 분~")
                 .content("같이 노래들으면서 가요~")
-                .departureTime(String.valueOf(new Date(System.currentTimeMillis())))
-                .timeOfArrival(String.valueOf(new Date(System.currentTimeMillis())))
+                .departureTime("20201004 23:30 목")
+                .timeOfArrival("20201004 23:30 금")
                 .amount(2000)
                 .carModel("bmw")
                 .maxPeople(3)

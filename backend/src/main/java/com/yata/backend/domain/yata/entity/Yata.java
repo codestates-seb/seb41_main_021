@@ -23,10 +23,10 @@ public class Yata extends Auditable {
 
     //todo departureTime date타입으로 바꾸기
     @Column
-    private String departureTime;
+    private Date departureTime;
 
     @Column
-    private String timeOfArrival;
+    private Date timeOfArrival;
 
     @Column(nullable = false,length = 50)
     private String title;
