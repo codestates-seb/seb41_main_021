@@ -57,8 +57,8 @@ public class YataControllerTest extends AbstractControllerTest {
         YataDto.YataPost post = createYataPostDto();
 
         String json = gson.toJson(post);
-
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm E");
+
         Yata expected = Yata.builder()
                 .title(post.getTitle())
                 .content(post.getContent())
