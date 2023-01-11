@@ -11,14 +11,14 @@ import java.util.Date;
 
 public class YataFactory {
 
-    public static YataDto.YataPost createNeotaPostDto() throws ParseException {
+    public static YataDto.YataPost createYataPostDto() throws ParseException {
 
 
         return YataDto.YataPost.builder()
                 .title("부산까지 같이가실 분~")
                 .content("같이 노래들으면서 가요~")
-                .departureTime("20201004 23:30 목")
-                .timeOfArrival("20201004 23:30 금")
+                .departureTime("2020년 10월 04일 23:30 목")
+                .timeOfArrival("2020년 10월 04일 23:30 금")
                 .amount(2000)
                 .carModel("bmw")
                 .maxPeople(3)

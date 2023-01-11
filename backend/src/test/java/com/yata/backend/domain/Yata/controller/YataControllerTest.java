@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import static com.yata.backend.domain.Yata.factory.YataFactory.createNeotaPostDto;
+import static com.yata.backend.domain.Yata.factory.YataFactory.createYataPostDto;
 import static com.yata.backend.util.ApiDocumentUtils.getRequestPreProcessor;
 import static com.yata.backend.util.ApiDocumentUtils.getResponsePreProcessor;
 import static org.mockito.ArgumentMatchers.any;
@@ -50,15 +50,15 @@ public class YataControllerTest extends AbstractControllerTest {
 
     @Test
     @WithMockUser(username = "test@gmail.com", roles = "USER")
-    @DisplayName("너타생성")
-    void createNeota() throws Exception{
+    @DisplayName("야타 게시글 생성")
+    void createYata() throws Exception{
 
         //given
-        YataDto.YataPost post = createNeotaPostDto();
+        YataDto.YataPost post = createYataPostDto();
 
         String json = gson.toJson(post);
 
-        SimpleDateFormat transFormat = new SimpleDateFormat("yyyyMMdd HH:mm E");
+        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm E");
         Yata expected = Yata.builder()
                 .title(post.getTitle())
                 .content(post.getContent())
