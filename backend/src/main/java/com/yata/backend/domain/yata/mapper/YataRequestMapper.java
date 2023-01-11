@@ -1,7 +1,6 @@
 package com.yata.backend.domain.yata.mapper;
 
 import com.yata.backend.domain.yata.dto.YataRequestDto;
-import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Slice;
@@ -34,24 +33,14 @@ public interface YataRequestMapper {
     }
     default Slice<YataRequestDto.RequestResponse> yataRequestsToYataRequestResponses(Slice<YataRequest> yataRequests) {
         List<YataRequestDto.RequestResponse> requestResponses = yataRequests.getContent().stream()
-                .map(yataRequest -> {
-                    YataRequestDto.RequestResponse requestResponse = new YataRequestDto.RequestResponse(
+                .map(yataRequest -> new YataRequestDto.RequestResponse(
                             yataRequest.getYataRequestId(),
                             yataRequest.getTitle(),
                             yataRequest.getYata().getDepartureTime(),
                             yataRequest.getYata().getTimeOfArrival(),
                             yataRequest.getYata().getMaxWaitingTime(),
                             yataRequest.getYata().getCarModel(),
-                            yataRequest.getYata().getMaxPeople());
-                    requestResponse.setYataRequestId(requestResponse.getYataRequestId());
-                    requestResponse.setTitle(requestResponse.getTitle());
-                    requestResponse.setDepartureTime(requestResponse.getDepartureTime());
-                    requestResponse.setTimeOfArrival(requestResponse.getTimeOfArrival());
-                    requestResponse.setMaxWatingTime(requestResponse.getMaxWatingTime());
-                    requestResponse.setCarModel(requestResponse.getCarModel());
-                    requestResponse.setMaxPeople(requestResponse.getMaxPeople());
-                    return requestResponse;
-                })
+                            yataRequest.getYata().getMaxPeople()))
                 .collect(Collectors.toList());
         return new SliceImpl<>(requestResponses);
     }

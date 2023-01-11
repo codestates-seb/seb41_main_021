@@ -60,22 +60,22 @@ public class YataRequestController {
     // TODO 파라미터 "?acceptable=true" 값 어떻게 받을지 생각
     // 해당 게시물 안으로 들어가면 --> 그 게시물에 신청한 사람들 list 가 desc 정렬되어 뜨겠지
     @GetMapping("/apply/{yataId}")
-    public ResponseEntity<SliceResponseDto<YataRequestDto.RequestResponse>> getRequests(@PathVariable("yataId") @Positive long yataId,
+    public ResponseEntity<SliceResponseDto<YataRequestDto.RequestResponse>> getRequests(@RequestParam(value = "acceptable", required = true) boolean acceptable,
+                                                                                        @PathVariable("yataId") @Positive long yataId,
                                                                                         @AuthenticationPrincipal User authMember,
                                                                                         Pageable pageable) {
         Slice<YataRequest> requests = yataRequestService.findRequests(authMember.getUsername(), yataId ,pageable);
-        return new ResponseEntity<>(new SliceResponseDto<YataRequestDto.RequestResponse>(mapper.yataRequestsToYataRequestResponses(requests),pageable), HttpStatus.OK);
-//        if(requests.hasContent()) {
-//            return new ResponseEntity<>(new SliceResponseDto(mapper.yataRequestsToYataRequestResponses(requests)), HttpStatus.OK);
-//                    ResponseEntity.ok();
-//        } else {
-//            return ResponseEntity.noContent().build();
-//        }
+//        return new ResponseEntity<>(new SliceResponseDto<YataRequestDto.RequestResponse>(mapper.yataRequestsToYataRequestResponses(requests),pageable), HttpStatus.OK);
+        if(requests.hasContent()) {
+            return new ResponseEntity<>(new SliceResponseDto<YataRequestDto.RequestResponse>(mapper.yataRequestsToYataRequestResponses(requests),pageable), HttpStatus.OK);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
     }
 
     // TODO Yata 신청 or 초대 전 or 승인 후 삭제 - 204
-    @GetMapping("/apply/{yataId}")
-    public ResponseEntity deleteRequest(@PathVariable("yata-id") @Positive long yataId,
+    @DeleteMapping("/apply/{yataId}")
+    public ResponseEntity deleteRequest(@PathVariable("yataId") @Positive long yataId,
                                       @AuthenticationPrincipal User authMember) {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
