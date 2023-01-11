@@ -1,6 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
-import AppleNormal from '../fonts/AppleSDGothicNeoL.ttf';
-import AppleBold from '../fonts/AppleSDGothicNeoB.ttf';
+import OneMobile from '../fonts/ONE Mobile Regular.ttf';
+import OneMobileBold from '../fonts/ONE Mobile Bold.ttf';
+import OneMobileLight from '../fonts/ONE Mobile Light.ttf';
 
 const GlobalStyle = createGlobalStyle`
   *, *::before, *::after {
@@ -9,22 +10,29 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     border: 0;
-  }
-    @font-face {
-        font-family: 'Apple SD';
+  }    @font-face {
+        font-family: 'ONE Mobile';
         font-weight: 500;
         font-display: block;
-        src: local('AppleNormal'), local('AppleNormal');
+        src: local('OneMobile'), local('OneMobile');
         font-style: normal;
-        src: url(${AppleNormal}) format('truetype');
+        src: url(${OneMobile}) format('truetype');
   }
   @font-face {
-        font-family: 'Apple SD';
+        font-family: 'ONE Mobile';
         font-weight: 600;
         font-display: block;
-        src: local('AppleBold'), local('AppleBold');
+        src: local('OneMobileBold'), local('OneMobileBold');
         font-style: bold;
-        src: url(${AppleBold}) format('truetype');
+        src: url(${OneMobileBold}) format('truetype');
+  }
+   @font-face {
+        font-family: 'ONE Mobile';
+        font-weight: 400;
+        font-display: block;
+        src: local('OneMobileLight'), local('OneMobileLight');
+        font-style: normal;
+        src: url(${OneMobileLight}) format('truetype');
   }
 
  html, body, div, span, applet, object, iframe,
@@ -47,7 +55,7 @@ const GlobalStyle = createGlobalStyle`
     /* 임시용 470px 기준 font size */
     font-size: 12px;
     vertical-align: baseline;
-    font-family: 'Apple SD';
+    font-family: 'ONE Mobile';
     /* background-color: #FBFBFB; */
     /* overflow-y: auto;  */
     /* overflow: overlay; */
@@ -82,14 +90,15 @@ const GlobalStyle = createGlobalStyle`
     border-collapse: collapse;
     border-spacing: 0;
   }
+
   body::-webkit-scrollbar {
     width: 8px;
     background: transparent;
-}
-body::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 100px;
-}
+  }
+  body::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 100px;
+  }
 `;
 
 export default GlobalStyle;
