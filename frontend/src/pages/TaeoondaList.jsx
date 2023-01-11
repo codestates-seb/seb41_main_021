@@ -14,7 +14,9 @@ export default function TaeoondaList() {
     <>
       <Navbar />
       <Container>
-        <DestinationInput />
+        <IputContainer>
+          <DestinationInput />
+        </IputContainer>
         <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
         <Button onClick={add}>내 여정 등록하기</Button>
       </Container>
@@ -28,4 +30,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const IputContainer = styled.div`
+  width: 100%;
+  padding: 1rem;
 `;
