@@ -60,8 +60,9 @@ public class YataServiceImpl implements YataService{
     }
 
     @Override
-    public Yata deleteYata() {
-        return null;
+    public void deleteYata(long yataId) {
+        Yata findYata = verifyYata(yataId);
+        jpayataRepository.delete(findYata);
     }
 
     @Override

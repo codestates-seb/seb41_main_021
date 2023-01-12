@@ -8,7 +8,7 @@ public interface YataService {
 
     Yata updateYata(long yataId,Yata yata);
 
-    Yata deleteYata();
+    void deleteYata(long yataId);
 
     Yata findAllYata();
 

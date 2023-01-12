@@ -51,8 +51,10 @@ public class YataController {
     }
 
     @DeleteMapping("/{yata_id}")
-    public ResponseEntity deleteNeota(){
-        return null;
+    public ResponseEntity deleteNeota(@PathVariable("yata_id") @Positive long yataId){
+
+        this.yataService.deleteYata(yataId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     //너타목록 불러오기
