@@ -18,7 +18,7 @@ import static com.yata.backend.domain.yata.entity.Yata.PostStatus.POST_WAITING;
 @Transactional
 public class YataServiceImpl implements YataService{
 
-    JpaYataRepository jpayataRepository;
+    private final JpaYataRepository jpayataRepository;
 
     public YataServiceImpl(JpaYataRepository jpayataRepository){
         this.jpayataRepository = jpayataRepository;
@@ -29,7 +29,7 @@ public class YataServiceImpl implements YataService{
 
         switch (yataStatus){
             case "neota" -> yata.setYataStatus(YataStatus.YATA_NEOTA);
-            case "nata" -> yata.setYataStatus(YataStatus.YATA_NATA);
+             case "nata" -> yata.setYataStatus(YataStatus.YATA_NATA);
             default ->  throw new CustomLogicException(ExceptionCode.YATA_STATUS_NONE);
         }
 

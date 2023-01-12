@@ -8,8 +8,8 @@ import org.springframework.data.domain.Slice;
 public interface YataRequestService {
     YataRequest createRequest(YataRequest yataRequest, String userName, Long yataId) throws Exception;
     YataRequest createInvitation(YataRequest yataRequest, String userName, Long yataId) throws Exception;
-    Slice<YataRequest> findRequests(String userEmail, Long yataId, Pageable pageable);
+    Slice<YataRequest> findRequests(boolean acceptable, String userEmail, Long yataId, Pageable pageable);
     void deleteRequest(Long yataRequestId);
-    void verifyRequest(YataRequest yataRequest);
-    void verifyInvitation(YataRequest yataRequest);
+    void verifyRequest(String userName, Long yataId);
+    void verifyInvitation(String userName, Long yataId);
 }

@@ -5,6 +5,7 @@ import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import com.yata.backend.domain.yata.mapper.YataRequestMapper;
 import com.yata.backend.domain.yata.service.YataRequestService;
+import com.yata.backend.domain.yata.service.YataRequestServiceImpl;
 import com.yata.backend.domain.yata.service.YataService;
 import com.yata.backend.domain.yata.service.YataServiceImpl;
 import com.yata.backend.global.response.SingleResponse;
@@ -27,12 +28,10 @@ import javax.validation.constraints.Positive;
 @RequestMapping("/api/v1/yata")
 public class YataRequestController {
     private final YataRequestService yataRequestService;
-    private final YataServiceImpl yataService;
     private final YataRequestMapper mapper;
 
-    public YataRequestController(YataRequestService yataRequestService, YataServiceImpl yataService, YataRequestMapper mapper) {
+    public YataRequestController(YataRequestService yataRequestService, YataRequestMapper mapper) {
         this.yataRequestService = yataRequestService;
-        this.yataService = yataService;
         this.mapper = mapper;
     }
 
@@ -58,19 +57,18 @@ public class YataRequestController {
 
     // Yata 신청 목록 조회 - 200
     // TODO 파라미터 "?acceptable=true" 값 어떻게 받을지 생각
-    // 해당 게시물 안으로 들어가면 --> 그 게시물에 신청한 사람들 list 가 desc 정렬되어 뜨겠지
     @GetMapping("/apply/{yataId}")
     public ResponseEntity<SliceResponseDto<YataRequestDto.RequestResponse>> getRequests(@RequestParam(value = "acceptable", required = true) boolean acceptable,
                                                                                         @PathVariable("yataId") @Positive long yataId,
                                                                                         @AuthenticationPrincipal User authMember,
                                                                                         Pageable pageable) {
-        Slice<YataRequest> requests = yataRequestService.findRequests(authMember.getUsername(), yataId ,pageable);
-//        return new ResponseEntity<>(new SliceResponseDto<YataRequestDto.RequestResponse>(mapper.yataRequestsToYataRequestResponses(requests),pageable), HttpStatus.OK);
-        if(requests.hasContent()) {
-            return new ResponseEntity<>(new SliceResponseDto<YataRequestDto.RequestResponse>(mapper.yataRequestsToYataRequestResponses(requests),pageable), HttpStatus.OK);
-        } else {
-            return ResponseEntity.noContent().build();
-        }
+        Slice<YataRequest> requests = yataRequestService.findRequests(acceptable, authMember.getUsername(), yataId ,pageable);
+        return new ResponseEntity<>(new SliceResponseDto<YataRequestDto.RequestResponse>(mapper.yataRequestsToYataRequestResponses(requests),pageable), HttpStatus.OK);
+//        if(requests.hasContent()) {
+//            return new ResponseEntity<>(new SliceResponseDto<YataRequestDto.RequestResponse>(mapper.yataRequestsToYataRequestResponses(requests),pageable), HttpStatus.OK);
+//        } else {
+//            return ResponseEntity.noContent().build();
+//        }
     }
 
     // TODO Yata 신청 or 초대 전 or 승인 후 삭제 - 204

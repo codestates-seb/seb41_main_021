@@ -5,6 +5,7 @@ import com.yata.backend.domain.member.service.MemberService;
 import com.yata.backend.domain.yata.dto.YataRequestDto;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataRequest;
+import com.yata.backend.domain.yata.entity.YataStatus;
 import com.yata.backend.domain.yata.repository.yataRequestRepo.JpaYataRequestRepository;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
@@ -16,6 +17,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
+
+import static com.yata.backend.domain.yata.entity.YataRequest.RequestStatus.APPLY;
+import static com.yata.backend.domain.yata.entity.YataRequest.RequestStatus.INVITE;
 
 @Service
 @Transactional
@@ -34,10 +38,16 @@ public class YataRequestServiceImpl implements YataRequestService {
     @Override
     public YataRequest createRequest(YataRequest yataRequest, String userName, Long yataId) {
         Member member = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
-        verifyRequest(yataRequest); // 신청을 이미 했었는지 확인하고
+        verifyRequest(userName, yataId); // 신청을 이미 했었는지 확인하고
         Yata yata = yataService.verifyYata(yataId);
+        YataStatus yataStatus = yata.getYataStatus();
+        if (yataStatus == YataStatus.YATA_NEOTA) {
+            yataRequest.setRequestStatus(APPLY);
+        } else {
+            throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
+        }
         // TODO 체크리스트 추가
-        YataRequest request = YataRequest.create(yataRequest, member, yata);
+         YataRequest request = YataRequest.create(yataRequest, member, yata);
         // 신청 이후 yata 에서 신청자 list 에 추가됨
 
         return jpaYataRequestRepository.save(request);
@@ -47,8 +57,14 @@ public class YataRequestServiceImpl implements YataRequestService {
     @Override
     public YataRequest createInvitation(YataRequest yataRequest, String userName, Long yataId) {
         Member member = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
-        verifyInvitation(yataRequest); // 초대를 이미 했었는지 확인하고
+        verifyInvitation(userName, yataId); // 초대를 이미 했었는지 확인하고
         Yata yata = yataService.verifyYata(yataId);
+        YataStatus yataStatus = yata.getYataStatus();
+        if (yataStatus == YataStatus.YATA_NATA) {
+            yataRequest.setRequestStatus(INVITE);
+        } else {
+            throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
+        }
         YataRequest request = YataRequest.create(yataRequest, member, yata);
         // 초대 이후 (자신의 게시물이 있다는 전제로) --> 탑승자가 그 게시물을 보고 승인 --> yata 에서 해당 게시물의 탑승자 list 에 추가
 
@@ -57,10 +73,14 @@ public class YataRequestServiceImpl implements YataRequestService {
 
     // TODO Yata 신청 목록 조회
     @Override
-    public Slice<YataRequest> findRequests(String userEmail, Long yataId, Pageable pageable) {
+    public Slice<YataRequest> findRequests(boolean acceptable, String userEmail, Long yataId, Pageable pageable) {
+        if (acceptable == false) {
+            throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
+        }
+
         Yata yata = yataService.verifyYata(yataId);
         Member member = memberService.verifyMember(userEmail);
-        if(!member.equals(yata.getMember())) throw new CustomLogicException(ExceptionCode.CANNOT_DELETE);
+        if(!member.equals(yata.getMember())) throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
         return jpaYataRequestRepository.findAllByYata(yata, pageable);
     }
 
@@ -73,8 +93,8 @@ public class YataRequestServiceImpl implements YataRequestService {
 
     // 이미 신청한 게시물인지 검증
     @Override
-    public void verifyRequest(YataRequest yataRequest) {
-        Optional<YataRequest> optionalYataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(yataRequest.getMember().getEmail(), yataRequest.getYata().getYataId());
+    public void verifyRequest(String userName, Long yataId) {
+        Optional<YataRequest> optionalYataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(userName, yataId);
         optionalYataRequest.ifPresent(
                 yr -> {throw new CustomLogicException(ExceptionCode.ALREADY_APPLIED);}
         );
@@ -82,8 +102,8 @@ public class YataRequestServiceImpl implements YataRequestService {
 
     // 이미 초대한 게시물인지 검증
     @Override
-    public void verifyInvitation(YataRequest yataRequest) {
-        Optional<YataRequest> optionalYataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(yataRequest.getMember().getEmail(), yataRequest.getYata().getYataId());
+    public void verifyInvitation(String userName, Long yataId) {
+        Optional<YataRequest> optionalYataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(userName, yataId);
         optionalYataRequest.ifPresent(
                 yr -> {throw new CustomLogicException(ExceptionCode.ALREADY_INVITED);}
         );
