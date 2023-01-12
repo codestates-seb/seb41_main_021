@@ -3,8 +3,8 @@ package com.yata.backend.domain.yata.entity;
 import lombok.Getter;
 
 public enum YataStatus {
-        YATA_NEOTA("너타"),
-        YATA_NATA("나타");
+        YATA_NEOTA("neota"),
+        YATA_NATA("nata");
 
         @Getter
         private String status;

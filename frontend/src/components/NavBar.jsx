@@ -13,19 +13,19 @@ export default function Navbar() {
             <AiOutlineHome />
             <p>홈</p>
           </NavLink>
-          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/taeoondalist">
+          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/taeoonda-list">
             <TbSteeringWheel />
             <p>태웁니다</p>
           </NavLink>
-          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/tabnidalist">
+          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/tabnida-list">
             <AiOutlineCar />
             <p>탑니다</p>
           </NavLink>
-          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/registerlist">
+          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/register-list">
             <FaRegHandshake />
             <p>요청 내역</p>
           </NavLink>
-          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/mypage">
+          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/my-page">
             <AiOutlineUser />
             <p>마이페이지</p>
           </NavLink>

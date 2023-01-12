@@ -6,6 +6,7 @@ export default function Loading() {
     <>
       <Container>
         <img src={Logo} alt="logo"></img>
+        <FontAwesomeIcon icon="fa-thin fa-spinner" />
       </Container>
     </>
   );
