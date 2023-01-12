@@ -2,6 +2,7 @@ package com.yata.backend.domain.member.controller;
 
 import com.google.gson.Gson;
 import com.yata.backend.domain.AbstractControllerTest;
+import com.yata.backend.domain.member.dto.EmailAuthDto;
 import com.yata.backend.domain.member.factory.MemberFactory;
 import com.yata.backend.domain.member.service.MemberService;
 import com.yata.backend.domain.member.service.SignUpVerifyService;
@@ -79,7 +80,33 @@ class SignUpVerifyControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void verifyAuthCode() {
-
+    @WithMockUser
+    @DisplayName("인증번호 검증")
+    void verifyAuthCode() throws Exception {
+        // given
+        EmailAuthDto emailAuthDto = EmailAuthDto.builder()
+                .email(MemberFactory.createMemberPostDto().getEmail())
+                .authCode("123456")
+                .build();
+        given(signUpVerifyService.verifyAuthCode(emailAuthDto)).willReturn(true);
+        // when
+        ResultActions resultActions = mockMvc.perform(post(BASE_URL + "/auth-code")
+                .contentType("application/json")
+                .content(gson.toJson(emailAuthDto))
+                .with(csrf()));
+        // then
+        resultActions.andExpect(status().isOk())
+                .andDo(print());
+        resultActions.andDo(document("verify-auth-code",
+                getRequestPreProcessor(),
+                getResponsePreProcessor(),
+                requestFields(
+                        fieldWithPath("email").type("String").description("이메일"),
+                        fieldWithPath("authCode").type("String").description("인증코드")
+                ),
+                responseFields(
+                        fieldWithPath("data").type("boolean").description("인증코드 일치 여부 , true : 일치, false : 불일치 ")
+                )
+        ));
     }
 }
