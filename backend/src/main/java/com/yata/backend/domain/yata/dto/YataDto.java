@@ -1,6 +1,7 @@
 package com.yata.backend.domain.yata.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.yata.backend.domain.member.dto.MemberDto;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataChecklist;
 import com.yata.backend.domain.yata.entity.YataStatus;
@@ -120,7 +121,7 @@ public class YataDto {
         private LocationDto.Response destination;
         private Yata.PostStatus postStatus;
         private YataStatus yataStatus;
-
+        private String email;
 
     }
 

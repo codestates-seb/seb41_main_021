@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 public interface YataService {
     Yata createYata(Yata yata,String yataStatus, String userName);
 
-    Yata updateYata(long yataId,Yata yata);
+    Yata updateYata(long yataId,Yata yata,String userName);
 
-    void deleteYata(long yataId);
+    void deleteYata(long yataId,String username);
 
     Yata findAllYata();
 
