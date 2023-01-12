@@ -102,7 +102,7 @@ const ProfileContainer = styled.div`
   align-items: center;
   justify-content: center;
 
-  @media only screen and (max-height: 667px) {
+  @media only screen and (min-height: 667px) {
     height: 35%;
   }
 `;
