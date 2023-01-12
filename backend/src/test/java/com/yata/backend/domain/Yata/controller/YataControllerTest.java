@@ -166,15 +166,6 @@ public class YataControllerTest extends AbstractControllerTest {
                 )
         ));
 
-
-
-
-
-
-
-
-
-
     }
 
 }
