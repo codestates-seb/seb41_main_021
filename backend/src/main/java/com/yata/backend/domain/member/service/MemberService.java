@@ -12,6 +12,9 @@ public interface MemberService {
     Optional<Member> findMemberByEmail(String email);
     Member verifyMember(String email);
     void duplicateMember(String email);
+    boolean duplicateEmail(String email);
 
     Member updateMember(String email, Member patchMemberDtoToMember);
+
+
 }
