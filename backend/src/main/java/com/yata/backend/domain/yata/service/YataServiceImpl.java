@@ -6,6 +6,7 @@ import com.yata.backend.domain.yata.repository.yataRepo.JpaYataRepository;
 import com.yata.backend.domain.yata.repository.yataRepo.YataRepository;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
+import com.yata.backend.global.utils.CustomBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +19,13 @@ import static com.yata.backend.domain.yata.entity.Yata.PostStatus.POST_WAITING;
 @Transactional
 public class YataServiceImpl implements YataService{
 
-    JpaYataRepository jpayataRepository;
+    private final JpaYataRepository jpayataRepository;
+    private final CustomBeanUtils<Yata> beanUtils;
 
-    public YataServiceImpl(JpaYataRepository jpayataRepository){
+
+    public YataServiceImpl(JpaYataRepository jpayataRepository,CustomBeanUtils<Yata> beanUtils){
         this.jpayataRepository = jpayataRepository;
+        this.beanUtils = beanUtils;
     }
 
     @Override
@@ -32,6 +36,8 @@ public class YataServiceImpl implements YataService{
             case "nata" -> yata.setYataStatus(YataStatus.YATA_NATA);
             default ->  throw new CustomLogicException(ExceptionCode.YATA_STATUS_NONE);
         }
+
+        yata.setPostStatus(POST_WAITING);
 
         return jpayataRepository.save(yata);
     }
@@ -47,39 +53,23 @@ public class YataServiceImpl implements YataService{
         //예안 게시물이면 -> 예외
         modifiableYata(yataId);
 
-        //수정 내용이 있다면 바꿔서 저장해주기
-        //todo 출발지,도착지,체크리스트,...
-        Optional.ofNullable(yata.getAmount())
-                .ifPresent(amount -> findYata.setAmount(amount));
-        Optional.ofNullable(yata.getMaxPeople())
-                .ifPresent(n -> findYata.setMaxPeople(n));
-        Optional.ofNullable(yata.getDepartureTime())
-                .ifPresent(n -> findYata.setDepartureTime(n));
-        Optional.ofNullable(yata.getTimeOfArrival())
-                .ifPresent(n -> findYata.setTimeOfArrival(n));
-        Optional.ofNullable(yata.getCarModel())
-                .ifPresent(n -> findYata.setCarModel(n));
-        Optional.ofNullable(yata.getStrPoint())
-                .ifPresent((n->findYata.setStrPoint(n)));
-        Optional.ofNullable(yata.getDestination())
-                .ifPresent(n->findYata.setDestination(n));
+        Yata updatingYata = beanUtils.copyNonNullProperties(yata,findYata);
 
-
-    return jpayataRepository.save(findYata);
+    return jpayataRepository.save(updatingYata);
     }
 
     @Override
-    public Yata deleteNeota() {
+    public Yata deleteYata() {
         return null;
     }
 
     @Override
-    public Yata findAllNeota() {
+    public Yata findAllYata() {
         return null;
     }
 
     @Override
-    public Yata findNeota() {
+    public Yata findYata() {
         return null;
     }
 

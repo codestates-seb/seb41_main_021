@@ -5,9 +5,6 @@ import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.Yata;
 import org.mapstruct.Mapper;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -41,8 +38,6 @@ public interface YataMapper {
         return yata.build();
     }
 
-    Yata nataPostDtoToYata(YataDto.YataPost requestBody);
-
     Yata yataPatchToYata(YataDto.Patch requestBody);
 
     YataDto.Response yataToYataResponse(Yata yata);
@@ -59,6 +54,7 @@ public interface YataMapper {
         location.longitude(post.getLongitude());
         location.latitude(post.getLatitude());
         location.address(post.getAddress());
+
 
         return location.build();
     }
