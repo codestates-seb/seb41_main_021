@@ -3,7 +3,6 @@ import { NavLink } from 'react-router-dom';
 import { AiOutlineUser } from 'react-icons/ai';
 import { FaCarSide } from 'react-icons/fa';
 import { RiSteeringLine } from 'react-icons/ri';
-import { TbSmartHome } from 'react-icons/tb';
 import { TbHeartHandshake } from 'react-icons/tb';
 
 export default function Navbar() {
@@ -11,10 +10,6 @@ export default function Navbar() {
     <>
       <Container>
         <NavContainer>
-          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/">
-            <TbSmartHome />
-            <p>홈</p>
-          </NavLink>
           <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/taeoonda-list">
             <RiSteeringLine />
             <p>태웁니다</p>
@@ -48,17 +43,16 @@ const Container = styled.div`
 
 const NavContainer = styled.div`
   width: 100%;
-  height: 60px;
+  height: 5rem;
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  flex-grow: 1;
 
   svg {
     font-size: 2rem;
   }
 
   a {
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -82,6 +76,5 @@ const NavContainer = styled.div`
     width: 470px;
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
   }
 `;
