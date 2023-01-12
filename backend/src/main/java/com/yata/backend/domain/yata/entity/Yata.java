@@ -21,7 +21,6 @@ public class Yata extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long yataId;
 
-    //todo departureTime date타입으로 바꾸기
     @Column
     private Date departureTime;
 
@@ -35,7 +34,7 @@ public class Yata extends Auditable {
     private String content;
 
     @Column(nullable = false)
-    private int maxWaitingTime;
+    private Integer maxWaitingTime;
 
 
     @Enumerated(value = EnumType.STRING)
@@ -44,25 +43,23 @@ public class Yata extends Auditable {
 
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20)
-    private PostStatus postStatus = PostStatus.POST_WAITING;
+    private PostStatus postStatus;
 
 
     @Column(length = 20, nullable = false)
     private String carModel;
 
     @Column(nullable = false)
-    private int maxPeople;
+    private Integer maxPeople;
 
     @Column(length = 10,nullable = false)
-    private long amount;
+    private Long amount;
 
-    @OneToOne( mappedBy = "yata",cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     private Location strPoint;
 
-    @OneToOne( mappedBy = "yata",cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     private Location destination;
-
-
 
 //    @OneToMany(mappedBy = "yata",cascade = CascadeType.ALL)
 //    private List<YataChecklist> yataChecklists = new ArrayList<>();
@@ -70,7 +67,7 @@ public class Yata extends Auditable {
 
 //    @OneToMany(mappedBy = "yata" , cascade = CascadeType.ALL)
 //    private List<Location> waypoints = new ArrayList<>();
-//
+
     @ManyToOne
     @JoinColumn(name = "EMAIL")
     private Member member;

@@ -7,9 +7,9 @@ import RegisterListView from '../components/registerList/RegisterListView';
 export default function RegisterCheckList() {
   return (
     <>
-      <Header title="RegisterCheckList" />
       <Navbar />
       <Content>
+        <Header title="RegisterCheckList" />
         <RegisterListView />
         <Button>수락하기</Button>
       </Content>

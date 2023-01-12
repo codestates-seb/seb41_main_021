@@ -8,10 +8,10 @@ public interface YataService {
 
     Yata updateYata(long yataId,Yata yata);
 
-    Yata deleteNeota();
+    Yata deleteYata();
 
-    Yata findAllNeota();
+    Yata findAllYata();
 
-    Yata findNeota();
+    Yata findYata();
 
 }

@@ -5,6 +5,7 @@ import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.mapper.YataMapper;
 import com.yata.backend.domain.yata.service.YataService;
+import com.yata.backend.global.response.SingleResponse;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,16 +37,17 @@ public class YataController {
                                     @RequestParam String yataStatus,
                                     @AuthenticationPrincipal User authMember){
 
-        System.out.println(requestBody.getDepartureTime());
         Yata yata = yataService.createYata(mapper.yataPostDtoToYata(requestBody),yataStatus,authMember.getUsername());
-        return new ResponseEntity<>((mapper.yataToYataResponse(yata)), HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                new SingleResponse<>(mapper.yataToYataResponse(yata)), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{yata_id}")
     public ResponseEntity patchYata(@PathVariable("yata_id") @Positive long yataId,
                                      @Valid @RequestBody YataDto.Patch requestbody){
         Yata yata = this.yataService.updateYata(yataId,this.mapper.yataPatchToYata(requestbody));
-        return new ResponseEntity<>(mapper.yataToYataResponse(yata),HttpStatus.OK);
+        return new ResponseEntity<>(
+                new SingleResponse<>(mapper.yataToYataResponse(yata)),HttpStatus.OK);
     }
 
     @DeleteMapping("/{yata_id}")

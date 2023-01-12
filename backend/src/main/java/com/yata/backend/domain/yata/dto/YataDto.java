@@ -3,6 +3,7 @@ package com.yata.backend.domain.yata.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataChecklist;
+import com.yata.backend.domain.yata.entity.YataStatus;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -37,13 +38,13 @@ public class YataDto {
         private Date timeOfArrival;
 
         @NotNull
-        private int maxWaitingTime;
+        private Integer maxWaitingTime;
 
         @NotNull
-        private int maxPeople;
+        private Integer maxPeople;
 
         @NotNull
-        private long amount;
+        private Long amount;
 
         @NotBlank
         private String carModel;
@@ -75,15 +76,17 @@ public class YataDto {
 
         private String content;
 
-        private String departureTime;
+        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss" , iso = DateTimeFormat.ISO.DATE_TIME)
+        private Date departureTime;
 
-        private String timeOfArrival;
+        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss" , iso = DateTimeFormat.ISO.DATE_TIME)
+        private Date timeOfArrival;
 
-        private int maxWaitingTime;
+        private Integer maxWaitingTime;
 
-        private int maxPeople;
+        private Integer maxPeople;
 
-        private long amount;
+        private Long amount;
 
         private String carModel;
 
@@ -92,6 +95,8 @@ public class YataDto {
 
         @Valid
         private LocationDto.Post destination;
+
+
     }
 
     @Getter
@@ -100,19 +105,24 @@ public class YataDto {
     @AllArgsConstructor
     @Builder
     public static class Response {
+        private long yataId;
         @JsonFormat(shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd'T'HH:mm:ss" , timezone = "Asia/Seoul")
         private Date departureTime;
         @JsonFormat(shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd'T'HH:mm:ss" , timezone = "Asia/Seoul")
         private Date timeOfArrival;
         private String title;
         private String content;
-        private int maxWaitingTime;
-        private int maxPeople;
-        private long amount;
+        private Integer maxWaitingTime;
+        private Integer maxPeople;
+        private Long amount;
         private String carModel;
         private LocationDto.Response strPoint;
         private LocationDto.Response destination;
+        private Yata.PostStatus postStatus;
+        private YataStatus yataStatus;
+
 
     }
+
 
 }

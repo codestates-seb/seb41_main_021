@@ -7,12 +7,12 @@ import Header from '../components/Header';
 export default function RegisterList() {
   const navigate = useNavigate();
   const go = () => {
-    navigate('/registerchecklist');
+    navigate('/register-checklist');
   };
   return (
     <>
-      <Header title="요청 내역" />
       <Navbar />
+      <Header title="요청 내역" />
       <Container>
         <ListItem
           onClick={go}
@@ -21,14 +21,26 @@ export default function RegisterList() {
           journeyEnd={'부산'}
           transit="1"></ListItem>
         <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
+        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
+        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
+        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
+        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
+        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
+        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
+        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
+        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
+        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
+        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
+        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
       </Container>
     </>
   );
 }
 
 const Container = styled.div`
+  overflow: scroll;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 10rem);
   display: flex;
   flex-direction: column;
   align-items: center;

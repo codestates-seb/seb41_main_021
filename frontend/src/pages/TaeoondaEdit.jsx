@@ -8,11 +8,6 @@ import { AiOutlinePlusCircle } from 'react-icons/ai';
 import Header from '../components/Header';
 
 export default function TaeoondaEdit() {
-  // const navigate = useNavigate();
-  // const next = () => {
-  //   navigate('/tabnidaadddetail');
-  // };
-
   const [num, setNum] = useState(1);
 
   const handleSubmit = e => {
