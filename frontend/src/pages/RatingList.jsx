@@ -6,7 +6,6 @@ export default function RatingList() {
   return (
     <>
       <Navbar></Navbar>
-
       <Container>
         <Header title={'매너 평가'}></Header>
         <GoodContainer>
@@ -47,7 +46,7 @@ export default function RatingList() {
 
 const Container = styled.div`
   width: 100%;
-  height: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
