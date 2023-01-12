@@ -83,6 +83,7 @@ export default function SignUp() {
     <>
       {isLogin || (
         <>
+
           <Header title={'회원가입'} />
           <Container>
             <Contents>
