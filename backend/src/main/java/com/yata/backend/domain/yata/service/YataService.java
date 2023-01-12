@@ -14,4 +14,7 @@ public interface YataService {
 
     Yata findYata();
 
+    Yata verifyYata(long yataId);
+
+
 }

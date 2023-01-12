@@ -34,8 +34,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -88,7 +87,7 @@ public class YataControllerTest extends AbstractControllerTest {
 
         //then
         resultActions.andDo(print());
-        resultActions.andDo(document("neota-create",
+        resultActions.andDo(document("yata-create",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
                 requestFields(
@@ -151,7 +150,7 @@ public class YataControllerTest extends AbstractControllerTest {
                         .andExpect(jsonPath("$.data.content").value(response.getContent()))
                         .andDo(print());
 
-        resultActions.andDo(document("neota-create",
+        resultActions.andDo(document("yata-update",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
                 requestFields(
@@ -165,6 +164,44 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("timeOfArrival").type(JsonFieldType.STRING).description("도착시간")
                 )
         ));
+
+    }
+
+    @Test
+    @WithMockUser(username = "test@gmail.com", roles = "USER")
+    @DisplayName("야타 게시글 삭제")
+    void deleteYata() throws Exception {
+
+        Yata expected = Yata.builder()
+                .yataId(1L)
+                .title("인천까지 같이가실 분~")
+                .content("같이 춤추면서 가요~")
+                .departureTime(new Date())
+                .timeOfArrival(new Date())
+                .amount(1500L)
+                .carModel("porsche")
+                .maxPeople(2)
+                .maxWaitingTime(10)
+                .yataStatus(YataStatus.YATA_NATA)
+                .postStatus(Yata.PostStatus.POST_WAITING)
+                .build();
+
+        given(yataService.verifyYata(anyLong())).willReturn(expected);
+
+        ResultActions resultActions = mockMvc.perform(
+                delete(BASE_URL + "/{yata_Id}",expected.getYataId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf()));//csrf토큰 생성
+
+
+        // then
+        resultActions.andExpect(status().isNoContent())
+                .andDo(print())
+                .andDo(document("yata-delete",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor()
+                        )
+                );
 
     }
 
