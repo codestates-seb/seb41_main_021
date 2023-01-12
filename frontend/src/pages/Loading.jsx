@@ -1,12 +1,13 @@
-import styled from 'styled-components';
-import Logo from '../images/Full_Logo.svg';
+import styled, { keyframes } from 'styled-components';
+import { TbLoader } from 'react-icons/tb';
 
 export default function Loading() {
   return (
     <>
       <Container>
-        <img src={Logo} alt="logo"></img>
-        <FontAwesomeIcon icon="fa-thin fa-spinner" />
+        <Spinner>
+          <TbLoader />
+        </Spinner>
       </Container>
     </>
   );
@@ -18,8 +19,23 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
 
-  img {
-    width: 60%;
+const spin = keyframes`
+    0% {
+        transform: rotate(0deg);
+      }
+    100% {
+        transform: rotate(360deg);
+      }
+  `;
+
+const Spinner = styled.div`
+  margin: 4rem;
+  animation: ${spin} infinite 5s linear;
+
+  svg {
+    font-size: 8rem;
+    color: gray;
   }
 `;

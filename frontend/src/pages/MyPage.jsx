@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import NavBar from '../components/NavBar';
 import { NavLink } from 'react-router-dom';
-import { MdOutlineAccountBox } from 'react-icons/md';
+import { VscAccount } from 'react-icons/vsc';
 import { BiTrip, BiLike } from 'react-icons/bi';
 import { RiOilLine } from 'react-icons/ri';
 import { IoIosArrowForward } from 'react-icons/io';
@@ -15,7 +15,7 @@ export default function MyPage() {
         <MyPageContainer>
           <ProfileContainer>
             <Profile>
-              <MdOutlineAccountBox />
+              <VscAccount />
               <Info>
                 <div className="text">
                   <b>문재웅</b>
@@ -114,12 +114,12 @@ const Profile = styled.div`
   bottom: 3rem;
   display: flex;
   align-items: center;
-  justify-content: center;
 
   svg {
     font-size: 7rem;
     color: #26264c;
     background-color: white;
+    padding: 10px;
     border-radius: 1rem;
     box-shadow: 0px 4px 4px -4px #3f5179;
   }
@@ -134,8 +134,7 @@ const Info = styled.div`
   margin-left: 1rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  color: #fff;
+  /* color: #fff; */
   div {
     margin-top: 0.3rem;
     font-size: 1.2rem;
@@ -166,7 +165,7 @@ const SummaryContainer = styled.div`
   height: 12rem;
   background-color: #fff;
   border-radius: 1rem;
-  box-shadow: 0 0px 10px #73b2d9, 0 0px 10px #73b2d9;
+  box-shadow: 0 0px 5px lightgray;
   position: relative;
   bottom: 5rem;
   display: flex;
