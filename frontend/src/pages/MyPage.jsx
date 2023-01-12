@@ -78,6 +78,12 @@ export default function MyPage() {
                   <IoIosArrowForward />
                 </JourneyRecord>
               </NavLink>
+              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/">
+                <JourneyRecord>
+                  <div className="title">로그아웃</div>
+                  <IoIosArrowForward />
+                </JourneyRecord>
+              </NavLink>
             </List>
           </ListContainer>
         </MyPageContainer>

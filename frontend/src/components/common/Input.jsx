@@ -49,8 +49,8 @@ const StyledDiv = styled.div`
 `;
 const StyledLabel = styled.label`
   white-space: nowrap;
-  font-size: ${props => props.theme.fontSizes.xl};
-  font-weight: bold;
+  font-size: 1rem;
+
   @media screen and (max-width: 470px) {
     margin-bottom: 1rem;
   }
@@ -59,13 +59,14 @@ const StyledInput = styled.input`
   width: 100%;
   padding: 0.8rem 1.25rem;
   border-radius: 5px;
-  border: ${props => props.theme.colors.dark_blue + ' 1px solid'};
+  /* border: ${props => props.theme.colors.dark_blue + ' 1px solid'}; */
+  border: 1px solid lightgray;
   :focus {
     outline: none;
     border-color: ${props => props.theme.colors.darker_blue};
   }
   @media screen and (min-width: 470px) {
-    width: 70%;
+    width: 80%;
   }
 `;
 
