@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import { AiOutlineHome, AiOutlineComment, AiOutlineBell, AiOutlineUser, AiOutlineCar } from 'react-icons/ai';
-import { TbSteeringWheel } from 'react-icons/tb';
-import { FaRegHandshake } from 'react-icons/fa';
+import { AiOutlineUser } from 'react-icons/ai';
+import { FaCarSide } from 'react-icons/fa';
+import { RiSteeringLine } from 'react-icons/ri';
+import { TbSmartHome } from 'react-icons/tb';
+import { TbHeartHandshake } from 'react-icons/tb';
 
 export default function Navbar() {
   return (
@@ -10,19 +12,19 @@ export default function Navbar() {
       <Container>
         <NavContainer>
           <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/">
-            <AiOutlineHome />
+            <TbSmartHome />
             <p>홈</p>
           </NavLink>
           <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/taeoonda-list">
-            <TbSteeringWheel />
+            <RiSteeringLine />
             <p>태웁니다</p>
           </NavLink>
           <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/tabnida-list">
-            <AiOutlineCar />
+            <FaCarSide />
             <p>탑니다</p>
           </NavLink>
           <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/register-list">
-            <FaRegHandshake />
+            <TbHeartHandshake />
             <p>요청 내역</p>
           </NavLink>
           <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/my-page">
@@ -51,8 +53,9 @@ const NavContainer = styled.div`
   align-items: center;
   justify-content: space-around;
   flex-grow: 1;
+
   svg {
-    font-size: 30px;
+    font-size: 2rem;
   }
 
   a {
@@ -71,6 +74,7 @@ const NavContainer = styled.div`
 
     p {
       margin-top: 0.3rem;
+      font-size: 1rem;
     }
   }
 
