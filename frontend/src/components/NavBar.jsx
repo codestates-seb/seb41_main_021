@@ -33,10 +33,12 @@ export default function Navbar() {
 }
 
 const Container = styled.div`
-  background-color: #fff;
-  position: absolute;
-  bottom: 0;
-  box-shadow: 0 -5px 10px -8px lightgrey;
+  div {
+    background-color: #fff;
+    position: absolute;
+    bottom: 0;
+    box-shadow: 0 -5px 10px -8px lightgrey;
+  }
 `;
 
 const NavContainer = styled.div`
