@@ -11,10 +11,6 @@ export default function Navbar() {
     <>
       <Container>
         <NavContainer>
-          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/">
-            <TbSmartHome />
-            <p>홈</p>
-          </NavLink>
           <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/taeoonda-list">
             <RiSteeringLine />
             <p>태웁니다</p>
