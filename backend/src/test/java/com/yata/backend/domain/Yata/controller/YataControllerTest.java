@@ -132,7 +132,7 @@ public class YataControllerTest extends AbstractControllerTest {
         YataDto.Response response = createYataResponseDto(expected);
 
         given(mapper.yataPatchToYata(any())).willReturn(new Yata());
-        given(yataService.updateYata(anyLong(),any())).willReturn(new Yata());
+        given(yataService.updateYata(anyLong(),any(),any())).willReturn(new Yata());
         given(mapper.yataToYataResponse(any())).willReturn(response);
         //when
 
