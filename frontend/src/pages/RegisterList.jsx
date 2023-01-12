@@ -11,9 +11,9 @@ export default function RegisterList() {
   };
   return (
     <>
-      <Header title="요청 내역" />
       <Navbar />
       <Container>
+        <Header title="요청 내역" />
         <ListItem
           onClick={go}
           date={'1월 3일 (화) 7:00PM'}

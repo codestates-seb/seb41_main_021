@@ -18,9 +18,8 @@ export default function TabnidaList() {
 
   return (
     <>
-      <Header title="탑니다" />
-      <Navbar />
       <Container>
+        <Header title="탑니다" />
         <DestinationInput />
         <ListItem
           date={'1월 3일 (화) 7:00PM'}
@@ -36,6 +35,7 @@ export default function TabnidaList() {
           <MdAdd />
         </CircleButton>
       </Container>
+      <Navbar />
     </>
   );
 }
@@ -46,4 +46,5 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 `;

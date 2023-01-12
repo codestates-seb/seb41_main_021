@@ -30,7 +30,8 @@ const RegisterListItem = props => {
 const Container = styled.div`
   width: 100%;
   height: 9rem;
-  border-bottom: 1px solid ${props => props.theme.colors.light_gray};
+
+  border-bottom: 1px solid #f6f6f6;
 
   @media only screen and (min-width: 800px) {
   }

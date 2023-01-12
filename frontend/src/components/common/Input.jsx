@@ -57,7 +57,7 @@ const StyledLabel = styled.label`
 `;
 const StyledInput = styled.input`
   width: 100%;
-  padding: 10px 15px;
+  padding: 0.8rem 1.25rem;
   border-radius: 5px;
   border: ${props => props.theme.colors.dark_blue + ' 1px solid'};
   :focus {

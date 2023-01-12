@@ -151,7 +151,7 @@ const Contents = styled.div`
 
 const LoginForm = styled.form`
   width: 100%;
-  height: 20rem;
+  height: 24rem;
   min-width: 20rem;
   display: grid;
 `;
