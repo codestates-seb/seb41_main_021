@@ -1,5 +1,7 @@
 package com.yata.backend.domain.yata.service;
 
+import com.yata.backend.domain.member.entity.Member;
+import com.yata.backend.domain.member.service.MemberService;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataStatus;
 import com.yata.backend.domain.yata.repository.yataRepo.JpaYataRepository;
@@ -19,19 +21,23 @@ import static com.yata.backend.domain.yata.entity.Yata.PostStatus.POST_WAITING;
 @Transactional
 public class YataServiceImpl implements YataService{
 
+    private final MemberService memberService;
+
     private final JpaYataRepository jpayataRepository;
     private final CustomBeanUtils<Yata> beanUtils;
 
 
 
-    public YataServiceImpl(JpaYataRepository jpayataRepository,CustomBeanUtils<Yata> beanUtils){
+    public YataServiceImpl(JpaYataRepository jpayataRepository,CustomBeanUtils<Yata> beanUtils,MemberService memberService){
         this.jpayataRepository = jpayataRepository;
         this.beanUtils = beanUtils;
+        this.memberService = memberService;
     }
 
     @Override
     public Yata createYata(Yata yata,String yataStatus, String userName) {
 
+        Member member = memberService.findMember(userName);
         switch (yataStatus){
             case "neota" -> yata.setYataStatus(YataStatus.YATA_NEOTA);
              case "nata" -> yata.setYataStatus(YataStatus.YATA_NATA);
@@ -39,21 +45,25 @@ public class YataServiceImpl implements YataService{
         }
 
         yata.setPostStatus(POST_WAITING);
+        yata.setMember(member);
 
         return jpayataRepository.save(yata);
     }
 
 
     @Override
-    public Yata updateYata(long yataId,Yata yata) {
+    public Yata updateYata(long yataId,Yata yata,String userName) {
 
+        //존재하는 멤버인지 확인
+        Member member = memberService.findMember(userName);
         //존재하는 게시물인지 확인
         Yata findYata = verifyYata(yataId);
+        //게시글 작성자와 같은 멤버인지 확인
+        equalMember(member,findYata.getMember());
 
         //예완 상태 아닌 게시물인지 확인
         //예안 게시물이면 -> 예외
         modifiableYata(yataId);
-
 
         Yata updatingYata = beanUtils.copyNonNullProperties(yata,findYata);
 
@@ -61,8 +71,17 @@ public class YataServiceImpl implements YataService{
     }
 
     @Override
-    public Yata deleteYata() {
-        return null;
+    public void deleteYata(long yataId,String username) {
+
+        Member member = memberService.findMember(username);
+        Yata findYata = verifyYata(yataId);
+        //게시글 작성자와 같은 멤버인지 확인
+        equalMember(member,findYata.getMember());
+
+        switch (findYata.getPostStatus()){
+            case POST_MOVING,POST_CLOSED,POST_RESERVED,POST_WARNING -> throw new CustomLogicException(ExceptionCode.CANNOT_DELETE);
+            default -> jpayataRepository.delete(findYata);
+        }
     }
 
     @Override
@@ -91,5 +110,9 @@ public class YataServiceImpl implements YataService{
         if(statusNumber>1){throw new CustomLogicException(ExceptionCode.YATA_IS_NOT_MODIFIABLE_STATUS);
         }
     }
-
+    private void equalMember(Member member,Member postMember) {
+        if (!member.getEmail().equals(postMember.getEmail())) {
+            throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
+        }
+    }
 }

@@ -44,15 +44,19 @@ public class YataController {
 
     @PatchMapping("/{yata_id}")
     public ResponseEntity patchYata(@PathVariable("yata_id") @Positive long yataId,
-                                     @Valid @RequestBody YataDto.Patch requestbody){
-        Yata yata = this.yataService.updateYata(yataId,this.mapper.yataPatchToYata(requestbody));
+                                     @Valid @RequestBody YataDto.Patch requestbody,
+                                    @AuthenticationPrincipal User authMember){
+        Yata yata = this.yataService.updateYata(yataId,this.mapper.yataPatchToYata(requestbody),authMember.getUsername());
         return new ResponseEntity<>(
                 new SingleResponse<>(mapper.yataToYataResponse(yata)),HttpStatus.OK);
     }
 
     @DeleteMapping("/{yata_id}")
-    public ResponseEntity deleteNeota(){
-        return null;
+    public ResponseEntity deleteNeota(@PathVariable("yata_id") @Positive long yataId,
+                                      @AuthenticationPrincipal User authMember){
+
+        this.yataService.deleteYata(yataId,authMember.getUsername());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     //너타목록 불러오기

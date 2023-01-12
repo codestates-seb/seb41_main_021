@@ -40,7 +40,32 @@ public interface YataMapper {
 
     Yata yataPatchToYata(YataDto.Patch requestBody);
 
-    YataDto.Response yataToYataResponse(Yata yata);
+    default YataDto.Response yataToYataResponse(Yata yata){
+        if ( yata == null ) {
+            return null;
+        }
+
+        YataDto.Response.ResponseBuilder response = YataDto.Response.builder();
+
+        if ( yata.getYataId() != null ) {
+            response.yataId( yata.getYataId() );
+        }
+        response.departureTime( yata.getDepartureTime() );
+        response.timeOfArrival( yata.getTimeOfArrival() );
+        response.title( yata.getTitle() );
+        response.content( yata.getContent() );
+        response.maxWaitingTime( yata.getMaxWaitingTime() );
+        response.maxPeople( yata.getMaxPeople() );
+        response.amount( yata.getAmount() );
+        response.carModel( yata.getCarModel() );
+        response.strPoint( locationToResponse( yata.getStrPoint() ) );
+        response.destination( locationToResponse( yata.getDestination() ) );
+        response.postStatus( yata.getPostStatus() );
+        response.yataStatus( yata.getYataStatus() );
+        response.email(yata.getMember().getEmail());
+
+        return response.build();
+    }
 
     List<YataDto.Response> yatasToYataResponses(List<Yata> yatas);
 
