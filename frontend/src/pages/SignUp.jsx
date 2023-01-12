@@ -4,7 +4,6 @@ import Button from '../components/common/Button';
 import Input from '../components/common/Input';
 import LinkTo from '../components/common/LinkTo';
 import Header from '../components/Header';
-import Validity from '../components/SignUp/Validity';
 
 export default function SignUp() {
   const [name, setName] = useState('');
@@ -84,8 +83,8 @@ export default function SignUp() {
     <>
       {isLogin || (
         <>
+          <Header title={'회원가입'} />
           <Container>
-            <Header title={'회원가입'} />
             <Contents>
               <Title>
                 <MainTitle>Welcome!</MainTitle>
@@ -94,15 +93,14 @@ export default function SignUp() {
               <SignupForm onSubmit={handleSubmit}>
                 <Wrapper>
                   <Input label="이름" placeholder="이름 입력" state={name} onChange={nameValidation} />
-                  {/* {nameValidity || <ErrorMsg>아이디를 입력해주세요</ErrorMsg>} */}
-                  {nameValidity && <Validity type={'name'} />}
+                  {nameValidity && <ErrorMsg>아이디를 입력해주세요</ErrorMsg>}
                 </Wrapper>
                 <Wrapper>
                   <Input label="닉네임" placeholder="닉네임 입력" state={nickname} setState={setNickname} />
                 </Wrapper>
                 <Wrapper>
                   <Input label="Email" placeholder="이메일 입력" state={email} onChange={emailValidation} />
-                  {emailValidity && <Validity type={'email'} />}
+                  {emailValidity && <ErrorMsg>올바른 이메일 형식이 아닙니다</ErrorMsg>}
                 </Wrapper>
                 <Wrapper>
                   <Input
@@ -112,7 +110,7 @@ export default function SignUp() {
                     type="password"
                     placeholder="영문, 숫자, 특수문자 포함 8글자"
                   />
-                  {pwValidity && <Validity type={'password'} />}
+                  {pwValidity && <ErrorMsg>영문, 숫자, 특수문자 포함 8글자 이상이어야 합니다.</ErrorMsg>}
                 </Wrapper>
                 <Wrapper>
                   <Input
@@ -122,16 +120,16 @@ export default function SignUp() {
                     setState={setPwCheck}
                     type="password"
                   />
-                  {pwCheckValidity && <Validity type={'passwordCheck'} />}
+                  {pwCheckValidity && <ErrorMsg>비밀번호가 일치하지 않습니다.</ErrorMsg>}
                 </Wrapper>
                 <Wrapper>
                   <Input type="tel" placeholder="전화번호 입력" label="전화번호" state={number} onChange={autoHyphen} />
-                  {numberValidity && <Validity type={'number'} />}
+                  {numberValidity && <ErrorMsg>올바른 전화번호 형식이 아닙니다.</ErrorMsg>}
                 </Wrapper>
                 <SubmitButton>회원가입</SubmitButton>
               </SignupForm>
-              <LinkTo message="이미 회원이신가요?" link="/login" linkText="로그인" />
             </Contents>
+            <LinkTo message="이미 회원이신가요?" link="/login" linkText="로그인" />
           </Container>
         </>
       )}
@@ -140,8 +138,9 @@ export default function SignUp() {
 }
 
 const Container = styled.div`
+  overflow: scroll;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 5rem);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -189,8 +188,8 @@ const SignupForm = styled.form`
 
 const Wrapper = styled.div`
   display: flex;
-  align-items: flex-end;
   position: relative;
+  flex-direction: column;
 `;
 
 const SubmitButton = styled(Button)`
