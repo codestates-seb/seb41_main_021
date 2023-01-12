@@ -74,19 +74,19 @@ public class YataRequestServiceImpl implements YataRequestService {
     // TODO Yata 신청 목록 조회
     @Override
     public Slice<YataRequest> findRequests(boolean acceptable, String userEmail, Long yataId, Pageable pageable) {
-        if (acceptable == false) {
+        if (!acceptable) {
             throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
         }
 
         Yata yata = yataService.verifyYata(yataId);
         Member member = memberService.verifyMember(userEmail);
-        if(!member.equals(yata.getMember())) throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
+        if(member.equals(yata.getMember())) throw new CustomLogicException(ExceptionCode.UNAUTHORIZED); // 여기서 문제 --> 왜??
         return jpaYataRequestRepository.findAllByYata(yata, pageable);
     }
 
     // TODO Yata 신청 취소 / 초대 취소
-    //  해당 id 로 한 신청/초대가 있는지 검증 + 승인이 된 신청/초대 인지 검증 --> 승인이 된 상태면 취소 불가 ?
-    //  근데 합의 하에 취소는 할 수 있어야지 --> 채팅으로 합의하고 탑승자가 취소할 수 있다고 했었나
+    //  해당 id 로 한 신청/초대가 있는지 검증 + 승인이 된 신청/초대 인지 검증
+    //  이틀 전에는 취소 가능 / 이후부터는 채팅으로 상의 후 운전자만 취소 가능
     @Override
     public void deleteRequest(Long yataRequestId) {
     }
