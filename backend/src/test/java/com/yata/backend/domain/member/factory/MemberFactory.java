@@ -31,8 +31,8 @@ public class MemberFactory {
                 .memberStatus(Member.MemberStatus.MEMBER_ACTIVE)
                 .genders(Member.Gender.MAN)
                 .roles(List.of("PASSANGER"))
-                .point(0)
-                .fuelTank(30)
+                .point(0L)
+                .fuelTank(30.0)
                 .providerType(ProviderType.NATIVE)
                 .imgUrl("https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/944/eabb97e854d5e5927a69d311701cc211_res.jpeg")
                 .carImgUrl("https://img.hankyung.com/photo/202002/01.21817293.1.jpg").build();

@@ -72,6 +72,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .imgUrl(userInfo.getImageUrl())
                 .name(userInfo.getName())
                 .nickname(userInfo.getName())
+                .fuelTank(30.0)
+                .point(0L)
                 .build();
 
         return memberRepository.saveAndFlush(user);
