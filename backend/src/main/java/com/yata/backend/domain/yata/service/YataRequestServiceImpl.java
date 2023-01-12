@@ -1,22 +1,25 @@
 package com.yata.backend.domain.yata.service;
 
 import com.yata.backend.domain.member.entity.Member;
-import com.yata.backend.domain.member.repository.JpaMemberRepository;
 import com.yata.backend.domain.member.service.MemberService;
+import com.yata.backend.domain.yata.dto.YataRequestDto;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataRequest;
-import com.yata.backend.domain.yata.repository.yataRepo.JpaYataRepository;
+import com.yata.backend.domain.yata.entity.YataStatus;
 import com.yata.backend.domain.yata.repository.yataRequestRepo.JpaYataRequestRepository;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
-import org.springframework.data.domain.Page;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
+
+import static com.yata.backend.domain.yata.entity.YataRequest.RequestStatus.APPLY;
+import static com.yata.backend.domain.yata.entity.YataRequest.RequestStatus.INVITE;
 
 @Service
 @Transactional
@@ -33,12 +36,18 @@ public class YataRequestServiceImpl implements YataRequestService {
 
     // TODO Yata 신청
     @Override
-    public YataRequest createRequest(YataRequest yataRequest, String userName, long yataId) {
+    public YataRequest createRequest(YataRequest yataRequest, String userName, Long yataId) {
         Member member = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
-        verifyRequest(yataRequest); // 신청을 이미 했었는지 확인하고
+        verifyRequest(userName, yataId); // 신청을 이미 했었는지 확인하고
         Yata yata = yataService.verifyYata(yataId);
+        YataStatus yataStatus = yata.getYataStatus();
+        if (yataStatus == YataStatus.YATA_NEOTA) {
+            yataRequest.setRequestStatus(APPLY);
+        } else {
+            throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
+        }
         // TODO 체크리스트 추가
-        YataRequest request = YataRequest.create(yataRequest, member, yata);
+         YataRequest request = YataRequest.create(yataRequest, member, yata);
         // 신청 이후 yata 에서 신청자 list 에 추가됨
 
         return jpaYataRequestRepository.save(request);
@@ -46,39 +55,46 @@ public class YataRequestServiceImpl implements YataRequestService {
 
     // TODO Yata 초대
     @Override
-    public YataRequest createInvitation(YataRequest yataRequest, String userName, long yataId) {
+    public YataRequest createInvitation(YataRequest yataRequest, String userName, Long yataId) {
         Member member = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
-        verifyInvitation(yataRequest); // 초대를 이미 했었는지 확인하고
+        verifyInvitation(userName, yataId); // 초대를 이미 했었는지 확인하고
         Yata yata = yataService.verifyYata(yataId);
+        YataStatus yataStatus = yata.getYataStatus();
+        if (yataStatus == YataStatus.YATA_NATA) {
+            yataRequest.setRequestStatus(INVITE);
+        } else {
+            throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
+        }
         YataRequest request = YataRequest.create(yataRequest, member, yata);
         // 초대 이후 (자신의 게시물이 있다는 전제로) --> 탑승자가 그 게시물을 보고 승인 --> yata 에서 해당 게시물의 탑승자 list 에 추가
 
         return jpaYataRequestRepository.save(request);
     }
 
-    // TODO Yata 신청 목록 조회 --> Yata 의 private List<YataRequest> yataRequests = new ArrayList<>(); 이거
+    // TODO Yata 신청 목록 조회
     @Override
-    public Page<YataRequest> findRequests(int page, int size) {
-        return null;
+    public Slice<YataRequest> findRequests(boolean acceptable, String userEmail, Long yataId, Pageable pageable) {
+        if (!acceptable) {
+            throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
+        }
+
+        Yata yata = yataService.verifyYata(yataId);
+        Member member = memberService.verifyMember(userEmail);
+        if(member.equals(yata.getMember())) throw new CustomLogicException(ExceptionCode.UNAUTHORIZED); // 여기서 문제 --> 왜??
+        return jpaYataRequestRepository.findAllByYata(yata, pageable);
     }
 
     // TODO Yata 신청 취소 / 초대 취소
-    //  해당 id 로 한 신청/초대가 있는지 검증 + 승인이 된 신청/초대 인지 검증 --> 승인이 된 상태면 취소 불가 ?
-    //  근데 합의 하에 취소는 할 수 있어야지 --> 채팅으로 합의하고 탑승자가 취소할 수 있다고 했었나
+    //  해당 id 로 한 신청/초대가 있는지 검증 + 승인이 된 신청/초대 인지 검증
+    //  이틀 전에는 취소 가능 / 이후부터는 채팅으로 상의 후 운전자만 취소 가능
     @Override
-    public void deleteRequest(long yataRequestId) {
-    }
-
-    // TODO 승인하는 로직 --> 운전자가 승인하면 -> 탑승자 list 에 추가됨
-    @Override
-    public YataRequest createApproval() {
-        return null;
+    public void deleteRequest(Long yataRequestId) {
     }
 
     // 이미 신청한 게시물인지 검증
     @Override
-    public void verifyRequest(YataRequest yataRequest) {
-        Optional<YataRequest> optionalYataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(yataRequest.getMember().getEmail(), yataRequest.getYata().getYataId());
+    public void verifyRequest(String userName, Long yataId) {
+        Optional<YataRequest> optionalYataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(userName, yataId);
         optionalYataRequest.ifPresent(
                 yr -> {throw new CustomLogicException(ExceptionCode.ALREADY_APPLIED);}
         );
@@ -86,8 +102,8 @@ public class YataRequestServiceImpl implements YataRequestService {
 
     // 이미 초대한 게시물인지 검증
     @Override
-    public void verifyInvitation(YataRequest yataRequest) {
-        Optional<YataRequest> optionalYataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(yataRequest.getMember().getEmail(), yataRequest.getYata().getYataId());
+    public void verifyInvitation(String userName, Long yataId) {
+        Optional<YataRequest> optionalYataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(userName, yataId);
         optionalYataRequest.ifPresent(
                 yr -> {throw new CustomLogicException(ExceptionCode.ALREADY_INVITED);}
         );

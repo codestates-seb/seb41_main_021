@@ -23,6 +23,7 @@ public class YataServiceImpl implements YataService{
     private final CustomBeanUtils<Yata> beanUtils;
 
 
+
     public YataServiceImpl(JpaYataRepository jpayataRepository,CustomBeanUtils<Yata> beanUtils){
         this.jpayataRepository = jpayataRepository;
         this.beanUtils = beanUtils;
@@ -33,7 +34,7 @@ public class YataServiceImpl implements YataService{
 
         switch (yataStatus){
             case "neota" -> yata.setYataStatus(YataStatus.YATA_NEOTA);
-            case "nata" -> yata.setYataStatus(YataStatus.YATA_NATA);
+             case "nata" -> yata.setYataStatus(YataStatus.YATA_NATA);
             default ->  throw new CustomLogicException(ExceptionCode.YATA_STATUS_NONE);
         }
 

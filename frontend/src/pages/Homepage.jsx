@@ -1,27 +1,18 @@
 import styled from 'styled-components';
 import React from 'react';
-import NavBar from '../components/NavBar';
-import mainImg from '../images/car.png';
-import brandname from '../images/name.png';
+import SimpleSlider from '../components/Carousel';
 
 export default function HomePage() {
   return (
     <>
       <Container>
-        <NavBar />
-        <ContentContainer>
-          <Main>
-            <TextContainer>
-              <h3>카쉐어링 서비스</h3>
-              <img src={brandname} alt="brand name" />
-              <p>
-                언제 어디서나 안심하고 <br />
-                사용할 수 있는 카 쉐어링 서비스
-              </p>
-            </TextContainer>
-            <img src={mainImg} alt="3d car" />
-          </Main>
-        </ContentContainer>
+        <LandingContainer>
+          <SimpleSlider />
+        </LandingContainer>
+        <ButtonContainer>
+          <button className="login-btn">로그인</button>
+          <button className="signup-btn">가입하기</button>
+        </ButtonContainer>
       </Container>
     </>
   );
@@ -29,50 +20,35 @@ export default function HomePage() {
 
 const Container = styled.div`
   width: 100%;
-  height: auto;
-`;
-
-const ContentContainer = styled.div`
-  width: 100%;
   height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  background: linear-gradient(147deg, #ffe8ee, #80b1d5);
-`;
-const Main = styled.div`
-  width: 80%;
-  padding: 10px;
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 15px;
-
-  img {
-    width: 150px;
-  }
 `;
 
-const TextContainer = styled.div`
+const LandingContainer = styled.div`
+  width: 100%;
+  height: 85%;
+`;
+
+const ButtonContainer = styled.div`
+  width: 100%;
+  height: 15vh;
   display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
 
-  h3 {
-    font-size: 15px;
-    margin-left: 8px;
+  button {
+    all: unset;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-weight: bold;
   }
 
-  p {
-    color: gray;
-    font-size: 10px;
-    margin-left: 8px;
+  .login-btn {
+    background-color: #4c5c7a;
+    color: white;
   }
-
-  img {
-    width: 100px;
+  .signup-btn {
+    background-color: ${({ theme }) => theme.colors.main_blue};
+    color: white;
   }
 `;

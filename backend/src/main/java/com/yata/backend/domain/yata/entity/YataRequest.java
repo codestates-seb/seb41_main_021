@@ -1,6 +1,7 @@
 package com.yata.backend.domain.yata.entity;
 
 import com.yata.backend.domain.member.entity.Member;
+import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.global.audit.Auditable;
 import lombok.*;
 
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = "yata")
 public class YataRequest extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,9 +22,13 @@ public class YataRequest extends Auditable {
     @Column(nullable = false, length = 100)
     private String title;
 
+    @Column(nullable = false, length = 100)
+    private String content;
+
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20, nullable = false)
     private YataRequest.RequestStatus requestStatus;
+
     @ManyToOne
     @JoinColumn(name = "YATA_ID")
     private Yata yata;
@@ -32,16 +37,14 @@ public class YataRequest extends Auditable {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    // TODO
-    /*@Embedded
-    private Location starting Point;*/
-    // private Location destination
+//    @Embedded
+//    private YataDto.YataPost strPoint;
+//    @Embedded
+//     private YataDto.YataPost destination;
 
     public enum RequestStatus {
         INVITE("초대"),
-        INVITED("초대 완료"),
-        APPLY("신청"),
-        APPLIED("신청 완료");
+        APPLY("신청");
 
         @Getter
         private String status;
@@ -54,6 +57,7 @@ public class YataRequest extends Auditable {
     public static YataRequest create(YataRequest yataRequest, Member member, Yata yata) {
         return YataRequest.builder()
                 .title(yataRequest.getTitle())
+                .content(yataRequest.getContent())
                 .requestStatus(yataRequest.getRequestStatus())
                 .member(member)
                 .yata(yata)

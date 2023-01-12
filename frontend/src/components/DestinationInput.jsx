@@ -22,7 +22,7 @@ const IputContainer = styled.div`
   justify-content: center;
   width: 100%;
   padding: 2rem 1rem;
-  border-bottom: 3px solid ${props => props.theme.colors.light_gray};
+  border-bottom: 5px solid #f6f6f6;
 `;
 
 const InputContent = styled.form`

@@ -13,19 +13,19 @@ export default function TaeoondaList() {
   const navigate = useNavigate();
   const add = () => {
     setOpen(!open);
-    navigate('/taeoondaadd');
+    navigate('/taeoonda-add');
   };
   return (
     <>
-      <Header title="태웁니다" />
-      <Navbar />
       <Container>
+        <Header title="태웁니다" />
         <DestinationInput />
         <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
+        <CircleButton onClick={add} open={open}>
+          <MdAdd />
+        </CircleButton>
       </Container>
-      <CircleButton onClick={add} open={open}>
-        <MdAdd />
-      </CircleButton>
+      <Navbar />
     </>
   );
 }
@@ -36,4 +36,5 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 `;
