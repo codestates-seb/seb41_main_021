@@ -7,7 +7,7 @@ import Header from '../components/Header';
 export default function RegisterList() {
   const navigate = useNavigate();
   const go = () => {
-    navigate('/registerchecklist');
+    navigate('/register-checklist');
   };
   return (
     <>

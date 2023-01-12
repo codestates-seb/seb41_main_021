@@ -55,13 +55,19 @@ export default function MyPage() {
               <div className="title">포인트 충전하기</div>
               <IoIosArrowForward />
             </JourneyRecord>
-            <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journeylist">
+            <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/driver-auth">
+              <JourneyRecord>
+                <div className="title">운전자 인증하기</div>
+                <IoIosArrowForward />
+              </JourneyRecord>
+            </NavLink>
+            <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journey-list">
               <JourneyRecord>
                 <div className="title">여정 내역</div>
                 <IoIosArrowForward />
               </JourneyRecord>
             </NavLink>
-            <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/ratinglist">
+            <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/rating-list">
               <JourneyRecord>
                 <div className="title">받은 매너 평가</div>
                 <IoIosArrowForward />
@@ -96,7 +102,7 @@ const ProfileContainer = styled.div`
   align-items: center;
   justify-content: center;
 
-  @media only screen and (min-height: 667px) {
+  @media only screen and (max-height: 667px) {
     height: 35%;
   }
 `;
