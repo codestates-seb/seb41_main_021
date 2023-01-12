@@ -25,12 +25,12 @@ const Container = styled.div`
 
 const LandingContainer = styled.div`
   width: 100%;
-  height: 85%;
+  height: 90%;
 `;
 
 const ButtonContainer = styled.div`
   width: 100%;
-  height: 15vh;
+  height: 10vh;
   display: flex;
 
   button {
@@ -39,7 +39,7 @@ const ButtonContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     font-weight: bold;
   }
 
@@ -47,6 +47,7 @@ const ButtonContainer = styled.div`
     background-color: #4c5c7a;
     color: white;
   }
+
   .signup-btn {
     background-color: ${({ theme }) => theme.colors.main_blue};
     color: white;
