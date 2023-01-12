@@ -53,6 +53,7 @@ public class YataServiceImpl implements YataService{
         //예안 게시물이면 -> 예외
         modifiableYata(yataId);
 
+
         Yata updatingYata = beanUtils.copyNonNullProperties(yata,findYata);
 
     return jpayataRepository.save(updatingYata);
