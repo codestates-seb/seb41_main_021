@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import theme from './styles/theme';
 import Screen from './components/Screen';
+import DriverAuth from './pages/DriverAuth';
 import Homepage from './pages/Homepage';
 import JourneyList from './pages/JourneyList';
 import Loading from './pages/Loading';
@@ -32,24 +33,25 @@ function App() {
         <Screen>
           <Routes>
             <Route path="/" element={<Homepage />}></Route>
-            <Route path="/journeylist" element={<JourneyList />}></Route>
+            <Route path="/driver-auth" element={<DriverAuth />}></Route>
+            <Route path="/journey-list" element={<JourneyList />}></Route>
             <Route path="/loading" element={<Loading />}></Route>
             <Route path="/login" element={<LogIn />}></Route>
-            <Route path="/mypage" element={<MyPage />}></Route>
-            <Route path="/otheruserpage" element={<OtherUserPage />}></Route>
-            <Route path="/ratingadd" element={<RatingAdd />}></Route>
-            <Route path="/ratinglist" element={<RatingList />}></Route>
+            <Route path="/my-page" element={<MyPage />}></Route>
+            <Route path="/other-user-page" element={<OtherUserPage />}></Route>
+            <Route path="/rating-add" element={<RatingAdd />}></Route>
+            <Route path="/rating-list" element={<RatingList />}></Route>
             <Route path="/signup" element={<SignUp />}></Route>
-            <Route path="/tabnidaadd" element={<TabnidaAdd />}></Route>
-            <Route path="/tabnidaedit" element={<TabnidaEdit />}></Route>
-            <Route path="/tabnidadetail" element={<TabnidaDetail />}></Route>
-            <Route path="/tabnidalist" element={<TabnidaList />}></Route>
-            <Route path="/taeoondaadd" element={<TaeoondaAdd />}></Route>
-            <Route path="/taeoondaedit" element={<TaeoondaEdit />}></Route>
-            <Route path="/taeoondadetail" element={<TaeoondaDetail />}></Route>
-            <Route path="/taeoondalist" element={<TaeoondaList />}></Route>
-            <Route path="/registerlist" element={<RegisterList />}></Route>
-            <Route path="/registerchecklist" element={<RegisterCheckList />}></Route>
+            <Route path="/tabnida-add" element={<TabnidaAdd />}></Route>
+            <Route path="/tabnida-edit" element={<TabnidaEdit />}></Route>
+            <Route path="/tabnida-detail" element={<TabnidaDetail />}></Route>
+            <Route path="/tabnida-list" element={<TabnidaList />}></Route>
+            <Route path="/taeoonda-add" element={<TaeoondaAdd />}></Route>
+            <Route path="/taeoonda-edit" element={<TaeoondaEdit />}></Route>
+            <Route path="/taeoonda-detail" element={<TaeoondaDetail />}></Route>
+            <Route path="/taeoonda-list" element={<TaeoondaList />}></Route>
+            <Route path="/register-list" element={<RegisterList />}></Route>
+            <Route path="/register-checklist" element={<RegisterCheckList />}></Route>
           </Routes>
         </Screen>
       </ThemeProvider>

@@ -7,13 +7,13 @@ import Header from '../components/Header';
 export default function RegisterList() {
   const navigate = useNavigate();
   const go = () => {
-    navigate('/registerchecklist');
+    navigate('/register-checklist');
   };
   return (
     <>
-      <Header title="요청 내역" />
       <Navbar />
       <Container>
+        <Header title="요청 내역" />
         <ListItem
           onClick={go}
           date={'1월 3일 (화) 7:00PM'}

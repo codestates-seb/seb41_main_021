@@ -1,12 +1,12 @@
 import styled, { css } from 'styled-components';
 
 const CircleButton = styled.button`
-  background: #2c79b7;
+  background: ${props => props.theme.colors.main_blue};
   &:hover {
-    background: #4a7eb2;
+    background: ${props => props.theme.colors.dark_blue};
   }
   &:active {
-    background: #115586;
+    background: ${props => props.theme.colors.darker_blue};
   }
   z-index: 5;
   cursor: pointer;
@@ -17,7 +17,7 @@ const CircleButton = styled.button`
   justify-content: center;
   font-size: 3.5rem;
   position: absolute;
-  left: 50%;
+  right: -1rem;
   bottom: 9rem;
   transform: translate(-50%, 50%);
   color: white;

@@ -87,7 +87,7 @@ export default function SignUp() {
         <>
           <Navbar />
           <Container>
-            <Header title={'SignUp'} />
+            <Header title={'회원가입'} />
             <Contents>
               <SignupForm onSubmit={handleSubmit}>
                 <Wrapper>
@@ -98,7 +98,7 @@ export default function SignUp() {
                   <Input label="닉네임" state={nickname} setState={setNickname} />
                 </Wrapper>
                 <Wrapper>
-                  <Input label="email" state={email} onChange={emailValidation} />
+                  <Input label="Email" state={email} onChange={emailValidation} />
                   {emailValidity && <Validity type={'email'} />}
                 </Wrapper>
                 <Wrapper>
