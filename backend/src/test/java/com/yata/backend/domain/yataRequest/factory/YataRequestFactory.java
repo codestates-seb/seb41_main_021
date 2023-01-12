@@ -8,6 +8,8 @@ import java.util.Date;
 
 public class YataRequestFactory {
     public static YataRequestDto.RequestPost createYataRequestPostDto() {
+        LocationDto.Post strPoint = new LocationDto.Post(2.5, 2.0, "강원도 원주시");
+        LocationDto.Post destination = new LocationDto.Post(2.5, 2.0, "강원도 원주시");
 
         return YataRequestDto.RequestPost.builder()
                 .title("태워주세욥")
@@ -18,10 +20,17 @@ public class YataRequestFactory {
                 .maxPeople(3)
                 .maxWatingTime(10)
                 .carModel("lamborghini")
+                .strPoint(strPoint)
+                .destination(destination)
                 .build();
     }
 
     public static YataRequestDto.RequestResponse createYataRequestResponseDto(YataRequest yataRequest) {
+        LocationDto.Response strPoint = new LocationDto.Response(yataRequest.getYata().getStrPoint().getLatitude(),
+                yataRequest.getYata().getStrPoint().getLongitude(),yataRequest.getYata().getStrPoint().getAddress());
+        LocationDto.Response destination = new LocationDto.Response(yataRequest.getYata().getDestination().getLatitude(),
+                yataRequest.getYata().getDestination().getLongitude(),yataRequest.getYata().getDestination().getAddress());
+
         return YataRequestDto.RequestResponse.builder()
                 .yataRequestId(yataRequest.getYataRequestId())
                 .yataRequestStatus(yataRequest.getRequestStatus())
@@ -31,10 +40,9 @@ public class YataRequestFactory {
                 .departureTime(yataRequest.getYata().getDepartureTime())
                 .timeOfArrival(yataRequest.getYata().getTimeOfArrival())
                 .maxWatingTime(yataRequest.getYata().getMaxWaitingTime())
-//                .yataStatus()
                 .carModel(yataRequest.getYata().getCarModel())
-//                .strPoint()
-//                .destination()
+                .strPoint(strPoint)
+                .destination(destination)
                 .maxPeople(yataRequest.getYata().getMaxPeople())
                 .build();
     }

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.yata.backend.domain.AbstractControllerTest;
 import com.yata.backend.domain.yata.controller.YataRequestController;
+import com.yata.backend.domain.yata.dto.LocationDto;
 import com.yata.backend.domain.yata.dto.YataRequestDto;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataRequest;
@@ -49,8 +50,11 @@ public class YataRequestControllerTest extends AbstractControllerTest {
     void postYataRequestTest() throws Exception {
         //given
         YataRequestDto.RequestPost post = YataRequestFactory.createYataRequestPostDto();
+
+        LocationDto.Response strPoint = new LocationDto.Response(2.5, 2.0, "강원도 원주시");
+        LocationDto.Response destination = new LocationDto.Response(2.5, 2.0, "강원도 원주시");
         YataRequestDto.RequestResponse response = new YataRequestDto.RequestResponse(1L, YataRequest.RequestStatus.APPLY,"태워주세욥","헬로~", new Date(),
-                new Date(), 3,10, "lamborghini");
+                new Date(), 3,10, "lamborghini",strPoint,destination);
 
         given(yataRequestService.createRequest(Mockito.any(),Mockito.any(),Mockito.anyLong())).willReturn(new YataRequest());
         given(mapper.yataRequestToYataRequestResponse(Mockito.any(YataRequest.class))).willReturn(response);

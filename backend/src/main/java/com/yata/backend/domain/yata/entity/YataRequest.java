@@ -19,10 +19,10 @@ public class YataRequest extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long YataRequestId;
 
-    @Column(nullable = false, length = 100)
+    @Column(length = 100)
     private String title;
 
-    @Column(nullable = false, length = 100)
+    @Column(length = 100)
     private String content;
 
     @Enumerated(value = EnumType.STRING)
@@ -37,10 +37,11 @@ public class YataRequest extends Auditable {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-//    @Embedded
-//    private YataDto.YataPost strPoint;
-//    @Embedded
-//     private YataDto.YataPost destination;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Location strPoint;
+
+    @OneToOne(cascade = CascadeType.ALL)
+     private Location destination;
 
     public enum RequestStatus {
         INVITE("초대"),

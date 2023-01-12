@@ -58,17 +58,16 @@ public class YataRequestController {
     // Yata 신청 목록 조회 - 200
     // TODO 파라미터 "?acceptable=true" 값 어떻게 받을지 생각
     @GetMapping("/apply/{yataId}")
-    public ResponseEntity<SliceResponseDto<YataRequestDto.RequestResponse>> getRequests(@RequestParam(value = "acceptable", required = true) boolean acceptable,
-                                                                                        @PathVariable("yataId") @Positive long yataId,
+    public ResponseEntity<SliceResponseDto<YataRequestDto.RequestResponse>> getRequests(@PathVariable("yataId") @Positive long yataId,
                                                                                         @AuthenticationPrincipal User authMember,
                                                                                         Pageable pageable) {
-        Slice<YataRequest> requests = yataRequestService.findRequests(acceptable, authMember.getUsername(), yataId ,pageable);
-        return new ResponseEntity<>(new SliceResponseDto<YataRequestDto.RequestResponse>(mapper.yataRequestsToYataRequestResponses(requests),pageable), HttpStatus.OK);
-//        if(requests.hasContent()) {
-//            return new ResponseEntity<>(new SliceResponseDto<YataRequestDto.RequestResponse>(mapper.yataRequestsToYataRequestResponses(requests),pageable), HttpStatus.OK);
-//        } else {
-//            return ResponseEntity.noContent().build();
-//        }
+        Slice<YataRequest> requests = yataRequestService.findRequests(authMember.getUsername(), yataId ,pageable);
+//        return new ResponseEntity<>(new SliceResponseDto<YataRequestDto.RequestResponse>(mapper.yataRequestsToYataRequestResponses(requests),pageable), HttpStatus.OK);
+        if(requests.hasContent()) {
+            return new ResponseEntity<>(new SliceResponseDto<YataRequestDto.RequestResponse>(mapper.yataRequestsToYataRequestResponses(requests),pageable), HttpStatus.OK);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
     }
 
     // TODO Yata 신청 or 초대 전 or 승인 후 삭제 - 204

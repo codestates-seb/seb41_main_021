@@ -25,23 +25,21 @@ public interface YataRequestMapper {
         YataRequest.RequestStatus yataRequestStatus = yataRequest.getRequestStatus();
         String title = yataRequest.getTitle();
         String content = yataRequest.getContent();
-        // TODO checklist 추가 + yataRequest Status 추가
+        // TODO checklist 추가
         Date departureTime = yataRequest.getYata().getDepartureTime();
         Date timeOfArrival = yataRequest.getYata().getTimeOfArrival();
         int maxPeople = yataRequest.getYata().getMaxPeople();
         int maxWatingTime = yataRequest.getYata().getMaxWaitingTime();
         String carModel = yataRequest.getYata().getCarModel();
 
-//        LocationDto.Post strPoint = new LocationDto.Post(yataRequest.getYata().getStrPoint().getLatitude(),
-//                yataRequest.getYata().getStrPoint().getLongitude(),yataRequest.getYata().getStrPoint().getAddress());
-//
-//        LocationDto.Post destination = new LocationDto.Post(yataRequest.getYata().getDestination().getLatitude(),
-//                yataRequest.getYata().getDestination().getLongitude(),yataRequest.getYata().getDestination().getAddress());
+        LocationDto.Response strPoint = new LocationDto.Response(yataRequest.getYata().getStrPoint().getLatitude(),
+                yataRequest.getYata().getStrPoint().getLongitude(),yataRequest.getYata().getStrPoint().getAddress());
 
-//        YataRequestDto.RequestResponse response = new YataRequestDto.RequestResponse(
-//                yataRequestId, yataRequestStatus, title, content, departureTime, timeOfArrival, maxPeople, maxWatingTime, carModel, strPoint ,destination);
+        LocationDto.Response destination = new LocationDto.Response(yataRequest.getYata().getDestination().getLatitude(),
+                yataRequest.getYata().getDestination().getLongitude(),yataRequest.getYata().getDestination().getAddress());
+
         YataRequestDto.RequestResponse response = new YataRequestDto.RequestResponse(
-                yataRequestId, yataRequestStatus, title, content, departureTime, timeOfArrival, maxPeople, maxWatingTime, carModel);
+                yataRequestId, yataRequestStatus, title, content, departureTime, timeOfArrival, maxPeople, maxWatingTime, carModel, strPoint ,destination);
 
         return response;
     }
@@ -52,11 +50,11 @@ public interface YataRequestMapper {
         List<YataRequestDto.RequestResponse> requestResponses = yataRequests.getContent().stream()
                 .map(yataRequest -> {
                     if(yataRequest.getYata() != null){
-//                        LocationDto.Post strPoint = new LocationDto.Post(yataRequest.getYata().getStrPoint().getLatitude(),
-//                                yataRequest.getYata().getStrPoint().getLongitude(),yataRequest.getYata().getStrPoint().getAddress());
-//
-//                        LocationDto.Post destination = new LocationDto.Post(yataRequest.getYata().getDestination().getLatitude(),
-//                                yataRequest.getYata().getDestination().getLongitude(),yataRequest.getYata().getDestination().getAddress());
+                        LocationDto.Response strPoint = new LocationDto.Response(yataRequest.getYata().getStrPoint().getLatitude(),
+                                yataRequest.getYata().getStrPoint().getLongitude(),yataRequest.getYata().getStrPoint().getAddress());
+
+                        LocationDto.Response destination = new LocationDto.Response(yataRequest.getYata().getDestination().getLatitude(),
+                                yataRequest.getYata().getDestination().getLongitude(),yataRequest.getYata().getDestination().getAddress());
 
                         return new YataRequestDto.RequestResponse(
                                 yataRequest.getYataRequestId(),
@@ -67,9 +65,9 @@ public interface YataRequestMapper {
                                 yataRequest.getYata().getTimeOfArrival(),
                                 yataRequest.getYata().getMaxPeople(),
                                 yataRequest.getYata().getMaxWaitingTime(),
-                                yataRequest.getYata().getCarModel());
-//                                strPoint,
-//                                destination);
+                                yataRequest.getYata().getCarModel(),
+                                strPoint,
+                                destination);
                     }
                     return null;
                 }).filter(Objects::nonNull)
@@ -77,5 +75,13 @@ public interface YataRequestMapper {
         return new SliceImpl<>(requestResponses);
     }
     YataRequest yataInvitationPostDtoToYataInvitation(YataRequestDto.InvitationPost requestBody);
-    YataRequestDto.InvitationResponse yataInvitationToYataInvitationResponse(YataRequest yataRequest);
+    default YataRequestDto.InvitationResponse yataInvitationToYataInvitationResponse(YataRequest yataRequest) {
+        if (yataRequest == null) {
+            return null;
+        }
+        Long yataRequestId = yataRequest.getYataRequestId();
+
+        YataRequestDto.InvitationResponse response = new YataRequestDto.InvitationResponse(yataRequestId);
+        return response;
+    }
 }

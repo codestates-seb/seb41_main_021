@@ -23,6 +23,7 @@ public class YataRequestDto {
         @NotNull(message = "제목을 입력하세요.")
         private String title;
 //        private List<String> checklists;
+        @NotNull(message = "내용을 입력해주세요.")
         private String content;
         @NotNull(message = "출발 시간을 입력하세요.")
         @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss" , iso = DateTimeFormat.ISO.DATE_TIME)
@@ -33,10 +34,10 @@ public class YataRequestDto {
         private int maxPeople;
         private int maxWatingTime;
         private String carModel;
-//        @Valid
-//        private LocationDto.Post strPoint;
-//        @Valid
-//        private LocationDto.Post destination;
+        @Valid
+        private LocationDto.Post strPoint;
+        @Valid
+        private LocationDto.Post destination;
     }
 
     @AllArgsConstructor
@@ -55,8 +56,8 @@ public class YataRequestDto {
         private int maxPeople;
         private int maxWatingTime;
         private String carModel;
-//        private LocationDto.Post strPoint;
-//        private LocationDto.Post destination;
+        private LocationDto.Response strPoint;
+        private LocationDto.Response destination;
     }
 
     @AllArgsConstructor

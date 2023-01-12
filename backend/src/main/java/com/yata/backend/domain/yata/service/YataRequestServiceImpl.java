@@ -34,7 +34,7 @@ public class YataRequestServiceImpl implements YataRequestService {
         this.yataService = yataService;
     }
 
-    // TODO Yata 신청
+    // Yata 신청
     @Override
     public YataRequest createRequest(YataRequest yataRequest, String userName, Long yataId) {
         Member member = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
@@ -73,14 +73,10 @@ public class YataRequestServiceImpl implements YataRequestService {
 
     // TODO Yata 신청 목록 조회
     @Override
-    public Slice<YataRequest> findRequests(boolean acceptable, String userEmail, Long yataId, Pageable pageable) {
-        if (!acceptable) {
-            throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
-        }
-
+    public Slice<YataRequest> findRequests(String userEmail, Long yataId, Pageable pageable) {
         Yata yata = yataService.verifyYata(yataId);
         Member member = memberService.verifyMember(userEmail);
-        if(member.equals(yata.getMember())) throw new CustomLogicException(ExceptionCode.UNAUTHORIZED); // 여기서 문제 --> 왜??
+        if(member.equals(yata.getMember())) throw new CustomLogicException(ExceptionCode.UNAUTHORIZED); // TODO 여기서 문제 --> 왜??
         return jpaYataRequestRepository.findAllByYata(yata, pageable);
     }
 
