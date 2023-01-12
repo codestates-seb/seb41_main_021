@@ -63,7 +63,10 @@ public class YataServiceImpl implements YataService{
     @Override
     public void deleteYata(long yataId) {
         Yata findYata = verifyYata(yataId);
-        jpayataRepository.delete(findYata);
+        switch (findYata.getPostStatus()){
+            case POST_MOVING,POST_CLOSED,POST_RESERVED,POST_WARNING -> throw new CustomLogicException(ExceptionCode.CANNOT_DELETE);
+            default -> jpayataRepository.delete(findYata);
+        }
     }
 
     @Override
