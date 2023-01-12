@@ -13,7 +13,7 @@ export default function TaeoondaList() {
   const navigate = useNavigate();
   const add = () => {
     setOpen(!open);
-    navigate('/taeoondaadd');
+    navigate('/taeoonda-add');
   };
   return (
     <>

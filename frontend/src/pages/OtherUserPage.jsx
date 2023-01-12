@@ -43,13 +43,13 @@ export default function MyPage() {
             </Compliment>
           </SummaryContainer>
           <ListContainer>
-            <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journeylist">
+            <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journey-list">
               <JourneyRecord>
                 <div className="title">여정 내역</div>
                 <IoIosArrowForward />
               </JourneyRecord>
             </NavLink>
-            <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/ratinglist">
+            <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/rating-list">
               <JourneyRecord>
                 <div className="title">받은 매너 평가</div>
                 <IoIosArrowForward />

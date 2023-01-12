@@ -13,7 +13,7 @@ export default function TabnidaList() {
   const navigate = useNavigate();
   const add = () => {
     setOpen(!open);
-    navigate('/tabnidaadd');
+    navigate('/tabnida-add');
   };
 
   return (
