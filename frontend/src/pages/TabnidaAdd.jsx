@@ -8,8 +8,6 @@ import { AiOutlinePlusCircle } from 'react-icons/ai';
 import Header from '../components/Header';
 
 export default function TabnidaAdd() {
-  const [num, setNum] = useState(1);
-
   const handleSubmit = e => {
     console.log('hi');
   };
@@ -28,7 +26,7 @@ export default function TabnidaAdd() {
             <AiOutlinePlusCircle className="plus-icon" onClick={handleSubmit} />
           </div>
           <Input label="출발 일시" type="datetime-local" />
-          <Input label="탑승 인원" type="number" min="1" max="10" state={num} />
+          <Input label="탑승 인원" type="number" min="1" max="10" placeholder="1" />
           <Input label="특이사항" placeholder="아이가 있어요, 흡연자입니다, 짐이 많아요, 등" />
           <ButtonContainer>
             <Button
