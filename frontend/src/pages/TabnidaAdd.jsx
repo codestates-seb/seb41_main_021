@@ -22,14 +22,14 @@ export default function TabnidaAdd() {
           <KakaoMap />
         </div>
         <DestinationForm>
-          <Input label="출발지" />
+          <Input label="출발지" placeholder="출발지 입력" />
           <div className="destinationInput">
-            <Input label="도착지" />
+            <Input label="도착지" placeholder="도착지 입력" />
             <AiOutlinePlusCircle className="plus-icon" onClick={handleSubmit} />
           </div>
           <Input label="출발 일시" type="datetime-local" />
           <Input label="탑승 인원" type="number" min="1" max="10" state={num} />
-          <Input label="특이사항" />
+          <Input label="특이사항" placeholder="아이가 있어요, 흡연자입니다, 짐이 많아요, 등" />
           <ButtonContainer>
             <Button
               className="register-btn"
