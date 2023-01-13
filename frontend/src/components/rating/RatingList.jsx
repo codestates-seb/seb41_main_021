@@ -22,7 +22,7 @@ const RatingContainer = styled.div`
   height: 30%;
   padding: 1rem 2rem 1rem 2rem;
   margin-top: 1rem;
-  box-shadow: 0px -2px 1px -2px ${props => props.theme.colors.dark_gray};
+  border-top: 5px solid #f6f6f6;
 `;
 const TitleContainer = styled.div`
   width: 100%;

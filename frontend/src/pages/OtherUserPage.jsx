@@ -1,131 +1,184 @@
 import styled from 'styled-components';
 import NavBar from '../components/NavBar';
 import { NavLink } from 'react-router-dom';
-import { MdOutlineAccountBox } from 'react-icons/md';
+import { VscAccount } from 'react-icons/vsc';
 import { BiTrip, BiLike } from 'react-icons/bi';
 import { RiOilLine } from 'react-icons/ri';
 import { IoIosArrowForward } from 'react-icons/io';
-import Header from '../components/Header';
+import { useNavigate } from 'react-router-dom';
+import Button from '../components/common/Button.jsx';
 
-export default function MyPage() {
+export default function OtherUserPage() {
+  const navigate = useNavigate();
+
   return (
     <>
       <Container>
         <NavBar />
-        <Header title={'다른 유저'}></Header>
         <MyPageContainer>
           <ProfileContainer>
             <Profile>
-              <MdOutlineAccountBox />
+              <VscAccount />
               <Info>
-                <div className="text">
-                  <b>문재웅</b>
-                </div>
+                <div className="text">문재웅</div>
                 <div className="text">mjwoong</div>
+                <div className="text">010-xxxx-xxxx</div>
+                <div className="text">abcde@gmail.com</div>
               </Info>
             </Profile>
           </ProfileContainer>
           <SummaryContainer>
-            <TripNumber>
-              <BiTrip />
-              <div className="title">여정 횟수</div>
-              <div className="bottom">30</div>
-            </TripNumber>
             <OilLevel>
               <RiOilLine />
               <div className="title">기름통 레벨</div>
               <div className="bottom"> 70L </div>
             </OilLevel>
+            <TripNumber>
+              <BiTrip />
+              <div className="title">여정 횟수</div>
+              <div className="bottom">30</div>
+            </TripNumber>
             <Compliment>
               <BiLike />
               <div className="title">많이 받은 칭찬</div>
               <div className="bottom">친절해요</div>
             </Compliment>
           </SummaryContainer>
+          <Button
+            onClick={() => {
+              navigate('/rating-add');
+            }}>
+            매너 평가하기
+          </Button>
           <ListContainer>
-            <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journey-list">
-              <JourneyRecord>
-                <div className="title">여정 내역</div>
-                <IoIosArrowForward />
-              </JourneyRecord>
-            </NavLink>
-            <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/rating-list">
-              <JourneyRecord>
-                <div className="title">받은 매너 평가</div>
-                <IoIosArrowForward />
-              </JourneyRecord>
-            </NavLink>
+            <List>
+              <ListTitle>탑니다/태웁니다 관리</ListTitle>
+              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journey-list">
+                <JourneyRecord>
+                  <div className="title">여정 내역</div>
+                  <IoIosArrowForward />
+                </JourneyRecord>
+              </NavLink>
+            </List>
+            <List>
+              <ListTitle>일반</ListTitle>
+              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/rating-list">
+                <JourneyRecord>
+                  <div className="title">받은 매너 평가</div>
+                  <IoIosArrowForward />
+                </JourneyRecord>
+              </NavLink>
+            </List>
           </ListContainer>
         </MyPageContainer>
       </Container>
     </>
   );
 }
+
 const Container = styled.div`
   width: 100%;
   height: 100vh;
+
+  button {
+    margin-bottom: 2rem;
+  }
 `;
+
 const MyPageContainer = styled.div`
   width: 100%;
-  height: 90vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 const ProfileContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: ${props => props.theme.colors.main_blue};
-  box-shadow: 0px 4px 4px -4px #3f5179;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  @media only screen and (min-height: 667px) {
-    height: 35%;
-  }
+  width: 80%;
+  height: auto;
+  margin: 3rem 0 2rem;
 `;
+
 const Profile = styled.div`
-  width: 100%;
-  height: 40%;
-  padding: 0 7rem 0 7rem;
-  position: relative;
-  bottom: 3rem;
+  width: 80%;
   display: flex;
   align-items: center;
-  justify-content: center;
 
   svg {
-    font-size: 7rem;
-    color: #26264c;
-    background-color: white;
+    margin-right: 2rem;
+    font-size: 5rem;
     border-radius: 1rem;
-    box-shadow: 0px 4px 4px -4px #3f5179;
-  }
-
-  @media only screen and (max-height: 667px) {
-    height: 30%;
   }
 `;
 const Info = styled.div`
-  width: 60%;
-  height: 50%;
-  margin-left: 1rem;
-  color: #fff;
-  div {
-    margin-top: 0.3rem;
-    font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+
+  .text {
+    font-size: 1.1rem;
   }
 `;
+
+const PointContainer = styled.div`
+  width: 90%;
+  padding: 2rem;
+  margin: 1rem 0 2rem 0;
+  background-color: ${props => props.theme.colors.main_blue};
+  color: white;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: bold;
+
+  svg {
+    color: white;
+    font-size: 1.2rem;
+    margin-right: 0.3rem;
+  }
+
+  .point-text-container {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .point-text {
+    display: flex;
+    align-items: center;
+    font-size: 1.6rem;
+
+    svg {
+      font-size: 1.6rem;
+    }
+  }
+
+  .point-amount {
+    font-size: 1.6rem;
+  }
+
+  .buy-point {
+    width: 100%;
+    padding: 2rem 0.5rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 1rem;
+    border-top: 0.9px solid white;
+
+    div {
+      font-size: 1.2rem;
+    }
+  }
+`;
+
 const SummaryContainer = styled.div`
   width: 90%;
-  height: 12rem;
+  margin: 2rem 0;
   background-color: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 0px 10px #73b2d9, 0 0px 10px #73b2d9;
-  position: relative;
-  bottom: 5rem;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -133,9 +186,11 @@ const SummaryContainer = styled.div`
 
   .title {
     color: ${props => props.theme.colors.main_blue};
+    font-size: 1.1rem;
     font-weight: bold;
     margin: 0.5rem 0 0.5rem 0;
   }
+
   .bottom {
     color: ${props => props.theme.colors.dark_gray};
     font-size: 1.2rem;
@@ -163,19 +218,32 @@ const Compliment = styled.div``;
 
 const ListContainer = styled.div`
   width: 100%;
-  height: auto;
-  box-shadow: 0px -2px 2px -2px ${props => props.theme.colors.light_gray};
+  margin-bottom: 60px;
+  overflow: scroll;
 `;
+
+const List = styled.div`
+  width: 100%;
+  border-top: 5px solid #f6f6f6;
+`;
+
+const ListTitle = styled.h1`
+  margin: 1rem 0;
+  padding: 1rem 3rem 0 3rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+`;
+
 const JourneyRecord = styled.div`
   width: 100%;
-  height: 6rem;
-  box-shadow: 0px 2px 2px -2px ${props => props.theme.colors.light_gray};
+  height: 5rem;
   padding: 0 3rem 0 3rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid #f6f6f6;
+
   .title {
-    font-size: 1.3rem;
-    font-weight: 600;
+    font-size: 1.2rem;
   }
 `;
