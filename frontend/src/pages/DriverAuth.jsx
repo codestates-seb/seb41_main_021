@@ -34,7 +34,7 @@ const Contents = styled.div`
   align-items: center;
   margin-top: 3rem;
   @media screen and (min-width: 800px) {
-    margin-top: 10rem;
+    margin-top: 1rem;
   }
 `;
 const AuthBtn = styled(Button)`
