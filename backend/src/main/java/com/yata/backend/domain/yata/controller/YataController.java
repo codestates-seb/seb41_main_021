@@ -74,8 +74,12 @@ public class YataController {
 
     //상세보기
     @GetMapping("/{yata_id}")
-    public ResponseEntity getYata(){
-        return null;
+    public ResponseEntity getYata(@PathVariable("yata_id") @Positive long yataId){
+        Yata yata = this.yataService.findYata(yataId);
+        return new ResponseEntity<>(
+                new SingleResponse<>(mapper.yataToYataResponse(yata)),HttpStatus.OK);
+
     }
+
 
 }

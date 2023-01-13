@@ -43,6 +43,7 @@ public class YataFactory {
 
     public static YataDto.Response createYataResponseDto(Yata yata){
         return YataDto.Response.builder()
+
                 .title(yata.getTitle())
                 .content(yata.getContent())
                 .timeOfArrival(yata.getTimeOfArrival())
@@ -54,5 +55,6 @@ public class YataFactory {
                 .yataStatus(yata.getYataStatus())
                 .postStatus(yata.getPostStatus())
                 .build();
+
     }
 }

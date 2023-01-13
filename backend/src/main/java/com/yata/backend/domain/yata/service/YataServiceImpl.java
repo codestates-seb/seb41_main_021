@@ -90,10 +90,10 @@ public class YataServiceImpl implements YataService{
     }
 
     @Override
-    public Yata findYata() {
-        return null;
+    public Yata findYata(long yataId) {
+        Yata findYata = verifyYata(yataId);
+        return findYata;
     }
-
 
     /*검증로직*/
     public Yata verifyYata(long yataId) {

@@ -12,7 +12,7 @@ public interface YataService {
 
     Yata findAllYata();
 
-    Yata findYata();
+    Yata findYata(long yataId);
 
     Yata verifyYata(long yataId);
 

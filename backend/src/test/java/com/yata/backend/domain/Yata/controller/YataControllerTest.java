@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.yata.backend.domain.AbstractControllerTest;
 import com.yata.backend.domain.yata.controller.YataController;
 import com.yata.backend.domain.yata.dto.YataDto;
+import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataStatus;
 import com.yata.backend.domain.yata.mapper.YataMapper;
@@ -31,8 +32,9 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -114,7 +116,7 @@ public class YataControllerTest extends AbstractControllerTest {
         YataDto.Patch patch = createYataPatchDto();
 
         String json = gson.toJson(patch); //json으로 보낼 patch요청
-
+//todo 출발지 몰적지 추가, docs는 어떻게 해야 할 지?
         Yata expected = Yata.builder()
                 .yataId(1L)
                 .title("인천까지 같이가실 분~")
@@ -202,6 +204,59 @@ public class YataControllerTest extends AbstractControllerTest {
                         getResponsePreProcessor()
                         )
                 );
+
+    }
+
+    @Test
+    @WithMockUser(username = "test@gmail.com", roles = "USER")
+    @DisplayName("야타 게시글 상세조회")
+    void getYata() throws Exception {
+        long yataId = 1L;
+        //given
+        Yata yata = Yata.builder()
+                .yataId(1L)
+                .title("인천까지 같이가실 분~")
+                .content("같이 춤추면서 가요~")
+                .amount(1500L)
+                .carModel("porsche")
+                .maxPeople(2)
+                .maxWaitingTime(10)
+                .destination(new Location())
+                .strPoint(new Location())
+                .yataStatus(YataStatus.YATA_NATA)
+                .postStatus(Yata.PostStatus.POST_WAITING)
+                .build();
+
+        YataDto.Response response = createYataResponseDto(yata);
+
+        given(yataService.findYata(anyLong())).willReturn(yata);
+        given(mapper.yataToYataResponse(any())).willReturn(response);
+        //when
+
+        ResultActions resultActions = mockMvc.perform(
+                get(BASE_URL + "/{yata_id}", yataId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        resultActions.andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.title").value(response.getTitle()))
+                .andExpect(jsonPath("$.data.content").value(response.getContent()))
+                .andDo(document("yata-get",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        responseFields(
+//                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
+//                                fieldWithPath("content").type(JsonFieldType.STRING).description("본문"),
+//                                fieldWithPath("amount").type(JsonFieldType.NUMBER).description("가격"),
+//                                fieldWithPath("carModel").type(JsonFieldType.STRING).description("차종"),
+//                                fieldWithPath("maxPeople").type(JsonFieldType.NUMBER).description("최대인원"),
+//                                fieldWithPath("maxWaitingTime").type(JsonFieldType.NUMBER).description("최대대기시간"),
+//                                fieldWithPath("departureTime").type(JsonFieldType.STRING).description("출발시간"),
+//                                fieldWithPath("timeOfArrival").type(JsonFieldType.STRING).description("도착시간")
+                        )
+                ));
+
 
     }
 
