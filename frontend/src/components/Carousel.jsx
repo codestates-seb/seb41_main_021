@@ -58,9 +58,7 @@ export default function SimpleSlider() {
         <div className="fourth-slider slider">
           <div className="fourth-slider-txt text">
             <p>여정을 함께해요,</p>
-            <p>
-              <h1>YATA</h1>
-            </p>
+            <h1>YATA</h1>
           </div>
         </div>
       </Slider>
