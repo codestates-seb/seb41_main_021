@@ -45,6 +45,9 @@ public class YataDto {
         private Integer maxPeople;
 
         @NotNull
+        private YataStatus yataStatus;
+
+        @NotNull
         private Long amount;
 
         @NotBlank

@@ -35,15 +35,10 @@ public class YataServiceImpl implements YataService{
     }
 
     @Override
-    public Yata createYata(Yata yata,String yataStatus, String userName) {
+    public Yata createYata(Yata yata, String userName) {
 
         Member member = memberService.findMember(userName);
-        switch (yataStatus){
-            case "neota" -> yata.setYataStatus(YataStatus.YATA_NEOTA);
-             case "nata" -> yata.setYataStatus(YataStatus.YATA_NATA);
-            default ->  throw new CustomLogicException(ExceptionCode.YATA_STATUS_NONE);
-        }
-
+        
         yata.setPostStatus(POST_WAITING);
         yata.setMember(member);
 

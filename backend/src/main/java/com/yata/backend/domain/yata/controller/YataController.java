@@ -34,10 +34,9 @@ public class YataController {
     //게시물 생성
     @PostMapping
     public ResponseEntity postNeota(@Valid @RequestBody YataDto.YataPost requestBody,
-                                    @RequestParam String yataStatus,
                                     @AuthenticationPrincipal User authMember){
 
-        Yata yata = yataService.createYata(mapper.yataPostDtoToYata(requestBody),yataStatus,authMember.getUsername());
+        Yata yata = yataService.createYata(mapper.yataPostDtoToYata(requestBody),authMember.getUsername());
         return new ResponseEntity<>(
                 new SingleResponse<>(mapper.yataToYataResponse(yata)), HttpStatus.CREATED);
     }

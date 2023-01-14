@@ -34,6 +34,7 @@ public interface YataMapper {
         yata.amount(requestBody.getAmount());
         yata.strPoint(postToLocation(requestBody.getStrPoint()));
         yata.destination(postToLocation(requestBody.getDestination()));
+        yata.yataStatus(requestBody.getYataStatus());
 
         return yata.build();
     }

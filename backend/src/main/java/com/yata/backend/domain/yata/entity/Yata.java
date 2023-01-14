@@ -76,6 +76,7 @@ public class Yata extends Auditable {
     private List<YataRequest> yataRequests = new ArrayList<>();
 
 
+
     public enum PostStatus {
         POST_WAITING(1,"예약 전"),
         POST_RESERVED(2,"예약 완료"),
