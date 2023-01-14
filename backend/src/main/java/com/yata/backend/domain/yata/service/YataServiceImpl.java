@@ -38,8 +38,6 @@ public class YataServiceImpl implements YataService{
     public Yata createYata(Yata yata, String userName) {
 
         Member member = memberService.findMember(userName);
-        
-        yata.setPostStatus(POST_WAITING);
         yata.setMember(member);
 
         return jpayataRepository.save(yata);
