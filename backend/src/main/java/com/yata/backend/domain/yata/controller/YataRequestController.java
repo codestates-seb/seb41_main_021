@@ -9,6 +9,7 @@ import com.yata.backend.domain.yata.service.YataRequestServiceImpl;
 import com.yata.backend.domain.yata.service.YataService;
 import com.yata.backend.domain.yata.service.YataServiceImpl;
 import com.yata.backend.global.response.SingleResponse;
+import com.yata.backend.global.response.SliceInfo;
 import com.yata.backend.global.response.SliceResponseDto;
 import org.apache.tomcat.util.net.openssl.ciphers.OpenSSLCipherConfigurationParser;
 import org.springframework.data.domain.Pageable;
@@ -56,24 +57,23 @@ public class YataRequestController {
     }
 
     // Yata 신청 목록 조회 - 200
-    // TODO 파라미터 "?acceptable=true" 값 어떻게 받을지 생각
+    // 일단 신청 + 초대 목록 함께 뜨게 되어있음
     @GetMapping("/apply/{yataId}")
     public ResponseEntity<SliceResponseDto<YataRequestDto.RequestResponse>> getRequests(@PathVariable("yataId") @Positive long yataId,
                                                                                         @AuthenticationPrincipal User authMember,
                                                                                         Pageable pageable) {
         Slice<YataRequest> requests = yataRequestService.findRequests(authMember.getUsername(), yataId ,pageable);
-//        return new ResponseEntity<>(new SliceResponseDto<YataRequestDto.RequestResponse>(mapper.yataRequestsToYataRequestResponses(requests),pageable), HttpStatus.OK);
-        if(requests.hasContent()) {
-            return new ResponseEntity<>(new SliceResponseDto<YataRequestDto.RequestResponse>(mapper.yataRequestsToYataRequestResponses(requests),pageable), HttpStatus.OK);
-        } else {
-            return ResponseEntity.noContent().build();
-        }
+        SliceInfo sliceInfo = new SliceInfo(pageable, requests.getNumberOfElements(), requests.hasNext());
+        return new ResponseEntity<>(
+                new SliceResponseDto<YataRequestDto.RequestResponse>(mapper.yataRequestsToYataRequestResponses(requests), sliceInfo), HttpStatus.OK);
     }
 
     // TODO Yata 신청 or 초대 전 or 승인 후 삭제 - 204
-    @DeleteMapping("/apply/{yataId}")
+    @DeleteMapping("/apply/{yataId}/{yataRequestId}")
     public ResponseEntity deleteRequest(@PathVariable("yataId") @Positive long yataId,
+                                        @PathVariable("yataRequestId") @Positive long yataRequestId,
                                       @AuthenticationPrincipal User authMember) {
+        yataRequestService.deleteRequest(authMember.getUsername(), yataRequestId, yataId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

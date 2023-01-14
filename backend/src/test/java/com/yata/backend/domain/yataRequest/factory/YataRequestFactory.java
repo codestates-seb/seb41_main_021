@@ -13,13 +13,11 @@ public class YataRequestFactory {
 
         return YataRequestDto.RequestPost.builder()
                 .title("태워주세욥")
-                .content("헬로~")
-//                .checklists(List.of("흡연 O","애완동물 X"))
+                .specifics("애완견을 동반하고싶어요")
                 .departureTime(new Date())
                 .timeOfArrival(new Date())
                 .maxPeople(3)
                 .maxWatingTime(10)
-                .carModel("lamborghini")
                 .strPoint(strPoint)
                 .destination(destination)
                 .build();
@@ -35,12 +33,10 @@ public class YataRequestFactory {
                 .yataRequestId(yataRequest.getYataRequestId())
                 .yataRequestStatus(yataRequest.getRequestStatus())
                 .title(yataRequest.getTitle())
-                .content(yataRequest.getContent())
-//                .checklists(List.of("흡연 O","애완동물 X"))
+                .specifics(yataRequest.getSpecifics())
                 .departureTime(yataRequest.getYata().getDepartureTime())
                 .timeOfArrival(yataRequest.getYata().getTimeOfArrival())
                 .maxWatingTime(yataRequest.getYata().getMaxWaitingTime())
-                .carModel(yataRequest.getYata().getCarModel())
                 .strPoint(strPoint)
                 .destination(destination)
                 .maxPeople(yataRequest.getYata().getMaxPeople())
@@ -48,7 +44,6 @@ public class YataRequestFactory {
     }
 
     public static YataRequestDto.InvitationPost createYataInvitationPostDto() {
-
         return YataRequestDto.InvitationPost.builder()
                 .yataId(1L)
                 .build();

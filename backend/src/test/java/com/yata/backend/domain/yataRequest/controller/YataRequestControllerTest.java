@@ -20,16 +20,23 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.Date;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willReturn;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -71,8 +78,38 @@ public class YataRequestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isCreated());
 
         //then
-        actions.andExpect(status().isCreated())
-                .andDo(print());
+        actions.andExpect(status().isCreated());
+//                .andDo(document("post-yataRequest"),
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint()),
+//                        requestFields(
+//                                List.of(
+//                                        fieldWithPath("title").type(JsonFieldType.STRING).description("신청 제목"),
+//                                        fieldWithPath("content").type(JsonFieldType.STRING).description("신청 내용"),
+//                                        fieldWithPath("departureTime").type(JsonFieldType.STRING).description("출발 시간"),
+//                                        fieldWithPath("timeOfArrival").type(JsonFieldType.STRING).description("도착 시간"),
+//                                        fieldWithPath("maxPeople").type(JsonFieldType.NUMBER).description("최대 인원"),
+//                                        fieldWithPath("maxWatingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
+//                                        fieldWithPath("carModel").type(JsonFieldType.STRING).description("차종"),
+//                                        fieldWithPath("strPoint").type(JsonFieldType.OBJECT).description("출발 지점"),
+//                                        fieldWithPath("destination").type(JsonFieldType.OBJECT).description("도착 지점")
+//                                )
+//                        ),
+//                        responseFields(
+//                                List.of(
+//                                        fieldWithPath("yataRequestId").type(JsonFieldType.NUMBER).description("신청 식별자"),
+//                                        fieldWithPath("yataRequestStatus").type(JsonFieldType.STRING).description("신청 상태"),
+//                                        fieldWithPath("title").type(JsonFieldType.STRING).description("신청 제목"),
+//                                        fieldWithPath("content").type(JsonFieldType.STRING).description("신청 내용"),
+//                                        fieldWithPath("departureTime").type(JsonFieldType.OBJECT).description("출발 시간"),
+//                                        fieldWithPath("timeOfArrival").type(JsonFieldType.OBJECT).description("도착 시간"),
+//                                        fieldWithPath("maxPeople").type(JsonFieldType.NUMBER).description("최대 인원"),
+//                                        fieldWithPath("maxWatingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
+//                                        fieldWithPath("carModel").type(JsonFieldType.STRING).description("차종"),
+//                                        fieldWithPath("strPoint").type(JsonFieldType.OBJECT).description("출발 지점"),
+//                                        fieldWithPath("destination").type(JsonFieldType.OBJECT).description("도착 지점")
+//                                )
+//                        ));
     }
 
     @Test

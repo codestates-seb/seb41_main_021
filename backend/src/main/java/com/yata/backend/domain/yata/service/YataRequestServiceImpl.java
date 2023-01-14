@@ -46,14 +46,18 @@ public class YataRequestServiceImpl implements YataRequestService {
         } else {
             throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
         }
-        // TODO 체크리스트 추가
-         YataRequest request = YataRequest.create(yataRequest, member, yata);
+        // TODO 신청 인원 > 게시글의 max people 이라면 익셉션 --> yataRequest.getYata() 하니까 안받은 거에서 가져오기 불가
+//        if (yata.getMaxPeople() < yataRequest.get){
+//            throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
+//        }
+        yataRequest.setYata(yata);
+        yataRequest.setMember(member);
         // 신청 이후 yata 에서 신청자 list 에 추가됨
 
-        return jpaYataRequestRepository.save(request);
+        return jpaYataRequestRepository.save(yataRequest);
     }
 
-    // TODO Yata 초대
+    // Yata 초대
     @Override
     public YataRequest createInvitation(YataRequest yataRequest, String userName, Long yataId) {
         Member member = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
@@ -65,10 +69,11 @@ public class YataRequestServiceImpl implements YataRequestService {
         } else {
             throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
         }
-        YataRequest request = YataRequest.create(yataRequest, member, yata);
+        yataRequest.setYata(yata);
+        yataRequest.setMember(member);
         // 초대 이후 (자신의 게시물이 있다는 전제로) --> 탑승자가 그 게시물을 보고 승인 --> yata 에서 해당 게시물의 탑승자 list 에 추가
 
-        return jpaYataRequestRepository.save(request);
+        return jpaYataRequestRepository.save(yataRequest);
     }
 
     // TODO Yata 신청 목록 조회
@@ -84,7 +89,14 @@ public class YataRequestServiceImpl implements YataRequestService {
     //  해당 id 로 한 신청/초대가 있는지 검증 + 승인이 된 신청/초대 인지 검증
     //  이틀 전에는 취소 가능 / 이후부터는 채팅으로 상의 후 운전자만 취소 가능
     @Override
-    public void deleteRequest(Long yataRequestId) {
+    public void deleteRequest(String userName, Long yataRequestId, Long yataId) {
+        YataRequest yataRequest = findRequest(yataRequestId); // 해당 yataRequestId 로 한 신청/초대가 있는지 검증
+
+        // 해당 신청/초대가 승인을 받았는지 검증
+        // 안받았으면 --> 삭제
+        // 받았으면 -->
+             // 해당 yata 게시물의 출발시간을 확인해서 현재 시각(new Date())으로 부터 2일(48시간)보다 많이 남았다면 --> 삭제
+             // 2일(48시간) 이하로 남았다면 --> 운전자만 삭제 가능
     }
 
     // 이미 신청한 게시물인지 검증
@@ -102,6 +114,23 @@ public class YataRequestServiceImpl implements YataRequestService {
         Optional<YataRequest> optionalYataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(userName, yataId);
         optionalYataRequest.ifPresent(
                 yr -> {throw new CustomLogicException(ExceptionCode.ALREADY_INVITED);}
+        );
+    }
+
+    // 신청/초대 id 로 해당 내역을 가져오는 로직
+    @Override
+    public YataRequest findRequest(Long yataRequestId) {
+        Optional<YataRequest> optionalYataRequest = jpaYataRequestRepository.findById(yataRequestId);
+        return optionalYataRequest.orElseThrow(() -> {
+            return new CustomLogicException(ExceptionCode.YATAREQUEST_NONE);
+        });
+    }
+
+    // TODO 신청 인원 > 게시글의 max people 이라면 익셉션
+    public void verifyPoepleNum(Long yataRequestId, Long yataId) {
+        Optional<YataRequest> optionalYataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(userName, yataId);
+        optionalYataRequest.ifPresent(
+                yr -> {throw new CustomLogicException(ExceptionCode.ALREADY_APPLIED);}
         );
     }
 }

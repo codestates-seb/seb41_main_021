@@ -23,7 +23,7 @@ public class YataRequest extends Auditable {
     private String title;
 
     @Column(length = 100)
-    private String content;
+    private String specifics;
 
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20, nullable = false)
@@ -54,15 +54,4 @@ public class YataRequest extends Auditable {
             this.status = status;
         }
     }
-
-    public static YataRequest create(YataRequest yataRequest, Member member, Yata yata) {
-        return YataRequest.builder()
-                .title(yataRequest.getTitle())
-                .content(yataRequest.getContent())
-                .requestStatus(yataRequest.getRequestStatus())
-                .member(member)
-                .yata(yata)
-                .build();
-    }
-
 }
