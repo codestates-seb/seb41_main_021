@@ -7,6 +7,8 @@ import com.yata.backend.domain.yata.mapper.YataMapper;
 import com.yata.backend.domain.yata.service.YataService;
 import com.yata.backend.global.response.SingleResponse;
 import org.locationtech.jts.io.ParseException;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -77,5 +79,7 @@ public class YataController {
     public ResponseEntity getYata(){
         return null;
     }
+
+
 
 }

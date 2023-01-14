@@ -24,7 +24,7 @@ public class Checklist {
     @Column(nullable = false)
     private CheckKind checkKind;
 
-    private enum CheckKind {
+    public enum CheckKind {
         REVIEW("리뷰"),
         NEOTA("운전자"),
         NATA("탑승자");
