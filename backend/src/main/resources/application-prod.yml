@@ -16,7 +16,6 @@ spring:
                 non_contextual_creation: true
         format_sql: true  # (3) SQL pretty print
         dialect: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
-        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
 #  redis:
 #    host: ${YATA_REDIS_HOST}
 #    port: ${YATA_REDIS_PORT}
