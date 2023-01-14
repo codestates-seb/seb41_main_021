@@ -1,6 +1,7 @@
 package com.yata.backend.domain.yata.entity;
 
 import lombok.*;
+import org.locationtech.jts.geom.Point;
 
 import javax.persistence.*;
 
@@ -17,13 +18,15 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pointId;
 
-    @Column(nullable = false)
+    /*@Column(nullable = false)
     private double longitude;
 
     @Column(nullable = false)
     private double latitude;
-
-    @Column(length = 100,nullable = false)
+*/
+    @Column(nullable = false, name = "LOCATION" , columnDefinition = "GEOMETRY")
+    private Point location;
+    @Column(length = 100, nullable = false)
     private String address;
 
     @OneToOne
