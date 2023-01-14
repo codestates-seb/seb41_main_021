@@ -27,7 +27,7 @@ public interface YataMapper {
         }
         //transFormat.parse(post.getDepartureTime())
         yata.title(requestBody.getTitle());
-        yata.content(requestBody.getContent());
+        yata.specifics(requestBody.getSpecifics());
         yata.maxWaitingTime(requestBody.getMaxWaitingTime());
         yata.carModel(requestBody.getCarModel());
         yata.maxPeople(requestBody.getMaxPeople());
@@ -55,7 +55,7 @@ public interface YataMapper {
         response.departureTime( yata.getDepartureTime() );
         response.timeOfArrival( yata.getTimeOfArrival() );
         response.title( yata.getTitle() );
-        response.content( yata.getContent() );
+        response.specifics( yata.getSpecifics() );
         response.maxWaitingTime( yata.getMaxWaitingTime() );
         response.maxPeople( yata.getMaxPeople() );
         response.amount( yata.getAmount() );

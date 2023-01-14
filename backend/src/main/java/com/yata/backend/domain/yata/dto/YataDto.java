@@ -30,7 +30,7 @@ public class YataDto {
         private String title;
 
         @NotBlank
-        private String content;
+        private String specifics;
         @NotNull
         @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss" , iso = DateTimeFormat.ISO.DATE_TIME)
         private Date departureTime;
@@ -78,7 +78,7 @@ public class YataDto {
 
         private String title;
 
-        private String content;
+        private String specifics;
 
         @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss" , iso = DateTimeFormat.ISO.DATE_TIME)
         private Date departureTime;
@@ -120,7 +120,7 @@ public class YataDto {
         @JsonFormat(shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd'T'HH:mm:ss" , timezone = "Asia/Seoul")
         private Date timeOfArrival;
         private String title;
-        private String content;
+        private String specifics;
         private Integer maxWaitingTime;
         private Integer maxPeople;
         private Long amount;
