@@ -94,11 +94,16 @@ public class YataDto {
 
         private String carModel;
 
+        //postStauts 따로 로직 빼서 수정하게 해야할 듯
+//        private Yata.PostStatus postStatus;
+
         @Valid
         private LocationDto.Post strPoint;
 
         @Valid
         private LocationDto.Post destination;
+
+
 
 
     }
