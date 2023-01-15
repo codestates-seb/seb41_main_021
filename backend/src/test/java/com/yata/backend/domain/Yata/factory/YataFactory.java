@@ -17,13 +17,14 @@ public class YataFactory {
 
         return YataDto.YataPost.builder()
                 .title("부산까지 같이가실 분~")
-                .content("같이 노래들으면서 가요~")
+                .specifics("같이 노래들으면서 가요~")
                 .departureTime(new Date())
                 .timeOfArrival(new Date())
                 .amount(2000L)
                 .carModel("bmw")
                 .maxPeople(3)
                 .maxWaitingTime(20)
+                .yataStatus(YataStatus.YATA_NEOTA)
                 .build();
     }
 
@@ -31,7 +32,7 @@ public class YataFactory {
 
         return YataDto.Patch.builder()
                 .title("인천까지 같이가실 분~")
-                .content("같이 춤추면서 가요~")
+                .specifics("같이 춤추면서 가요~")
                 .departureTime(new Date())
                 .timeOfArrival(new Date())
                 .amount(1500L)
@@ -45,7 +46,7 @@ public class YataFactory {
         return YataDto.Response.builder()
 
                 .title(yata.getTitle())
-                .content(yata.getContent())
+                .specifics(yata.getSpecifics())
                 .timeOfArrival(yata.getTimeOfArrival())
                 .departureTime(yata.getDepartureTime())
                 .amount(yata.getAmount())

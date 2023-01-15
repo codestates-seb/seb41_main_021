@@ -17,18 +17,20 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.Date;
+import java.util.List;
 
 import static com.yata.backend.domain.Yata.factory.YataFactory.*;
 import static com.yata.backend.util.ApiDocumentUtils.getRequestPreProcessor;
 import static com.yata.backend.util.ApiDocumentUtils.getResponsePreProcessor;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -67,21 +69,23 @@ public class YataControllerTest extends AbstractControllerTest {
 
         Yata expected = Yata.builder()
                 .title("부산까지 같이가실 분~")
-                .content("같이 노래들으면서 가요~")
+                .specifics("같이 노래들으면서 가요~")
                 .departureTime(new Date())
                 .timeOfArrival(new Date())
                 .amount(2000L)
                 .carModel("bmw")
                 .maxPeople(3)
                 .maxWaitingTime(20)
+                .yataStatus(YataStatus.YATA_NEOTA)
+                .postStatus(Yata.PostStatus.POST_WAITING)
                 .build();
 
 
-        given(yataService.createYata(any(),any(),any())).willReturn(expected);
+        given(yataService.createYata(any(),any())).willReturn(expected);
 
         //when
         ResultActions resultActions = mockMvc.perform(
-                post(BASE_URL + "?yataStatus=neota")
+                post(BASE_URL)
                         .contentType("application/json")
                         .with(csrf()) //csrf토큰 생성
                         .content(json))
@@ -94,13 +98,14 @@ public class YataControllerTest extends AbstractControllerTest {
                 getResponsePreProcessor(),
                 requestFields(
                         fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
-                        fieldWithPath("content").type(JsonFieldType.STRING).description("본문"),
+                        fieldWithPath("specifics").type(JsonFieldType.STRING).description("특이사항"),
                         fieldWithPath("amount").type(JsonFieldType.NUMBER).description("가격"),
                         fieldWithPath("carModel").type(JsonFieldType.STRING).description("차종"),
                         fieldWithPath("maxPeople").type(JsonFieldType.NUMBER).description("최대인원"),
                         fieldWithPath("maxWaitingTime").type(JsonFieldType.NUMBER).description("최대대기시간"),
                         fieldWithPath("departureTime").type(JsonFieldType.STRING).description("출발시간"),
-                        fieldWithPath("timeOfArrival").type(JsonFieldType.STRING).description("도착시간")
+                        fieldWithPath("timeOfArrival").type(JsonFieldType.STRING).description("도착시간"),
+                        fieldWithPath("yataStatus").type(JsonFieldType.STRING).description("야타상태")
                 )
                 ));
 
@@ -120,7 +125,7 @@ public class YataControllerTest extends AbstractControllerTest {
         Yata expected = Yata.builder()
                 .yataId(1L)
                 .title("인천까지 같이가실 분~")
-                .content("같이 춤추면서 가요~")
+                .specifics("같이 춤추면서 가요~")
                 .departureTime(new Date())
                 .timeOfArrival(new Date())
                 .amount(1500L)
@@ -149,7 +154,9 @@ public class YataControllerTest extends AbstractControllerTest {
                 //then
                 resultActions.andExpect(status().isOk())
                         .andExpect(jsonPath("$.data.title").value(response.getTitle()))
-                        .andExpect(jsonPath("$.data.content").value(response.getContent()))
+                        .andExpect(jsonPath("$.data.specifics").value(response.getSpecifics()))
+                        .andExpect(jsonPath("$.data.amount").value(response.getAmount()))
+                        .andExpect(jsonPath("$.data.carModel").value(response.getCarModel()))
                         .andDo(print());
 
         resultActions.andDo(document("yata-update",
@@ -157,7 +164,7 @@ public class YataControllerTest extends AbstractControllerTest {
                 getResponsePreProcessor(),
                 requestFields(
                         fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
-                        fieldWithPath("content").type(JsonFieldType.STRING).description("본문"),
+                        fieldWithPath("specifics").type(JsonFieldType.STRING).description("특이사항"),
                         fieldWithPath("amount").type(JsonFieldType.NUMBER).description("가격"),
                         fieldWithPath("carModel").type(JsonFieldType.STRING).description("차종"),
                         fieldWithPath("maxPeople").type(JsonFieldType.NUMBER).description("최대인원"),
@@ -177,7 +184,7 @@ public class YataControllerTest extends AbstractControllerTest {
         Yata expected = Yata.builder()
                 .yataId(1L)
                 .title("인천까지 같이가실 분~")
-                .content("같이 춤추면서 가요~")
+                .specifics("같이 춤추면서 가요~")
                 .departureTime(new Date())
                 .timeOfArrival(new Date())
                 .amount(1500L)
@@ -216,7 +223,7 @@ public class YataControllerTest extends AbstractControllerTest {
         Yata yata = Yata.builder()
                 .yataId(1L)
                 .title("인천까지 같이가실 분~")
-                .content("같이 춤추면서 가요~")
+                .specifics("같이 춤추면서 가요~")
                 .amount(1500L)
                 .carModel("porsche")
                 .maxPeople(2)
@@ -234,18 +241,22 @@ public class YataControllerTest extends AbstractControllerTest {
         //when
 
         ResultActions resultActions = mockMvc.perform(
-                get(BASE_URL + "/{yata_id}", yataId)
+                get(BASE_URL + "/{yata_id}",yata.getYataId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-        );
+                        .with(csrf()));
 
         resultActions.andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.title").value(response.getTitle()))
-                .andExpect(jsonPath("$.data.content").value(response.getContent()))
-                .andDo(document("yata-get",
-                        getRequestPreProcessor(),
-                        getResponsePreProcessor(),
-                        responseFields(
+                .andExpect(jsonPath("$.data.specifics").value(response.getSpecifics()))
+                .andExpect(jsonPath("$.data.amount").value(response.getAmount()))
+                .andExpect(jsonPath("$.data.carModel").value(response.getCarModel()))
+                .andDo(print());
+                //todo 프론트와 필드 맞춰본 후 수정/추가
+//                .andDo(document("yata-get",
+//                        getRequestPreProcessor(),
+//                        getResponsePreProcessor(),
+//                        responseFields(
 //                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
 //                                fieldWithPath("content").type(JsonFieldType.STRING).description("본문"),
 //                                fieldWithPath("amount").type(JsonFieldType.NUMBER).description("가격"),
@@ -254,9 +265,76 @@ public class YataControllerTest extends AbstractControllerTest {
 //                                fieldWithPath("maxWaitingTime").type(JsonFieldType.NUMBER).description("최대대기시간"),
 //                                fieldWithPath("departureTime").type(JsonFieldType.STRING).description("출발시간"),
 //                                fieldWithPath("timeOfArrival").type(JsonFieldType.STRING).description("도착시간")
-                        )
-                ));
+//                        )
+//                ));
+    }
 
+    @Test
+    @WithMockUser(username = "test@gmail.com", roles = "USER")
+    @DisplayName("야타 게시글 전체조회")
+    void getAllYata() throws Exception {
+        //yata 3개 넣어주고
+        Yata yata1 = Yata.builder()
+                .yataId(1L)
+                .title("부산까지 같이가실 분~")
+                .specifics("같이 노래들으면서 가요~")
+                .departureTime(new Date())
+                .timeOfArrival(new Date())
+                .amount(2000L)
+                .carModel("bmw")
+                .maxPeople(3)
+                .maxWaitingTime(20)
+                .yataStatus(YataStatus.YATA_NEOTA)
+                .postStatus(Yata.PostStatus.POST_WAITING)
+                .build();
+
+        Yata yata2 = Yata.builder()
+                .yataId(2L)
+                .title("부산까지 같이가실 분~")
+                .specifics("같이 노래들으면서 가요~")
+                .departureTime(new Date())
+                .timeOfArrival(new Date())
+                .amount(2000L)
+                .carModel("bmw")
+                .maxPeople(3)
+                .maxWaitingTime(20)
+                .yataStatus(YataStatus.YATA_NEOTA)
+                .postStatus(Yata.PostStatus.POST_WAITING)
+                .build();
+
+        Yata yata3 = Yata.builder()
+                .yataId(3L)
+                .title("부산까지 같이가실 분~")
+                .specifics("같이 노래들으면서 가요~")
+                .departureTime(new Date())
+                .timeOfArrival(new Date())
+                .amount(2000L)
+                .carModel("bmw")
+                .maxPeople(3)
+                .maxWaitingTime(20)
+                .yataStatus(YataStatus.YATA_NEOTA)
+                .postStatus(Yata.PostStatus.POST_WAITING)
+                .build();
+
+        List<Yata> yatas = List.of(yata3,yata2,yata1);
+
+        given(yataService.findAllYata(any(),any())).willReturn(new SliceImpl<>(yatas));
+        given(mapper.yatasToYataResponses(any())).willReturn(new SliceImpl<>(List.of(createYataResponseDto(yata1),createYataResponseDto(yata2),createYataResponseDto(yata3))));
+
+
+        // when
+        ResultActions actions =
+                mockMvc.perform(
+                        get(BASE_URL+"?yataStatus=neota")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .with(csrf()));
+//yataId를 넣으면 0이 나오는 에러
+        actions.andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.content[0].title").value(yatas.get(0).getTitle()))
+                .andExpect(jsonPath("$.data.content[1].title").value(yatas.get(1).getTitle()))
+                .andExpect(jsonPath("$.data.content[2].title").value(yatas.get(2).getTitle()))
+                .andDo(print());
 
     }
 
