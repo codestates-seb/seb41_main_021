@@ -19,7 +19,7 @@ public class YataSearchServiceImpl implements YataSearchService{
    }
 
 
-   public List<Yata> findYataByLocation(Location startLocation, Location endLocation, Pageable pageable) {
-      return yataRepository.findYataByStartAndEndLocation(startLocation, endLocation, pageable);
+   public List<Yata> findYataByLocation(Location startLocation, Location endLocation, double distance ,Pageable pageable) {
+      return yataRepository.findYataByStartAndEndLocation(startLocation, endLocation, distance ,pageable);
    }
 }

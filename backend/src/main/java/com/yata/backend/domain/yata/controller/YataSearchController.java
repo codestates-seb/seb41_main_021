@@ -4,6 +4,7 @@ import com.yata.backend.domain.yata.dto.LocationDto;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.mapper.YataMapper;
 import com.yata.backend.domain.yata.service.YataSearchService;
+import com.yata.backend.global.response.ListResponse;
 import com.yata.backend.global.response.PageInfo;
 import com.yata.backend.global.response.PageResponseDto;
 import org.locationtech.jts.io.ParseException;
@@ -33,21 +34,23 @@ public class YataSearchController {
 
 
     @GetMapping("/location")
-    public ResponseEntity getLocation(@RequestParam String statrLon,
-                                      @RequestParam String startLat,
+    public ResponseEntity getLocation(@RequestParam double statrLon,
+                                      @RequestParam double startLat,
                                       @RequestParam String startAddress,
-                                      @RequestParam String endLon,
-                                      @RequestParam String endLat,
+                                      @RequestParam double endLon,
+                                      @RequestParam double endLat,
                                       @RequestParam String endAddress,
+                                      @RequestParam double distance,
                                       @PageableDefault Pageable pageable) throws ParseException {
-        LocationDto.Post startLocationDto = LocationDto.Post.of(Double.parseDouble(statrLon), Double.parseDouble(startLat), startAddress);
-        LocationDto.Post endLocationDto = LocationDto.Post.of(Double.parseDouble(endLon), Double.parseDouble(endLat), endAddress);
+        LocationDto.Post startLocationDto = LocationDto.Post.of(statrLon, startLat, startAddress);
+        LocationDto.Post endLocationDto = LocationDto.Post.of(endLon, endLat, endAddress);
         List<Yata> yataList = yataSearchService.findYataByLocation(
                 mapper.postToLocation(startLocationDto),
                 mapper.postToLocation(endLocationDto),
+                distance,
                 pageable
         );
         //mapper.yatasToYataResponses(yataList)
-        return ResponseEntity.ok(mapper.yatasToYataResponses(yataList));
+        return ResponseEntity.ok(new ListResponse<>(mapper.yatasToYataResponses(yataList)));
     }
 }
