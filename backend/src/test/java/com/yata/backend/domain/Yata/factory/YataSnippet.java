@@ -14,7 +14,7 @@ public class YataSnippet {
                 fieldWithPath("data[].departureTime").type(JsonFieldType.STRING).description("출발 시간"),
                 fieldWithPath("data[].timeOfArrival").type(JsonFieldType.STRING).description("도착 시간"),
                 fieldWithPath("data[].title").type(JsonFieldType.STRING).description("야타 제목"),
-                fieldWithPath("data[].content").type(JsonFieldType.STRING).description("야타 내용"),
+                fieldWithPath("data[].specifics").type(JsonFieldType.STRING).description("야타 특이사항"),
                 fieldWithPath("data[].maxWaitingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
                 fieldWithPath("data[].maxPeople").type(JsonFieldType.NUMBER).description("최대 인원"),
                 fieldWithPath("data[].amount").type(JsonFieldType.NUMBER).description("요금"),

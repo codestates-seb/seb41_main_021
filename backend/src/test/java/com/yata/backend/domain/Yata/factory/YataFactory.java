@@ -75,8 +75,9 @@ public class YataFactory {
     }
     public static Yata createYata() throws  org.locationtech.jts.io.ParseException {
         return Yata.builder()
+                .yataId(getRandomLong())
                 .title(getRandomWord())
-                .content(getRandomWord())
+                .specifics(getRandomWord())
                 .departureTime(new Date())
                 .timeOfArrival(new Date())
                 .amount(getRandomLong())

@@ -11,16 +11,11 @@ import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataStatus;
 import com.yata.backend.domain.yata.mapper.YataMapper;
 import com.yata.backend.domain.yata.service.YataService;
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -37,7 +32,6 @@ import static org.mockito.BDDMockito.given;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -210,19 +204,7 @@ public class YataControllerTest extends AbstractControllerTest {
     void getYata() throws Exception {
         long yataId = 1L;
         //given
-        Yata yata = Yata.builder()
-                .yataId(1L)
-                .title("인천까지 같이가실 분~")
-                .specifics("같이 춤추면서 가요~")
-                .amount(1500L)
-                .carModel("porsche")
-                .maxPeople(2)
-                .maxWaitingTime(10)
-                .destination(new Location())
-                .strPoint(new Location())
-                .yataStatus(YataStatus.YATA_NATA)
-                .postStatus(Yata.PostStatus.POST_WAITING)
-                .build();
+        Yata yata = YataFactory.createYata();
 
         YataDto.Response response = createYataResponseDto(yata);
 
@@ -263,53 +245,13 @@ public class YataControllerTest extends AbstractControllerTest {
     @WithMockUser(username = "test@gmail.com", roles = "USER")
     @DisplayName("야타 게시글 전체조회")
     void getAllYata() throws Exception {
-        //yata 3개 넣어주고
-        Yata yata1 = Yata.builder()
-                .yataId(1L)
-                .title("부산까지 같이가실 분~")
-                .specifics("같이 노래들으면서 가요~")
-                .departureTime(new Date())
-                .timeOfArrival(new Date())
-                .amount(2000L)
-                .carModel("bmw")
-                .maxPeople(3)
-                .maxWaitingTime(20)
-                .yataStatus(YataStatus.YATA_NEOTA)
-                .postStatus(Yata.PostStatus.POST_WAITING)
-                .build();
 
-        Yata yata2 = Yata.builder()
-                .yataId(2L)
-                .title("부산까지 같이가실 분~")
-                .specifics("같이 노래들으면서 가요~")
-                .departureTime(new Date())
-                .timeOfArrival(new Date())
-                .amount(2000L)
-                .carModel("bmw")
-                .maxPeople(3)
-                .maxWaitingTime(20)
-                .yataStatus(YataStatus.YATA_NEOTA)
-                .postStatus(Yata.PostStatus.POST_WAITING)
-                .build();
 
-        Yata yata3 = Yata.builder()
-                .yataId(3L)
-                .title("부산까지 같이가실 분~")
-                .specifics("같이 노래들으면서 가요~")
-                .departureTime(new Date())
-                .timeOfArrival(new Date())
-                .amount(2000L)
-                .carModel("bmw")
-                .maxPeople(3)
-                .maxWaitingTime(20)
-                .yataStatus(YataStatus.YATA_NEOTA)
-                .postStatus(Yata.PostStatus.POST_WAITING)
-                .build();
-
-        List<Yata> yatas = List.of(yata3, yata2, yata1);
+        List<Yata> yatas = YataFactory.createYataList();
+        List<YataDto.Response> responses = createYataResponseDtoList(yatas);
 
         given(yataService.findAllYata(any(), any())).willReturn(new SliceImpl<>(yatas));
-        given(mapper.yatasToYataResponses(any())).willReturn(new SliceImpl<>(List.of(createYataResponseDto(yata3), createYataResponseDto(yata2), createYataResponseDto(yata1))));
+        given(mapper.yatasToYataSliceResponses(any())).willReturn(new SliceImpl<>(responses));
 
 
         // when

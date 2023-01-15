@@ -2,7 +2,6 @@ package com.yata.backend.domain.yata.mapper;
 
 import com.yata.backend.domain.yata.dto.LocationDto;
 import com.yata.backend.domain.yata.dto.YataDto;
-import com.yata.backend.domain.yata.dto.YataRequestDto;
 import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.Yata;
 import org.locationtech.jts.geom.Point;
@@ -78,33 +77,38 @@ public interface YataMapper {
         return response.build();
     }
 //todo strPoint, destination mapping
-    default Slice<YataDto.Response> yatasToYataResponses(Slice<Yata> yatas){
-
+default List<YataDto.Response> yatasToYataResponses(List<Yata> yatas){
+    if (yatas == null) {
+        return null;
+    }
+    return yatas.stream()
+            .map(yata -> {
+                return YataDto.Response.builder()
+                        .yataId(yata.getYataId())
+                        .postStatus(yata.getPostStatus())
+                        .yataStatus(yata.getYataStatus())
+                        .departureTime(yata.getDepartureTime())
+                        .timeOfArrival(yata.getTimeOfArrival())
+                        .title(yata.getTitle())
+                        .specifics(yata.getSpecifics())
+                        .maxWaitingTime(yata.getMaxWaitingTime())
+                        .maxPeople(yata.getMaxPeople())
+                        .amount(yata.getAmount())
+                        .carModel(yata.getCarModel())
+                        .email(yata.getMember().getEmail())
+                        .strPoint(locationToResponse(yata.getStrPoint()))
+                        .destination(locationToResponse(yata.getDestination()))
+                        .build();
+            }).collect(Collectors.toList());
+}
+    default Slice<YataDto.Response> yatasToYataSliceResponses(Slice<Yata> yatas){
         if (yatas == null) {
             return null;
         }
-        List<YataDto.Response> responses = yatas.stream()
-                .map(yata -> {
-                        return YataDto.Response.builder()
-                                .yataId(yata.getYataId())
-                                .postStatus(yata.getPostStatus())
-                                .yataStatus(yata.getYataStatus())
-                                .departureTime(yata.getDepartureTime())
-                                .timeOfArrival(yata.getTimeOfArrival())
-                                .title(yata.getTitle())
-                                .specifics(yata.getSpecifics())
-                                .maxWaitingTime(yata.getMaxWaitingTime())
-                                .maxPeople(yata.getMaxPeople())
-                                .amount(yata.getAmount())
-                                .carModel(yata.getCarModel())
-                                .email(yata.getMember().getEmail())
-                                .strPoint(locationToResponse(yata.getStrPoint()))
-                                .destination(locationToResponse(yata.getDestination()))
-                                .build();
-                    }).filter(Objects::nonNull)
-                .collect(Collectors.toList());
 
-        return new SliceImpl<>(responses);
+        List<YataDto.Response> responses = yatasToYataResponses(yatas.getContent());
+
+        return new SliceImpl<>(responses , yatas.getPageable(), yatas.hasNext());
     }
 
     default Location postToLocation(LocationDto.Post post) throws ParseException {
