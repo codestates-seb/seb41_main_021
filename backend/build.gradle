@@ -55,6 +55,10 @@ dependencies {
     // redis
     // embedded redis
     implementation group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2'
+    // email send
+    implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 }
 
 tasks.named('test') {

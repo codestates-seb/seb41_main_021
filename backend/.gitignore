@@ -40,3 +40,4 @@ out/
 /src/main/resources/application-hi.yml
 /src/main/resources/application-payment.yml
 application-payment.yml
+keystore.p12

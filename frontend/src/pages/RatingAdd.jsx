@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import NavBar from '../components/NavBar';
 import Header from '../components/Header';
-import { MdOutlineAccountBox } from 'react-icons/md';
+import { VscAccount } from 'react-icons/vsc';
 import Button from '../components/common/Button';
 import RatingList from '../components/rating/RatingList';
 
@@ -54,12 +54,12 @@ export default function RatingAdd(props) {
 
   return (
     <>
-      <NavBar></NavBar>
+      <NavBar />
       <Container>
         <Header title={'매너 평가'}></Header>
         <ProfileCotainer>
           <Profile>
-            <MdOutlineAccountBox />
+            <VscAccount />
             <Info>
               <div className="name">닉네임</div>
               <div className="date">2023.01.11 (수) </div>

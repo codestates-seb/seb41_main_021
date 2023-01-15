@@ -7,6 +7,18 @@ spring:
     host: 127.0.0.1
     port: 6379
     password: mock
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: [ 이메일 계정 ]
+    password: [ 계정 비밀번호 ]
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls: # 추가 안하면 SMTPSendFailedException
+            enable: true
+            required: true
   security:
     oauth2:
       client:
@@ -63,3 +75,5 @@ payment:
     test_secrete_api_key : test_sk_Lsetestestest
     success_url : "http://localhost:8080/api/v1/payments/toss/success"
     fail_url : "http://localhost:8080/api/v1/payments/toss/fail"
+
+

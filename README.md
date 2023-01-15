@@ -1,70 +1,50 @@
-# Getting Started with Create React App
+![header](https://capsule-render.vercel.app/api?type=waving&color=auto&customColorList=4&height=300&section=header&text=YATA&fontSize=90&animation=fadeIn&fontAlignY=38)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h3 align='center'>🚖 언제 어디서나 안심하고 사용할 수 있는 카 쉐어링 서비스, 야 타! 🚖 </h3>
 
-## Available Scripts
+<br><br>
 
-In the project directory, you can run:
+## 💻 개요
+- 프로젝트 명: YATA (야 타)
+- 프로젝트 기간: 2023.01.03 ~ 2023.02.03
+- 배포주소: [yata-tau.vercel.app](https://yata-tau.vercel.app/)🚀 <br>
 
-### `npm start`
+<br><br>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 📌 팀원 소개
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+|이현지|위현우|문재웅|유형찬|주현주|김채은|
+|:--:|:--:|:--:|:--:|:--:|:--:|
+|<img width="140px" height="140px">|<img width="140px" height="140px" src="https://user-images.githubusercontent.com/111180375/210195387-1bd0cbb1-f83b-4c72-b385-1bcf6ee0f246.png">|<img width="140px" height="140px">|<img width="140px" height="140px">|<img width="140px" height="140px">|<img width="140px" height="140px">|
+|FE(팀장)|FE|FE|BE|BE|BE|
+|[Hyunji0911](https://github.com/Hyunji0911)|[wihyun](https://github.com/wihyun)|[mjwoong](https://github.com/mjwoong)|[gudcks0305](https://github.com/gudcks0305)|[Joo614](https://github.com/Joo614)|[Chaeeunm](https://github.com/Chaeeunm)|
 
-### `npm test`
+<br><br>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 📌 기술 스택
+### 프론트엔드
+<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> <img src="https://img.shields.io/badge/styledcomponents-DB7093?style=for-the-badge&logoColor=black"> <br> <img src="https://img.shields.io/badge/Axios-181717?style=for-the-badge&logo=Axios&logoColor=white"> <img src="https://img.shields.io/badge/Redux Toolkit-764ABC?style=for-the-badge&logo=Redux&logoColor=white"> <img src="https://img.shields.io/badge/React Router-CA4245?style=for-the-badge&logo=ReactRouter&logoColor=white"/> <img src="https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white">
 
-### `npm run build`
+<br>
+  
+### 백엔드
+  
+<br><br>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 📌 서비스 소개
+( 간단 소개 및 주요 기능 짤과 설명 )
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<br><br>
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 📌 커밋 규칙
+|이름|내용|
+|:--:|:--:|
+|feat| 새로운 기능에 대한 커밋|
+|fix| 버그 수정에 대한 커밋|
+|build| 빌드 관련 파일 수정에 대한 커밋|
+|chore| 그 외 자잘한 수정에 대한 커밋|
+|ci| CI 관련 설정 수정에 대한 커밋|
+|docs| 문서 수정에 대한 커밋|
+|style|  코드 스타일 혹은 포맷 등에 관한 커밋|
+|refactor| 코드 리팩토링에 대한 커밋|
+|test| 테스트 코드 수정에 대한 커밋|
