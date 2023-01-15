@@ -6,7 +6,9 @@ import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.mapper.YataMapper;
 import com.yata.backend.domain.yata.service.YataService;
 import com.yata.backend.global.response.SingleResponse;
-import lombok.Getter;
+import org.locationtech.jts.io.ParseException;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,7 +37,7 @@ public class YataController {
     @PostMapping
     public ResponseEntity postNeota(@Valid @RequestBody YataDto.YataPost requestBody,
                                     @RequestParam String yataStatus,
-                                    @AuthenticationPrincipal User authMember){
+                                    @AuthenticationPrincipal User authMember) throws ParseException {
 
         Yata yata = yataService.createYata(mapper.yataPostDtoToYata(requestBody),yataStatus,authMember.getUsername());
         return new ResponseEntity<>(
@@ -77,5 +79,7 @@ public class YataController {
     public ResponseEntity getYata(){
         return null;
     }
+
+
 
 }

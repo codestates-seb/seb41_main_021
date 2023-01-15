@@ -4,14 +4,18 @@ import com.yata.backend.domain.yata.dto.LocationDto;
 import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.Yata;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 import org.mapstruct.Mapper;
+
 import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface YataMapper {
 //    Yata yataPostDtoToYata(YataDto.YataPost requestBody);
 
-    default Yata yataPostDtoToYata(YataDto.YataPost requestBody) {
+    default Yata yataPostDtoToYata(YataDto.YataPost requestBody) throws ParseException {
         if (requestBody == null) {
             return null;
         }
@@ -69,15 +73,18 @@ public interface YataMapper {
 
     List<YataDto.Response> yatasToYataResponses(List<Yata> yatas);
 
-    default Location postToLocation(LocationDto.Post post) {
+    default Location postToLocation(LocationDto.Post post) throws ParseException {
         if (post == null) {
             return null;
         }
 
         Location.LocationBuilder location = Location.builder();
+        String pointWKT = String.format("POINT(%s %s)", post.getLongitude(), post.getLatitude());
 
-        location.longitude(post.getLongitude());
-        location.latitude(post.getLatitude());
+        // WKTReader를 통해 WKT를 실제 타입으로 변환합니다.
+        Point point = (Point) new WKTReader().read(pointWKT);
+
+        location.location(point);
         location.address(post.getAddress());
 
 
@@ -91,8 +98,8 @@ public interface YataMapper {
 
         LocationDto.Response.ResponseBuilder response = LocationDto.Response.builder();
 
-        response.longitude(location.getLongitude());
-        response.latitude(location.getLatitude());
+        response.longitude(location.getLocation().getX());
+        response.latitude(location.getLocation().getY());
         response.address(location.getAddress());
 
         return response.build();

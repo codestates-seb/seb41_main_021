@@ -1,8 +1,16 @@
+// queryDsl Settings
+buildscript {
+    ext {
+        queryDslVersion = "5.0.0"
+    }
+}
 plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.7'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'org.asciidoctor.jvm.convert' version "3.3.2"
+    // queryDsl Settings
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com.yata'
@@ -13,11 +21,19 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    configureEach {
+        // h2gis에 logger sl4j가 포함되어 있어서 제외 충돌나서 제외
+        exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+        exclude group: 'log4j', module: 'log4j'
+        exclude group: 'org.slf4j', module: 'slf4j-jdk14'
+        exclude group: 'org.slf4j', module: 'slf4j-simple'
+    }
     asciidoctorExtensions
 }
 
 repositories {
     mavenCentral()
+    maven { url 'https://maven.geo-solutions.it/' }
 }
 
 ext {
@@ -34,7 +50,13 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    // h2db settings
     runtimeOnly 'com.h2database:h2'
+    // h2 geodb settings
+    implementation 'org.orbisgis.data:h2gis:2.0.0'
+
+
+
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
@@ -58,6 +80,13 @@ dependencies {
     // email send
     implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+    // location hibernate spatial
+    implementation 'org.hibernate:hibernate-spatial:5.6.14.Final'
+    // queryDsl Settings
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+    // queryDsl Spatial Settings
+    implementation "com.querydsl:querydsl-spatial:${queryDslVersion}"
 
 }
 
@@ -90,4 +119,29 @@ bootJar {
         into 'static/docs'
     }
 }
+def querydslDir = "$buildDir/generated/'querydsl'"
 
+// JPA 사용여부 및 사용 경로 설정
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+
+// build시 사용할 sourceSet 추가 설정
+sourceSets {
+    main.java.srcDir querydslDir
+}
+
+
+// querydsl 컴파일 시 사용할 옵션 설정
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+// querydsl이 compileClassPath를 상속하도록 설정
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    querydsl.extendsFrom compileClasspath
+}
