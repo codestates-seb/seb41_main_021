@@ -80,7 +80,8 @@ public class YataRequestServiceImpl implements YataRequestService {
 
         Yata yata = yataService.verifyYata(yataId);
         Member member = memberService.verifyMember(userEmail);
-        if(member.equals(yata.getMember())) throw new CustomLogicException(ExceptionCode.UNAUTHORIZED); // 여기서 문제 --> 왜??
+        if (!member.equals(yata.getMember()))
+            throw new CustomLogicException(ExceptionCode.UNAUTHORIZED); // 여기서 문제 --> 왜??
         return jpaYataRequestRepository.findAllByYata(yata, pageable);
     }
 
@@ -96,7 +97,9 @@ public class YataRequestServiceImpl implements YataRequestService {
     public void verifyRequest(String userName, Long yataId) {
         Optional<YataRequest> optionalYataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(userName, yataId);
         optionalYataRequest.ifPresent(
-                yr -> {throw new CustomLogicException(ExceptionCode.ALREADY_APPLIED);}
+                yr -> {
+                    throw new CustomLogicException(ExceptionCode.ALREADY_APPLIED);
+                }
         );
     }
 
@@ -105,7 +108,9 @@ public class YataRequestServiceImpl implements YataRequestService {
     public void verifyInvitation(String userName, Long yataId) {
         Optional<YataRequest> optionalYataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(userName, yataId);
         optionalYataRequest.ifPresent(
-                yr -> {throw new CustomLogicException(ExceptionCode.ALREADY_INVITED);}
+                yr -> {
+                    throw new CustomLogicException(ExceptionCode.ALREADY_INVITED);
+                }
         );
     }
 }

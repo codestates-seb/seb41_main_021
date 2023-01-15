@@ -31,7 +31,6 @@ import static com.yata.backend.common.request.ResultActionsUtils.postRequest;
 import static com.yata.backend.domain.payment.factory.PaymentFactory.createPaymentSuccessDto;
 import static com.yata.backend.util.ApiDocumentUtils.getRequestPreProcessor;
 import static com.yata.backend.util.ApiDocumentUtils.getResponsePreProcessor;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;

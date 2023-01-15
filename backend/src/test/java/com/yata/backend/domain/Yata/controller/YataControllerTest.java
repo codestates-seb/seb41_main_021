@@ -3,6 +3,7 @@ package com.yata.backend.domain.Yata.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.yata.backend.domain.AbstractControllerTest;
+import com.yata.backend.domain.Yata.factory.YataFactory;
 import com.yata.backend.domain.yata.controller.YataController;
 import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.entity.Location;
@@ -122,20 +123,9 @@ public class YataControllerTest extends AbstractControllerTest {
         YataDto.Patch patch = createYataPatchDto();
 
         String json = gson.toJson(patch); //json으로 보낼 patch요청
-//todo 출발지 몰적지 추가, docs는 어떻게 해야 할 지?
-        Yata expected = Yata.builder()
-                .yataId(1L)
-                .title("인천까지 같이가실 분~")
-                .specifics("같이 춤추면서 가요~")
-                .departureTime(new Date())
-                .timeOfArrival(new Date())
-                .amount(1500L)
-                .carModel("porsche")
-                .maxPeople(2)
-                .maxWaitingTime(10)
-                .yataStatus(YataStatus.YATA_NATA)
-                .postStatus(Yata.PostStatus.POST_WAITING)
-                .build();
+
+
+        Yata expected = YataFactory.createYata();
 
         YataDto.Response response = createYataResponseDto(expected);
 
