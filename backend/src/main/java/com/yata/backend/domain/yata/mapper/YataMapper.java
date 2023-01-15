@@ -82,8 +82,8 @@ public interface YataMapper {
         }
         List<YataDto.Response> responses = yatas.stream()
                 .map(yata -> {
-                        return YataDto.Response.builder().
-                                yataId(yata.getYataId())
+                        return YataDto.Response.builder()
+                                .yataId(yata.getYataId())
                                 .postStatus(yata.getPostStatus())
                                 .yataStatus(yata.getYataStatus())
                                 .departureTime(yata.getDepartureTime())
@@ -95,8 +95,10 @@ public interface YataMapper {
                                 .amount(yata.getAmount())
                                 .carModel(yata.getCarModel())
                                 .email(yata.getMember().getEmail())
+                                .strPoint(locationToResponse(yata.getStrPoint()))
+                                .destination(locationToResponse(yata.getDestination()))
                                 .build();
-                    })
+                    }).filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
         return new SliceImpl<>(responses);
