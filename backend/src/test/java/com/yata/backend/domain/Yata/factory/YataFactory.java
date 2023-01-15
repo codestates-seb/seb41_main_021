@@ -44,7 +44,7 @@ public class YataFactory {
 
     public static YataDto.Response createYataResponseDto(Yata yata){
         return YataDto.Response.builder()
-
+                .yataId(yata.getYataId())
                 .title(yata.getTitle())
                 .specifics(yata.getSpecifics())
                 .timeOfArrival(yata.getTimeOfArrival())

@@ -19,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -60,7 +61,7 @@ public class YataControllerTest extends AbstractControllerTest {
     @Test
     @WithMockUser(username = "test@gmail.com", roles = "USER")
     @DisplayName("야타 게시글 생성")
-    void createYata() throws Exception{
+    void createYata() throws Exception {
 
         //given
         YataDto.YataPost post = createYataPostDto();
@@ -81,14 +82,14 @@ public class YataControllerTest extends AbstractControllerTest {
                 .build();
 
 
-        given(yataService.createYata(any(),any())).willReturn(expected);
+        given(yataService.createYata(any(), any())).willReturn(expected);
 
         //when
         ResultActions resultActions = mockMvc.perform(
-                post(BASE_URL)
-                        .contentType("application/json")
-                        .with(csrf()) //csrf토큰 생성
-                        .content(json))
+                        post(BASE_URL)
+                                .contentType("application/json")
+                                .with(csrf()) //csrf토큰 생성
+                                .content(json))
                 .andExpect(status().isCreated());
 
         //then
@@ -107,14 +108,14 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("timeOfArrival").type(JsonFieldType.STRING).description("도착시간"),
                         fieldWithPath("yataStatus").type(JsonFieldType.STRING).description("야타상태")
                 )
-                ));
+        ));
 
     }
 
     @Test
     @WithMockUser(username = "test@gmail.com", roles = "USER")
     @DisplayName("야타 게시글 업데이트")
-    void updateYata() throws Exception{
+    void updateYata() throws Exception {
 
         //given
         long yataId = 1L;
@@ -139,25 +140,24 @@ public class YataControllerTest extends AbstractControllerTest {
         YataDto.Response response = createYataResponseDto(expected);
 
         given(mapper.yataPatchToYata(any())).willReturn(new Yata());
-        given(yataService.updateYata(anyLong(),any(),any())).willReturn(new Yata());
+        given(yataService.updateYata(anyLong(), any(), any())).willReturn(new Yata());
         given(mapper.yataToYataResponse(any())).willReturn(response);
         //when
 
         ResultActions resultActions = mockMvc.perform(
-                        patch(BASE_URL + "/{yata_Id}",yataId)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .with(csrf()) //csrf토큰 생성
-                                .content(json));
+                patch(BASE_URL + "/{yata_Id}", yataId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf()) //csrf토큰 생성
+                        .content(json));
 
 
-
-                //then
-                resultActions.andExpect(status().isOk())
-                        .andExpect(jsonPath("$.data.title").value(response.getTitle()))
-                        .andExpect(jsonPath("$.data.specifics").value(response.getSpecifics()))
-                        .andExpect(jsonPath("$.data.amount").value(response.getAmount()))
-                        .andExpect(jsonPath("$.data.carModel").value(response.getCarModel()))
-                        .andDo(print());
+        //then
+        resultActions.andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.title").value(response.getTitle()))
+                .andExpect(jsonPath("$.data.specifics").value(response.getSpecifics()))
+                .andExpect(jsonPath("$.data.amount").value(response.getAmount()))
+                .andExpect(jsonPath("$.data.carModel").value(response.getCarModel()))
+                .andDo(print());
 
         resultActions.andDo(document("yata-update",
                 getRequestPreProcessor(),
@@ -198,7 +198,7 @@ public class YataControllerTest extends AbstractControllerTest {
         given(yataService.verifyYata(anyLong())).willReturn(expected);
 
         ResultActions resultActions = mockMvc.perform(
-                delete(BASE_URL + "/{yata_Id}",expected.getYataId())
+                delete(BASE_URL + "/{yata_Id}", expected.getYataId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()));//csrf토큰 생성
 
@@ -207,8 +207,8 @@ public class YataControllerTest extends AbstractControllerTest {
         resultActions.andExpect(status().isNoContent())
                 .andDo(print())
                 .andDo(document("yata-delete",
-                        getRequestPreProcessor(),
-                        getResponsePreProcessor()
+                                getRequestPreProcessor(),
+                                getResponsePreProcessor()
                         )
                 );
 
@@ -241,7 +241,7 @@ public class YataControllerTest extends AbstractControllerTest {
         //when
 
         ResultActions resultActions = mockMvc.perform(
-                get(BASE_URL + "/{yata_id}",yata.getYataId())
+                get(BASE_URL + "/{yata_id}", yata.getYataId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(csrf()));
@@ -252,7 +252,7 @@ public class YataControllerTest extends AbstractControllerTest {
                 .andExpect(jsonPath("$.data.amount").value(response.getAmount()))
                 .andExpect(jsonPath("$.data.carModel").value(response.getCarModel()))
                 .andDo(print());
-                //todo 프론트와 필드 맞춰본 후 수정/추가
+        //todo 프론트와 필드 맞춰본 후 수정/추가
 //                .andDo(document("yata-get",
 //                        getRequestPreProcessor(),
 //                        getResponsePreProcessor(),
@@ -316,16 +316,16 @@ public class YataControllerTest extends AbstractControllerTest {
                 .postStatus(Yata.PostStatus.POST_WAITING)
                 .build();
 
-        List<Yata> yatas = List.of(yata3,yata2,yata1);
+        List<Yata> yatas = List.of(yata3, yata2, yata1);
 
-        given(yataService.findAllYata(any(),any())).willReturn(new SliceImpl<>(yatas));
-        given(mapper.yatasToYataResponses(any())).willReturn(new SliceImpl<>(List.of(createYataResponseDto(yata1),createYataResponseDto(yata2),createYataResponseDto(yata3))));
+        given(yataService.findAllYata(any(), any())).willReturn(new SliceImpl<>(yatas));
+        given(mapper.yatasToYataResponses(any())).willReturn(new SliceImpl<>(List.of(createYataResponseDto(yata3), createYataResponseDto(yata2), createYataResponseDto(yata1))));
 
 
         // when
         ResultActions actions =
                 mockMvc.perform(
-                        get(BASE_URL+"?yataStatus=neota")
+                        get(BASE_URL + "?yataStatus=neota")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON)
                                 .with(csrf()));
@@ -334,6 +334,7 @@ public class YataControllerTest extends AbstractControllerTest {
                 .andExpect(jsonPath("$.data.content[0].title").value(yatas.get(0).getTitle()))
                 .andExpect(jsonPath("$.data.content[1].title").value(yatas.get(1).getTitle()))
                 .andExpect(jsonPath("$.data.content[2].title").value(yatas.get(2).getTitle()))
+                .andExpect(jsonPath("$.data.content[2].yataId").value(yatas.get(2).getYataId()))
                 .andDo(print());
 
     }
