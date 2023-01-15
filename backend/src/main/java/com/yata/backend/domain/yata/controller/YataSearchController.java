@@ -5,8 +5,6 @@ import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.mapper.YataMapper;
 import com.yata.backend.domain.yata.service.YataSearchService;
 import com.yata.backend.global.response.ListResponse;
-import com.yata.backend.global.response.PageInfo;
-import com.yata.backend.global.response.PageResponseDto;
 import org.locationtech.jts.io.ParseException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -34,7 +32,7 @@ public class YataSearchController {
 
 
     @GetMapping("/location")
-    public ResponseEntity getLocation(@RequestParam double statrLon,
+    public ResponseEntity getLocation(@RequestParam double startLon,
                                       @RequestParam double startLat,
                                       @RequestParam String startAddress,
                                       @RequestParam double endLon,
@@ -42,7 +40,7 @@ public class YataSearchController {
                                       @RequestParam String endAddress,
                                       @RequestParam double distance,
                                       @PageableDefault Pageable pageable) throws ParseException {
-        LocationDto.Post startLocationDto = LocationDto.Post.of(statrLon, startLat, startAddress);
+        LocationDto.Post startLocationDto = LocationDto.Post.of(startLon, startLat, startAddress);
         LocationDto.Post endLocationDto = LocationDto.Post.of(endLon, endLat, endAddress);
         List<Yata> yataList = yataSearchService.findYataByLocation(
                 mapper.postToLocation(startLocationDto),
