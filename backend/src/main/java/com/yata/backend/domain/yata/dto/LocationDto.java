@@ -25,12 +25,20 @@ public class LocationDto {
 
         @NotBlank
         private String address;
+
+        public static Post of(double longitude, double latitude, String address) {
+            return Post.builder()
+                    .longitude(longitude)
+                    .latitude(latitude)
+                    .address(address)
+                    .build();
+        }
     }
 
     @Getter
     @ToString
     @Builder
-    public static class Patch{
+    public static class Patch {
 
         private double longitude;
 
@@ -52,6 +60,6 @@ public class LocationDto {
         private String address;
 
     }
-    }
+}
 
 

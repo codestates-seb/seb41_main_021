@@ -31,7 +31,7 @@ public class Yata extends Auditable {
     private String title;
 
     @Column(nullable = false,length = 100)
-    private String content;
+    private String specifics;
 
     @Column(nullable = false)
     private Integer maxWaitingTime;
@@ -74,6 +74,7 @@ public class Yata extends Auditable {
 
     @OneToMany(mappedBy = "yata" , fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
     private List<YataRequest> yataRequests = new ArrayList<>();
+
 
 
     public enum PostStatus {

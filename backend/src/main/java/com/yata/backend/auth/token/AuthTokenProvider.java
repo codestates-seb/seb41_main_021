@@ -60,7 +60,6 @@ public class AuthTokenProvider {
         if(authToken.validate()) {
 
             Claims claims = authToken.getTokenClaims();
-            System.out.println(claims.get("role"));
             Collection<? extends GrantedAuthority> authorities  = getAuthorities((List) claims.get(AUTHORITIES_KEY));
 
             log.debug("claims subject := [{}]", claims.getSubject());

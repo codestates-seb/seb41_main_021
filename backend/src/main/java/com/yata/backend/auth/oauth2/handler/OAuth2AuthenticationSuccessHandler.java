@@ -76,7 +76,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         Collection<? extends GrantedAuthority> authorities = ((OidcUser) authentication.getPrincipal()).getAuthorities();
 
         List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).toList();
-        System.out.println("roles = " + roles);
         AuthToken accessToken = tokenProvider.createAccessToken(
                 userInfo.getEmail(),
                 roles

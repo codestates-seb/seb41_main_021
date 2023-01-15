@@ -26,13 +26,11 @@ import static com.yata.backend.domain.yata.entity.YataRequest.RequestStatus.INVI
 @Transactional
 public class YataRequestServiceImpl implements YataRequestService {
     private final JpaYataRequestRepository jpaYataRequestRepository;
-    private final JpaYataRepository jpaYataRepository;
     private final MemberService memberService;
     private final YataServiceImpl yataService;
 
-    public YataRequestServiceImpl(JpaYataRequestRepository jpaYataRequestRepository, JpaYataRepository jpaYataRepository, MemberService memberService, YataServiceImpl yataService) {
+    public YataRequestServiceImpl(JpaYataRequestRepository jpaYataRequestRepository, MemberService memberService, YataServiceImpl yataService) {
         this.jpaYataRequestRepository = jpaYataRequestRepository;
-        this.jpaYataRepository = jpaYataRepository;
         this.memberService = memberService;
         this.yataService = yataService;
     }
@@ -88,22 +86,19 @@ public class YataRequestServiceImpl implements YataRequestService {
     public Slice<YataRequest> findRequests(String userEmail, Long yataId, Pageable pageable) {
         Yata yata = yataService.verifyYata(yataId);
         Member member = memberService.verifyMember(userEmail);
-        if(member.equals(yata.getMember())) throw new CustomLogicException(ExceptionCode.UNAUTHORIZED); // TODO 여기서 문제 --> 왜??
+        if (!member.equals(yata.getMember()))
+            throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
         return jpaYataRequestRepository.findAllByYata(yata, pageable);
     }
 
     // TODO Yata 신청 취소 / 초대 취소
-    //  해당 id 로 한 신청/초대가 있는지 검증 + 승인이 된 신청/초대 인지 검증
-    //  이틀 전에는 취소 가능 / 이후부터는 채팅으로 상의 후 운전자만 취소 가능
     @Override
     public void deleteRequest(String userName, Long yataRequestId, Long yataId) {
         YataRequest yataRequest = findRequest(yataRequestId); // 해당 yataRequestId 로 한 신청/초대가 있는지 검증
 
         // 해당 신청/초대가 승인을 받았는지 검증
-        // 안받았으면 --> 삭제
-        // 받았으면 -->
-             // 해당 yata 게시물의 출발시간을 확인해서 현재 시각(new Date())으로 부터 2일(48시간)보다 많이 남았다면 --> 삭제
-             // 2일(48시간) 이하로 남았다면 --> 운전자만 삭제 가능
+        // 안받았으면 --> 삭제 가능
+        // 받았으면 --> 삭제 불가능
     }
 
     // 이미 신청한 게시물인지 검증
@@ -120,7 +115,9 @@ public class YataRequestServiceImpl implements YataRequestService {
     public void verifyInvitation(String userName, Long yataId) {
         Optional<YataRequest> optionalYataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(userName, yataId);
         optionalYataRequest.ifPresent(
-                yr -> {throw new CustomLogicException(ExceptionCode.ALREADY_INVITED);}
+                yr -> {
+                    throw new CustomLogicException(ExceptionCode.ALREADY_INVITED);
+                }
         );
     }
 

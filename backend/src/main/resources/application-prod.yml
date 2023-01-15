@@ -1,27 +1,30 @@
 spring:
   datasource:
-    url:  jdbc:mysql://${YATA_MYSQL_HOST}:${YATA_MYSQL_PORT}/${YATA_DATA_BASE_NAME}?useSSL=false
+    url:  jdbc:mysql://localhost:3306/test?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=UTC
     #jdbc:mysql://localhost:3306/test
-    username: ${YATA_MYSQL_USER_NAME}
-    password: ${YATA_MYSQL_PASSWORD}
+    username: root
+    password: dkdlfltm
     driver-class-name: com.mysql.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update  # (1) ??? ?? ??
-    show-sql: false      # (2) SQL ?? ??
+      ddl-auto: create  # (1) ??? ?? ??
+    show-sql: true      # (2) SQL ?? ??
     properties:
       hibernate:
+        jdbc:
+            lob:
+                non_contextual_creation: true
         format_sql: true  # (3) SQL pretty print
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-  redis:
-    host: ${YATA_REDIS_HOST}
-    port: ${YATA_REDIS_PORT}
-
-admin:
-  email: ${ADMIN1_EMAIL},${ADMIN2_EMAIL}
-
-jwt:
-  secret: ${JWT_SECRET}
-  expiration: ${JWT_EXPIRATION}
-  refresh:
-    expiration: ${JWT_REFRESH_EXPIRATION}
+        dialect: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
+#  redis:
+#    host: ${YATA_REDIS_HOST}
+#    port: ${YATA_REDIS_PORT}
+#
+#admin:
+#  email: ${ADMIN1_EMAIL},${ADMIN2_EMAIL}
+#
+#jwt:
+#  secret: ${JWT_SECRET}
+#  expiration: ${JWT_EXPIRATION}
+#  refresh:
+#    expiration: ${JWT_REFRESH_EXPIRATION}

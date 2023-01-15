@@ -30,7 +30,7 @@ public class YataDto {
         private String title;
 
         @NotBlank
-        private String content;
+        private String specifics;
         @NotNull
         @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss" , iso = DateTimeFormat.ISO.DATE_TIME)
         private Date departureTime;
@@ -43,6 +43,9 @@ public class YataDto {
 
         @NotNull
         private Integer maxPeople;
+
+        @NotNull
+        private YataStatus yataStatus;
 
         @NotNull
         private Long amount;
@@ -75,7 +78,7 @@ public class YataDto {
 
         private String title;
 
-        private String content;
+        private String specifics;
 
         @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss" , iso = DateTimeFormat.ISO.DATE_TIME)
         private Date departureTime;
@@ -91,11 +94,16 @@ public class YataDto {
 
         private String carModel;
 
+        //postStauts 따로 로직 빼서 수정하게 해야할 듯
+//        private Yata.PostStatus postStatus;
+
         @Valid
         private LocationDto.Post strPoint;
 
         @Valid
         private LocationDto.Post destination;
+
+
 
 
     }
@@ -112,7 +120,7 @@ public class YataDto {
         @JsonFormat(shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd'T'HH:mm:ss" , timezone = "Asia/Seoul")
         private Date timeOfArrival;
         private String title;
-        private String content;
+        private String specifics;
         private Integer maxWaitingTime;
         private Integer maxPeople;
         private Long amount;

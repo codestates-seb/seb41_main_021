@@ -4,14 +4,22 @@ import com.yata.backend.domain.yata.dto.LocationDto;
 import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.Yata;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 import org.mapstruct.Mapper;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
+
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface YataMapper {
 //    Yata yataPostDtoToYata(YataDto.YataPost requestBody);
 
-    default Yata yataPostDtoToYata(YataDto.YataPost requestBody) {
+    default Yata yataPostDtoToYata(YataDto.YataPost requestBody) throws ParseException {
         if (requestBody == null) {
             return null;
         }
@@ -27,13 +35,15 @@ public interface YataMapper {
         }
         //transFormat.parse(post.getDepartureTime())
         yata.title(requestBody.getTitle());
-        yata.content(requestBody.getContent());
+        yata.specifics(requestBody.getSpecifics());
         yata.maxWaitingTime(requestBody.getMaxWaitingTime());
         yata.carModel(requestBody.getCarModel());
         yata.maxPeople(requestBody.getMaxPeople());
         yata.amount(requestBody.getAmount());
         yata.strPoint(postToLocation(requestBody.getStrPoint()));
         yata.destination(postToLocation(requestBody.getDestination()));
+        yata.yataStatus(requestBody.getYataStatus());
+        yata.postStatus(Yata.PostStatus.POST_WAITING);
 
         return yata.build();
     }
@@ -53,7 +63,7 @@ public interface YataMapper {
         response.departureTime( yata.getDepartureTime() );
         response.timeOfArrival( yata.getTimeOfArrival() );
         response.title( yata.getTitle() );
-        response.content( yata.getContent() );
+        response.specifics( yata.getSpecifics() );
         response.maxWaitingTime( yata.getMaxWaitingTime() );
         response.maxPeople( yata.getMaxPeople() );
         response.amount( yata.getAmount() );
@@ -66,18 +76,53 @@ public interface YataMapper {
 
         return response.build();
     }
+//todo strPoint, destination mapping
+default List<YataDto.Response> yatasToYataResponses(List<Yata> yatas){
+    if (yatas == null) {
+        return null;
+    }
+    return yatas.stream()
+            .map(yata -> {
+                return YataDto.Response.builder()
+                        .yataId(yata.getYataId())
+                        .postStatus(yata.getPostStatus())
+                        .yataStatus(yata.getYataStatus())
+                        .departureTime(yata.getDepartureTime())
+                        .timeOfArrival(yata.getTimeOfArrival())
+                        .title(yata.getTitle())
+                        .specifics(yata.getSpecifics())
+                        .maxWaitingTime(yata.getMaxWaitingTime())
+                        .maxPeople(yata.getMaxPeople())
+                        .amount(yata.getAmount())
+                        .carModel(yata.getCarModel())
+                        .email(yata.getMember().getEmail())
+                        .strPoint(locationToResponse(yata.getStrPoint()))
+                        .destination(locationToResponse(yata.getDestination()))
+                        .build();
+            }).collect(Collectors.toList());
+}
+    default Slice<YataDto.Response> yatasToYataSliceResponses(Slice<Yata> yatas){
+        if (yatas == null) {
+            return null;
+        }
 
-    List<YataDto.Response> yatasToYataResponses(List<Yata> yatas);
+        List<YataDto.Response> responses = yatasToYataResponses(yatas.getContent());
 
-    default Location postToLocation(LocationDto.Post post) {
+        return new SliceImpl<>(responses , yatas.getPageable(), yatas.hasNext());
+    }
+
+    default Location postToLocation(LocationDto.Post post) throws ParseException {
         if (post == null) {
             return null;
         }
 
         Location.LocationBuilder location = Location.builder();
+        String pointWKT = String.format("POINT(%s %s)", post.getLongitude(), post.getLatitude());
 
-        location.longitude(post.getLongitude());
-        location.latitude(post.getLatitude());
+        // WKTReader를 통해 WKT를 실제 타입으로 변환합니다.
+        Point point = (Point) new WKTReader().read(pointWKT);
+
+        location.location(point);
         location.address(post.getAddress());
 
 
@@ -91,8 +136,8 @@ public interface YataMapper {
 
         LocationDto.Response.ResponseBuilder response = LocationDto.Response.builder();
 
-        response.longitude(location.getLongitude());
-        response.latitude(location.getLatitude());
+        response.longitude(location.getLocation().getX());
+        response.latitude(location.getLocation().getY());
         response.address(location.getAddress());
 
         return response.build();
