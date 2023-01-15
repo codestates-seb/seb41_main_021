@@ -6,6 +6,7 @@ import com.yata.backend.domain.yata.dto.YataRequestDto;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import com.yata.backend.domain.yata.entity.YataStatus;
+import com.yata.backend.domain.yata.repository.yataRepo.JpaYataRepository;
 import com.yata.backend.domain.yata.repository.yataRequestRepo.JpaYataRequestRepository;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
@@ -25,31 +26,35 @@ import static com.yata.backend.domain.yata.entity.YataRequest.RequestStatus.INVI
 @Transactional
 public class YataRequestServiceImpl implements YataRequestService {
     private final JpaYataRequestRepository jpaYataRequestRepository;
+    private final JpaYataRepository jpaYataRepository;
     private final MemberService memberService;
     private final YataServiceImpl yataService;
 
-    public YataRequestServiceImpl(JpaYataRequestRepository jpaYataRequestRepository, MemberService memberService, YataServiceImpl yataService) {
+    public YataRequestServiceImpl(JpaYataRequestRepository jpaYataRequestRepository, JpaYataRepository jpaYataRepository, MemberService memberService, YataServiceImpl yataService) {
         this.jpaYataRequestRepository = jpaYataRequestRepository;
+        this.jpaYataRepository = jpaYataRepository;
         this.memberService = memberService;
         this.yataService = yataService;
     }
 
     // Yata 신청
     @Override
-    public YataRequest createRequest(YataRequest yataRequest, String userName, Long yataId) {
+    public YataRequest createRequest(YataRequest yataRequest, String userName, Long yataId, int maxPeople) {
         Member member = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
         verifyRequest(userName, yataId); // 신청을 이미 했었는지 확인하고
         Yata yata = yataService.verifyYata(yataId);
+
         YataStatus yataStatus = yata.getYataStatus();
         if (yataStatus == YataStatus.YATA_NEOTA) {
             yataRequest.setRequestStatus(APPLY);
         } else {
-            throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
+            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
         }
-        // TODO 신청 인원 > 게시글의 max people 이라면 익셉션 --> yataRequest.getYata() 하니까 안받은 거에서 가져오기 불가
-//        if (yata.getMaxPeople() < yataRequest.get){
-//            throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
-//        }
+
+        if (maxPeople > yata.getMaxPeople()) { // 신청 인원이 게시글의 최대 인원보다 많으면 익셉션
+            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
+        }
+
         yataRequest.setYata(yata);
         yataRequest.setMember(member);
         // 신청 이후 yata 에서 신청자 list 에 추가됨
@@ -63,12 +68,14 @@ public class YataRequestServiceImpl implements YataRequestService {
         Member member = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
         verifyInvitation(userName, yataId); // 초대를 이미 했었는지 확인하고
         Yata yata = yataService.verifyYata(yataId);
+
         YataStatus yataStatus = yata.getYataStatus();
         if (yataStatus == YataStatus.YATA_NATA) {
             yataRequest.setRequestStatus(INVITE);
         } else {
-            throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
+            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
         }
+
         yataRequest.setYata(yata);
         yataRequest.setMember(member);
         // 초대 이후 (자신의 게시물이 있다는 전제로) --> 탑승자가 그 게시물을 보고 승인 --> yata 에서 해당 게시물의 탑승자 list 에 추가
@@ -124,13 +131,5 @@ public class YataRequestServiceImpl implements YataRequestService {
         return optionalYataRequest.orElseThrow(() -> {
             return new CustomLogicException(ExceptionCode.YATAREQUEST_NONE);
         });
-    }
-
-    // TODO 신청 인원 > 게시글의 max people 이라면 익셉션
-    public void verifyPoepleNum(Long yataRequestId, Long yataId) {
-        Optional<YataRequest> optionalYataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(userName, yataId);
-        optionalYataRequest.ifPresent(
-                yr -> {throw new CustomLogicException(ExceptionCode.ALREADY_APPLIED);}
-        );
     }
 }

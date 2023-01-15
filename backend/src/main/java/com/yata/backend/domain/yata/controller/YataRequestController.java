@@ -41,7 +41,7 @@ public class YataRequestController {
     public ResponseEntity postRequest(@PathVariable("yataId") @Positive long yataId,
                                      @Valid @RequestBody YataRequestDto.RequestPost requestBody,
                                      @AuthenticationPrincipal User authMember) throws Exception {
-        YataRequest yataRequest = yataRequestService.createRequest(mapper.yataRequestPostDtoToYataRequest(requestBody), authMember.getUsername(), yataId);
+        YataRequest yataRequest = yataRequestService.createRequest(mapper.yataRequestPostDtoToYataRequest(requestBody), authMember.getUsername(), yataId, requestBody.getMaxPeople());
         return new ResponseEntity<>(
                 new SingleResponse<>(mapper.yataRequestToYataRequestResponse(yataRequest)), HttpStatus.CREATED);
     }
