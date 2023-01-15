@@ -10,8 +10,10 @@ import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
 import com.yata.backend.global.utils.CustomBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -90,7 +92,7 @@ public class YataServiceImpl implements YataService{
             case "nata" -> nowStatus = YataStatus.YATA_NATA;
             default -> throw new CustomLogicException(ExceptionCode.YATA_STATUS_NONE);
         }
-        return jpayataRepository.findAllByYataStatusIs(nowStatus,pageable);
+        return jpayataRepository.findAllByYataStatusIs(nowStatus, PageRequest.of(0,5, Sort.by("yataId").descending()));
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.yata.backend.global.response;
 import lombok.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 
 @AllArgsConstructor
 @Getter
@@ -15,7 +16,7 @@ public class SliceResponseDto<T>{
 //        return null;
 //    }
 //    private boolean hasContent; // 엔티티 목록 가지고 있는지 여부
-//    private Sort getSort; // 슬라이스의 sort 객체 반환
+    private Sort getSort; // 슬라이스의 sort 객체 반환
 //    private boolean isFirst; // 현재 슬라이스가 첫번째인지 여부
 //    private boolean isLast; // 현재 슬라이스가 마지막인지 여부
     private boolean hasNext; // 다음 슬라이스의 존재 유무
@@ -33,5 +34,6 @@ public class SliceResponseDto<T>{
         this.getNumberOfElements = data.getNumberOfElements();
         this.hasNext = data.hasNext();
         this.hasPrevious = pageable.hasPrevious();
+        this.getSort = pageable.getSort();
     }
 }
