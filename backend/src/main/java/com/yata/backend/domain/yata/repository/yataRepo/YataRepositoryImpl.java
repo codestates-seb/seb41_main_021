@@ -31,8 +31,6 @@ public class YataRepositoryImpl implements YataRepository {
 
     @Override
     public List<Yata> findYataByStartAndEndLocation(Location startLocation, Location endLocation, double distance, Pageable pageable) {
-        System.out.println("startLocation = " + startLocation.getLocation());
-        System.out.println("endLocation = " + endLocation.getLocation());
         // MBR
         Geometry startMBR = GeometryUtils.getMBR(startLocation.getLocation(), distance / 100);
         Geometry endMBR = GeometryUtils.getMBR(endLocation.getLocation(), distance / 100);
