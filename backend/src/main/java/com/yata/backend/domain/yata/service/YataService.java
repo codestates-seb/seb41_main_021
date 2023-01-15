@@ -1,18 +1,20 @@
 package com.yata.backend.domain.yata.service;
 
 import com.yata.backend.domain.yata.entity.Yata;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 public interface YataService {
-    Yata createYata(Yata yata,String yataStatus, String userName);
+    Yata createYata(Yata yata, String userName);
 
     Yata updateYata(long yataId,Yata yata,String userName);
 
     void deleteYata(long yataId,String username);
 
-    Yata findAllYata();
+    Slice<Yata> findAllYata(String yataStatus, Pageable pageable);
 
-    Yata findYata();
+    Yata findYata(long yataId);
 
     Yata verifyYata(long yataId);
 

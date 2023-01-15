@@ -10,6 +10,10 @@ import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
 import com.yata.backend.global.utils.CustomBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -35,16 +39,10 @@ public class YataServiceImpl implements YataService{
     }
 
     @Override
-    public Yata createYata(Yata yata, String yataStatus, String userName) {
+    public Yata createYata(Yata yata, String userName) {
 
         Member member = memberService.findMember(userName);
-        switch (yataStatus) {
-            case "neota" -> yata.setYataStatus(YataStatus.YATA_NEOTA);
-            case "nata" -> yata.setYataStatus(YataStatus.YATA_NATA);
-            default -> throw new CustomLogicException(ExceptionCode.YATA_STATUS_NONE);
-        }
 
-        yata.setPostStatus(POST_WAITING);
         yata.setMember(member);
 
         return jpayataRepository.save(yata);
@@ -83,17 +81,26 @@ public class YataServiceImpl implements YataService{
             default -> jpayataRepository.delete(findYata);
         }
     }
+//public Slice<YataRequest> findRequests(boolean acceptable, String userEmail, Long yataId, Pageable pageable) {
 
+//     return jpaYataRequestRepository.findAllByYata(yata, pageable);
+//    }
     @Override
-    public Yata findAllYata() {
-        return null;
+    public Slice<Yata> findAllYata(String yataStatus,Pageable pageable) {
+        YataStatus nowStatus;
+        switch(yataStatus){
+            case "neota" -> nowStatus = YataStatus.YATA_NEOTA;
+            case "nata" -> nowStatus = YataStatus.YATA_NATA;
+            default -> throw new CustomLogicException(ExceptionCode.YATA_STATUS_NONE);
+        }
+        return jpayataRepository.findAllByYataStatusIs(nowStatus, PageRequest.of(0,5, Sort.by("yataId").descending()));
     }
 
     @Override
-    public Yata findYata() {
-        return null;
+    public Yata findYata(long yataId) {
+        Yata findYata = verifyYata(yataId);
+        return findYata;
     }
-
 
     /*검증로직*/
     public Yata verifyYata(long yataId) {
