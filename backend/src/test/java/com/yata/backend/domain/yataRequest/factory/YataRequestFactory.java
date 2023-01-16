@@ -24,14 +24,15 @@ public class YataRequestFactory {
     }
 
     public static YataRequestDto.RequestResponse createYataRequestResponseDto(YataRequest yataRequest) {
-        LocationDto.Response strPoint = new LocationDto.Response(yataRequest.getYata().getStrPoint().getLatitude(),
-                yataRequest.getYata().getStrPoint().getLongitude(),yataRequest.getYata().getStrPoint().getAddress());
-        LocationDto.Response destination = new LocationDto.Response(yataRequest.getYata().getDestination().getLatitude(),
-                yataRequest.getYata().getDestination().getLongitude(),yataRequest.getYata().getDestination().getAddress());
+        LocationDto.Response strPoint = new LocationDto.Response(yataRequest.getYata().getStrPoint().getLocation().getX(),
+                yataRequest.getYata().getStrPoint().getLocation().getY(),yataRequest.getYata().getStrPoint().getAddress());
+        LocationDto.Response destination = new LocationDto.Response(yataRequest.getYata().getStrPoint().getLocation().getX(),
+                yataRequest.getYata().getStrPoint().getLocation().getY(),yataRequest.getYata().getDestination().getAddress());
 
         return YataRequestDto.RequestResponse.builder()
                 .yataRequestId(yataRequest.getYataRequestId())
                 .yataRequestStatus(yataRequest.getRequestStatus())
+                .approvalStatus(yataRequest.getApprovalStatus())
                 .title(yataRequest.getTitle())
                 .specifics(yataRequest.getSpecifics())
                 .departureTime(yataRequest.getYata().getDepartureTime())
@@ -51,7 +52,10 @@ public class YataRequestFactory {
 
     public static YataRequestDto.InvitationResponse createYataInvitationResponseDto(YataRequest yataRequest) {
         return YataRequestDto.InvitationResponse.builder()
+                .yataRequestId(yataRequest.getYataRequestId())
                 .yataId(yataRequest.getYata().getYataId())
+                .yataRequestStatus(yataRequest.getRequestStatus())
+                .approvalStatus(yataRequest.getApprovalStatus())
                 .build();
     }
 }

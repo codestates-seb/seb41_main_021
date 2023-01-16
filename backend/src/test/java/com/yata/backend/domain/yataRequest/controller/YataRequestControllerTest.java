@@ -28,10 +28,12 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.util.Date;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willReturn;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
@@ -53,22 +55,21 @@ public class YataRequestControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("Yata 신청")
-    @WithMockUser(username = "test@gmail.com", roles = "USER")
+    @WithMockUser(username = "test2@gmail.com", roles = "USER")
     void postYataRequestTest() throws Exception {
         //given
         YataRequestDto.RequestPost post = YataRequestFactory.createYataRequestPostDto();
 
         LocationDto.Response strPoint = new LocationDto.Response(2.5, 2.0, "강원도 원주시");
         LocationDto.Response destination = new LocationDto.Response(2.5, 2.0, "강원도 원주시");
-        YataRequestDto.RequestResponse response = new YataRequestDto.RequestResponse(1L, YataRequest.RequestStatus.APPLY,"태워주세욥","헬로~", new Date(),
-                new Date(), 3,10, "lamborghini",strPoint,destination);
+        YataRequestDto.RequestResponse response = new YataRequestDto.RequestResponse(
+                1L, YataRequest.RequestStatus.APPLY, YataRequest.ApprovalStatus.NOT_YET, "태워주세욥", "헬로~", new Date(),
+                new Date(), 3, 10, strPoint, destination);
 
-        given(yataRequestService.createRequest(Mockito.any(),Mockito.any(),Mockito.anyLong())).willReturn(new YataRequest());
+        given(yataRequestService.createRequest(any(), any(), anyLong(), anyInt())).willReturn(new YataRequest());
         given(mapper.yataRequestToYataRequestResponse(Mockito.any(YataRequest.class))).willReturn(response);
 
         String content = gson.toJson(post);
-
-//        given(yataRequestService.createRequest(any(),any(),any())).willReturn(expected);
 
         //when
         ResultActions actions = mockMvc.perform(post(BASE_URL + "/apply/1")
@@ -114,13 +115,14 @@ public class YataRequestControllerTest extends AbstractControllerTest {
 
     @Test
     @DisplayName("Yata 초대")
-    @WithMockUser(username = "test@gmail.com", roles = "USER")
+    @WithMockUser(username = "test2@gmail.com", roles = "USER")
     void postYataInvitationTest() throws Exception {
         //given
         YataRequestDto.InvitationPost post = YataRequestFactory.createYataInvitationPostDto();
-        YataRequestDto.InvitationResponse response = new YataRequestDto.InvitationResponse(1L);
+        YataRequestDto.InvitationResponse response = new YataRequestDto.InvitationResponse(
+                1L, 1L, YataRequest.RequestStatus.APPLY, YataRequest.ApprovalStatus.NOT_YET);
 
-        given(yataRequestService.createRequest(any(), any(),Mockito.anyLong())).willReturn(new YataRequest());
+        given(yataRequestService.createInvitation(any(), any(), anyLong())).willReturn(new YataRequest());
         given(mapper.yataInvitationToYataInvitationResponse(any(YataRequest.class))).willReturn(response);
 
         String content = gson.toJson(post);
@@ -134,5 +136,39 @@ public class YataRequestControllerTest extends AbstractControllerTest {
 
         //then
         actions.andDo(print());
+    }
+
+    @Test
+    @DisplayName("Yata 신청/초대 목록 조회")
+    @WithMockUser(username = "test1@gmail.com", roles = "USER")
+    void getRequestsTest() throws Exception {
+        //given
+
+
+        //when
+
+
+        //then
+
+    }
+
+    @Test
+    @DisplayName("Yata 신청/초대 삭제")
+    @WithMockUser(username = "test1@gmail.com", roles = "USER")
+    void deleteRequestTest() throws Exception {
+        //given
+//        YataRequestDto.InvitationPost post = YataRequestFactory.createYataInvitationPostDto();
+        String userName = "test1@gmail.com";
+        Long yataRequestId = 1L;
+        Long yataId = 1L;
+
+        doNothing().when(yataRequestService).deleteRequest(userName, yataRequestId, yataId);
+
+        //when
+        ResultActions actions = mockMvc.perform(delete(BASE_URL + "/apply/1/1"));
+
+        //then
+        actions.andExpect(status().isNoContent())
+                .andDo(print());
     }
 }

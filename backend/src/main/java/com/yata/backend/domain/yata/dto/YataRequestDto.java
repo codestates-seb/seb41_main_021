@@ -1,7 +1,5 @@
 package com.yata.backend.domain.yata.dto;
 
-import com.yata.backend.domain.yata.entity.Location;
-import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -9,7 +7,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
@@ -46,6 +43,7 @@ public class YataRequestDto {
     public static class RequestResponse {
         private Long yataRequestId;
         private YataRequest.RequestStatus yataRequestStatus;
+        private YataRequest.ApprovalStatus approvalStatus;
         private String title;
         private String specifics;
         private Date departureTime;
@@ -72,5 +70,7 @@ public class YataRequestDto {
     public static class InvitationResponse {
         private Long yataRequestId;
         private Long yataId;
+        private YataRequest.RequestStatus yataRequestStatus;
+        private YataRequest.ApprovalStatus approvalStatus;
     }
 }

@@ -57,7 +57,7 @@ public class YataRequestController {
     }
 
     // Yata 신청 목록 조회 - 200
-    // 일단 신청 + 초대 목록 함께 뜨게 되어있음
+    // 어차피 해당 게시글 들어가서 조회하는 거니까 / neota 에는 신청 / nata 에는 초대 밖에 없음
     @GetMapping("/apply/{yataId}")
     public ResponseEntity<SliceResponseDto<YataRequestDto.RequestResponse>> getRequests(@PathVariable("yataId") @Positive long yataId,
                                                                                         @AuthenticationPrincipal User authMember,
@@ -65,7 +65,7 @@ public class YataRequestController {
         Slice<YataRequest> requests = yataRequestService.findRequests(authMember.getUsername(), yataId ,pageable);
         SliceInfo sliceInfo = new SliceInfo(pageable, requests.getNumberOfElements(), requests.hasNext());
         return new ResponseEntity<>(
-                new SliceResponseDto<YataRequestDto.RequestResponse>(mapper.yataRequestsToYataRequestResponses(requests), sliceInfo), HttpStatus.OK);
+                new SliceResponseDto<>(mapper.yataRequestsToSliceYataRequestResponses(requests), sliceInfo), HttpStatus.OK);
     }
 
     // TODO Yata 신청 or 초대 전 or 승인 후 삭제 - 204
@@ -73,6 +73,7 @@ public class YataRequestController {
     public ResponseEntity deleteRequest(@PathVariable("yataId") @Positive long yataId,
                                         @PathVariable("yataRequestId") @Positive long yataRequestId,
                                       @AuthenticationPrincipal User authMember) {
+
         yataRequestService.deleteRequest(authMember.getUsername(), yataRequestId, yataId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

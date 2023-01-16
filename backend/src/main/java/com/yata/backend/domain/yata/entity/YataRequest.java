@@ -29,6 +29,10 @@ public class YataRequest extends Auditable {
     @Column(length = 20, nullable = false)
     private YataRequest.RequestStatus requestStatus;
 
+    @Enumerated(value = EnumType.STRING)
+    @Column(length = 20, nullable = false)
+    private YataRequest.ApprovalStatus approvalStatus;
+
     @ManyToOne
     @JoinColumn(name = "YATA_ID")
     private Yata yata;
@@ -51,6 +55,19 @@ public class YataRequest extends Auditable {
         private String status;
 
         RequestStatus(String status) {
+            this.status = status;
+        }
+    }
+
+    public enum ApprovalStatus {
+        ACCEPTED("수락됨"),
+        REJECTED("거절됨"),
+        NOT_YET("승인 전");
+
+        @Getter
+        private String status;
+
+        ApprovalStatus(String status) {
             this.status = status;
         }
     }
