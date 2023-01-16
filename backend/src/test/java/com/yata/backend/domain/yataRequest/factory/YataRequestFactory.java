@@ -46,7 +46,7 @@ public class YataRequestFactory {
                 .departureTime(new Date())
                 .timeOfArrival(new Date())
                 .maxPeople(3)
-                .maxWatingTime(10)
+                .maxWaitingTime(10)
                 .strPoint(strPoint)
                 .destination(destination)
                 .build();
@@ -63,7 +63,7 @@ public class YataRequestFactory {
                 .departureTime(yataRequest.getYata().getDepartureTime())
                 .timeOfArrival(yataRequest.getYata().getTimeOfArrival())
                 .maxPeople(yataRequest.getYata().getMaxPeople())
-                .maxWatingTime(yataRequest.getYata().getMaxWaitingTime())
+                .maxWaitingTime(yataRequest.getYata().getMaxWaitingTime())
                 .strPoint(new LocationDto.Response(
                         yataRequest.getStrPoint().getLocation().getX(),
                         yataRequest.getStrPoint().getLocation().getY(),

@@ -38,7 +38,7 @@ public interface YataRequestMapper {
         response.departureTime(yataRequest.getYata().getDepartureTime());
         response.timeOfArrival(yataRequest.getYata().getTimeOfArrival());
         response.maxPeople(yataRequest.getYata().getMaxPeople());
-        response.maxWatingTime(yataRequest.getYata().getMaxWaitingTime());
+        response.maxWaitingTime(yataRequest.getYata().getMaxWaitingTime());
         response.strPoint(locationToResponse(yataRequest.getStrPoint()));
         response.destination(locationToResponse(yataRequest.getDestination()));
 
@@ -61,8 +61,7 @@ public interface YataRequestMapper {
                             .specifics(yataRequest.getSpecifics())
                             .departureTime(yataRequest.getYata().getDepartureTime())
                             .timeOfArrival(yataRequest.getYata().getTimeOfArrival())
-                            .maxWatingTime(yataRequest.getYata().getMaxWaitingTime())
-                            .maxWatingTime(yataRequest.getYata().getMaxWaitingTime())
+                            .maxWaitingTime(yataRequest.getYata().getMaxWaitingTime())
                             .strPoint(locationToResponse(yataRequest.getStrPoint()))
                             .destination(locationToResponse(yataRequest.getDestination()))
                             .build();

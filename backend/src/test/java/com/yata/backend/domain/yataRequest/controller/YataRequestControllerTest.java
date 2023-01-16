@@ -3,50 +3,45 @@ package com.yata.backend.domain.yataRequest.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.yata.backend.domain.AbstractControllerTest;
-import com.yata.backend.domain.Yata.factory.YataFactory;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.factory.MemberFactory;
 import com.yata.backend.domain.yata.controller.YataRequestController;
-import com.yata.backend.domain.yata.dto.LocationDto;
 import com.yata.backend.domain.yata.dto.YataRequestDto;
-import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import com.yata.backend.domain.yata.mapper.YataRequestMapper;
 import com.yata.backend.domain.yata.service.YataRequestService;
-import com.yata.backend.domain.yata.service.YataService;
 import com.yata.backend.domain.yataRequest.factory.YataRequestFactory;
+import com.yata.backend.domain.yataRequest.factory.YataRequestSnippet;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.SliceImpl;
-import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.util.Date;
 import java.util.List;
 
+import static com.yata.backend.util.ApiDocumentUtils.getRequestPreProcessor;
+import static com.yata.backend.util.ApiDocumentUtils.getResponsePreProcessor;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Mockito.doNothing;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
@@ -82,38 +77,53 @@ public class YataRequestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isCreated());
 
         //then
-        actions.andExpect(status().isCreated());
-//                .andDo(document("post-yataRequest"),
-//                        preprocessRequest(prettyPrint()),
-//                        preprocessResponse(prettyPrint()),
-//                        requestFields(
-//                                List.of(
-//                                        fieldWithPath("title").type(JsonFieldType.STRING).description("신청 제목"),
-//                                        fieldWithPath("content").type(JsonFieldType.STRING).description("신청 내용"),
-//                                        fieldWithPath("departureTime").type(JsonFieldType.STRING).description("출발 시간"),
-//                                        fieldWithPath("timeOfArrival").type(JsonFieldType.STRING).description("도착 시간"),
-//                                        fieldWithPath("maxPeople").type(JsonFieldType.NUMBER).description("최대 인원"),
-//                                        fieldWithPath("maxWatingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
-//                                        fieldWithPath("carModel").type(JsonFieldType.STRING).description("차종"),
-//                                        fieldWithPath("strPoint").type(JsonFieldType.OBJECT).description("출발 지점"),
-//                                        fieldWithPath("destination").type(JsonFieldType.OBJECT).description("도착 지점")
-//                                )
+        actions.andDo(print())
+                .andDo(document("post-yataRequest",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+//                        requestHeaders(
+//                                headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 토큰")
 //                        ),
-//                        responseFields(
-//                                List.of(
-//                                        fieldWithPath("yataRequestId").type(JsonFieldType.NUMBER).description("신청 식별자"),
-//                                        fieldWithPath("yataRequestStatus").type(JsonFieldType.STRING).description("신청 상태"),
-//                                        fieldWithPath("title").type(JsonFieldType.STRING).description("신청 제목"),
-//                                        fieldWithPath("content").type(JsonFieldType.STRING).description("신청 내용"),
-//                                        fieldWithPath("departureTime").type(JsonFieldType.OBJECT).description("출발 시간"),
-//                                        fieldWithPath("timeOfArrival").type(JsonFieldType.OBJECT).description("도착 시간"),
-//                                        fieldWithPath("maxPeople").type(JsonFieldType.NUMBER).description("최대 인원"),
-//                                        fieldWithPath("maxWatingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
-//                                        fieldWithPath("carModel").type(JsonFieldType.STRING).description("차종"),
-//                                        fieldWithPath("strPoint").type(JsonFieldType.OBJECT).description("출발 지점"),
-//                                        fieldWithPath("destination").type(JsonFieldType.OBJECT).description("도착 지점")
-//                                )
-//                        ));
+                        pathParameters(
+                                parameterWithName("yataId").description("야타 ID")
+                        ),
+                        requestFields(
+                                fieldWithPath("title").type(JsonFieldType.STRING).description("야타 제목"),
+                                fieldWithPath("specifics").type(JsonFieldType.STRING).description("야타 특이사항"),
+                                fieldWithPath("departureTime").type(JsonFieldType.STRING).description("출발 시간"),
+                                fieldWithPath("timeOfArrival").type(JsonFieldType.STRING).description("도착 시간"),
+                                fieldWithPath("maxPeople").type(JsonFieldType.NUMBER).description("최대 인원"),
+                                fieldWithPath("maxWaitingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
+                                fieldWithPath("strPoint").type(JsonFieldType.OBJECT).description("출발지"),
+                                fieldWithPath("strPoint.longitude").type(JsonFieldType.NUMBER).description("출발지 경도"),
+                                fieldWithPath("strPoint.latitude").type(JsonFieldType.NUMBER).description("출발지 위도"),
+                                fieldWithPath("strPoint.address").type(JsonFieldType.STRING).description("출발지 주소"),
+                                fieldWithPath("destination").type(JsonFieldType.OBJECT).description("도착지"),
+                                fieldWithPath("destination.longitude").type(JsonFieldType.NUMBER).description("도착지 경도"),
+                                fieldWithPath("destination.latitude").type(JsonFieldType.NUMBER).description("도착지 위도"),
+                                fieldWithPath("destination.address").type(JsonFieldType.STRING).description("도착지 주소")
+                        ),
+                        responseFields(
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("회원 정보"),
+                                fieldWithPath("data.yataId").type(JsonFieldType.NUMBER).description("야타 ID"),
+                                fieldWithPath("data.yataRequestId").type(JsonFieldType.NUMBER).description("야타 신청/초대 ID"),
+                                fieldWithPath("data.yataRequestStatus").type(JsonFieldType.STRING).description("야타 신청 상태"),
+                                fieldWithPath("data.approvalStatus").type(JsonFieldType.STRING).description("야타 승인 상태"),
+                                fieldWithPath("data.title").type(JsonFieldType.STRING).description("야타 제목"),
+                                fieldWithPath("data.specifics").type(JsonFieldType.STRING).description("야타 특이사항"),
+                                fieldWithPath("data.departureTime").type(JsonFieldType.STRING).description("출발 시간"),
+                                fieldWithPath("data.timeOfArrival").type(JsonFieldType.STRING).description("도착 시간"),
+                                fieldWithPath("data.maxPeople").type(JsonFieldType.NUMBER).description("최대 인원"),
+                                fieldWithPath("data.maxWaitingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
+                                fieldWithPath("data.strPoint").type(JsonFieldType.OBJECT).description("출발지"),
+                                fieldWithPath("data.strPoint.longitude").type(JsonFieldType.NUMBER).description("출발지 경도"),
+                                fieldWithPath("data.strPoint.latitude").type(JsonFieldType.NUMBER).description("출발지 위도"),
+                                fieldWithPath("data.strPoint.address").type(JsonFieldType.STRING).description("출발지 주소"),
+                                fieldWithPath("data.destination").type(JsonFieldType.OBJECT).description("도착지"),
+                                fieldWithPath("data.destination.longitude").type(JsonFieldType.NUMBER).description("도착지 경도"),
+                                fieldWithPath("data.destination.latitude").type(JsonFieldType.NUMBER).description("도착지 위도"),
+                                fieldWithPath("data.destination.address").type(JsonFieldType.STRING).description("도착지 주소")
+                        )));
     }
 
     @Test
@@ -139,7 +149,25 @@ public class YataRequestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isCreated());
 
         //then
-        actions.andDo(print());
+        actions.andDo(document("post-yataInvitation",
+                getRequestPreProcessor(),
+                getResponsePreProcessor(),
+//                requestHeaders(
+//                        headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 토큰")
+//                ),
+                pathParameters(
+                        parameterWithName("yataId").description("야타 ID")
+                ),
+                requestFields(
+                        fieldWithPath("yataId").type(JsonFieldType.NUMBER).description("야타 ID")
+                ),
+                responseFields(
+                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("회원 정보"),
+                        fieldWithPath("data.yataRequestId").type(JsonFieldType.NUMBER).description("야타 신청/초대 ID"),
+                        fieldWithPath("data.yataId").type(JsonFieldType.NUMBER).description("야타 ID"),
+                        fieldWithPath("data.yataRequestStatus").type(JsonFieldType.STRING).description("야타 신청 상태"),
+                        fieldWithPath("data.approvalStatus").type(JsonFieldType.STRING).description("야타 승인 상태")
+                )));
     }
 
     @Test
@@ -155,13 +183,20 @@ public class YataRequestControllerTest extends AbstractControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(get(BASE_URL + "/apply/{yataId}", responses.get(1).getYataId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .with(csrf()))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
                 .andExpect(status().isOk());
 
         //then
-        actions.andDo(print());
+        actions.andDo(document("get-yataRequests",
+                getRequestPreProcessor(),
+                getResponsePreProcessor(),
+//                requestHeaders(
+//                        headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 토큰")
+//                ),
+                YataRequestSnippet.getListResponse()
+                ));
     }
 
     @Test
@@ -176,11 +211,18 @@ public class YataRequestControllerTest extends AbstractControllerTest {
         doNothing().when(yataRequestService).deleteRequest(yataRequest.getMember().getName(), yataRequest.getYataRequestId(), yataRequest.getYata().getYataId());
 
         //when
-        ResultActions actions = mockMvc.perform(delete(BASE_URL + "/apply/{yataId}/{yataRequestId}", yataRequest.getYata().getYataId(),yataRequest.getYataRequestId())
+        ResultActions actions = mockMvc.perform(delete(BASE_URL + "/apply/{yataId}/{yataRequestId}", yataRequest.getYata().getYataId(), yataRequest.getYataRequestId())
                 .with(csrf()));
 
         //then
         actions.andExpect(status().isNoContent())
-                .andDo(print());
+                .andDo(document("delete-yataRquest",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        pathParameters(
+                                parameterWithName("yataId").description("야타 ID"),
+                                parameterWithName("yataRequestId").description("야타 신청/초대 ID")
+                        )
+                ));
     }
 }
