@@ -30,7 +30,7 @@ public interface YataRequestMapper {
         if (yataRequest.getYataRequestId() != null) {
             response.yataRequestId(yataRequest.getYataRequestId());
         }
-        response.yataRequestId(yataRequest.getYataRequestId());
+        response.yataId(yataRequest.getYata().getYataId());
         response.yataRequestStatus(yataRequest.getRequestStatus());
         response.approvalStatus(yataRequest.getApprovalStatus());
         response.title(yataRequest.getTitle());
@@ -53,6 +53,7 @@ public interface YataRequestMapper {
         return yataRequests.stream()
                 .map(yataRequest -> {
                     return YataRequestDto.RequestResponse.builder()
+                            .yataId(yataRequest.getYata().getYataId())
                             .yataRequestId(yataRequest.getYataRequestId())
                             .yataRequestStatus(yataRequest.getRequestStatus())
                             .approvalStatus(yataRequest.getApprovalStatus())

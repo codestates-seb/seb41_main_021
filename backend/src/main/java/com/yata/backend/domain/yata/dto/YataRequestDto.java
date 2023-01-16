@@ -41,6 +41,7 @@ public class YataRequestDto {
     @ToString
     @Builder
     public static class RequestResponse {
+        private Long yataId;
         private Long yataRequestId;
         private YataRequest.RequestStatus yataRequestStatus;
         private YataRequest.ApprovalStatus approvalStatus;

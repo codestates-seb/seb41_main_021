@@ -3,6 +3,9 @@ package com.yata.backend.domain.yataRequest.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.yata.backend.domain.AbstractControllerTest;
+import com.yata.backend.domain.Yata.factory.YataFactory;
+import com.yata.backend.domain.member.entity.Member;
+import com.yata.backend.domain.member.factory.MemberFactory;
 import com.yata.backend.domain.yata.controller.YataRequestController;
 import com.yata.backend.domain.yata.dto.LocationDto;
 import com.yata.backend.domain.yata.dto.YataRequestDto;
@@ -18,9 +21,12 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -34,7 +40,7 @@ import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -60,11 +66,8 @@ public class YataRequestControllerTest extends AbstractControllerTest {
         //given
         YataRequestDto.RequestPost post = YataRequestFactory.createYataRequestPostDto();
 
-        LocationDto.Response strPoint = new LocationDto.Response(2.5, 2.0, "강원도 원주시");
-        LocationDto.Response destination = new LocationDto.Response(2.5, 2.0, "강원도 원주시");
-        YataRequestDto.RequestResponse response = new YataRequestDto.RequestResponse(
-                1L, YataRequest.RequestStatus.APPLY, YataRequest.ApprovalStatus.NOT_YET, "태워주세욥", "헬로~", new Date(),
-                new Date(), 3, 10, strPoint, destination);
+        YataRequest expected = YataRequestFactory.createYataRequest();
+        YataRequestDto.RequestResponse response = YataRequestFactory.createYataRequestResponseDto(expected);
 
         given(yataRequestService.createRequest(any(), any(), anyLong(), anyInt())).willReturn(new YataRequest());
         given(mapper.yataRequestToYataRequestResponse(Mockito.any(YataRequest.class))).willReturn(response);
@@ -72,7 +75,7 @@ public class YataRequestControllerTest extends AbstractControllerTest {
         String content = gson.toJson(post);
 
         //when
-        ResultActions actions = mockMvc.perform(post(BASE_URL + "/apply/1")
+        ResultActions actions = mockMvc.perform(post(BASE_URL + "/apply/{yataId}", expected.getYata().getYataId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
                         .content(content))
@@ -119,8 +122,9 @@ public class YataRequestControllerTest extends AbstractControllerTest {
     void postYataInvitationTest() throws Exception {
         //given
         YataRequestDto.InvitationPost post = YataRequestFactory.createYataInvitationPostDto();
-        YataRequestDto.InvitationResponse response = new YataRequestDto.InvitationResponse(
-                1L, 1L, YataRequest.RequestStatus.APPLY, YataRequest.ApprovalStatus.NOT_YET);
+
+        YataRequest expected = YataRequestFactory.createYataRequest();
+        YataRequestDto.InvitationResponse response = YataRequestFactory.createYataInvitationResponseDto(expected);
 
         given(yataRequestService.createInvitation(any(), any(), anyLong())).willReturn(new YataRequest());
         given(mapper.yataInvitationToYataInvitationResponse(any(YataRequest.class))).willReturn(response);
@@ -128,7 +132,7 @@ public class YataRequestControllerTest extends AbstractControllerTest {
         String content = gson.toJson(post);
 
         //when
-        ResultActions actions = mockMvc.perform(post(BASE_URL + "/invite/1")
+        ResultActions actions = mockMvc.perform(post(BASE_URL + "/invite/{yataId}", response.getYataId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
                         .content(content))
@@ -138,38 +142,45 @@ public class YataRequestControllerTest extends AbstractControllerTest {
         actions.andDo(print());
     }
 
-//    @Test
-//    @DisplayName("Yata 신청/초대 목록 조회")
-//    @WithMockUser(username = "test1@gmail.com", roles = "USER")
-//    void getRequestsTest() throws Exception {
-//        //given
-//        List<YataRequestDto.RequestPost> yataRequests = YataRequestFactory.createYataRequestDtoList();
-//
-//
-//        //when
-//
-//
-//        //then
-//
-//    }
-//
-//    @Test
-//    @DisplayName("Yata 신청/초대 삭제")
-//    @WithMockUser(username = "test1@gmail.com", roles = "USER")
-//    void deleteRequestTest() throws Exception {
-//        //given
-//        YataRequestDto.InvitationPost post = YataRequestFactory.createYataInvitationPostDto();
-//        String userName = "test1@gmail.com";
-//        Long yataRequestId = 1L;
-//        Long yataId = 1L;
-//
-//        doNothing().when(yataRequestService).deleteRequest(userName, yataRequestId, yataId);
-//
-//        //when
-//        ResultActions actions = mockMvc.perform(delete(BASE_URL + "/apply/1/1"));
-//
-//        //then
-//        actions.andExpect(status().isNoContent())
-//                .andDo(print());
-//    }
+    @Test
+    @DisplayName("Yata 신청/초대 목록 조회")
+    @WithMockUser(username = "test1@gmail.com", roles = "USER")
+    void getRequestsTest() throws Exception {
+        //given
+        List<YataRequest> yataRequests = YataRequestFactory.createYataRequestList();
+        List<YataRequestDto.RequestResponse> responses = YataRequestFactory.createYataRquestResponseDtoList(yataRequests);
+
+        given(yataRequestService.findRequests(any(), anyLong(), any())).willReturn(new SliceImpl<>(yataRequests));
+        given(mapper.yataRequestsToSliceYataRequestResponses(any())).willReturn(new SliceImpl<>(responses));
+
+        //when
+        ResultActions actions = mockMvc.perform(get(BASE_URL + "/apply/{yataId}", responses.get(1).getYataId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(csrf()))
+                .andExpect(status().isOk());
+
+        //then
+        actions.andDo(print());
+    }
+
+    @Test
+    @DisplayName("Yata 신청/초대 삭제")
+    @WithMockUser(username = "test1@gmail.com", roles = "USER")
+    void deleteRequestTest() throws Exception {
+        //given
+        YataRequest yataRequest = YataRequestFactory.createYataRequest();
+        Member member = MemberFactory.createMember(new BCryptPasswordEncoder());
+        yataRequest.setMember(member);
+
+        doNothing().when(yataRequestService).deleteRequest(yataRequest.getMember().getName(), yataRequest.getYataRequestId(), yataRequest.getYata().getYataId());
+
+        //when
+        ResultActions actions = mockMvc.perform(delete(BASE_URL + "/apply/{yataId}/{yataRequestId}", yataRequest.getYata().getYataId(),yataRequest.getYataRequestId())
+                .with(csrf()));
+
+        //then
+        actions.andExpect(status().isNoContent())
+                .andDo(print());
+    }
 }
