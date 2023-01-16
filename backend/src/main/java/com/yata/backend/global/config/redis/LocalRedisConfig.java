@@ -29,6 +29,7 @@ public class LocalRedisConfig {
     public void redisServer() throws IOException {
         int port = isRedisRunning() ? findAvailablePort() : redisPort;
         if (isArmArchitecture()) {
+            System.out.println("ARM Architecture");
             redisServer = new RedisServer(getRedisServerExecutable(), port);
         } else {
             redisServer = RedisServer.builder()
@@ -75,6 +76,8 @@ public class LocalRedisConfig {
      */
     private Process executeGrepProcessCommand(int port) throws IOException {
         String OS = System.getProperty("os.name").toLowerCase();
+        System.out.println("OS: " + OS);
+        System.out.println(System.getProperty("os.arch"));
         if (OS.contains("win")) {
             log.info("OS is  " + OS + " " + port);
             String command = String.format("netstat -nao | find \"LISTEN\" | find \"%d\"", port);
