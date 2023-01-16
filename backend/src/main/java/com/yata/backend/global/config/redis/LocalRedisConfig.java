@@ -109,7 +109,7 @@ public class LocalRedisConfig {
     }
 
     private boolean isArmArchitecture() {
-        return System.getProperty("os.arch").contains("arm");
+        return System.getProperty("os.arch").contains("aarch64");
     }
 
     private File getRedisServerExecutable() throws IOException {
