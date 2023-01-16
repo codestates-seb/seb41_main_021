@@ -114,7 +114,7 @@ include::{snippets}/payment-toss-cancel-point/http-response.adoc[]
 
 === 게시글 생성
 
-POST /api/v1/yata?yataStatus=nata/neota
+POST /api/v1/yata
 
 .http-request
 include::{snippets}/yata-create/http-request.adoc[]
@@ -138,13 +138,9 @@ PATCH /api/v1/yata/{yata_id}
 
 .http-request
 include::{snippets}/yata-update/http-request.adoc[]
-.request-body
-include::{snippets}/yata-update/request-body.adoc[]
 .request-fields
 include::{snippets}/yata-update/request-fields.adoc[]
-.response-body
-include::{snippets}/yata-update/response-body.adoc[]
-http-response
+.http-response
 include::{snippets}/yata-update/http-response.adoc[]
 .response-fields
 include::{snippets}/yata-create/response-fields.adoc[]
@@ -157,8 +153,6 @@ DELETE /api/v1/yata/{yata_id}
 .http-request
 include::{snippets}/yata-delete/http-request.adoc[]
 
-.response-body
-include::{snippets}/yata-delete/response-body.adoc[]
 
 http-response
 include::{snippets}/yata-delete/http-response.adoc[]
