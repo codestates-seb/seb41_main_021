@@ -9,7 +9,7 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 
 
@@ -32,7 +32,7 @@ jobs:
           script: |
             whoami
             cd /home/ubuntu/main21/seb41_main_021
-            git pull origin master
+            git pull origin main
             cd ..
             sudo sh deployServer.sh
 
