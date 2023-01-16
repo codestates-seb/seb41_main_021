@@ -1,3 +1,6 @@
+ifndef::snippets[]
+:snippets: ../backend/build/generated-snippets
+endif::[]
 = YATA! 애플리케이션
 :sectnums:
 :toc: left
