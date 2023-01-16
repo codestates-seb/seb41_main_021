@@ -9,6 +9,7 @@ import com.yata.backend.domain.yata.service.YataRequestServiceImpl;
 import com.yata.backend.domain.yata.service.YataService;
 import com.yata.backend.domain.yata.service.YataServiceImpl;
 import com.yata.backend.global.response.SingleResponse;
+import com.yata.backend.global.response.SliceInfo;
 import com.yata.backend.global.response.SliceResponseDto;
 import org.apache.tomcat.util.net.openssl.ciphers.OpenSSLCipherConfigurationParser;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 @RestController
 @Validated
@@ -40,7 +42,7 @@ public class YataRequestController {
     public ResponseEntity postRequest(@PathVariable("yataId") @Positive long yataId,
                                      @Valid @RequestBody YataRequestDto.RequestPost requestBody,
                                      @AuthenticationPrincipal User authMember) throws Exception {
-        YataRequest yataRequest = yataRequestService.createRequest(mapper.yataRequestPostDtoToYataRequest(requestBody), authMember.getUsername(), yataId);
+        YataRequest yataRequest = yataRequestService.createRequest(mapper.yataRequestPostDtoToYataRequest(requestBody), authMember.getUsername(), yataId, requestBody.getMaxPeople());
         return new ResponseEntity<>(
                 new SingleResponse<>(mapper.yataRequestToYataRequestResponse(yataRequest)), HttpStatus.CREATED);
     }
@@ -56,25 +58,24 @@ public class YataRequestController {
     }
 
     // Yata 신청 목록 조회 - 200
-    // TODO 파라미터 "?acceptable=true" 값 어떻게 받을지 생각
+    // 어차피 해당 게시글 들어가서 조회하는 거니까 / neota 에는 신청 / nata 에는 초대 밖에 없음
     @GetMapping("/apply/{yataId}")
-    public ResponseEntity<SliceResponseDto<YataRequestDto.RequestResponse>> getRequests(@RequestParam(value = "acceptable", required = true) boolean acceptable,
-                                                                                        @PathVariable("yataId") @Positive long yataId,
+    public ResponseEntity<SliceResponseDto<YataRequestDto.RequestResponse>> getRequests(@PathVariable("yataId") @Positive long yataId,
                                                                                         @AuthenticationPrincipal User authMember,
                                                                                         Pageable pageable) {
-        Slice<YataRequest> requests = yataRequestService.findRequests(acceptable, authMember.getUsername(), yataId ,pageable);
-        return new ResponseEntity<>(new SliceResponseDto<YataRequestDto.RequestResponse>(mapper.yataRequestsToYataRequestResponses(requests),pageable), HttpStatus.OK);
-//        if(requests.hasContent()) {
-//            return new ResponseEntity<>(new SliceResponseDto<YataRequestDto.RequestResponse>(mapper.yataRequestsToYataRequestResponses(requests),pageable), HttpStatus.OK);
-//        } else {
-//            return ResponseEntity.noContent().build();
-//        }
+        Slice<YataRequest> requests = yataRequestService.findRequests(authMember.getUsername(), yataId ,pageable);
+        SliceInfo sliceInfo = new SliceInfo(pageable, requests.getNumberOfElements(), requests.hasNext());
+        return new ResponseEntity<>(
+                new SliceResponseDto<>(mapper.yataRequestsToYataRequestResponses(requests.getContent()), sliceInfo), HttpStatus.OK);
     }
 
     // TODO Yata 신청 or 초대 전 or 승인 후 삭제 - 204
-    @DeleteMapping("/apply/{yataId}")
+    @DeleteMapping("/apply/{yataId}/{yataRequestId}")
     public ResponseEntity deleteRequest(@PathVariable("yataId") @Positive long yataId,
+                                        @PathVariable("yataRequestId") @Positive long yataRequestId,
                                       @AuthenticationPrincipal User authMember) {
+
+        yataRequestService.deleteRequest(authMember.getUsername(), yataRequestId, yataId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -19,15 +19,19 @@ public class YataRequest extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long YataRequestId;
 
-    @Column(nullable = false, length = 100)
+    @Column(length = 100)
     private String title;
 
-    @Column(nullable = false, length = 100)
-    private String content;
+    @Column(length = 100)
+    private String specifics;
 
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20, nullable = false)
     private YataRequest.RequestStatus requestStatus;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(length = 20, nullable = false)
+    private YataRequest.ApprovalStatus approvalStatus;
 
     @ManyToOne
     @JoinColumn(name = "YATA_ID")
@@ -37,10 +41,11 @@ public class YataRequest extends Auditable {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-//    @Embedded
-//    private YataDto.YataPost strPoint;
-//    @Embedded
-//     private YataDto.YataPost destination;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Location strPoint;
+
+    @OneToOne(cascade = CascadeType.ALL)
+     private Location destination;
 
     public enum RequestStatus {
         INVITE("초대"),
@@ -54,14 +59,16 @@ public class YataRequest extends Auditable {
         }
     }
 
-    public static YataRequest create(YataRequest yataRequest, Member member, Yata yata) {
-        return YataRequest.builder()
-                .title(yataRequest.getTitle())
-                .content(yataRequest.getContent())
-                .requestStatus(yataRequest.getRequestStatus())
-                .member(member)
-                .yata(yata)
-                .build();
-    }
+    public enum ApprovalStatus {
+        ACCEPTED("수락됨"),
+        REJECTED("거절됨"),
+        NOT_YET("승인 전");
 
+        @Getter
+        private String status;
+
+        ApprovalStatus(String status) {
+            this.status = status;
+        }
+    }
 }

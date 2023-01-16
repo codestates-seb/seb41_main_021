@@ -1,9 +1,13 @@
 package com.yata.backend.domain.yata.mapper;
 
 import com.yata.backend.domain.yata.dto.LocationDto;
+import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.dto.YataRequestDto;
 import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.YataRequest;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
@@ -15,67 +19,113 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface YataRequestMapper {
-
     YataRequest yataRequestPostDtoToYataRequest(YataRequestDto.RequestPost requestBody);
+
     default YataRequestDto.RequestResponse yataRequestToYataRequestResponse(YataRequest yataRequest) {
         if (yataRequest == null) {
             return null;
         }
-        Long yataRequestId = yataRequest.getYataRequestId();
-        YataRequest.RequestStatus yataRequestStatus = yataRequest.getRequestStatus();
-        String title = yataRequest.getTitle();
-        String content = yataRequest.getContent();
-        // TODO checklist 추가 + yataRequest Status 추가
-        Date departureTime = yataRequest.getYata().getDepartureTime();
-        Date timeOfArrival = yataRequest.getYata().getTimeOfArrival();
-        int maxPeople = yataRequest.getYata().getMaxPeople();
-        int maxWatingTime = yataRequest.getYata().getMaxWaitingTime();
-        String carModel = yataRequest.getYata().getCarModel();
+        YataRequestDto.RequestResponse.RequestResponseBuilder response = YataRequestDto.RequestResponse.builder();
 
-//        LocationDto.Post strPoint = new LocationDto.Post(yataRequest.getYata().getStrPoint().getLatitude(),
-//                yataRequest.getYata().getStrPoint().getLongitude(),yataRequest.getYata().getStrPoint().getAddress());
-//
-//        LocationDto.Post destination = new LocationDto.Post(yataRequest.getYata().getDestination().getLatitude(),
-//                yataRequest.getYata().getDestination().getLongitude(),yataRequest.getYata().getDestination().getAddress());
+        if (yataRequest.getYataRequestId() != null) {
+            response.yataRequestId(yataRequest.getYataRequestId());
+        }
+        response.yataRequestId(yataRequest.getYataRequestId());
+        response.yataRequestStatus(yataRequest.getRequestStatus());
+        response.approvalStatus(yataRequest.getApprovalStatus());
+        response.title(yataRequest.getTitle());
+        response.specifics(yataRequest.getSpecifics());
+        response.departureTime(yataRequest.getYata().getDepartureTime());
+        response.timeOfArrival(yataRequest.getYata().getTimeOfArrival());
+        response.maxPeople(yataRequest.getYata().getMaxPeople());
+        response.maxWatingTime(yataRequest.getYata().getMaxWaitingTime());
+        response.strPoint(locationToResponse(yataRequest.getStrPoint()));
+        response.destination(locationToResponse(yataRequest.getDestination()));
 
-//        YataRequestDto.RequestResponse response = new YataRequestDto.RequestResponse(
-//                yataRequestId, yataRequestStatus, title, content, departureTime, timeOfArrival, maxPeople, maxWatingTime, carModel, strPoint ,destination);
-        YataRequestDto.RequestResponse response = new YataRequestDto.RequestResponse(
-                yataRequestId, yataRequestStatus, title, content, departureTime, timeOfArrival, maxPeople, maxWatingTime, carModel);
-
-        return response;
+        return response.build();
     }
-    default Slice<YataRequestDto.RequestResponse> yataRequestsToYataRequestResponses(Slice<YataRequest> yataRequests) {
+
+    default List<YataRequestDto.RequestResponse> yataRequestsToYataRequestResponses(List<YataRequest> yataRequests) {
         if (yataRequests == null) {
             return null;
         }
-        List<YataRequestDto.RequestResponse> requestResponses = yataRequests.getContent().stream()
-                .map(yataRequest -> {
-                    if(yataRequest.getYata() != null){
-//                        LocationDto.Post strPoint = new LocationDto.Post(yataRequest.getYata().getStrPoint().getLatitude(),
-//                                yataRequest.getYata().getStrPoint().getLongitude(),yataRequest.getYata().getStrPoint().getAddress());
-//
-//                        LocationDto.Post destination = new LocationDto.Post(yataRequest.getYata().getDestination().getLatitude(),
-//                                yataRequest.getYata().getDestination().getLongitude(),yataRequest.getYata().getDestination().getAddress());
 
-                        return new YataRequestDto.RequestResponse(
-                                yataRequest.getYataRequestId(),
-                                yataRequest.getRequestStatus(),
-                                yataRequest.getTitle(),
-                                yataRequest.getContent(),
-                                yataRequest.getYata().getDepartureTime(),
-                                yataRequest.getYata().getTimeOfArrival(),
-                                yataRequest.getYata().getMaxPeople(),
-                                yataRequest.getYata().getMaxWaitingTime(),
-                                yataRequest.getYata().getCarModel());
-//                                strPoint,
-//                                destination);
-                    }
-                    return null;
-                }).filter(Objects::nonNull)
-                .collect(Collectors.toList());
-        return new SliceImpl<>(requestResponses);
+        return yataRequests.stream()
+                .map(yataRequest -> {
+                    return YataRequestDto.RequestResponse.builder()
+                            .yataRequestId(yataRequest.getYataRequestId())
+                            .yataRequestStatus(yataRequest.getRequestStatus())
+                            .approvalStatus(yataRequest.getApprovalStatus())
+                            .title(yataRequest.getTitle())
+                            .specifics(yataRequest.getSpecifics())
+                            .departureTime(yataRequest.getYata().getDepartureTime())
+                            .timeOfArrival(yataRequest.getYata().getTimeOfArrival())
+                            .maxWatingTime(yataRequest.getYata().getMaxWaitingTime())
+                            .maxWatingTime(yataRequest.getYata().getMaxWaitingTime())
+                            .strPoint(locationToResponse(yataRequest.getStrPoint()))
+                            .destination(locationToResponse(yataRequest.getDestination()))
+                            .build();
+                }).collect(Collectors.toList());
     }
+
+    default Slice<YataRequestDto.RequestResponse> yataRequestsToSliceYataRequestResponses(Slice<YataRequest> yataRequests) {
+        if (yataRequests == null) {
+            return null;
+        }
+
+        List<YataRequestDto.RequestResponse> responses = yataRequestsToYataRequestResponses(yataRequests.getContent());
+
+        return new SliceImpl<>(responses, yataRequests.getPageable(), yataRequests.hasNext());
+    }
+
     YataRequest yataInvitationPostDtoToYataInvitation(YataRequestDto.InvitationPost requestBody);
-    YataRequestDto.InvitationResponse yataInvitationToYataInvitationResponse(YataRequest yataRequest);
+
+    default YataRequestDto.InvitationResponse yataInvitationToYataInvitationResponse(YataRequest yataRequest) {
+        if (yataRequest == null) {
+            return null;
+        }
+
+        YataRequestDto.InvitationResponse.InvitationResponseBuilder response = YataRequestDto.InvitationResponse.builder();
+
+        if (yataRequest.getYataRequestId() != null) {
+            response.yataRequestId(yataRequest.getYataRequestId());
+        }
+        response.yataId(yataRequest.getYata().getYataId());
+        response.yataRequestStatus(yataRequest.getRequestStatus());
+        response.approvalStatus(yataRequest.getApprovalStatus());
+
+        return response.build();
+    }
+
+    default Location postToLocation(LocationDto.Post post) throws ParseException {
+        if (post == null) {
+            return null;
+        }
+
+        Location.LocationBuilder location = Location.builder();
+        String pointWKT = String.format("POINT(%s %s)", post.getLongitude(), post.getLatitude());
+
+        // WKTReader를 통해 WKT를 실제 타입으로 변환합니다.
+        Point point = (Point) new WKTReader().read(pointWKT);
+
+        location.location(point);
+        location.address(post.getAddress());
+
+
+        return location.build();
+    }
+
+    default LocationDto.Response locationToResponse(Location location) {
+        if (location == null) {
+            return null;
+        }
+
+        LocationDto.Response.ResponseBuilder response = LocationDto.Response.builder();
+
+        response.longitude(location.getLocation().getX());
+        response.latitude(location.getLocation().getY());
+        response.address(location.getAddress());
+
+        return response.build();
+    }
 }
