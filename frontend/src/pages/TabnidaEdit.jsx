@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import KakaoMap from '../components/KakaoMap';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button';
+import DestinationList from '../components/Tayo/DestinationList';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
