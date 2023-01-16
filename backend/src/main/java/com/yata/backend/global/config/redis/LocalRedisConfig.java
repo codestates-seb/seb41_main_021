@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 @Slf4j
 @Profile("!prod")
@@ -30,7 +31,7 @@ public class LocalRedisConfig {
         int port = isRedisRunning() ? findAvailablePort() : redisPort;
         if (isArmArchitecture()) {
             System.out.println("ARM Architecture");
-            redisServer = new RedisServer(getRedisServerExecutable(), port);
+            redisServer = new RedisServer(Objects.requireNonNull(getRedisServerExecutable()), port);
         } else {
             redisServer = RedisServer.builder()
                     .port(port)
@@ -113,16 +114,11 @@ public class LocalRedisConfig {
     }
 
     private File getRedisServerExecutable() throws IOException {
-        ClassPathResource resource = new ClassPathResource("binary/redis/redis-server");
-        return resource.getFile();
-    }
-    /*private fun isArmMac(): Boolean {
-        return System.getProperty("os.arch") == "aarch64" &&
-                System.getProperty("os.name") == "Mac OS X"
+        try {
+            return  new ClassPathResource("binary/redis/redis-server").getFile();
+        } catch (Exception e) {
+            throw new IOException("Redis Server Executable not found");
+        }
     }
 
-
-    private fun getRedisFileForArmMac(): File {
-        return ClassPathResource("binary/redis/redis-server-6.0.10-mac-arm64").file
-    }*/
 }
