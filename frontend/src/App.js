@@ -24,6 +24,7 @@ import TaeoondaDetail from './pages/TaeoondaDetail';
 import TaeoondaList from './pages/TaeoondaList';
 import RegisterList from './pages/RegisterList';
 import RegisterCheckList from './pages/RegisterCheckList';
+import DestinationList from './components/Tayo/DestinationList';
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
             <Route path="/taeoonda-list" element={<TaeoondaList />}></Route>
             <Route path="/register-list" element={<RegisterList />}></Route>
             <Route path="/register-checklist" element={<RegisterCheckList />}></Route>
+            <Route path="/destination-list" element={<DestinationList />}></Route>
           </Routes>
         </Screen>
       </ThemeProvider>
