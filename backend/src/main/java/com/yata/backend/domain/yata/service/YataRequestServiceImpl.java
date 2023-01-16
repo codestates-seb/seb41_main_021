@@ -86,8 +86,7 @@ public class YataRequestServiceImpl implements YataRequestService {
         Member member = memberService.verifyMember(userEmail);
 
         // 게시글 작성자 == 조회하려는 사람 인지 확인
-        if (!member.equals(yata.getMember()))
-            throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
+        equalMember(member, yata.getMember());
 
         return jpaYataRequestRepository.findAllByYata(yata, pageable);
     }
@@ -100,11 +99,7 @@ public class YataRequestServiceImpl implements YataRequestService {
         YataRequest yataRequest = findRequest(yataRequestId); // 해당 yataRequestId 로 한 신청/초대가 있는지 ( 신청/초대 )
 
         // 게시글 작성자 == 삭제하려는 사람 인지 확인
-        if (!member.equals(yata.getMember()))
-            throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
-
-//        yataRequest.setYata(yata);
-//        yataRequest.setMember(member);
+        equalMember(member, yata.getMember());
 
         YataRequest.ApprovalStatus approvalStatus = yataRequest.getApprovalStatus();
 
@@ -143,5 +138,10 @@ public class YataRequestServiceImpl implements YataRequestService {
         return optionalYataRequest.orElseThrow(() -> {
             return new CustomLogicException(ExceptionCode.YATAREQUEST_NONE);
         });
+    }
+
+    public void equalMember(Member member, Member postMember) {
+        if (!member.getEmail().equals(postMember.getEmail()))
+            throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
     }
 }

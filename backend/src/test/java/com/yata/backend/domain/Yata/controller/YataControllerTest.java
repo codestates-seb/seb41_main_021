@@ -13,12 +13,13 @@ import com.yata.backend.domain.yata.entity.YataRequest;
 import com.yata.backend.domain.yata.entity.YataStatus;
 import com.yata.backend.domain.yata.mapper.YataMapper;
 import com.yata.backend.domain.yata.service.YataService;
+import com.yata.backend.global.response.SliceInfo;
 import com.yata.backend.global.utils.GeometryUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.SliceImpl;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -322,34 +323,44 @@ public class YataControllerTest extends AbstractControllerTest {
                         )));
     }
 
-//    @Test
-//    @WithMockUser(username = "test@gmail.com", roles = "USER")
-//    @DisplayName("야타 게시글 전체조회")
-//    void getAllYata() throws Exception {
-//
-//
-//        List<Yata> yatas = YataFactory.createYataList();
-//        List<YataDto.Response> responses = createYataResponseDtoList(yatas);
-//
-//        given(yataService.findAllYata(any(), any())).willReturn(new SliceImpl<>(yatas));
-//        given(mapper.yatasToYataSliceResponses(any())).willReturn(new SliceImpl<>(responses));
-//
-//
-//        // when
-//        ResultActions actions =
-//                mockMvc.perform(
-//                        get(BASE_URL + "?yataStatus=neota")
-//                                .contentType(MediaType.APPLICATION_JSON)
-//                                .accept(MediaType.APPLICATION_JSON)
-//                                .with(csrf()));
-////yataId를 넣으면 0이 나오는 에러
-//        actions.andExpect(status().isOk())
-//                .andExpect(jsonPath("$.data.content[0].title").value(yatas.get(0).getTitle()))
-//                .andExpect(jsonPath("$.data.content[1].title").value(yatas.get(1).getTitle()))
-//                .andExpect(jsonPath("$.data.content[2].title").value(yatas.get(2).getTitle()))
-//                .andExpect(jsonPath("$.data.content[2].yataId").value(yatas.get(2).getYataId()))
-//                .andDo(print());
-//
-//    }
+    @Test
+    @WithMockUser(username = "test@gmail.com", roles = "USER")
+    @DisplayName("야타 게시글 전체조회")
+    void getAllYata() throws Exception {
+
+        //given
+        List<Yata> yatas = YataFactory.createYataList();
+        List<YataDto.Response> responses = YataFactory.createYataResponseDtoList(yatas);
+        System.out.println(responses.size());
+        System.out.println(new SliceImpl<>(responses).getSize());
+        Slice<Yata> yataSlice = new SliceImpl<>(yatas);
+
+        given(yataService.findAllYata(anyString(), any())).willReturn(
+                yataSlice);
+        given(mapper.yatasToYataSliceResponses(yataSlice)).willReturn(new SliceImpl<>(responses,PageRequest.of(0,10,Sort.by("yataId").descending()),false));
+        given(mapper.postToLocation(any())).willReturn(new Location());
+
+        System.out.println(mapper.yatasToYataResponses(yatas).size());
+        //new SliceImpl<>(responses, PageRequest.of(0,10, Sort.by("yataId").descending()),false)
+        // when
+        ResultActions actions =
+                mockMvc.perform(
+                        get(BASE_URL + "?yataStatus=neota")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .with(csrf()));
+
+                actions.andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.content[0].title").value(yatas.get(0).getTitle()))
+                .andExpect(jsonPath("$.data.content[1].title").value(yatas.get(1).getTitle()))
+                .andExpect(jsonPath("$.data.content[2].title").value(yatas.get(2).getTitle()))
+                .andExpect(jsonPath("$.data.content[2].yataId").value(yatas.get(2).getYataId()))
+                .andDo(print());
+
+
+    }
+
+
+
 
 }

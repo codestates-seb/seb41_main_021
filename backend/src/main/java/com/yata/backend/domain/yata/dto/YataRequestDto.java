@@ -28,7 +28,7 @@ public class YataRequestDto {
         @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss" , iso = DateTimeFormat.ISO.DATE_TIME)
         private Date timeOfArrival;
         private int maxPeople;
-        private int maxWatingTime;
+        private int maxWaitingTime;
         @Valid
         private LocationDto.Post strPoint;
         @Valid
@@ -41,6 +41,7 @@ public class YataRequestDto {
     @ToString
     @Builder
     public static class RequestResponse {
+        private Long yataId;
         private Long yataRequestId;
         private YataRequest.RequestStatus yataRequestStatus;
         private YataRequest.ApprovalStatus approvalStatus;
@@ -49,7 +50,7 @@ public class YataRequestDto {
         private Date departureTime;
         private Date timeOfArrival;
         private int maxPeople;
-        private int maxWatingTime;
+        private int maxWaitingTime;
         private LocationDto.Response strPoint;
         private LocationDto.Response destination;
     }
