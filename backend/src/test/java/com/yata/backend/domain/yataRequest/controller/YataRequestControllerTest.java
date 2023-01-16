@@ -190,9 +190,6 @@ public class YataRequestControllerTest extends AbstractControllerTest {
                 .andDo(document("yataRequest-get",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
-//                requestHeaders(
-//                        headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 토큰")
-//                ),
                 YataRequestSnippet.getListResponse()
                 ));
     }
