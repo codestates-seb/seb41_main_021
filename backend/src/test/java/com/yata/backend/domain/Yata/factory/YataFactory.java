@@ -30,6 +30,8 @@ public class YataFactory {
                 .carModel("bmw")
                 .maxPeople(3)
                 .maxWaitingTime(20)
+                .strPoint(new LocationDto.Post(5,4,"인천"))
+                .destination(new LocationDto.Post(3,2,"부산"))
                 .yataStatus(YataStatus.YATA_NEOTA)
                 .build();
     }
@@ -44,6 +46,8 @@ public class YataFactory {
                 .amount(1500L)
                 .carModel("porsche")
                 .maxPeople(2)
+                .strPoint(new LocationDto.Post(5,4,"부산"))
+                .destination(new LocationDto.Post(3,2,"인천"))
                 .maxWaitingTime(10)
                 .build();
     }
@@ -104,4 +108,5 @@ public class YataFactory {
         }
         return yataResponseDtoList;
     }
+
 }

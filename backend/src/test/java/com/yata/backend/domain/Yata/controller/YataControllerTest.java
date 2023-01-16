@@ -2,6 +2,7 @@ package com.yata.backend.domain.Yata.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.yata.backend.common.utils.RandomUtils;
 import com.yata.backend.domain.AbstractControllerTest;
 import com.yata.backend.domain.Yata.factory.YataFactory;
 import com.yata.backend.domain.yata.controller.YataController;
@@ -11,6 +12,7 @@ import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataStatus;
 import com.yata.backend.domain.yata.mapper.YataMapper;
 import com.yata.backend.domain.yata.service.YataService;
+import com.yata.backend.global.utils.GeometryUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -24,6 +26,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.util.Date;
 import java.util.List;
 
+import static com.yata.backend.common.utils.RandomUtils.getRandomWord;
 import static com.yata.backend.domain.Yata.factory.YataFactory.*;
 import static com.yata.backend.util.ApiDocumentUtils.getRequestPreProcessor;
 import static com.yata.backend.util.ApiDocumentUtils.getResponsePreProcessor;
@@ -32,7 +35,6 @@ import static org.mockito.BDDMockito.given;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -63,7 +65,9 @@ public class YataControllerTest extends AbstractControllerTest {
 
         String json = gson.toJson(post);
 
+
         Yata expected = Yata.builder()
+                .yataId(1L)
                 .title("부산까지 같이가실 분~")
                 .specifics("같이 노래들으면서 가요~")
                 .departureTime(new Date())
@@ -72,12 +76,16 @@ public class YataControllerTest extends AbstractControllerTest {
                 .carModel("bmw")
                 .maxPeople(3)
                 .maxWaitingTime(20)
+                .strPoint(new Location(RandomUtils.getRandomLong(), GeometryUtils.getEmptyPoint(),getRandomWord(),null))
+                .destination(new Location(RandomUtils.getRandomLong(), GeometryUtils.getEmptyPoint(),getRandomWord(),null))
                 .yataStatus(YataStatus.YATA_NEOTA)
                 .postStatus(Yata.PostStatus.POST_WAITING)
                 .build();
 
 
         given(yataService.createYata(any(), any())).willReturn(expected);
+        given(mapper.yataToYataResponse(any())).willReturn(createYataResponseDto(expected));
+        given(mapper.postToLocation(any())).willReturn(new Location());
 
         //when
         ResultActions resultActions = mockMvc.perform(
@@ -93,6 +101,12 @@ public class YataControllerTest extends AbstractControllerTest {
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
                 requestFields(
+                        fieldWithPath("strPoint.longitude").type(JsonFieldType.NUMBER).description("출발지 경도"),
+                        fieldWithPath("strPoint.latitude").type(JsonFieldType.NUMBER).description("출발지 위도"),
+                        fieldWithPath("strPoint.address").type(JsonFieldType.STRING).description("출발지 주소"),
+                        fieldWithPath("destination.longitude").type(JsonFieldType.NUMBER).description("도착지 경도"),
+                        fieldWithPath("destination.latitude").type(JsonFieldType.NUMBER).description("도착지 위도"),
+                        fieldWithPath("destination.address").type(JsonFieldType.STRING).description("도착지 주소"),
                         fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                         fieldWithPath("specifics").type(JsonFieldType.STRING).description("특이사항"),
                         fieldWithPath("amount").type(JsonFieldType.NUMBER).description("가격"),
@@ -101,9 +115,30 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("maxWaitingTime").type(JsonFieldType.NUMBER).description("최대대기시간"),
                         fieldWithPath("departureTime").type(JsonFieldType.STRING).description("출발시간"),
                         fieldWithPath("timeOfArrival").type(JsonFieldType.STRING).description("도착시간"),
-                        fieldWithPath("yataStatus").type(JsonFieldType.STRING).description("야타상태")
-                )
-        ));
+                        fieldWithPath("yataStatus").type(JsonFieldType.STRING).description("야타상태")),
+                        responseFields(
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("야타 게시글 정보"),
+                                fieldWithPath("data.yataId").type(JsonFieldType.NUMBER).description("야타 ID"),
+                                fieldWithPath("data.departureTime").type(JsonFieldType.STRING).description("출발 시간"),
+                                fieldWithPath("data.timeOfArrival").type(JsonFieldType.STRING).description("도착 시간"),
+                                fieldWithPath("data.title").type(JsonFieldType.STRING).description("야타 제목"),
+                                fieldWithPath("data.specifics").type(JsonFieldType.STRING).description("야타 특이사항"),
+                                fieldWithPath("data.maxWaitingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
+                                fieldWithPath("data.maxPeople").type(JsonFieldType.NUMBER).description("최대 인원"),
+                                fieldWithPath("data.amount").type(JsonFieldType.NUMBER).description("요금"),
+                                fieldWithPath("data.carModel").type(JsonFieldType.STRING).description("차량 모델"),
+                                fieldWithPath("data.strPoint").type(JsonFieldType.OBJECT).description("출발지"),
+                                fieldWithPath("data.strPoint.longitude").type(JsonFieldType.NUMBER).description("출발지 경도"),
+                                fieldWithPath("data.strPoint.latitude").type(JsonFieldType.NUMBER).description("출발지 위도"),
+                                fieldWithPath("data.strPoint.address").type(JsonFieldType.STRING).description("출발지 주소"),
+                                fieldWithPath("data.destination").type(JsonFieldType.OBJECT).description("도착지"),
+                                fieldWithPath("data.destination.longitude").type(JsonFieldType.NUMBER).description("도착지 경도"),
+                                fieldWithPath("data.destination.latitude").type(JsonFieldType.NUMBER).description("도착지 위도"),
+                                fieldWithPath("data.destination.address").type(JsonFieldType.STRING).description("도착지 주소"),
+                                fieldWithPath("data.postStatus").type(JsonFieldType.STRING).description("야타 게시글 상태"),
+                                fieldWithPath("data.yataStatus").type(JsonFieldType.STRING).description("야타 상태"),
+                                fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일")
+                        )));
 
     }
 
@@ -147,6 +182,13 @@ public class YataControllerTest extends AbstractControllerTest {
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
                 requestFields(
+//todo
+//                        fieldWithPath("strPoint.longitude").type(JsonFieldType.NUMBER).description("출발지 경도"),
+//                        fieldWithPath("strPoint.latitude").type(JsonFieldType.NUMBER).description("출발지 위도"),
+//                        fieldWithPath("strPoint.address").type(JsonFieldType.STRING).description("출발지 주소"),
+//                        fieldWithPath("destination.longitude").type(JsonFieldType.NUMBER).description("도착지 경도"),
+//                        fieldWithPath("destination.latitude").type(JsonFieldType.NUMBER).description("도착지 위도"),
+//                        fieldWithPath("destination.address").type(JsonFieldType.STRING).description("도착지 주소"),
                         fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                         fieldWithPath("specifics").type(JsonFieldType.STRING).description("특이사항"),
                         fieldWithPath("amount").type(JsonFieldType.NUMBER).description("가격"),
@@ -154,10 +196,34 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("maxPeople").type(JsonFieldType.NUMBER).description("최대인원"),
                         fieldWithPath("maxWaitingTime").type(JsonFieldType.NUMBER).description("최대대기시간"),
                         fieldWithPath("departureTime").type(JsonFieldType.STRING).description("출발시간"),
-                        fieldWithPath("timeOfArrival").type(JsonFieldType.STRING).description("도착시간")
-                )
-        ));
+                        fieldWithPath("timeOfArrival").type(JsonFieldType.STRING).description("도착시간"),
+                        fieldWithPath("yataStatus").type(JsonFieldType.STRING).description("야타상태")),
+                responseFields(
+                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("야타 게시글 정보"),
+                        fieldWithPath("data.strPoint").type(JsonFieldType.NULL).description("출발지"),
+                        fieldWithPath("data.destination").type(JsonFieldType.NULL).description("도착지"),
 
+                        fieldWithPath("data.yataId").type(JsonFieldType.NUMBER).description("야타 ID"),
+                        fieldWithPath("data.departureTime").type(JsonFieldType.STRING).description("출발 시간"),
+                        fieldWithPath("data.timeOfArrival").type(JsonFieldType.STRING).description("도착 시간"),
+                        fieldWithPath("data.title").type(JsonFieldType.STRING).description("야타 제목"),
+                        fieldWithPath("data.specifics").type(JsonFieldType.STRING).description("야타 특이사항"),
+                        fieldWithPath("data.maxWaitingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
+                        fieldWithPath("data.maxPeople").type(JsonFieldType.NUMBER).description("최대 인원"),
+                        fieldWithPath("data.amount").type(JsonFieldType.NUMBER).description("요금"),
+                        fieldWithPath("data.carModel").type(JsonFieldType.STRING).description("차량 모델"),
+//                                fieldWithPath("data.strPoint").type(JsonFieldType.OBJECT).description("출발지"),
+//                                fieldWithPath("data.strPoint.longitude").type(JsonFieldType.NUMBER).description("출발지 경도"),
+//                                fieldWithPath("data.strPoint.latitude").type(JsonFieldType.NUMBER).description("출발지 위도"),
+//                                fieldWithPath("data.strPoint.address").type(JsonFieldType.STRING).description("출발지 주소"),
+//                                fieldWithPath("data.destination").type(JsonFieldType.OBJECT).description("도착지"),
+//                                fieldWithPath("data.destination.longitude").type(JsonFieldType.NUMBER).description("도착지 경도"),
+//                                fieldWithPath("data.destination.latitude").type(JsonFieldType.NUMBER).description("도착지 위도"),
+//                                fieldWithPath("data.destination.address").type(JsonFieldType.STRING).description("도착지 주소"),
+                        fieldWithPath("data.postStatus").type(JsonFieldType.STRING).description("야타 게시글 상태"),
+                        fieldWithPath("data.yataStatus").type(JsonFieldType.STRING).description("야타 상태"),
+                        fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일")
+                )));
     }
 
     @Test

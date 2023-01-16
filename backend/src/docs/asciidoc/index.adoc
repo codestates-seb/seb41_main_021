@@ -126,6 +126,10 @@ include::{snippets}/yata-create/request-fields.adoc[]
 include::{snippets}/yata-create/response-body.adoc[]
 http-response
 include::{snippets}/yata-create/http-response.adoc[]
+.response-body
+include::{snippets}/yata-create/response-body.adoc[]
+.response-fields
+include::{snippets}/yata-create/response-fields.adoc[]
 
 
 === 게시글 수정
@@ -142,6 +146,8 @@ include::{snippets}/yata-update/request-fields.adoc[]
 include::{snippets}/yata-update/response-body.adoc[]
 http-response
 include::{snippets}/yata-update/http-response.adoc[]
+.response-fields
+include::{snippets}/yata-create/response-fields.adoc[]
 
 
 === 게시글 삭제

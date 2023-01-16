@@ -4,6 +4,7 @@ import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.mapper.YataMapper;
 import com.yata.backend.domain.yata.service.YataService;
+import com.yata.backend.global.response.PageInfo;
 import com.yata.backend.global.response.SingleResponse;
 import com.yata.backend.global.response.SliceResponseDto;
 import org.springframework.data.domain.Pageable;
@@ -65,23 +66,10 @@ public class YataController {
     //todo 최신생성순 조회
     @GetMapping
     public ResponseEntity getAllYata(@RequestParam String yataStatus, Pageable pageable) {
-
         Slice<Yata> requests = yataService.findAllYata(yataStatus, pageable);
         return new ResponseEntity<>(
                 new SliceResponseDto<>(mapper.yatasToYataSliceResponses(requests), pageable), HttpStatus.OK);
     }
-
-    //todo yata request와 연결된 부분
-
-    //신청 목록 불러오기
-
-    //신청 수락(수락한 신청이 최대인원을 넘으면 수락할 때 예외 넣기)
-
-    //초대 목록 불러오기
-
-    //초대 수락
-
-
     //상세보기
     @GetMapping("/{yata_id}")
     public ResponseEntity getYata(@PathVariable("yata_id") @Positive long yataId) {

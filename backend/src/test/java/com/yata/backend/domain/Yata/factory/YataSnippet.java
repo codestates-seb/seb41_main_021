@@ -32,4 +32,28 @@ public class YataSnippet {
                 fieldWithPath("data[].email").type(JsonFieldType.STRING).description("이메일")
         );
     }
+
+    public static ResponseFieldsSnippet getSliceResponses(){
+        return getListResponse()
+//                .and(fieldWithPath("pageable").type(JsonFieldType.STRING).description("페이지네이션 정보"))
+//                .and(fieldWithPath("pageable.sort").type(JsonFieldType.STRING).description("정렬상태"))
+//                .and(fieldWithPath("pageable.sort.empty").type(JsonFieldType.STRING).description("정렬상태"))
+//                .and(fieldWithPath("pageable.sort.unsorted").type(JsonFieldType.STRING).description("정렬상태"))
+//                .and(fieldWithPath("pageable.sort.sorted").type(JsonFieldType.STRING).description("정렬상태"))
+//                .and(fieldWithPath("pageable.offset").type(JsonFieldType.STRING).description("해당 페이지에 첫 번째 원소의 수"))
+//                .and(fieldWithPath("pageable.pageNumber").type(JsonFieldType.STRING).description("페이지네이션 정보"))
+//                .and(fieldWithPath("pageable.pageSize").type(JsonFieldType.STRING).description("페이지네이션 정보"))
+//                .and(fieldWithPath("pageable.paged").type(JsonFieldType.STRING).description("페이지네이션 정보"))
+//                .and(fieldWithPath("pageable.unpaged").type(JsonFieldType.STRING).description("페이지네이션 정보"))
+                .and(fieldWithPath("size").type(JsonFieldType.STRING).description("페이지네이션 정보"))
+                .and(fieldWithPath("number").type(JsonFieldType.STRING).description("페이지네이션 정보"))
+                .and(fieldWithPath("sort").type(JsonFieldType.STRING).description("페이지네이션 정보"))
+                .and(fieldWithPath("sort.empty").type(JsonFieldType.STRING).description("페이지네이션 정보"))
+                .and(fieldWithPath("sort.unsorted").type(JsonFieldType.STRING).description("페이지네이션 정보"))
+                .and(fieldWithPath("first").type(JsonFieldType.STRING).description("페이지네이션 정보"))
+                .and(fieldWithPath("last").type(JsonFieldType.STRING).description("페이지네이션 정보"))
+                .and(fieldWithPath("numberOfElements").type(JsonFieldType.STRING).description("페이지네이션 정보"))
+                .and(fieldWithPath("empty").type(JsonFieldType.STRING).description("페이지네이션 정보"));
+
+    }
 }
