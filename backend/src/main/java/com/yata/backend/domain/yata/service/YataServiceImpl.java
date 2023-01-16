@@ -43,6 +43,8 @@ public class YataServiceImpl implements YataService{
 
         Member member = memberService.findMember(userName);
 
+        if(yata.getYataStatus().equals(YataStatus.YATA_NEOTA)) memberService.checkDriver(member);
+
         yata.setMember(member);
 
         return jpayataRepository.save(yata);
