@@ -35,25 +35,11 @@ public class YataSnippet {
 
     public static ResponseFieldsSnippet getSliceResponses(){
         return getListResponse()
-//                .and(fieldWithPath("pageable").type(JsonFieldType.STRING).description("페이지네이션 정보"))
-//                .and(fieldWithPath("pageable.sort").type(JsonFieldType.STRING).description("정렬상태"))
-//                .and(fieldWithPath("pageable.sort.empty").type(JsonFieldType.STRING).description("정렬상태"))
-//                .and(fieldWithPath("pageable.sort.unsorted").type(JsonFieldType.STRING).description("정렬상태"))
-//                .and(fieldWithPath("pageable.sort.sorted").type(JsonFieldType.STRING).description("정렬상태"))
-//                .and(fieldWithPath("pageable.offset").type(JsonFieldType.STRING).description("해당 페이지에 첫 번째 원소의 수"))
-//                .and(fieldWithPath("pageable.pageNumber").type(JsonFieldType.STRING).description("페이지네이션 정보"))
-//                .and(fieldWithPath("pageable.pageSize").type(JsonFieldType.STRING).description("페이지네이션 정보"))
-//                .and(fieldWithPath("pageable.paged").type(JsonFieldType.STRING).description("페이지네이션 정보"))
-//                .and(fieldWithPath("pageable.unpaged").type(JsonFieldType.STRING).description("페이지네이션 정보"))
-                .and(fieldWithPath("size").type(JsonFieldType.STRING).description("페이지네이션 정보"))
-                .and(fieldWithPath("number").type(JsonFieldType.STRING).description("페이지네이션 정보"))
-                .and(fieldWithPath("sort").type(JsonFieldType.STRING).description("페이지네이션 정보"))
-                .and(fieldWithPath("sort.empty").type(JsonFieldType.STRING).description("페이지네이션 정보"))
-                .and(fieldWithPath("sort.unsorted").type(JsonFieldType.STRING).description("페이지네이션 정보"))
-                .and(fieldWithPath("first").type(JsonFieldType.STRING).description("페이지네이션 정보"))
-                .and(fieldWithPath("last").type(JsonFieldType.STRING).description("페이지네이션 정보"))
-                .and(fieldWithPath("numberOfElements").type(JsonFieldType.STRING).description("페이지네이션 정보"))
-                .and(fieldWithPath("empty").type(JsonFieldType.STRING).description("페이지네이션 정보"));
-
+                .and(fieldWithPath("sliceInfo").type(JsonFieldType.OBJECT).description("슬라이스 정보"))
+                .and(fieldWithPath("sliceInfo.getNumber").type(JsonFieldType.NUMBER).description("현재 슬라이스 번호"))
+                .and(fieldWithPath("sliceInfo.getSize").type(JsonFieldType.NUMBER).description("현재 슬라이스 크기"))
+                .and(fieldWithPath("sliceInfo.getNumberOfElements").type(JsonFieldType.NUMBER).description("현재 슬라이스가 가지고 있는 엔티티의 개수"))
+                .and(fieldWithPath("sliceInfo.hasNext").type(JsonFieldType.BOOLEAN).description("다음 슬라이스의 존재 유무"))
+                .and(fieldWithPath("sliceInfo.hasPrevious").type(JsonFieldType.BOOLEAN).description("이전 슬라이스의 존재 유무"));
     }
 }
