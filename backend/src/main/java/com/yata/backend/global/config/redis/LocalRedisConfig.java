@@ -115,7 +115,8 @@ public class LocalRedisConfig {
 
     private File getRedisServerExecutable() throws IOException {
         try {
-            return  new ClassPathResource("binary/redis/redis-server-linux-arm64-arc").getFile();
+            //return  new ClassPathResource("binary/redis/redis-server-linux-arm64-arc").getFile();
+            return new File("src/main/resources/binary/redis/redis-server-linux-arm64-arc");
         } catch (Exception e) {
             throw new IOException("Redis Server Executable not found");
         }
