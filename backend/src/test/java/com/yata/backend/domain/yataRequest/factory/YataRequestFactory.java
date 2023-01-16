@@ -1,23 +1,52 @@
 package com.yata.backend.domain.yataRequest.factory;
 
+import com.yata.backend.common.utils.RandomUtils;
 import com.yata.backend.domain.yata.dto.LocationDto;
+import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.dto.YataRequestDto;
+import com.yata.backend.domain.yata.entity.Location;
+import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataRequest;
+import com.yata.backend.domain.yata.entity.YataStatus;
+import com.yata.backend.global.utils.GeometryUtils;
 
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import static com.yata.backend.common.utils.RandomUtils.getRandomLong;
+import static com.yata.backend.common.utils.RandomUtils.getRandomWord;
 
 public class YataRequestFactory {
     public static YataRequestDto.RequestPost createYataRequestPostDto() {
+        LocationDto.Post strPoint = new LocationDto.Post(2.5, 2.0, "강원도 원주시");
+        LocationDto.Post destination = new LocationDto.Post(2.5, 2.0, "강원도 원주시");
 
         return YataRequestDto.RequestPost.builder()
                 .title("태워주세욥")
-                .content("헬로~")
-//                .checklists(List.of("흡연 O","애완동물 X"))
+                .specifics("애완견을 동반하고싶어요")
                 .departureTime(new Date())
                 .timeOfArrival(new Date())
                 .maxPeople(3)
                 .maxWatingTime(10)
-                .carModel("lamborghini")
+                .strPoint(strPoint)
+                .destination(destination)
+                .build();
+    }
+    public static YataRequestDto.RequestPost createYataRequestPostDto2() {
+        LocationDto.Post strPoint = new LocationDto.Post(2.5, 2.0, "강원도 원주시");
+        LocationDto.Post destination = new LocationDto.Post(2.5, 2.0, "강원도 원주시");
+
+        return YataRequestDto.RequestPost.builder()
+                .title("태워주세욥")
+                .specifics("애완견을 동반하고싶어요")
+                .departureTime(new Date())
+                .timeOfArrival(new Date())
+                .maxPeople(3)
+                .maxWatingTime(10)
+                .strPoint(strPoint)
+                .destination(destination)
                 .build();
     }
 
@@ -25,22 +54,25 @@ public class YataRequestFactory {
         return YataRequestDto.RequestResponse.builder()
                 .yataRequestId(yataRequest.getYataRequestId())
                 .yataRequestStatus(yataRequest.getRequestStatus())
+                .approvalStatus(yataRequest.getApprovalStatus())
                 .title(yataRequest.getTitle())
-                .content(yataRequest.getContent())
-//                .checklists(List.of("흡연 O","애완동물 X"))
+                .specifics(yataRequest.getSpecifics())
                 .departureTime(yataRequest.getYata().getDepartureTime())
                 .timeOfArrival(yataRequest.getYata().getTimeOfArrival())
-                .maxWatingTime(yataRequest.getYata().getMaxWaitingTime())
-//                .yataStatus()
-                .carModel(yataRequest.getYata().getCarModel())
-//                .strPoint()
-//                .destination()
                 .maxPeople(yataRequest.getYata().getMaxPeople())
+                .maxWatingTime(yataRequest.getYata().getMaxWaitingTime())
+                .strPoint(new LocationDto.Response(
+                        yataRequest.getStrPoint().getLocation().getX(),
+                        yataRequest.getStrPoint().getLocation().getY(),
+                        yataRequest.getStrPoint().getAddress()))
+                .destination(new LocationDto.Response(
+                        yataRequest.getDestination().getLocation().getX(),
+                        yataRequest.getDestination().getLocation().getY(),
+                        yataRequest.getDestination().getAddress()))
                 .build();
     }
 
     public static YataRequestDto.InvitationPost createYataInvitationPostDto() {
-
         return YataRequestDto.InvitationPost.builder()
                 .yataId(1L)
                 .build();
@@ -48,7 +80,27 @@ public class YataRequestFactory {
 
     public static YataRequestDto.InvitationResponse createYataInvitationResponseDto(YataRequest yataRequest) {
         return YataRequestDto.InvitationResponse.builder()
+                .yataRequestId(yataRequest.getYataRequestId())
                 .yataId(yataRequest.getYata().getYataId())
+                .yataRequestStatus(yataRequest.getRequestStatus())
+                .approvalStatus(yataRequest.getApprovalStatus())
                 .build();
     }
+
+    // TODO 타입 다른 거 해결
+//    public static List<YataRequestDto.RequestPost> createYataRequestDtoList() throws ParseException, org.locationtech.jts.io.ParseException {
+//        List<YataRequestDto.RequestPost> yataRequestList = new ArrayList<>();
+//        for(int i=0; i<10; i++){
+//            yataRequestList.add(createYataRequestPostDto());
+//        }
+//        return yataRequestList;
+//    }
+//
+//    public static List<YataRequestDto.RequestResponse> createYataRquestResponseDtoList(List<YataRequestDto.RequestPost> yataRquestsList){
+//        List<YataDto.Response> yataResponseDtoList = new ArrayList<>();
+//        for(YataRequest yataRequest : yataRquestsList){
+//            yataResponseDtoList.add(createYataResponseDto(yata));
+//        }
+//        return yataResponseDtoList;
+//    }
 }
