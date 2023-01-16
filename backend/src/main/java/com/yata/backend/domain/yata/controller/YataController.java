@@ -6,6 +6,7 @@ import com.yata.backend.domain.yata.mapper.YataMapper;
 import com.yata.backend.domain.yata.service.YataService;
 import com.yata.backend.global.response.PageInfo;
 import com.yata.backend.global.response.SingleResponse;
+import com.yata.backend.global.response.SliceInfo;
 import com.yata.backend.global.response.SliceResponseDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -67,8 +68,9 @@ public class YataController {
     @GetMapping
     public ResponseEntity getAllYata(@RequestParam String yataStatus, Pageable pageable) {
         Slice<Yata> requests = yataService.findAllYata(yataStatus, pageable);
+        SliceInfo sliceInfo = new SliceInfo(pageable, requests.getNumberOfElements(), requests.hasNext());
         return new ResponseEntity<>(
-                new SliceResponseDto<>(mapper.yatasToYataSliceResponses(requests), pageable), HttpStatus.OK);
+                new SliceResponseDto<>(mapper.yatasToYataResponses(requests.getContent()), sliceInfo), HttpStatus.OK);
     }
     //상세보기
     @GetMapping("/{yata_id}")

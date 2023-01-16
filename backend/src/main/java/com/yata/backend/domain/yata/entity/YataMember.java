@@ -1,11 +1,9 @@
 package com.yata.backend.domain.yata.entity;
 
+import com.yata.backend.global.audit.Auditable;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -14,10 +12,12 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class YataMember {
+public class YataMember extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long YataMemberId;
+
+
 
     private enum Payment {
         PAID("지불 완료"),

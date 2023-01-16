@@ -11,6 +11,7 @@ import com.yata.backend.auth.oauth2.service.CustomOAuth2UserService;
 import com.yata.backend.auth.service.CustomUserDetailService;
 import com.yata.backend.auth.service.RefreshService;
 import com.yata.backend.auth.token.AuthTokenProvider;
+import com.yata.backend.domain.member.entity.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -75,6 +76,8 @@ public class SecurityConfig {
                                 .antMatchers("/api/v1/payments/**").permitAll()
                                 // yata
                                 .antMatchers(HttpMethod.GET,"/api/v1/yata/**").permitAll()
+                                .antMatchers("/api/v1/yata/apply/**").authenticated()
+                                .antMatchers("/api/v1/yata/invite/**").hasRole(Member.MemberRole.DRIVER.name())
                                 .antMatchers("/api/v1/yata/**").authenticated()
 
 
