@@ -1,9 +1,14 @@
 import styled from 'styled-components';
+import Header from '../components/Header';
+import ListItem from '../components/ListItem';
 
 export default function JourneyList() {
   return (
     <>
-      <Container>Journey List</Container>
+      <Container>
+        <Header title="여정 내역" />
+        <ListItem date="오늘" journeyStart="내마음속" journeyEnd="너마음속" />
+      </Container>
     </>
   );
 }
@@ -11,14 +16,4 @@ export default function JourneyList() {
 const Container = styled.div`
   width: 100%;
   height: 100px;
-  background-color: pink;
-
-  // 태블릿 : 1200px ~ 768px :: 768px 이상 적용되는 css
-  @media only screen and (min-width: 768px) {
-    background-color: red;
-  }
-  // PC : 1200px 이상 :: 1200px 이상 적용되는 css
-  @media only screen and (min-width: 1200px) {
-    background-color: blue;
-  }
 `;

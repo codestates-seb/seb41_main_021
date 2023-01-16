@@ -1,11 +1,71 @@
 spring:
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        format_sql: true  # (3) SQL pretty print
+        dialect: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
+    hibernate:
+      ddl-auto: create
   profiles:
-    active: ${PROFILE}
+    active: local
   main:
     allow-bean-definition-overriding: true
   redis:
     host: 127.0.0.1
     port: 6379
+    password: mock
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: [ 이메일 계정 ]
+    password: [ 계정 비밀번호 ]
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls: # 추가 안하면 SMTPSendFailedException
+            enable: true
+            required: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: forTesting
+            client-secret: forTesting
+            scope:
+              - email
+              - profile
+            redirect-uri: "{baseUrl}/oauth2/callback/google"
+            client-name: Google
+          kakao:
+            clientId: forTesting
+            clientSecret: forTesting
+            clientAuthenticationMethod: post
+            authorizationGrantType: authorization_code
+            redirectUri: "{baseUrl}/oauth2/callback/kakao"
+            scope:
+              - profile_nickname
+              - profile_image
+              - account_email
+            clientName: Kakao
+          facebook:
+            clientId: forTesting
+            clientSecret: forTesting
+            redirect-uri: "{baseUrl}/oauth2/callback/facebook"
+            scope:
+              - email
+              - public_profile
+            clientName: Facebook
+        provider:
+          kakao:
+            authorization_uri: https://kauth.kakao.com/oauth/authorize
+            token_uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user_name_attribute: id
 
 jwt:
     secret: randomTestValueItisNotUsedInProdEnv
@@ -17,5 +77,13 @@ jwt:
 
 admin:
   email : test@gmail.com,test1@gmail.com
+
+
+payment:
+  toss:
+    test_client_api_key : test_ck_testesttetst
+    test_secrete_api_key : test_sk_Lsetestestest
+    success_url : "http://localhost:8080/api/v1/payments/toss/success"
+    fail_url : "http://localhost:8080/api/v1/payments/toss/fail"
 
 

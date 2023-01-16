@@ -1,24 +1,41 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+import { TbLoader } from 'react-icons/tb';
 
 export default function Loading() {
   return (
     <>
-      <Container>Loading</Container>
+      <Container>
+        <Spinner>
+          <TbLoader />
+        </Spinner>
+      </Container>
     </>
   );
 }
 
 const Container = styled.div`
   width: 100%;
-  height: 100px;
-  background-color: pink;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
-  // 태블릿 : 1200px ~ 768px :: 768px 이상 적용되는 css
-  @media only screen and (min-width: 768px) {
-    background-color: red;
-  }
-  // PC : 1200px 이상 :: 1200px 이상 적용되는 css
-  @media only screen and (min-width: 1200px) {
-    background-color: blue;
+const spin = keyframes`
+    0% {
+        transform: rotate(0deg);
+      }
+    100% {
+        transform: rotate(360deg);
+      }
+  `;
+
+const Spinner = styled.div`
+  margin: 4rem;
+  animation: ${spin} infinite 5s linear;
+
+  svg {
+    font-size: 8rem;
+    color: gray;
   }
 `;

@@ -1,24 +1,107 @@
 import styled from 'styled-components';
+import KakaoMap from '../components/KakaoMap';
+import Input from '../components/common/Input';
+import Button from '../components/common/Button';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { AiOutlinePlusCircle } from 'react-icons/ai';
+import Header from '../components/Header';
 
 export default function TaeoondaAdd() {
+  const [num, setNum] = useState(1);
+
+  const handleSubmit = e => {
+    console.log('hi');
+  };
+
   return (
     <>
-      <Container>Taeoonda Add</Container>
+      <Container>
+        <Header title="태웁니다 등록하기" />
+        <div className="map-container">
+          <KakaoMap />
+        </div>
+        <DestinationForm>
+          <Input label="출발지" placeholder="출발지 입력" />
+          <div className="destinationInput">
+            <Input label="도착지" placeholder="도착지 입력" />
+            <AiOutlinePlusCircle className="plus-icon" onClick={handleSubmit} />
+          </div>
+          <Input label="출발 일시" type="datetime-local" />
+          <Input label="탑승 인원" type="number" min="1" max="10" placeholder="1" />
+          <Input label="특이사항" placeholder="아이가 있어요, 흡연자입니다, 짐이 많아요, 등" />
+          <ButtonContainer>
+            <Button
+              className="register-btn"
+              // onClick={next}
+            >
+              등록하기
+            </Button>
+          </ButtonContainer>
+        </DestinationForm>
+      </Container>
     </>
   );
 }
-
 const Container = styled.div`
   width: 100%;
-  height: 100px;
-  background-color: pink;
+  height: 100vh;
 
-  // 태블릿 : 1200px ~ 768px :: 768px 이상 적용되는 css
-  @media only screen and (min-width: 768px) {
-    background-color: red;
+  .map-container {
+    width: 100%;
+    height: 50%;
   }
-  // PC : 1200px 이상 :: 1200px 이상 적용되는 css
-  @media only screen and (min-width: 1200px) {
-    background-color: blue;
+`;
+
+const DestinationForm = styled.div`
+  padding: 2rem 3rem;
+  width: 100%;
+  height: 40%;
+  position: absolute;
+  bottom: 0;
+  z-index: 1;
+  box-shadow: 0px -10px 10px -10px lightgrey;
+  background-color: white;
+  border-radius: 10% 10% 0 0;
+  overflow: scroll;
+
+  @media only screen and (min-width: 470px) {
+    width: 470px;
+  }
+
+  @media screen and (min-height: 470px) {
+    height: 58%;
+  }
+
+  .destinationInput {
+    position: relative;
+  }
+
+  .destinationInput svg {
+    position: absolute;
+    top: 3rem;
+    right: 1rem;
+    font-size: 1.7rem;
+    padding: 0.2rem;
+    color: #6f6f6f;
+
+    @media only screen and (min-width: 470px) {
+      top: 0.8rem;
+      right: 1rem;
+    }
+  }
+
+  .plus-icon {
+    cursor: pointer;
+  }
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  button {
+    margin: 10px 0;
   }
 `;

@@ -1,34 +1,80 @@
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
+import { AiOutlineUser } from 'react-icons/ai';
+import { FaCarSide } from 'react-icons/fa';
+import { RiSteeringLine } from 'react-icons/ri';
+import { TbHeartHandshake } from 'react-icons/tb';
 
 export default function Navbar() {
   return (
     <>
-      <Container>Navbar</Container>
+      <Container>
+        <NavContainer>
+          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/taeoonda-list">
+            <RiSteeringLine />
+            <p>태웁니다</p>
+          </NavLink>
+          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/tabnida-list">
+            <FaCarSide />
+            <p>탑니다</p>
+          </NavLink>
+          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/register-list">
+            <TbHeartHandshake />
+            <p>요청 내역</p>
+          </NavLink>
+          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/my-page">
+            <AiOutlineUser />
+            <p>마이페이지</p>
+          </NavLink>
+        </NavContainer>
+      </Container>
     </>
   );
 }
 
 const Container = styled.div`
-  width: 100%;
-  height: 50px;
-  background-color: gray;
-  position: absolute;
-  bottom: 0;
-
-  // 태블릿 : 1200px ~ 768px :: 768px 이상 적용되는 css
-  @media only screen and (min-width: 768px) {
-    width: 100%;
-    height: 50px;
-    background-color: gray;
+  div {
+    background-color: #fff;
     position: absolute;
-    top: 0;
+    bottom: 0;
+    box-shadow: 0 -5px 10px -8px lightgrey;
   }
-  // PC : 1200px 이상 :: 1200px 이상 적용되는 css
-  @media only screen and (min-width: 1200px) {
-    width: 100%;
-    height: 50px;
-    background-color: gray;
-    position: absolute;
-    top: 0;
+`;
+
+const NavContainer = styled.div`
+  width: 100%;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+
+  svg {
+    font-size: 2rem;
+  }
+
+  a {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    color: ${({ theme }) => theme.colors.main_blue};
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.darker_blue};
+    }
+    &.active {
+      color: ${({ theme }) => theme.colors.dark_blue};
+    }
+
+    p {
+      margin-top: 0.3rem;
+      font-size: 1rem;
+    }
+  }
+
+  @media only screen and (min-width: 470px) {
+    width: 470px;
+    display: flex;
+    align-items: center;
   }
 `;

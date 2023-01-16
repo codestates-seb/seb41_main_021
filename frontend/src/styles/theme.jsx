@@ -1,5 +1,5 @@
 // 반응형 디자인을 위한 픽셀 컨버팅 함수
-const calcRem = (size) => `${size / 16}rem`;
+const calcRem = size => `${size / 16}rem`;
 
 const fontSizes = {
   small: calcRem(14),
@@ -8,7 +8,7 @@ const fontSizes = {
   xl: calcRem(20),
   xxl: calcRem(22),
   xxxl: calcRem(24),
-  titleSize: calcRem(50),
+  titleSize: calcRem(40),
 };
 
 const paddings = {
@@ -41,19 +41,22 @@ const verticalInterval = {
 };
 
 const deviceSizes = {
-  mobileS: "320px",
-  mobileM: "375px",
-  mobileL: "450px",
-  tablet: "768px",
-  tabletL: "1024px",
+  mobileS: '320px',
+  mobileM: '375px',
+  mobileL: '450px',
+  tablet: '768px',
+  tabletL: '1024px',
 };
-
+// ${props => props.theme.colors.main_blue};
 const colors = {
-  black: "#000000",
-  white: "#FFFFFF",
-  gray_1: "#222222",
-  gray_2: "#767676",
-  green_1: "#3cb46e",
+  light_gray: '#d5d7da',
+  gray: '#acafb3',
+  dark_gray: '#5b5d5f',
+  main_blue: '#73b2d9',
+  dark_blue: '#5e88bf',
+  darker_blue: '#537bc3',
+  light_blue: '#8bcad9',
+  lighter_blue: '#c4eef2',
 };
 
 const device = {
@@ -73,7 +76,7 @@ const theme = {
   margins,
   interval,
   verticalInterval,
-//   gradient,
+  //   gradient,
 };
 
 export default theme;

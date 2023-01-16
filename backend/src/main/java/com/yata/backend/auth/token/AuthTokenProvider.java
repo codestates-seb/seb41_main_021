@@ -6,6 +6,7 @@ import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 // 토큰을 생성하고 검증하는 클래스
+@Getter
 public class AuthTokenProvider {
 
     private final Key key;
@@ -39,6 +41,9 @@ public class AuthTokenProvider {
     public AuthToken createAccessToken(String id , List<String> role) {
         return new AuthToken(id,role, new Date(System.currentTimeMillis() + tokenValidTime), key);
     }
+    public AuthToken createExpiredAccessToken(String id , List<String> role){
+        return new AuthToken(id,role, new Date(System.currentTimeMillis() - tokenValidTime), key);
+    }
     public AuthToken createRefreshToken(String id) {
         return new AuthToken(id, new Date(System.currentTimeMillis() + refreshTokenValidTime), key);
     }
@@ -55,7 +60,6 @@ public class AuthTokenProvider {
         if(authToken.validate()) {
 
             Claims claims = authToken.getTokenClaims();
-            System.out.println(claims.get("role"));
             Collection<? extends GrantedAuthority> authorities  = getAuthorities((List) claims.get(AUTHORITIES_KEY));
 
             log.debug("claims subject := [{}]", claims.getSubject());
