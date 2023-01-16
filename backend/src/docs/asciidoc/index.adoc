@@ -112,6 +112,7 @@ include::{snippets}/payment-toss-cancel-point/request-parameters.adoc[]
 데이터 반환이 되기는 하는데 너무 길어서 제외 했습니다. 필요 없긴 해보여서!
 include::{snippets}/payment-toss-cancel-point/http-response.adoc[]
 
+
 == YataController
 
 
@@ -129,6 +130,10 @@ include::{snippets}/yata-create/request-fields.adoc[]
 include::{snippets}/yata-create/response-body.adoc[]
 http-response
 include::{snippets}/yata-create/http-response.adoc[]
+.response-body
+include::{snippets}/yata-create/response-body.adoc[]
+.response-fields
+include::{snippets}/yata-create/response-fields.adoc[]
 
 
 === 게시글 수정
@@ -137,14 +142,14 @@ PATCH /api/v1/yata/{yata_id}
 
 .http-request
 include::{snippets}/yata-update/http-request.adoc[]
-.request-body
-include::{snippets}/yata-update/request-body.adoc[]
+.path-parameters
+include::{snippets}/yata-get/path-parameters.adoc[]
 .request-fields
 include::{snippets}/yata-update/request-fields.adoc[]
-.response-body
-include::{snippets}/yata-update/response-body.adoc[]
-http-response
+.http-response
 include::{snippets}/yata-update/http-response.adoc[]
+.response-fields
+include::{snippets}/yata-create/response-fields.adoc[]
 
 
 === 게시글 삭제
@@ -153,12 +158,43 @@ DELETE /api/v1/yata/{yata_id}
 
 .http-request
 include::{snippets}/yata-delete/http-request.adoc[]
-
+.path-parameters
+include::{snippets}/yata-get/path-parameters.adoc[]
 .response-body
 include::{snippets}/yata-delete/response-body.adoc[]
-
 http-response
 include::{snippets}/yata-delete/http-response.adoc[]
+
+=== 게시글 상세조회
+
+GET /api/v1/yata/{yata_id}
+
+.http-request
+include::{snippets}/yata-get/http-request.adoc[]
+.path-parameters
+include::{snippets}/yata-get/path-parameters.adoc[]
+http-response
+include::{snippets}/yata-get/http-response.adoc[]
+.response-fields
+include::{snippets}/yata-get/response-fields.adoc[]
+
+
+=== 게시글 전체조회
+
+GET /api/v1/yata?yataStatus=nata/neota
+
+.http-request
+include::{snippets}/yata-getAll/http-request.adoc[]
+http-response
+include::{snippets}/yata-getAll/http-response.adoc[]
+.response-body
+include::{snippets}/yata-getAll/response-body.adoc
+.response-fields
+include::{snippets}/yata-getAll/response-fields.adoc[]
+
+
+
+
 
 == yataRequestController
 === 게시물에 신청
