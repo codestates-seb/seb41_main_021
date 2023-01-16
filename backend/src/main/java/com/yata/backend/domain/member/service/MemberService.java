@@ -16,5 +16,7 @@ public interface MemberService {
 
     Member updateMember(String email, Member patchMemberDtoToMember);
 
+    void checkDriver(Member member);
+
 
 }

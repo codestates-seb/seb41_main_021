@@ -77,5 +77,15 @@ public class MemberServiceImpl implements MemberService {
         return member;
     }
 
+    @Override
+    public void checkDriver(Member member) {
+        member
+                .getRoles()
+                .stream()
+                .filter(role -> role.equals(Member.MemberRole.DRIVER.name()))
+                .findAny()
+                .orElseThrow(() -> new CustomLogicException(ExceptionCode.MEMBER_NOT_DRIVER));
+    }
+
 
 }
