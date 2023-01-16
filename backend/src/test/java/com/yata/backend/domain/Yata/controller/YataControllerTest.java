@@ -2,7 +2,6 @@ package com.yata.backend.domain.Yata.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.yata.backend.common.utils.RandomUtils;
 import com.yata.backend.domain.AbstractControllerTest;
 import com.yata.backend.domain.Yata.factory.YataFactory;
 import com.yata.backend.domain.Yata.factory.YataSnippet;
@@ -10,39 +9,33 @@ import com.yata.backend.domain.yata.controller.YataController;
 import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.Yata;
-import com.yata.backend.domain.yata.entity.YataRequest;
 import com.yata.backend.domain.yata.entity.YataStatus;
 import com.yata.backend.domain.yata.mapper.YataMapper;
 import com.yata.backend.domain.yata.service.YataService;
-import com.yata.backend.global.response.SliceInfo;
 import com.yata.backend.global.utils.GeometryUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.*;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.yata.backend.common.utils.RandomUtils.getRandomWord;
 import static com.yata.backend.domain.Yata.factory.YataFactory.*;
 import static com.yata.backend.util.ApiDocumentUtils.getRequestPreProcessor;
 import static com.yata.backend.util.ApiDocumentUtils.getResponsePreProcessor;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -173,8 +166,8 @@ public class YataControllerTest extends AbstractControllerTest {
         given(mapper.yataToYataResponse(any())).willReturn(response);
         //when
 
-        ResultActions resultActions = mockMvc.perform(
-                patch(BASE_URL + "/{yata_Id}", yataId)
+        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.
+                patch(BASE_URL + "/{yataId}", yataId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()) //csrf토큰 생성
                         .content(json));
@@ -191,6 +184,9 @@ public class YataControllerTest extends AbstractControllerTest {
         resultActions.andDo(document("yata-update",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
+                pathParameters(
+                        parameterWithName("yataId").description("야타 ID")
+                ),
                 requestFields(
                         fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                         fieldWithPath("specifics").type(JsonFieldType.STRING).description("특이사항"),
@@ -254,8 +250,8 @@ public class YataControllerTest extends AbstractControllerTest {
 
         given(yataService.verifyYata(anyLong())).willReturn(expected);
 
-        ResultActions resultActions = mockMvc.perform(
-                delete(BASE_URL + "/{yata_Id}", expected.getYataId())
+        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.
+                delete(BASE_URL + "/{yataId}", expected.getYataId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()));//csrf토큰 생성
 
@@ -265,7 +261,10 @@ public class YataControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andDo(document("yata-delete",
                                 getRequestPreProcessor(),
-                                getResponsePreProcessor()
+                                getResponsePreProcessor(),
+                        pathParameters(
+                                parameterWithName("yataId").description("야타 ID")
+                        )
                         )
                 );
 
@@ -285,8 +284,8 @@ public class YataControllerTest extends AbstractControllerTest {
         given(mapper.yataToYataResponse(any())).willReturn(response);
         //when
 
-        ResultActions resultActions = mockMvc.perform(
-                get(BASE_URL + "/{yata_id}", yata.getYataId())
+        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.
+                get(BASE_URL + "/{yataId}", yata.getYataId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(csrf()));
@@ -301,6 +300,9 @@ public class YataControllerTest extends AbstractControllerTest {
                 resultActions.andDo(document("yata-get",
                         getRequestPreProcessor(),
                         getResponsePreProcessor(),
+                        pathParameters(
+                                parameterWithName("yataId").description("야타 ID")
+                        ),
                        responseFields(
                                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("야타 게시글 정보"),
                                 fieldWithPath("data.yataId").type(JsonFieldType.NUMBER).description("야타 ID"),
@@ -346,7 +348,7 @@ public class YataControllerTest extends AbstractControllerTest {
         //new SliceImpl<>(responses, PageRequest.of(0,10, Sort.by("yataId").descending()),false)
         // when
         ResultActions actions =
-                mockMvc.perform(
+                mockMvc.perform(RestDocumentationRequestBuilders.
                         get(BASE_URL + "?yataStatus=neota")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON)
