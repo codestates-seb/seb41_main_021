@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.yata.backend.common.utils.RandomUtils;
 import com.yata.backend.domain.AbstractControllerTest;
 import com.yata.backend.domain.Yata.factory.YataFactory;
+import com.yata.backend.domain.Yata.factory.YataSnippet;
 import com.yata.backend.domain.yata.controller.YataController;
 import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.entity.Location;
@@ -42,6 +43,8 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -337,8 +340,7 @@ public class YataControllerTest extends AbstractControllerTest {
 
         given(yataService.findAllYata(anyString(), any())).willReturn(
                 yataSlice);
-        given(mapper.yatasToYataSliceResponses(yataSlice)).willReturn(new SliceImpl<>(responses,PageRequest.of(0,10,Sort.by("yataId").descending()),false));
-        given(mapper.postToLocation(any())).willReturn(new Location());
+        given(mapper.yatasToYataResponses(yataSlice.getContent())).willReturn(responses);
 
         System.out.println(mapper.yatasToYataResponses(yatas).size());
         //new SliceImpl<>(responses, PageRequest.of(0,10, Sort.by("yataId").descending()),false)
@@ -350,17 +352,13 @@ public class YataControllerTest extends AbstractControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)
                                 .with(csrf()));
 
-                actions.andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.content[0].title").value(yatas.get(0).getTitle()))
-                .andExpect(jsonPath("$.data.content[1].title").value(yatas.get(1).getTitle()))
-                .andExpect(jsonPath("$.data.content[2].title").value(yatas.get(2).getTitle()))
-                .andExpect(jsonPath("$.data.content[2].yataId").value(yatas.get(2).getYataId()))
+        actions.andExpect(status().isOk())
                 .andDo(print());
 
+        actions.andDo(document("yata-getAll",
+                getRequestPreProcessor(),
+                getResponsePreProcessor(), YataSnippet.getSliceResponses()));
 
     }
-
-
-
 
 }

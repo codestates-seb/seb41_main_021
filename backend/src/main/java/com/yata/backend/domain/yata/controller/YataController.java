@@ -64,7 +64,6 @@ public class YataController {
     }
 
     //너타/나타 목록 불러오기
-    //todo 최신생성순 조회
     @GetMapping
     public ResponseEntity getAllYata(@RequestParam String yataStatus, Pageable pageable) {
         Slice<Yata> requests = yataService.findAllYata(yataStatus, pageable);

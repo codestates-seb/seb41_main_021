@@ -112,6 +112,7 @@ include::{snippets}/payment-toss-cancel-point/request-parameters.adoc[]
 데이터 반환이 되기는 하는데 너무 길어서 제외 했습니다. 필요 없긴 해보여서!
 include::{snippets}/payment-toss-cancel-point/http-response.adoc[]
 
+
 == YataController
 
 
@@ -174,6 +175,25 @@ include::{snippets}/yata-get/http-response.adoc[]
 
 .response-fields
 include::{snippets}/yata-get/response-fields.adoc[]
+
+
+=== 게시글 전체조회
+
+GET /api/v1/yata?yataStatus=nata/neota
+
+.http-request
+include::{snippets}/yata-getAll/http-request.adoc[]
+
+http-response
+include::{snippets}/yata-getAll/http-response.adoc[]
+
+.response-body
+include::{snippets}/yata-getAll/response-body.adoc
+
+.response-fields
+include::{snippets}/yata-getAll/response-fields.adoc[]
+
+
 
 
 
