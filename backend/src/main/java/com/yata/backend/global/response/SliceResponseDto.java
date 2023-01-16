@@ -4,12 +4,14 @@ import lombok.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class SliceResponseDto<T>{
-    Slice<T> data;
+    List<T> data;
     SliceInfo sliceInfo;
 }

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 @RestController
 @Validated
@@ -65,7 +66,7 @@ public class YataRequestController {
         Slice<YataRequest> requests = yataRequestService.findRequests(authMember.getUsername(), yataId ,pageable);
         SliceInfo sliceInfo = new SliceInfo(pageable, requests.getNumberOfElements(), requests.hasNext());
         return new ResponseEntity<>(
-                new SliceResponseDto<>(mapper.yataRequestsToSliceYataRequestResponses(requests), sliceInfo), HttpStatus.OK);
+                new SliceResponseDto<>(mapper.yataRequestsToYataRequestResponses(requests.getContent()), sliceInfo), HttpStatus.OK);
     }
 
     // TODO Yata 신청 or 초대 전 or 승인 후 삭제 - 204

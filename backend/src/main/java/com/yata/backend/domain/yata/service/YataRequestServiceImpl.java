@@ -5,7 +5,6 @@ import com.yata.backend.domain.member.service.MemberService;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import com.yata.backend.domain.yata.entity.YataStatus;
-import com.yata.backend.domain.yata.repository.yataRepo.JpaYataRepository;
 import com.yata.backend.domain.yata.repository.yataRequestRepo.JpaYataRequestRepository;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
@@ -15,6 +14,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 import static com.yata.backend.domain.yata.entity.YataRequest.RequestStatus.APPLY;
@@ -109,7 +109,7 @@ public class YataRequestServiceImpl implements YataRequestService {
         YataRequest.ApprovalStatus approvalStatus = yataRequest.getApprovalStatus();
 
         switch (approvalStatus){
-            case ACCEPTED, REJECTED -> throw new CustomLogicException(ExceptionCode.UNAUTHORIZED); // 승인/거절 받았으면 삭제 불가 (운전자만 삭제 가능)
+            case ACCEPTED, REJECTED -> throw new CustomLogicException(ExceptionCode.CANNOT_DELETE); // 승인/거절 받았으면 삭제 불가 (운전자만 삭제 가능)
             default -> jpaYataRequestRepository.delete(yataRequest); // 아닌 경우 삭제 가능
         }
     }

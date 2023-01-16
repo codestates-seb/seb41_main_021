@@ -70,7 +70,7 @@ public class YataController {
         Slice<Yata> requests = yataService.findAllYata(yataStatus, pageable);
         SliceInfo sliceInfo = new SliceInfo(pageable, requests.getNumberOfElements(), requests.hasNext());
         return new ResponseEntity<>(
-                new SliceResponseDto<>(mapper.yatasToYataSliceResponses(requests), sliceInfo), HttpStatus.OK);
+                new SliceResponseDto<>(mapper.yatasToYataResponses(requests.getContent()), sliceInfo), HttpStatus.OK);
     }
 
     //todo yata request와 연결된 부분

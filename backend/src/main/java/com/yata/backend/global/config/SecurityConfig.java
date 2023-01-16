@@ -11,9 +11,11 @@ import com.yata.backend.auth.oauth2.service.CustomOAuth2UserService;
 import com.yata.backend.auth.service.CustomUserDetailService;
 import com.yata.backend.auth.service.RefreshService;
 import com.yata.backend.auth.token.AuthTokenProvider;
+import com.yata.backend.domain.member.entity.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -30,6 +32,7 @@ public class SecurityConfig {
     private final AuthTokenProvider tokenProvider;
     private final JwtConfig jwtConfig;
     private final RefreshService refreshService;
+
     public SecurityConfig(CustomFilterConfigurer customFilterConfigurer, CustomOAuth2UserService oAuth2UserService,
                           AuthTokenProvider tokenProvider, JwtConfig jwtConfig, RefreshService refreshService) {
         this.customFilterConfigurer = customFilterConfigurer;
@@ -61,10 +64,28 @@ public class SecurityConfig {
                 .authenticationEntryPoint(authenticationEntryPoint())
                 .and().authorizeRequests(
                         authorize -> authorize
+                                // members
+                                .antMatchers(HttpMethod.GET, "/api/v1/members/**").authenticated()
+                                .antMatchers(HttpMethod.PATCH, "/api/v1/members/**").authenticated()
+                                .antMatchers("/api/v1/members/**").permitAll()
+
+                                // validation
+                                .antMatchers("/api/v1/validation/**").permitAll()
+                                // pay
+                                .antMatchers(HttpMethod.POST, "/api/v1/payments/**").authenticated()
+                                .antMatchers("/api/v1/payments/**").permitAll()
+                                // yata
+                                .antMatchers(HttpMethod.GET,"/api/v1/yata/**").permitAll()
+                                .antMatchers("/api/v1/yata/apply/**").authenticated()
+                                .antMatchers("/api/v1/yata/invite/**").hasRole(Member.MemberRole.DRIVER.name())
+                                .antMatchers("/api/v1/yata/**").authenticated()
+
+
+                                // basic
                                 .antMatchers("/docs/index.html").permitAll()
                                 .antMatchers("/h2/**").permitAll()
                                 .anyRequest().permitAll()
-                                // 작은 것 부터 큰 순서
+                        // 작은 것 부터 큰 순서
 
                 ).oauth2Login()
                 .authorizationEndpoint()
@@ -86,14 +107,17 @@ public class SecurityConfig {
     public AuthenticationEntryPoint authenticationEntryPoint() {
         return new MemberAuthenticationEntryPoint();
     }
+
     @Bean
     public AccessDeniedHandler accessDeniedHandler() {
         return new MemberAccessDeniedHandler();
     }
+
     @Bean
     public OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository() {
         return new OAuth2AuthorizationRequestBasedOnCookieRepository();
     }
+
     @Bean
     public OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
         return new OAuth2AuthenticationSuccessHandler(
@@ -104,6 +128,7 @@ public class SecurityConfig {
 
         );
     }
+
     /*
      * Oauth 인증 실패 핸들러
      * */

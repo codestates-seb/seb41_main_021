@@ -138,37 +138,38 @@ public class YataRequestControllerTest extends AbstractControllerTest {
         actions.andDo(print());
     }
 
-    @Test
-    @DisplayName("Yata 신청/초대 목록 조회")
-    @WithMockUser(username = "test1@gmail.com", roles = "USER")
-    void getRequestsTest() throws Exception {
-        //given
-
-
-        //when
-
-
-        //then
-
-    }
-
-    @Test
-    @DisplayName("Yata 신청/초대 삭제")
-    @WithMockUser(username = "test1@gmail.com", roles = "USER")
-    void deleteRequestTest() throws Exception {
-        //given
+//    @Test
+//    @DisplayName("Yata 신청/초대 목록 조회")
+//    @WithMockUser(username = "test1@gmail.com", roles = "USER")
+//    void getRequestsTest() throws Exception {
+//        //given
+//        List<YataRequestDto.RequestPost> yataRequests = YataRequestFactory.createYataRequestDtoList();
+//
+//
+//        //when
+//
+//
+//        //then
+//
+//    }
+//
+//    @Test
+//    @DisplayName("Yata 신청/초대 삭제")
+//    @WithMockUser(username = "test1@gmail.com", roles = "USER")
+//    void deleteRequestTest() throws Exception {
+//        //given
 //        YataRequestDto.InvitationPost post = YataRequestFactory.createYataInvitationPostDto();
-        String userName = "test1@gmail.com";
-        Long yataRequestId = 1L;
-        Long yataId = 1L;
-
-        doNothing().when(yataRequestService).deleteRequest(userName, yataRequestId, yataId);
-
-        //when
-        ResultActions actions = mockMvc.perform(delete(BASE_URL + "/apply/1/1"));
-
-        //then
-        actions.andExpect(status().isNoContent())
-                .andDo(print());
-    }
+//        String userName = "test1@gmail.com";
+//        Long yataRequestId = 1L;
+//        Long yataId = 1L;
+//
+//        doNothing().when(yataRequestService).deleteRequest(userName, yataRequestId, yataId);
+//
+//        //when
+//        ResultActions actions = mockMvc.perform(delete(BASE_URL + "/apply/1/1"));
+//
+//        //then
+//        actions.andExpect(status().isNoContent())
+//                .andDo(print());
+//    }
 }

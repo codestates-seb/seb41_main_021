@@ -8,6 +8,7 @@ import com.yata.backend.domain.yata.controller.YataController;
 import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.Yata;
+import com.yata.backend.domain.yata.entity.YataRequest;
 import com.yata.backend.domain.yata.entity.YataStatus;
 import com.yata.backend.domain.yata.mapper.YataMapper;
 import com.yata.backend.domain.yata.service.YataService;
@@ -21,6 +22,8 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
