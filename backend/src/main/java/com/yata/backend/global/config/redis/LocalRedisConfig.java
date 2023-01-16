@@ -113,7 +113,7 @@ public class LocalRedisConfig {
     }
 
     private File getRedisServerExecutable() throws IOException {
-        ClassPathResource resource = new ClassPathResource("binary/redis/redis-server-linux-arm64-arc");
+        ClassPathResource resource = new ClassPathResource("binary/redis/redis-server");
         return resource.getFile();
     }
     /*private fun isArmMac(): Boolean {
