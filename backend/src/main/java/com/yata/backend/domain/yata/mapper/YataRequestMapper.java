@@ -68,16 +68,6 @@ public interface YataRequestMapper {
                 }).collect(Collectors.toList());
     }
 
-    default Slice<YataRequestDto.RequestResponse> yataRequestsToSliceYataRequestResponses(Slice<YataRequest> yataRequests) {
-        if (yataRequests == null) {
-            return null;
-        }
-
-        List<YataRequestDto.RequestResponse> responses = yataRequestsToYataRequestResponses(yataRequests.getContent());
-
-        return new SliceImpl<>(responses, yataRequests.getPageable(), yataRequests.hasNext());
-    }
-
     YataRequest yataInvitationPostDtoToYataInvitation(YataRequestDto.InvitationPost requestBody);
 
     default YataRequestDto.InvitationResponse yataInvitationToYataInvitationResponse(YataRequest yataRequest) {

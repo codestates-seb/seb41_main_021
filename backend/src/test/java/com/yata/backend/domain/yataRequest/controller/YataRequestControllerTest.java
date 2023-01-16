@@ -17,7 +17,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.SliceImpl;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -78,12 +81,9 @@ public class YataRequestControllerTest extends AbstractControllerTest {
 
         //then
         actions.andDo(print())
-                .andDo(document("post-yataRequest",
+                .andDo(document("yataRequest-postRequest",
                         getRequestPreProcessor(),
                         getResponsePreProcessor(),
-//                        requestHeaders(
-//                                headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 토큰")
-//                        ),
                         pathParameters(
                                 parameterWithName("yataId").description("야타 ID")
                         ),
@@ -149,12 +149,9 @@ public class YataRequestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isCreated());
 
         //then
-        actions.andDo(document("post-yataInvitation",
+        actions.andDo(document("yataRequest-postInvitation",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
-//                requestHeaders(
-//                        headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 토큰")
-//                ),
                 pathParameters(
                         parameterWithName("yataId").description("야타 ID")
                 ),
@@ -179,17 +176,18 @@ public class YataRequestControllerTest extends AbstractControllerTest {
         List<YataRequestDto.RequestResponse> responses = YataRequestFactory.createYataRquestResponseDtoList(yataRequests);
 
         given(yataRequestService.findRequests(any(), anyLong(), any())).willReturn(new SliceImpl<>(yataRequests));
-        given(mapper.yataRequestsToSliceYataRequestResponses(any())).willReturn(new SliceImpl<>(responses));
+        given(mapper.yataRequestsToYataRequestResponses(any())).willReturn(responses);
 
         //when
         ResultActions actions = mockMvc.perform(get(BASE_URL + "/apply/{yataId}", responses.get(1).getYataId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(csrf()))
-                .andExpect(status().isOk());
+                ;
 
         //then
-        actions.andDo(document("get-yataRequests",
+        actions.andExpect(status().isOk())
+                .andDo(document("yataRequest-get",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
 //                requestHeaders(
@@ -216,7 +214,7 @@ public class YataRequestControllerTest extends AbstractControllerTest {
 
         //then
         actions.andExpect(status().isNoContent())
-                .andDo(document("delete-yataRquest",
+                .andDo(document("yataRequest-delete",
                         getRequestPreProcessor(),
                         getResponsePreProcessor(),
                         pathParameters(
