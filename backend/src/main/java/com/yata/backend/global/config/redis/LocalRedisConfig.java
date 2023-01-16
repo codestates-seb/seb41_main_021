@@ -1,15 +1,18 @@
 package com.yata.backend.global.config.redis;
 
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.jdt.internal.compiler.batch.ClasspathSourceJar;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.StringUtils;
 import redis.embedded.RedisServer;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -25,10 +28,15 @@ public class LocalRedisConfig {
     @PostConstruct
     public void redisServer() throws IOException {
         int port = isRedisRunning() ? findAvailablePort() : redisPort;
-        redisServer = RedisServer.builder()
-                .port(port)
-                .setting("maxmemory 128M")
-                .build();
+        if (isArmArchitecture()) {
+            redisServer = new RedisServer(getRedisServerExecutable(), port);
+        } else {
+            redisServer = RedisServer.builder()
+                    .port(port)
+                    .setting("maxmemory 128M")
+                    .build();
+        }
+
         redisServer.start();
     }
 
@@ -96,4 +104,22 @@ public class LocalRedisConfig {
 
         return !StringUtils.isEmpty(pidInfo.toString());
     }
+
+    private boolean isArmArchitecture() {
+        return System.getProperty("os.arch").contains("arm");
+    }
+
+    private File getRedisServerExecutable() throws IOException {
+        ClassPathResource resource = new ClassPathResource("binary/redis/redis-server-linux-arm64-arc");
+        return resource.getFile();
+    }
+    /*private fun isArmMac(): Boolean {
+        return System.getProperty("os.arch") == "aarch64" &&
+                System.getProperty("os.name") == "Mac OS X"
+    }
+
+
+    private fun getRedisFileForArmMac(): File {
+        return ClassPathResource("binary/redis/redis-server-6.0.10-mac-arm64").file
+    }*/
 }
