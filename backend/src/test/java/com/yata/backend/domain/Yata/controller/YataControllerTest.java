@@ -242,6 +242,8 @@ public class YataControllerTest extends AbstractControllerTest {
                 .carModel("porsche")
                 .maxPeople(2)
                 .maxWaitingTime(10)
+                .strPoint(new Location(1L, GeometryUtils.getEmptyPoint(),"인천",null))
+                .destination(new Location(2L, GeometryUtils.getEmptyPoint(),"부산",null))
                 .yataStatus(YataStatus.YATA_NATA)
                 .postStatus(Yata.PostStatus.POST_WAITING)
                 .build();
@@ -291,21 +293,33 @@ public class YataControllerTest extends AbstractControllerTest {
                 .andExpect(jsonPath("$.data.amount").value(response.getAmount()))
                 .andExpect(jsonPath("$.data.carModel").value(response.getCarModel()))
                 .andDo(print());
-        //todo 프론트와 필드 맞춰본 후 수정/추가
-//                .andDo(document("yata-get",
-//                        getRequestPreProcessor(),
-//                        getResponsePreProcessor(),
-//                        responseFields(
-//                                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
-//                                fieldWithPath("content").type(JsonFieldType.STRING).description("본문"),
-//                                fieldWithPath("amount").type(JsonFieldType.NUMBER).description("가격"),
-//                                fieldWithPath("carModel").type(JsonFieldType.STRING).description("차종"),
-//                                fieldWithPath("maxPeople").type(JsonFieldType.NUMBER).description("최대인원"),
-//                                fieldWithPath("maxWaitingTime").type(JsonFieldType.NUMBER).description("최대대기시간"),
-//                                fieldWithPath("departureTime").type(JsonFieldType.STRING).description("출발시간"),
-//                                fieldWithPath("timeOfArrival").type(JsonFieldType.STRING).description("도착시간")
-//                        )
-//                ));
+
+                resultActions.andDo(document("yata-get",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                       responseFields(
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("야타 게시글 정보"),
+                                fieldWithPath("data.yataId").type(JsonFieldType.NUMBER).description("야타 ID"),
+                                fieldWithPath("data.departureTime").type(JsonFieldType.STRING).description("출발 시간"),
+                                fieldWithPath("data.timeOfArrival").type(JsonFieldType.STRING).description("도착 시간"),
+                                fieldWithPath("data.title").type(JsonFieldType.STRING).description("야타 제목"),
+                                fieldWithPath("data.specifics").type(JsonFieldType.STRING).description("야타 특이사항"),
+                                fieldWithPath("data.maxWaitingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
+                                fieldWithPath("data.maxPeople").type(JsonFieldType.NUMBER).description("최대 인원"),
+                                fieldWithPath("data.amount").type(JsonFieldType.NUMBER).description("요금"),
+                                fieldWithPath("data.carModel").type(JsonFieldType.STRING).description("차량 모델"),
+                                fieldWithPath("data.strPoint").type(JsonFieldType.OBJECT).description("출발지"),
+                                fieldWithPath("data.strPoint.longitude").type(JsonFieldType.NUMBER).description("출발지 경도"),
+                                fieldWithPath("data.strPoint.latitude").type(JsonFieldType.NUMBER).description("출발지 위도"),
+                                fieldWithPath("data.strPoint.address").type(JsonFieldType.STRING).description("출발지 주소"),
+                                fieldWithPath("data.destination").type(JsonFieldType.OBJECT).description("도착지"),
+                                fieldWithPath("data.destination.longitude").type(JsonFieldType.NUMBER).description("도착지 경도"),
+                                fieldWithPath("data.destination.latitude").type(JsonFieldType.NUMBER).description("도착지 위도"),
+                                fieldWithPath("data.destination.address").type(JsonFieldType.STRING).description("도착지 주소"),
+                                fieldWithPath("data.postStatus").type(JsonFieldType.STRING).description("야타 게시글 상태"),
+                                fieldWithPath("data.yataStatus").type(JsonFieldType.STRING).description("야타 상태"),
+                                fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일")
+                        )));
     }
 
 //    @Test

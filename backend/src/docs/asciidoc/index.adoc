@@ -153,9 +153,21 @@ DELETE /api/v1/yata/{yata_id}
 .http-request
 include::{snippets}/yata-delete/http-request.adoc[]
 
-
 http-response
 include::{snippets}/yata-delete/http-response.adoc[]
+
+=== 게시글 상세조회
+
+GET /api/v1/yata/{yata_id}
+
+.http-request
+include::{snippets}/yata-get/http-request.adoc[]
+
+http-response
+include::{snippets}/yata-get/http-response.adoc[]
+
+.response-fields
+include::{snippets}/yata-get/response-fields.adoc[]
 
 
 
