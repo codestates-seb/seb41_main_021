@@ -1,6 +1,7 @@
 package com.yata.backend.domain.yataRequest.factory;
 
 import com.yata.backend.common.utils.RandomUtils;
+import com.yata.backend.domain.Yata.factory.YataFactory;
 import com.yata.backend.domain.yata.dto.LocationDto;
 import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.dto.YataRequestDto;
@@ -19,6 +20,22 @@ import static com.yata.backend.common.utils.RandomUtils.getRandomLong;
 import static com.yata.backend.common.utils.RandomUtils.getRandomWord;
 
 public class YataRequestFactory {
+    // Request / Invitation 모두 이거 사용
+    public static YataRequest createYataRequest() throws org.locationtech.jts.io.ParseException {
+        Yata yata = YataFactory.createYata();
+
+        return YataRequest.builder()
+                .YataRequestId(getRandomLong())
+                .requestStatus(YataRequest.RequestStatus.APPLY)
+                .approvalStatus(YataRequest.ApprovalStatus.NOT_YET)
+                .title(getRandomWord())
+                .specifics(getRandomWord())
+                .yata(yata)
+                .strPoint(new Location(RandomUtils.getRandomLong() , GeometryUtils.getEmptyPoint() , getRandomWord() , null))
+                .destination(new Location(RandomUtils.getRandomLong() , GeometryUtils.getEmptyPoint() , getRandomWord() , null))
+                .build();
+    }
+
     public static YataRequestDto.RequestPost createYataRequestPostDto() {
         LocationDto.Post strPoint = new LocationDto.Post(2.5, 2.0, "강원도 원주시");
         LocationDto.Post destination = new LocationDto.Post(2.5, 2.0, "강원도 원주시");
@@ -29,22 +46,7 @@ public class YataRequestFactory {
                 .departureTime(new Date())
                 .timeOfArrival(new Date())
                 .maxPeople(3)
-                .maxWatingTime(10)
-                .strPoint(strPoint)
-                .destination(destination)
-                .build();
-    }
-    public static YataRequestDto.RequestPost createYataRequestPostDto2() {
-        LocationDto.Post strPoint = new LocationDto.Post(2.5, 2.0, "강원도 원주시");
-        LocationDto.Post destination = new LocationDto.Post(2.5, 2.0, "강원도 원주시");
-
-        return YataRequestDto.RequestPost.builder()
-                .title("태워주세욥")
-                .specifics("애완견을 동반하고싶어요")
-                .departureTime(new Date())
-                .timeOfArrival(new Date())
-                .maxPeople(3)
-                .maxWatingTime(10)
+                .maxWaitingTime(10)
                 .strPoint(strPoint)
                 .destination(destination)
                 .build();
@@ -52,6 +54,7 @@ public class YataRequestFactory {
 
     public static YataRequestDto.RequestResponse createYataRequestResponseDto(YataRequest yataRequest) {
         return YataRequestDto.RequestResponse.builder()
+                .yataId(yataRequest.getYata().getYataId())
                 .yataRequestId(yataRequest.getYataRequestId())
                 .yataRequestStatus(yataRequest.getRequestStatus())
                 .approvalStatus(yataRequest.getApprovalStatus())
@@ -60,7 +63,7 @@ public class YataRequestFactory {
                 .departureTime(yataRequest.getYata().getDepartureTime())
                 .timeOfArrival(yataRequest.getYata().getTimeOfArrival())
                 .maxPeople(yataRequest.getYata().getMaxPeople())
-                .maxWatingTime(yataRequest.getYata().getMaxWaitingTime())
+                .maxWaitingTime(yataRequest.getYata().getMaxWaitingTime())
                 .strPoint(new LocationDto.Response(
                         yataRequest.getStrPoint().getLocation().getX(),
                         yataRequest.getStrPoint().getLocation().getY(),
@@ -87,20 +90,19 @@ public class YataRequestFactory {
                 .build();
     }
 
-    // TODO 타입 다른 거 해결
-//    public static List<YataRequestDto.RequestPost> createYataRequestDtoList() throws ParseException, org.locationtech.jts.io.ParseException {
-//        List<YataRequestDto.RequestPost> yataRequestList = new ArrayList<>();
-//        for(int i=0; i<10; i++){
-//            yataRequestList.add(createYataRequestPostDto());
-//        }
-//        return yataRequestList;
-//    }
-//
-//    public static List<YataRequestDto.RequestResponse> createYataRquestResponseDtoList(List<YataRequestDto.RequestPost> yataRquestsList){
-//        List<YataDto.Response> yataResponseDtoList = new ArrayList<>();
-//        for(YataRequest yataRequest : yataRquestsList){
-//            yataResponseDtoList.add(createYataResponseDto(yata));
-//        }
-//        return yataResponseDtoList;
-//    }
+    public static List<YataRequest> createYataRequestList() throws ParseException, org.locationtech.jts.io.ParseException {
+        List<YataRequest> yataRequestList = new ArrayList<>();
+        for(int i=0; i<10; i++){
+            yataRequestList.add(createYataRequest());
+        }
+        return yataRequestList;
+    }
+
+    public static List<YataRequestDto.RequestResponse> createYataRquestResponseDtoList(List<YataRequest> yataRquestsList){
+        List<YataRequestDto.RequestResponse> yataRequestResponseDtoList = new ArrayList<>();
+        for(YataRequest yataRequest : yataRquestsList){
+            yataRequestResponseDtoList.add(createYataRequestResponseDto(yataRequest));
+        }
+        return yataRequestResponseDtoList;
+    }
 }

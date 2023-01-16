@@ -160,6 +160,59 @@ include::{snippets}/yata-delete/response-body.adoc[]
 http-response
 include::{snippets}/yata-delete/http-response.adoc[]
 
+== yataRequestController
+=== 게시물에 신청
+
+.http-request
+include::{snippets}/yataRequest-postRequest/http-request.adoc[]
+.request-fields
+include::{snippets}/yataRequest-postRequest/request-fields.adoc[]
+.request-body
+include::{snippets}/yataRequest-postRequest/request-body.adoc[]
+.http-response
+include::{snippets}/yataRequest-postRequest/http-response.adoc[]
+.response-fields
+include::{snippets}/yataRequest-postRequest/response-fields.adoc[]
+.response-body
+include::{snippets}/yataRequest-postRequest/response-body.adoc[]
+
+=== 게시물에 초대
+
+.http-request
+include::{snippets}/yataRequest-postInvitation/http-request.adoc[]
+.request-fields
+include::{snippets}/yataRequest-postInvitation/request-fields.adoc[]
+.request-body
+include::{snippets}/yataRequest-postInvitation/request-body.adoc[]
+.http-response
+include::{snippets}/yataRequest-postInvitation/http-response.adoc[]
+.response-fields
+include::{snippets}/yataRequest-postInvitation/response-fields.adoc[]
+.response-body
+include::{snippets}/yataRequest-postInvitation/response-body.adoc[]
+
+=== 신청/초대 목록 조회
+
+.http-request
+include::{snippets}/yataRequest-get/http-request.adoc[]
+.http-response
+include::{snippets}/yataRequest-get/http-response.adoc[]
+.response-fields
+include::{snippets}/yataRequest-get/response-fields.adoc[]
+.response-body
+include::{snippets}/yataRequest-get/response-body.adoc[]
+
+=== 신청/초대 삭제
+
+.http-request
+include::{snippets}/yataRequest-delete/http-request.adoc[]
+.path-parameters
+include::{snippets}/yataRequest-delete/path-parameters.adoc[]
+.http-response
+include::{snippets}/yataRequest-delete/http-response.adoc[]
+.response-body
+include::{snippets}/yataRequest-delete/response-body.adoc
+
 
 
 

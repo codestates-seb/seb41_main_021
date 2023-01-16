@@ -30,7 +30,7 @@ public interface YataRequestMapper {
         if (yataRequest.getYataRequestId() != null) {
             response.yataRequestId(yataRequest.getYataRequestId());
         }
-        response.yataRequestId(yataRequest.getYataRequestId());
+        response.yataId(yataRequest.getYata().getYataId());
         response.yataRequestStatus(yataRequest.getRequestStatus());
         response.approvalStatus(yataRequest.getApprovalStatus());
         response.title(yataRequest.getTitle());
@@ -38,7 +38,7 @@ public interface YataRequestMapper {
         response.departureTime(yataRequest.getYata().getDepartureTime());
         response.timeOfArrival(yataRequest.getYata().getTimeOfArrival());
         response.maxPeople(yataRequest.getYata().getMaxPeople());
-        response.maxWatingTime(yataRequest.getYata().getMaxWaitingTime());
+        response.maxWaitingTime(yataRequest.getYata().getMaxWaitingTime());
         response.strPoint(locationToResponse(yataRequest.getStrPoint()));
         response.destination(locationToResponse(yataRequest.getDestination()));
 
@@ -53,6 +53,7 @@ public interface YataRequestMapper {
         return yataRequests.stream()
                 .map(yataRequest -> {
                     return YataRequestDto.RequestResponse.builder()
+                            .yataId(yataRequest.getYata().getYataId())
                             .yataRequestId(yataRequest.getYataRequestId())
                             .yataRequestStatus(yataRequest.getRequestStatus())
                             .approvalStatus(yataRequest.getApprovalStatus())
@@ -60,22 +61,11 @@ public interface YataRequestMapper {
                             .specifics(yataRequest.getSpecifics())
                             .departureTime(yataRequest.getYata().getDepartureTime())
                             .timeOfArrival(yataRequest.getYata().getTimeOfArrival())
-                            .maxWatingTime(yataRequest.getYata().getMaxWaitingTime())
-                            .maxWatingTime(yataRequest.getYata().getMaxWaitingTime())
+                            .maxWaitingTime(yataRequest.getYata().getMaxWaitingTime())
                             .strPoint(locationToResponse(yataRequest.getStrPoint()))
                             .destination(locationToResponse(yataRequest.getDestination()))
                             .build();
                 }).collect(Collectors.toList());
-    }
-
-    default Slice<YataRequestDto.RequestResponse> yataRequestsToSliceYataRequestResponses(Slice<YataRequest> yataRequests) {
-        if (yataRequests == null) {
-            return null;
-        }
-
-        List<YataRequestDto.RequestResponse> responses = yataRequestsToYataRequestResponses(yataRequests.getContent());
-
-        return new SliceImpl<>(responses, yataRequests.getPageable(), yataRequests.hasNext());
     }
 
     YataRequest yataInvitationPostDtoToYataInvitation(YataRequestDto.InvitationPost requestBody);
