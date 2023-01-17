@@ -4,7 +4,6 @@ import DestinationItem from './DestinationItem';
 export default function DestinationList(props) {
   const { Places } = props;
 
-  console.log(Places);
   return (
     // address_name //place_name
     <>

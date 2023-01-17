@@ -2,11 +2,13 @@ package com.yata.backend.domain.member.factory;
 
 
 import com.yata.backend.auth.oauth2.dto.ProviderType;
+import com.yata.backend.domain.image.entity.ImageEntity;
 import com.yata.backend.domain.member.dto.MemberDto;
 import com.yata.backend.domain.member.entity.Member;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
+import java.util.UUID;
 
 
 public class MemberFactory {
@@ -34,7 +36,7 @@ public class MemberFactory {
                 .point(0L)
                 .fuelTank(30.0)
                 .providerType(ProviderType.NATIVE)
-                .imgUrl("https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/944/eabb97e854d5e5927a69d311701cc211_res.jpeg")
+                .imgUrl(new ImageEntity(UUID.randomUUID() , "bucket" , "https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/944/eabb97e854d5e5927a69d311701cc211_res.jpeg"))
                 .carImgUrl("https://img.hankyung.com/photo/202002/01.21817293.1.jpg").build();
     }
 
@@ -44,10 +46,9 @@ public class MemberFactory {
                 .name(member.getName())
                 .nickname(member.getNickname())
                 .memberStatus(member.getMemberStatus())
-                .imgUrl(member.getImgUrl())
+                .imgUrl(member.getImgUrl().getUrl())
                 .providerType(member.getProviderType())
                 .carImgUrl(member.getCarImgUrl())
-                .imgUrl(member.getImgUrl())
                 .roles(member.getRoles())
                 .genders(member.getGenders())
                 .build();

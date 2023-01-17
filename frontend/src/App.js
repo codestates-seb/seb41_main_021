@@ -26,6 +26,8 @@ import RegisterList from './pages/RegisterList';
 import RegisterCheckList from './pages/RegisterCheckList';
 import DestinationList from './components/Tayo/DestinationList';
 import DestinationDetail from './components/Tayo/DestinationDetail';
+import ExchagePage from './pages/ExchangePage';
+import PointHistory from './pages/PointHistory';
 
 function App() {
   return (
@@ -56,6 +58,8 @@ function App() {
             <Route path="/register-checklist" element={<RegisterCheckList />}></Route>
             <Route path="/destination-list" element={<DestinationList />}></Route>
             <Route path="/destination-detail" element={<DestinationDetail />}></Route>
+            <Route path="/exchange-page" element={<ExchagePage />}></Route>
+            <Route path="/point-history" element={<PointHistory />}></Route>
           </Routes>
         </Screen>
       </ThemeProvider>

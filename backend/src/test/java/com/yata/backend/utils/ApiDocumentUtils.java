@@ -1,4 +1,4 @@
-package com.yata.backend.util;
+package com.yata.backend.utils;
 
 import org.springframework.restdocs.operation.preprocess.OperationRequestPreprocessor;
 import org.springframework.restdocs.operation.preprocess.OperationResponsePreprocessor;
