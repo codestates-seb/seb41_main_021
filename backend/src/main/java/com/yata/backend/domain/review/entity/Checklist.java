@@ -2,13 +2,17 @@ package com.yata.backend.domain.review.entity;
 
 import com.yata.backend.domain.review.entity.ReviewChecklist;
 import com.yata.backend.domain.yata.entity.YataChecklist;
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Checklist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,5 +27,11 @@ public class Checklist {
 
     @OneToMany(mappedBy = "checklist", cascade = CascadeType.ALL)
     private List<ReviewChecklist> reviewChecklists = new ArrayList<>();
+
+    public Checklist(Long checklistId,String checkContent,boolean checkpn){
+        this.checklistId =checklistId;
+        this.checkContent = checkContent;
+        this.checkpn = checkpn;
+    }
 
 }

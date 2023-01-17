@@ -34,8 +34,9 @@ public class ReviewDto {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    @Builder
     public static class Response{
+        private long reviewId;
+
 
     }
 
