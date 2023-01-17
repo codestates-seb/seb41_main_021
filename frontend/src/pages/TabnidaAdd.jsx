@@ -30,9 +30,6 @@ export default function TabnidaAdd() {
       setIsDeparture(false);
       setIsDestination(false);
     }
-    if (departure !== '' || destination !== '') {
-      setIsFilled(true);
-    }
 
     if (departure === '' && destination === '') {
       setIsFilled(false);
@@ -44,7 +41,7 @@ export default function TabnidaAdd() {
       <Container>
         <Header title="탑니다 등록하기" />
         <div className="map-container">
-          <KakaoMap searchPlace={departure || destination} setPlaces={setPlaces} />
+          <KakaoMap searchPlace={departure || destination} setPlaces={setPlaces} setDeparture={setDeparture} />
         </div>
         <DestinationForm isFilled={isFilled}>
           <Input
