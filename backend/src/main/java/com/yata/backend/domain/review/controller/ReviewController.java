@@ -41,8 +41,5 @@ public class ReviewController {
 
 
 
-    //리뷰삭제
-
-
     //내가 쓴 리뷰조회는 다른곳에서 해야할 듯
 }

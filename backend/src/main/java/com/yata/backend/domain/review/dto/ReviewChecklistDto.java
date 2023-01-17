@@ -22,4 +22,21 @@ public class ReviewChecklistDto {
         @NotNull
         private boolean checking;
     }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class Response{
+
+        //리뷰 체크 아이디(필요할까?) / 체크 여부
+        private Long reviewCheckId;
+        private boolean checking;
+
+        //체크리스트 항목에 관한 내용
+        private Long ChecklistID;
+        private boolean checkpn;
+
+    }
 }

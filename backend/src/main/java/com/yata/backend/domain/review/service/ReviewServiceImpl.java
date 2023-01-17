@@ -5,6 +5,7 @@ import com.yata.backend.domain.member.service.MemberService;
 import com.yata.backend.domain.review.entity.Checklist;
 import com.yata.backend.domain.review.entity.Review;
 import com.yata.backend.domain.review.entity.ReviewChecklist;
+import com.yata.backend.domain.review.repository.JpaReviewRepository;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.service.YataService;
 import com.yata.backend.global.exception.CustomLogicException;
@@ -18,21 +19,25 @@ import java.util.stream.Collectors;
 @Transactional
 public class ReviewServiceImpl implements ReviewService{
 
-    private YataService yataService;
+    private final JpaReviewRepository jpaReviewRepository;
+    private final YataService yataService;
 
-    private MemberService memberService;
+    private final MemberService memberService;
 
-    public ReviewServiceImpl(YataService yataService,MemberService memberService){
+    public ReviewServiceImpl(YataService yataService,MemberService memberService,JpaReviewRepository jpaReviewRepository){
+
         this.yataService = yataService;
         this.memberService = memberService;
+        this.jpaReviewRepository = jpaReviewRepository;
     }
     public Review createReview(Review review, String username, long yataId){
+
         //야타 게시글이 마감 상태인지 확인
         Yata yata = yataService.verifyYata(yataId);
         if(yata.getPostStatus().getStatusNumber() != 5) throw new CustomLogicException(ExceptionCode.POST_STATUS_IS_NOT_SUITABLE);
 
         //todo yataRequest apply 리뷰 작성자가 야타 리퀘스트에서 승인된 사람인지 확인
-        //일단은 멤버가 있는지만 확인
+        //일단은 멤버가 있는지만 확인하자!
         Member member = memberService.findMember(username);
         //->맞다면 멤버값 넣어줌 (여기서 멤버값은 작성자)
         yata.setMember(member);

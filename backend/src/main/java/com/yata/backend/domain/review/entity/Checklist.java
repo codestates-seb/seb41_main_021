@@ -25,13 +25,8 @@ public class Checklist {
     @Column(nullable = false)
     private boolean checkpn;
 
-    @OneToMany(mappedBy = "checklist", cascade = CascadeType.ALL)
-    private List<ReviewChecklist> reviewChecklists = new ArrayList<>();
+//    @OneToMany(mappedBy = "checklist", cascade = CascadeType.ALL)
+//    private List<ReviewChecklist> reviewChecklists = new ArrayList<>();
 
-    public Checklist(Long checklistId,String checkContent,boolean checkpn){
-        this.checklistId =checklistId;
-        this.checkContent = checkContent;
-        this.checkpn = checkpn;
-    }
 
 }

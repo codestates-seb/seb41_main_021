@@ -34,8 +34,19 @@ public class ReviewDto {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
+    @Builder
     public static class Response{
+
         private long reviewId;
+
+        //리뷰 관련 게시글 아이디
+        private long yataId;
+
+        //작성자 이메일
+        private String writerEmail;
+
+        //들어간 내용
+        private List<ReviewChecklistDto.Response> responses;
 
 
     }
