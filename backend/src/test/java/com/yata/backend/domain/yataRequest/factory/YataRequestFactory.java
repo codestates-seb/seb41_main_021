@@ -75,12 +75,6 @@ public class YataRequestFactory {
                 .build();
     }
 
-    public static YataRequestDto.InvitationPost createYataInvitationPostDto() {
-        return YataRequestDto.InvitationPost.builder()
-                .yataId(1L)
-                .build();
-    }
-
     public static YataRequestDto.InvitationResponse createYataInvitationResponseDto(YataRequest yataRequest) {
         return YataRequestDto.InvitationResponse.builder()
                 .yataRequestId(yataRequest.getYataRequestId())

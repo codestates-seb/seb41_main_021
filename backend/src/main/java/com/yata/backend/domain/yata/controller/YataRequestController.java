@@ -50,9 +50,9 @@ public class YataRequestController {
     // Yata 초대 - 201
     @PostMapping("/invite/{yataId}")
     public ResponseEntity postInvitation(@PathVariable("yataId") @Positive long yataId,
-                                      @Valid @RequestBody YataRequestDto.InvitationPost requestBody,
                                       @AuthenticationPrincipal User authMember) throws Exception {
-        YataRequest yataRequest = yataRequestService.createInvitation(mapper.yataInvitationPostDtoToYataInvitation(requestBody), authMember.getUsername(), yataId);
+        YataRequest yataRequest = yataRequestService.createInvitation(authMember.getUsername(), yataId);
+
         return new ResponseEntity<>(
                 new SingleResponse<>(mapper.yataInvitationToYataInvitationResponse(yataRequest)), HttpStatus.CREATED);
     }

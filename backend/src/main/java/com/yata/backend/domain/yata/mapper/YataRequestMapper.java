@@ -68,8 +68,6 @@ public interface YataRequestMapper {
                 }).collect(Collectors.toList());
     }
 
-    YataRequest yataInvitationPostDtoToYataInvitation(YataRequestDto.InvitationPost requestBody);
-
     default YataRequestDto.InvitationResponse yataInvitationToYataInvitationResponse(YataRequest yataRequest) {
         if (yataRequest == null) {
             return null;

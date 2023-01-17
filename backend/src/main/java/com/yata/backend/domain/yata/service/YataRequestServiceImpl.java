@@ -57,24 +57,42 @@ public class YataRequestServiceImpl implements YataRequestService {
     }
 
     // Yata 초대
+//    @Override
+//    public YataRequest createInvitation(YataRequest yataRequest, String userName, Long yataId) {
+//        Member member = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
+//        verifyInvitation(userName, yataId); // 초대를 이미 했었는지 확인하고
+//        Yata yata = yataService.verifyYata(yataId);
+//
+//        YataStatus yataStatus = yata.getYataStatus();
+//        if (yataStatus == YataStatus.YATA_NATA) {
+//            yataRequest.setRequestStatus(INVITE);
+//        } else {
+//            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
+//        }
+//
+//        yataRequest.setYata(yata);
+//        yataRequest.setMember(member);
+//        yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.NOT_YET);
+//
+//        return jpaYataRequestRepository.save(yataRequest);
+//    }
     @Override
-    public YataRequest createInvitation(YataRequest yataRequest, String userName, Long yataId) {
+    public YataRequest createInvitation(String userName, Long yataId) {
         Member member = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
         verifyInvitation(userName, yataId); // 초대를 이미 했었는지 확인하고
         Yata yata = yataService.verifyYata(yataId);
 
         YataStatus yataStatus = yata.getYataStatus();
         if (yataStatus == YataStatus.YATA_NATA) {
-            yataRequest.setRequestStatus(INVITE);
+            YataRequest yataRequest = new YataRequest();
+            yataRequest.setRequestStatus(YataRequest.RequestStatus.INVITE);
+            yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.NOT_YET);
+            yataRequest.setYata(yata);
+            yataRequest.setMember(member);
+            return jpaYataRequestRepository.save(yataRequest);
         } else {
             throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
         }
-
-        yataRequest.setYata(yata);
-        yataRequest.setMember(member);
-        yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.NOT_YET);
-
-        return jpaYataRequestRepository.save(yataRequest);
     }
 
     // Yata 신청 목록 조회

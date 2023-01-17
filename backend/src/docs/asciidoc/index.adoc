@@ -201,10 +201,6 @@ include::{snippets}/yata-getAll/response-fields.adoc[]
 
 .http-request
 include::{snippets}/yataRequest-postRequest/http-request.adoc[]
-.request-fields
-include::{snippets}/yataRequest-postRequest/request-fields.adoc[]
-.request-body
-include::{snippets}/yataRequest-postRequest/request-body.adoc[]
 .http-response
 include::{snippets}/yataRequest-postRequest/http-response.adoc[]
 .response-fields
@@ -218,8 +214,6 @@ include::{snippets}/yataRequest-postRequest/response-body.adoc[]
 include::{snippets}/yataRequest-postInvitation/http-request.adoc[]
 .request-fields
 include::{snippets}/yataRequest-postInvitation/request-fields.adoc[]
-.request-body
-include::{snippets}/yataRequest-postInvitation/request-body.adoc[]
 .http-response
 include::{snippets}/yataRequest-postInvitation/http-response.adoc[]
 .response-fields
