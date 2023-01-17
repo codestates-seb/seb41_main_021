@@ -5,14 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 export default function HomePage() {
-  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const login = () => {
-    setOpen(!open);
     navigate('/login');
   };
   const signup = () => {
-    setOpen(!open);
     navigate('/signup');
   };
   return (
@@ -22,10 +19,18 @@ export default function HomePage() {
           <SimpleSlider />
         </LandingContainer>
         <ButtonContainer>
-          <button className="login-btn" onClick={login} open={open}>
+          <button
+            className="login-btn"
+            onClick={() => {
+              navigate('/login');
+            }}>
             로그인
           </button>
-          <button className="signup-btn" onClick={signup} open={open}>
+          <button
+            className="signup-btn"
+            onClick={() => {
+              navigate('/signup');
+            }}>
             가입하기
           </button>
         </ButtonContainer>
