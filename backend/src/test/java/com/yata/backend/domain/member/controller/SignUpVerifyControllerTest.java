@@ -14,8 +14,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static com.yata.backend.util.ApiDocumentUtils.getRequestPreProcessor;
-import static com.yata.backend.util.ApiDocumentUtils.getResponsePreProcessor;
+import static com.yata.backend.utils.ApiDocumentUtils.getRequestPreProcessor;
+import static com.yata.backend.utils.ApiDocumentUtils.getResponsePreProcessor;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
