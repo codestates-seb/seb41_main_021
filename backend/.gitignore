@@ -41,3 +41,4 @@ out/
 /src/main/resources/application-payment.yml
 application-payment.yml
 keystore.p12
+/src/main/resources/static/images/

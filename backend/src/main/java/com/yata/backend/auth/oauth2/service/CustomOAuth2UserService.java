@@ -6,6 +6,7 @@ import com.yata.backend.auth.oauth2.dto.ProviderType;
 import com.yata.backend.auth.oauth2.exception.OAuthProviderMissMatchException;
 import com.yata.backend.auth.oauth2.info.OAuth2UserInfo;
 import com.yata.backend.auth.oauth2.info.OAuth2UserInfoFactory;
+import com.yata.backend.domain.image.entity.ImageEntity;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.repository.JpaMemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -69,7 +71,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .providerType(providerType)
                 .memberStatus(Member.MemberStatus.MEMBER_ACTIVE)
                 .genders(Member.Gender.NOT_CHECKED)
-                .imgUrl(userInfo.getImageUrl())
+                .imgUrl(new ImageEntity(UUID.randomUUID() , "OAUTH2" , userInfo.getImageUrl()))
                 .name(userInfo.getName())
                 .nickname(userInfo.getName())
                 .fuelTank(30.0)
@@ -84,8 +86,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             member.setName(userInfo.getName());
         }
 
-        if (userInfo.getImageUrl() != null && !member.getImgUrl().equals(userInfo.getImageUrl())) {
-            member.setImgUrl(userInfo.getImageUrl());
-        }
+      /*  if (userInfo.getImageUrl() != null && !member.getImgUrl().equals(userInfo.getImageUrl())) {
+            member.setImgUrl(new ImageEntity(UUID.randomUUID() , "OAUTH2" , userInfo.getImageUrl()));
+        }*/
     }
 }
