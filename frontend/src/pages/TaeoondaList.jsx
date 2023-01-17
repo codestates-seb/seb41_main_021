@@ -20,7 +20,13 @@ export default function TaeoondaList() {
       <Container>
         <Header title="태웁니다" />
         <DestinationInput />
-        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
+        <ListItem
+          date={'1월 4일 (수) 7:00PM'}
+          journeyStart={'부산'}
+          journeyEnd={'서울'}
+          transit="1"
+          price="10000"
+          people="1/4"></ListItem>
         <CircleButton onClick={add} open={open}>
           <MdAdd />
         </CircleButton>

@@ -1,23 +1,36 @@
 import styled from 'styled-components';
 import { IoIosArrowForward, IoIosArrowRoundForward } from 'react-icons/io';
+import { BsCalendar4, BsPeople } from 'react-icons/bs';
+import { BiWon, BiCommentDetail } from 'react-icons/bi';
 
 const ListItem = props => {
   // api 응답 어떻게 올지 몰라서 대충 넣어놓음
-  const { date, journeyStart, journeyEnd, transit, onClick } = props;
+  const { date, journeyStart, journeyEnd, transit, price, people, onClick } = props;
   return (
     <>
       <Container onClick={onClick}>
         <TextContainer>
-          <DateContainer>{date}</DateContainer>
+          <DateContainer>
+            <BsCalendar4 />
+            {date}
+          </DateContainer>
           <JourneyContainer>
             <JourneyText>
               {journeyStart}
               <IoIosArrowRoundForward />
               {journeyEnd}
+              <TransitContainer>경유 {transit}회</TransitContainer>
             </JourneyText>
             <IoIosArrowForward />
           </JourneyContainer>
-          <TransitContainer>경유 {transit}회</TransitContainer>
+          <BottomContainer>
+            <PriceContainer>
+              <BiWon /> {price}원
+            </PriceContainer>
+            <PeopleContainer>
+              <BsPeople /> {people}명
+            </PeopleContainer>
+          </BottomContainer>
         </TextContainer>
       </Container>
     </>
@@ -40,6 +53,9 @@ const TextContainer = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
+  svg {
+    margin-right: 0.5rem;
+  }
 `;
 
 const DateContainer = styled.div`
@@ -47,14 +63,14 @@ const DateContainer = styled.div`
   align-items: center;
   color: ${props => props.theme.colors.gray};
   font-weight: bold;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.8rem;
 `;
 
 const JourneyContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-bottom: 0.7rem;
 
   svg {
     color: ${props => props.theme.colors.gray};
@@ -77,6 +93,26 @@ const JourneyText = styled.span`
 const TransitContainer = styled.div`
   display: flex;
   align-items: center;
+  margin-left: 1rem;
+`;
+const BottomContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+const PriceContainer = styled.div`
+  margin-right: 2rem;
+  color: ${props => props.theme.colors.dark_gray};
+  svg {
+    position: relative;
+    top: 0.1rem;
+  }
+`;
+const PeopleContainer = styled.div`
+  color: ${props => props.theme.colors.dark_gray};
+  svg {
+    position: relative;
+    top: 0.1rem;
+  }
 `;
 
 export default ListItem;
