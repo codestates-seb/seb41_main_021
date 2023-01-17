@@ -17,6 +17,7 @@ public class Checklist {
     @Column(nullable = false)
     private String checkContent;
 
+//부정/긍정내용 체크(부정이 많으면 연료통 -0.1 긍정이 많으면 +0.1)
     @Column(nullable = false)
     private boolean checkpn;
 

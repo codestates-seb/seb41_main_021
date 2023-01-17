@@ -30,4 +30,13 @@ public class ReviewDto {
 
     }
 
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class Response{
+
+    }
+
 }
