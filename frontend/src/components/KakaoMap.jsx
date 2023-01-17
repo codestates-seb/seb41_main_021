@@ -2,9 +2,27 @@ import React, { useEffect, useState } from 'react';
 import { MapMarker, Map } from 'react-kakao-maps-sdk';
 
 const { kakao } = window;
+// *** 전역 상태 관리 되면 해야 할 것 ***
+// - 카카오 맵 -
+// 탑니다인지 태웁니다인지 구분
+// 출발지인지 도착지인지 구분
+// 출발지를 어떻게 정하는지에 대한 구분 ( 드래그, 직접 입력 후 선택)
+// onCenterChanged에 setIsDeparture넣기
+
+// - 디테일 페이지 -
+// addressName, placeName, x, y 상태 얻어오기, 적용
+// 등록하기 버튼 클릭 시 setIsDeparture, setIsDestination 구분
+// setIsDeparture, setIsDestination 상태 변경
 
 const KakaoMap = props => {
-  const { searchPlace, setPlaces } = props;
+  const startImage = {
+    src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.png',
+    size: [50, 45],
+    options: {
+      offset: [15, 43],
+    },
+  };
+  const { searchPlace, setPlaces, setDeparture } = props;
 
   const [info, setInfo] = useState();
   const [markers, setMarkers] = useState([]);
@@ -17,6 +35,7 @@ const KakaoMap = props => {
     },
     errMsg: null,
     isLoading: true,
+    isPanto: true,
   });
 
   useEffect(() => {
@@ -82,11 +101,38 @@ const KakaoMap = props => {
     }
   }, [searchPlace]);
 
+  function getAddr(lat, lng) {
+    // 주소-좌표 변환 객체를 생성합니다
+    let geocoder = new kakao.maps.services.Geocoder();
+
+    let coord = new kakao.maps.LatLng(lat, lng);
+    let callback = function (result, status) {
+      if (status === kakao.maps.services.Status.OK) {
+        console.log(result[0].address.address_name);
+        setDeparture(result[0].address.address_name);
+      }
+    };
+    geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+  }
   return (
-    <Map center={state.center} style={{ width: '100%', height: '100%' }} level={5} onCreate={setMap}>
-      <MapMarker position={state.center}>
-        <div style={{ padding: '5px', color: '#000' }}>{state.errMsg ? state.errMsg : '현재 위치'}</div>
-      </MapMarker>
+    <Map
+      center={state.center}
+      style={{ width: '100%', height: '100%' }}
+      level={5}
+      isPanto={state.isPanto}
+      onCenterChanged={map => {
+        setState(
+          {
+            level: map.getLevel(),
+            center: {
+              lat: map.getCenter().getLat(),
+              lng: map.getCenter().getLng(),
+            },
+          },
+          getAddr(state.center.lat, state.center.lng),
+        );
+      }}>
+      <MapMarker position={state.center} image={startImage}></MapMarker>
     </Map>
   );
 };
