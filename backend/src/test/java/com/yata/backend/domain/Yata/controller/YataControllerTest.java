@@ -28,8 +28,8 @@ import java.util.Date;
 import java.util.List;
 
 import static com.yata.backend.domain.Yata.factory.YataFactory.*;
-import static com.yata.backend.util.ApiDocumentUtils.getRequestPreProcessor;
-import static com.yata.backend.util.ApiDocumentUtils.getResponsePreProcessor;
+import static com.yata.backend.utils.ApiDocumentUtils.getRequestPreProcessor;
+import static com.yata.backend.utils.ApiDocumentUtils.getResponsePreProcessor;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 

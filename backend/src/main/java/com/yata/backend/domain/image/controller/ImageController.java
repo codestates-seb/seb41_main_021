@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/images")
@@ -23,7 +22,7 @@ public class ImageController {
     }
 
     @PostMapping("/profile")
-    public ResponseEntity image(MultipartFile file, @AuthenticationPrincipal User principal) throws IOException {
+    public ResponseEntity profileImage(MultipartFile file, @AuthenticationPrincipal User principal) throws IOException {
         //imageUploader.uploadImage(file , principal.getUsername());
         return new ResponseEntity(new SingleResponse<>(imageUploader.uploadImage(file, principal.getUsername())), null, 200);
     }

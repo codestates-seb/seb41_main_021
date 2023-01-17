@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Objects;
+
 @Transactional
 public class ImageUploadService implements ImageUploader {
 
@@ -25,16 +26,18 @@ public class ImageUploadService implements ImageUploader {
 
     @Override
     public String uploadImage(MultipartFile file, String email) throws IOException {
-
-            String[] info  = uploadImage(file);
-            ImageEntity imageEntity = ImageEntity.builder()
-                    .bucket(info[1])
-                    .url(info[0])
-                    .build();
-            Member member = memberService.findMember(email);
-            member.setImgUrl(imageEntity);
-            jpaImageRepository.save(imageEntity);
-            return imageEntity.getUrl();
+        String[] info = uploadImage(file);
+        ImageEntity imageEntity = ImageEntity.builder()
+                .bucket(info[1])
+                .url(info[0])
+                .build();
+        Member member = memberService.findMember(email);
+        if (member.getImgUrl() != null) {
+            jpaImageRepository.delete(member.getImgUrl());
+        }
+        member.setImgUrl(imageEntity);
+        jpaImageRepository.save(imageEntity);
+        return imageEntity.getUrl();
 
     }
 
