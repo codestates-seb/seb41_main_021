@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import KakaoMap from '../components/KakaoMap';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button';
 import DestinationList from '../components/Tayo/DestinationList';
 import Header from '../components/Header';
-import { AiOutlinePlusCircle } from 'react-icons/ai';
+import { BsPlusLg } from 'react-icons/bs';
+import { TiDeleteOutline } from 'react-icons/ti';
 
 export default function TabnidaAdd() {
   const [isFilled, setIsFilled] = useState(false);
@@ -14,6 +15,32 @@ export default function TabnidaAdd() {
   const [isDeparture, setIsDeparture] = useState(false);
   const [isDestination, setIsDestination] = useState(false);
   const [Places, setPlaces] = useState([]);
+
+  const [inputFields, setInputFields] = useState([
+    {
+      fullName: '',
+    },
+  ]);
+
+  const addInputField = () => {
+    setInputFields([
+      ...inputFields,
+      {
+        fullName: '',
+      },
+    ]);
+  };
+  const removeInputFields = index => {
+    const rows = [...inputFields];
+    rows.splice(index, 1);
+    setInputFields(rows);
+  };
+  const handleChange = (index, evnt) => {
+    const { name, value } = evnt.target;
+    const list = [...inputFields];
+    list[index][name] = value;
+    setInputFields(list);
+  };
 
   useEffect(() => {
     if (departure === '') {
@@ -51,6 +78,27 @@ export default function TabnidaAdd() {
             setState={setDeparture}
             onFocus={() => setIsFilled(true)}
           />
+
+          {inputFields.map((data, index) => {
+            return (
+              <TransitField key={index}>
+                <TransitInput onChange={event => handleChange(index, event)} label="경유지" placeholder="경유지 입력" />
+                {inputFields.length !== 1 ? (
+                  <DeleteButton onClick={removeInputFields}>
+                    <TiDeleteOutline />
+                  </DeleteButton>
+                ) : (
+                  ''
+                )}
+              </TransitField>
+            );
+          })}
+
+          <TransitContainer onClick={addInputField}>
+            <BsPlusLg />
+            <p>경유지 추가</p>
+          </TransitContainer>
+
           <div className="destinationInput">
             <Input
               label="도착지"
@@ -59,7 +107,6 @@ export default function TabnidaAdd() {
               setState={setDestination}
               onFocus={() => setIsFilled(true)}
             />
-            <AiOutlinePlusCircle className="plus-icon" />
           </div>
           {isFilled &&
             (isDeparture && isDestination ? (
@@ -101,7 +148,6 @@ const DestinationForm = styled.div`
   height: auto;
   box-shadow: 0px -10px 10px -10px lightgrey;
   background-color: white;
-  border-radius: 10% 10% 0 0;
   overflow: scroll;
   ${props =>
     props.isFilled &&
@@ -114,19 +160,8 @@ const DestinationForm = styled.div`
   @media only screen and (min-width: 470px) {
     width: 470px;
   }
-  /* 
-  @media screen and (min-height: 470px) {
-    height: 100%;
-  } */
-
-  .destinationInput {
-    position: relative;
-  }
 
   .destinationInput svg {
-    position: absolute;
-    top: 3rem;
-    right: 1rem;
     font-size: 1.7rem;
     padding: 0.2rem;
     color: #6f6f6f;
@@ -136,11 +171,30 @@ const DestinationForm = styled.div`
       right: 1rem;
     }
   }
+`;
 
-  .plus-icon {
+const TransitContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 1rem;
+
+  svg {
+    padding: 0.2rem;
+  }
+
+  p {
     cursor: pointer;
+    font-size: 1rem;
   }
 `;
+
+const TransitField = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const TransitInput = styled(Input)``;
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -149,5 +203,20 @@ const ButtonContainer = styled.div`
 
   button {
     margin: 10px 0;
+  }
+`;
+
+const DeleteButton = styled.button`
+  margin: 1.5rem 0 0 0.5rem;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+
+  :hover {
+    background-color: none;
+  }
+
+  :active {
+    background-color: none;
   }
 `;
