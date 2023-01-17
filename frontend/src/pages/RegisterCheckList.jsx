@@ -11,7 +11,10 @@ export default function RegisterCheckList() {
       <Content>
         <Header title="RegisterCheckList" />
         <RegisterListView />
-        <Button>수락하기</Button>
+        <ButtonContainer>
+          <RejectButton>거절하기</RejectButton>
+          <Button>수락하기</Button>
+        </ButtonContainer>
       </Content>
     </>
   );
@@ -28,3 +31,16 @@ const Content = styled.div`
     margin-top: 2rem;
   }
 `;
+
+const RejectButton = styled(Button)`
+  margin-right: 1rem;
+  background: ${props => props.theme.colors.gray};
+  &:hover {
+    background: ${props => props.theme.colors.light_gray};
+  }
+  &:active {
+    background: ${props => props.theme.colors.dark_gray};
+  }
+`;
+
+const ButtonContainer = styled.div``;

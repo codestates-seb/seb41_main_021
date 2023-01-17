@@ -1,3 +1,6 @@
+ifndef::snippets[]
+:snippets: ../backend/build/generated-snippets
+endif::[]
 = YATA! 애플리케이션
 :sectnums:
 :toc: left
@@ -30,6 +33,15 @@ include::{snippets}/auth-login/response-body.adoc[]
 .response-headers
 include::{snippets}/auth-login/response-headers.adoc[]
 
+### 로그아웃
+POST /api/v1/auth/logout
+
+.http-request
+include::{snippets}/auth-logout/http-request.adoc[]
+.request-headers
+include::{snippets}/auth-logout/request-headers.adoc[]
+***
+
 === Token Refresh
 POST /api/v1/auth/refresh
 
@@ -38,6 +50,37 @@ include::{snippets}/auth-refresh/http-request.adoc[]
 
 .response-headers
 include::{snippets}/auth-refresh/response-headers.adoc[]
+
+=== 이메일 인증 요청
+
+POST /api/v1/validation/email/{email}
+.http-request
+include::{snippets}/send-auth-mail/http-request.adoc[]
+
+=== 이메일 인증 코드 확인
+
+POST /api/v1/validation/auth-code
+.http-request
+include::{snippets}/verify-auth-code/http-request.adoc[]
+.request-body
+include::{snippets}/verify-auth-code/request-body.adoc[]
+.request-fields
+include::{snippets}/verify-auth-code/request-fields.adoc[]
+.response-body
+include::{snippets}/verify-auth-code/response-body.adoc[]
+
+
+=== 이메일 중복 확인
+
+GET /api/v1/validation/email/{email}
+.http-request
+include::{snippets}/verify-email/http-request.adoc[]
+.response-body
+include::{snippets}/verify-email/response-body.adoc[]
+
+
+
+
 
 == MemberController
 === 회원 가입
@@ -63,6 +106,22 @@ include::{snippets}/member-get/request-headers.adoc[]
 include::{snippets}/member-get/response-body.adoc[]
 .response-fields
 include::{snippets}/member-get/response-fields.adoc[]
+
+=== 내 정보 수정 - 프로필 이미지 업로드
+.http-request
+include::{snippets}/image-profile/http-request.adoc[]
+.request-headers
+include::{snippets}/image-profile/request-headers.adoc[]
+.request-parameters
+include::{snippets}/image-profile/request-parameters.adoc[]
+.http-response
+include::{snippets}/image-profile/http-response.adoc[]
+.response-body
+include::{snippets}/image-profile/response-body.adoc[]
+.response-fields
+include::{snippets}/image-profile/response-fields.adoc[]
+
+
 
 == PaymentController
 토스 결제 API를 사용하여 결제를 진행합니다.
@@ -109,6 +168,7 @@ include::{snippets}/payment-toss-cancel-point/request-parameters.adoc[]
 데이터 반환이 되기는 하는데 너무 길어서 제외 했습니다. 필요 없긴 해보여서!
 include::{snippets}/payment-toss-cancel-point/http-response.adoc[]
 
+
 == YataController
 
 
@@ -126,6 +186,10 @@ include::{snippets}/yata-create/request-fields.adoc[]
 include::{snippets}/yata-create/response-body.adoc[]
 http-response
 include::{snippets}/yata-create/http-response.adoc[]
+.response-body
+include::{snippets}/yata-create/response-body.adoc[]
+.response-fields
+include::{snippets}/yata-create/response-fields.adoc[]
 
 
 === 게시글 수정
@@ -134,14 +198,14 @@ PATCH /api/v1/yata/{yata_id}
 
 .http-request
 include::{snippets}/yata-update/http-request.adoc[]
-.request-body
-include::{snippets}/yata-update/request-body.adoc[]
+.path-parameters
+include::{snippets}/yata-get/path-parameters.adoc[]
 .request-fields
 include::{snippets}/yata-update/request-fields.adoc[]
-.response-body
-include::{snippets}/yata-update/response-body.adoc[]
-http-response
+.http-response
 include::{snippets}/yata-update/http-response.adoc[]
+.response-fields
+include::{snippets}/yata-create/response-fields.adoc[]
 
 
 === 게시글 삭제
@@ -150,12 +214,111 @@ DELETE /api/v1/yata/{yata_id}
 
 .http-request
 include::{snippets}/yata-delete/http-request.adoc[]
-
+.path-parameters
+include::{snippets}/yata-get/path-parameters.adoc[]
 .response-body
 include::{snippets}/yata-delete/response-body.adoc[]
-
 http-response
 include::{snippets}/yata-delete/http-response.adoc[]
+
+=== 게시글 상세조회
+
+GET /api/v1/yata/{yata_id}
+
+.http-request
+include::{snippets}/yata-get/http-request.adoc[]
+.path-parameters
+include::{snippets}/yata-get/path-parameters.adoc[]
+http-response
+include::{snippets}/yata-get/http-response.adoc[]
+.response-fields
+include::{snippets}/yata-get/response-fields.adoc[]
+
+
+=== 게시글 전체조회
+
+GET /api/v1/yata?yataStatus=nata/neota
+
+.http-request
+include::{snippets}/yata-getAll/http-request.adoc[]
+http-response
+include::{snippets}/yata-getAll/http-response.adoc[]
+.response-body
+include::{snippets}/yata-getAll/response-body.adoc
+.response-fields
+include::{snippets}/yata-getAll/response-fields.adoc[]
+
+=== YATA 위치 검색
+==== 페이징 처리 예정 (현재는 해당 검색 사항 전체 반환)
+
+
+GET /api/v1/yata/search/location?startLon=126.972533&startLat=37.55315&startAddress=서울시 노원구 77&endLon=126.929573&endLat=37.484216&endAddress=도착지주소&distance=1000
+
+.http-request
+include::{snippets}/yata/get-location/http-request.adoc[]
+.request-params
+include::{snippets}/yata/get-location/request-parameters.adoc[]
+.http-response
+include::{snippets}/yata/get-location/http-response.adoc[]
+.response-body
+include::{snippets}/yata/get-location/response-body.adoc[]
+.response-fields
+include::{snippets}/yata/get-location/response-fields.adoc[]
+
+
+
+== yataRequestController
+=== 게시물에 신청
+
+.http-request
+include::{snippets}/yataRequest-postRequest/http-request.adoc[]
+.request-fields
+include::{snippets}/yataRequest-postRequest/request-fields.adoc[]
+.request-body
+include::{snippets}/yataRequest-postRequest/request-body.adoc[]
+.http-response
+include::{snippets}/yataRequest-postRequest/http-response.adoc[]
+.response-fields
+include::{snippets}/yataRequest-postRequest/response-fields.adoc[]
+.response-body
+include::{snippets}/yataRequest-postRequest/response-body.adoc[]
+
+=== 게시물에 초대
+
+.http-request
+include::{snippets}/yataRequest-postInvitation/http-request.adoc[]
+.request-fields
+include::{snippets}/yataRequest-postInvitation/request-fields.adoc[]
+.request-body
+include::{snippets}/yataRequest-postInvitation/request-body.adoc[]
+.http-response
+include::{snippets}/yataRequest-postInvitation/http-response.adoc[]
+.response-fields
+include::{snippets}/yataRequest-postInvitation/response-fields.adoc[]
+.response-body
+include::{snippets}/yataRequest-postInvitation/response-body.adoc[]
+
+=== 신청/초대 목록 조회
+
+.http-request
+include::{snippets}/yataRequest-get/http-request.adoc[]
+.http-response
+include::{snippets}/yataRequest-get/http-response.adoc[]
+.response-fields
+include::{snippets}/yataRequest-get/response-fields.adoc[]
+.response-body
+include::{snippets}/yataRequest-get/response-body.adoc[]
+
+=== 신청/초대 삭제
+
+.http-request
+include::{snippets}/yataRequest-delete/http-request.adoc[]
+.path-parameters
+include::{snippets}/yataRequest-delete/path-parameters.adoc[]
+.http-response
+include::{snippets}/yataRequest-delete/http-response.adoc[]
+.response-body
+include::{snippets}/yataRequest-delete/response-body.adoc
 
 
 

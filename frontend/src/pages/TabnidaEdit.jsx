@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import KakaoMap from '../components/KakaoMap';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button';
+import DestinationList from '../components/Tayo/DestinationList';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
@@ -28,6 +29,7 @@ export default function TabnidaEdit() {
             <AiOutlinePlusCircle className="plus-icon" onClick={handleSubmit} />
           </div>
           <Input label="출발 일시" type="datetime-local" />
+          <Input label="인당 금액" type="number" placeholder="인당 금액 입력" />
           <Input label="탑승 인원" type="number" min="1" max="10" state={num} />
           <Input label="특이사항" />
           <ButtonContainer>

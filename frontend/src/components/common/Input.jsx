@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const Input = props => {
-  const { label, state, setState, type, placeholder, maxLength, onChange, min, max } = props;
+  const { label, state, setState, type, placeholder, maxLength, onChange, onFocus, onBlur, min, max } = props;
 
   const handleChange = e => {
     setState?.(e.target.value);
@@ -17,6 +17,8 @@ const Input = props => {
           max={max}
           value={state}
           onChange={onChange}
+          onFocus={onFocus}
+          onBlur={onBlur}
           placeholder={placeholder}
           maxLength={maxLength}
         />
@@ -28,6 +30,8 @@ const Input = props => {
           max={max}
           value={state}
           onChange={handleChange}
+          onFocus={onFocus}
+          onBlur={onBlur}
           placeholder={placeholder}
           maxLength={maxLength}
         />

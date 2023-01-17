@@ -43,6 +43,8 @@ public class YataServiceImpl implements YataService{
 
         Member member = memberService.findMember(userName);
 
+        if(yata.getYataStatus().equals(YataStatus.YATA_NEOTA)) memberService.checkDriver(member);
+
         yata.setMember(member);
 
         return jpayataRepository.save(yata);
@@ -93,7 +95,7 @@ public class YataServiceImpl implements YataService{
             case "nata" -> nowStatus = YataStatus.YATA_NATA;
             default -> throw new CustomLogicException(ExceptionCode.YATA_STATUS_NONE);
         }
-        return jpayataRepository.findAllByYataStatusIs(nowStatus, PageRequest.of(0,5, Sort.by("yataId").descending()));
+        return jpayataRepository.findAllByYataStatusIs(nowStatus, PageRequest.of(0,20, Sort.by("yataId").descending()));
     }
 
     @Override

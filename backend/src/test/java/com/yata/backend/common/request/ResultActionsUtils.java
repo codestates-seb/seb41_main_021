@@ -3,6 +3,7 @@ package com.yata.backend.common.request;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.yata.backend.common.token.GeneratedToken.getMockHeaderToken;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -26,5 +27,14 @@ public class ResultActionsUtils {
                         .headers(getMockHeaderToken())
                         .with(csrf()))
                 .andDo(print());
+    }
+    public static ResultActions requestPostMultipart(MockMvc mockMvc, String url, MultipartFile file) throws Exception {
+        return mockMvc.perform(post(url)
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .headers(getMockHeaderToken())
+                        .with(csrf())
+                        .param("file", file.getName()))
+                .andDo(print());
+
     }
 }

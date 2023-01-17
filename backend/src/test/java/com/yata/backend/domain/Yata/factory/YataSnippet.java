@@ -32,4 +32,14 @@ public class YataSnippet {
                 fieldWithPath("data[].email").type(JsonFieldType.STRING).description("이메일")
         );
     }
+
+    public static ResponseFieldsSnippet getSliceResponses(){
+        return getListResponse()
+                .and(fieldWithPath("sliceInfo").type(JsonFieldType.OBJECT).description("슬라이스 정보"))
+                .and(fieldWithPath("sliceInfo.getNumber").type(JsonFieldType.NUMBER).description("현재 슬라이스 번호"))
+                .and(fieldWithPath("sliceInfo.getSize").type(JsonFieldType.NUMBER).description("현재 슬라이스 크기"))
+                .and(fieldWithPath("sliceInfo.getNumberOfElements").type(JsonFieldType.NUMBER).description("현재 슬라이스가 가지고 있는 엔티티의 개수"))
+                .and(fieldWithPath("sliceInfo.hasNext").type(JsonFieldType.BOOLEAN).description("다음 슬라이스의 존재 유무"))
+                .and(fieldWithPath("sliceInfo.hasPrevious").type(JsonFieldType.BOOLEAN).description("이전 슬라이스의 존재 유무"));
+    }
 }

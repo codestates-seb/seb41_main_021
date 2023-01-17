@@ -28,10 +28,9 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Date;
 
-import static com.yata.backend.util.ApiDocumentUtils.getRequestPreProcessor;
+import static com.yata.backend.utils.ApiDocumentUtils.getRequestPreProcessor;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -132,7 +131,10 @@ class AuthControllerTest {
                 .andExpect(status().isOk());
         assertThat(redisUtils.hasKeyBlackList(accessToken.getToken())).isTrue();
         resultActions.andDo(document("auth-logout",
-                getRequestPreProcessor()
+                getRequestPreProcessor(),
+                requestHeaders(
+                        headerWithName("Authorization").description("Authorization")
+                )
         ));
     }
 }

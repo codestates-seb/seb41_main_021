@@ -22,6 +22,7 @@ public class MemberServiceImpl implements MemberService {
     private final SignUpVerifyService signUpVerifyService;
 
 
+
     public MemberServiceImpl(JpaMemberRepository memberRepository, PasswordEncoder passwordEncoder, CustomBeanUtils customBeanUtils, SignUpVerifyService signUpVerifyService) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;

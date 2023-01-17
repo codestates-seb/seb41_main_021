@@ -1,6 +1,7 @@
 package com.yata.backend.domain.member.entity;
 
 import com.yata.backend.auth.oauth2.dto.ProviderType;
+import com.yata.backend.domain.image.entity.ImageEntity;
 import com.yata.backend.global.audit.Auditable;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -40,8 +41,9 @@ public class Member extends Auditable {
     @ElementCollection(fetch = FetchType.EAGER) // 권한 목록
     private List<String> roles;
 
-    @Column// 프로필 이미지
-    private String imgUrl;
+    @JoinColumn// 프로필 이미지
+    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+    private ImageEntity imgUrl;
     @Column // 차량 이미지
     private String carImgUrl;
 
