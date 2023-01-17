@@ -47,9 +47,7 @@ public class YataRequestServiceImpl implements YataRequestService {
             throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
         }
 
-        if (maxPeople > yata.getMaxPeople()) { // 신청 인원이 게시글의 최대 인원보다 많으면 익셉션
-            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
-        }
+        verifyMaxPeople(maxPeople, yata.getMaxPeople()); // 인원 수 검증
 
         yataRequest.setYata(yata);
         yataRequest.setMember(member);
@@ -86,7 +84,7 @@ public class YataRequestServiceImpl implements YataRequestService {
         Member member = memberService.verifyMember(userEmail);
 
         // 게시글 작성자 == 조회하려는 사람 인지 확인
-        equalMember(member, yata.getMember());
+        yataService.equalMember(member, yata.getMember());
 
         return jpaYataRequestRepository.findAllByYata(yata, pageable);
     }
@@ -99,7 +97,7 @@ public class YataRequestServiceImpl implements YataRequestService {
         YataRequest yataRequest = findRequest(yataRequestId); // 해당 yataRequestId 로 한 신청/초대가 있는지 ( 신청/초대 )
 
         // 게시글 작성자 == 삭제하려는 사람 인지 확인
-        equalMember(member, yata.getMember());
+        yataService.equalMember(member, yata.getMember());
 
         YataRequest.ApprovalStatus approvalStatus = yataRequest.getApprovalStatus();
 
@@ -140,8 +138,11 @@ public class YataRequestServiceImpl implements YataRequestService {
         });
     }
 
-    public void equalMember(Member member, Member postMember) {
-        if (!member.getEmail().equals(postMember.getEmail()))
-            throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
+    // 신청 인원과 게시글의 최대 인원을 비교하는 로직
+    @Override
+    public void verifyMaxPeople(int requestPeople, int maxPeople) {
+        if (requestPeople > maxPeople) {
+            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
+        }
     }
 }

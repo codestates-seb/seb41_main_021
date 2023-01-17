@@ -1,5 +1,6 @@
 package com.yata.backend.domain.yata.entity;
 
+import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.global.audit.Auditable;
 import lombok.*;
 
@@ -17,7 +18,13 @@ public class YataMember extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long YataMemberId;
 
+    @ManyToOne
+    @JoinColumn(name = "YATA_ID")
+    private Yata yata;
 
+    @ManyToOne
+    @JoinColumn(name = "EMAIL")
+    private Member member;
 
     private enum Payment {
         PAID("지불 완료"),
