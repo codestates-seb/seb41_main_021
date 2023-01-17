@@ -9,6 +9,7 @@ spring:
         dialect: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
     hibernate:
       ddl-auto: create
+  #  defer-datasource-initialization: true # ddl-auto를 먼저 실행하고, 그후 sql 스크립트 파일이 동작하도록 순서를 바꿀 수 있다.
   profiles:
     active: local
   main:

@@ -1,6 +1,6 @@
 package com.yata.backend.domain.yata.entity;
 
-import com.yata.backend.domain.checklist.entity.Checklist;
+import com.yata.backend.domain.review.entity.Checklist;
 import lombok.*;
 
 import javax.persistence.*;

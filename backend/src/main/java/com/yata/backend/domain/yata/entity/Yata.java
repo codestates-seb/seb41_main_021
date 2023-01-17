@@ -1,6 +1,7 @@
 package com.yata.backend.domain.yata.entity;
 
 import com.yata.backend.domain.member.entity.Member;
+import com.yata.backend.domain.review.entity.Review;
 import com.yata.backend.global.audit.Auditable;
 import lombok.*;
 
@@ -61,12 +62,6 @@ public class Yata extends Auditable {
     @OneToOne(cascade = CascadeType.ALL)
     private Location destination;
 
-//    @OneToMany(mappedBy = "yata",cascade = CascadeType.ALL)
-//    private List<YataChecklist> yataChecklists = new ArrayList<>();
-
-
-//    @OneToMany(mappedBy = "yata" , cascade = CascadeType.ALL)
-//    private List<Location> waypoints = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "EMAIL")
@@ -74,6 +69,9 @@ public class Yata extends Auditable {
 
     @OneToMany(mappedBy = "yata" , fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
     private List<YataRequest> yataRequests = new ArrayList<>();
+
+    @OneToMany(mappedBy = "yata" , fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
+    private List<Review> reviews = new ArrayList<>();
 
 
 
