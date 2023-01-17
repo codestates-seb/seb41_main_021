@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const ListItem = props => {
+const ChargeList = props => {
   const { date, price, onClick } = props;
   return (
     <>
@@ -47,4 +47,4 @@ const PriceContainer = styled.div`
   font-weight: bold;
 `;
 
-export default ListItem;
+export default ChargeList;
