@@ -6,9 +6,9 @@ import Header from '../components/Header';
 export default function TabnidaDetail() {
   return (
     <>
-      <NavBar></NavBar>
+      <NavBar />
+      <Header title={'탑니다 상세'}></Header>
       <Container>
-        <Header title={'탑니다 상세'}></Header>
         <InfoContainer>
           <DateBox>
             <div>출발일: 2023년 1월 09일 (월)</div>

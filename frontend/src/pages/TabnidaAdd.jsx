@@ -1,11 +1,11 @@
+import { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import KakaoMap from '../components/KakaoMap';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button';
 import DestinationList from '../components/Tayo/DestinationList';
-import { AiOutlinePlusCircle } from 'react-icons/ai';
 import Header from '../components/Header';
-import { useState, useEffect } from 'react';
+import { AiOutlinePlusCircle } from 'react-icons/ai';
 
 export default function TabnidaAdd() {
   const [isFilled, setIsFilled] = useState(false);
@@ -16,12 +16,12 @@ export default function TabnidaAdd() {
   const [Places, setPlaces] = useState([]);
 
   useEffect(() => {
-    if (departure !== '' || destination !== '') {
-      setIsFilled(true);
-    } else {
-      setIsFilled(false);
+    if (departure === '') {
+      setIsDeparture(false);
     }
-
+    if (destination === '') {
+      setIsDestination(false);
+    }
     //임시용
     if (departure !== '' && destination !== '') {
       setIsDeparture(true);
@@ -29,6 +29,13 @@ export default function TabnidaAdd() {
     } else {
       setIsDeparture(false);
       setIsDestination(false);
+    }
+    if (departure !== '' || destination !== '') {
+      setIsFilled(true);
+    }
+
+    if (departure === '' && destination === '') {
+      setIsFilled(false);
     }
   }, [departure, destination]);
 
@@ -40,15 +47,28 @@ export default function TabnidaAdd() {
           <KakaoMap searchPlace={departure || destination} setPlaces={setPlaces} />
         </div>
         <DestinationForm isFilled={isFilled}>
-          <Input label="출발지" placeholder="출발지 입력" state={departure} setState={setDeparture} />
+          <Input
+            label="출발지"
+            placeholder="출발지 입력"
+            state={departure}
+            setState={setDeparture}
+            onFocus={() => setIsFilled(true)}
+          />
           <div className="destinationInput">
-            <Input label="도착지" placeholder="도착지 입력" state={destination} setState={setDestination} />
+            <Input
+              label="도착지"
+              placeholder="도착지 입력"
+              state={destination}
+              setState={setDestination}
+              onFocus={() => setIsFilled(true)}
+            />
             <AiOutlinePlusCircle className="plus-icon" />
           </div>
           {isFilled &&
             (isDeparture && isDestination ? (
               <>
                 <Input label="출발 일시" type="datetime-local" />
+                <Input label="인당 금액" type="number" placeholder="인당 금액 입력" />
                 <Input label="탑승 인원" type="number" min="1" max="10" placeholder="1" />
                 <Input label="특이사항" placeholder="아이가 있어요, 흡연자입니다, 짐이 많아요, 등" />
                 <ButtonContainer>
@@ -82,9 +102,6 @@ const DestinationForm = styled.div`
   padding: 2rem 3rem;
   width: 100%;
   height: auto;
-  position: absolute;
-  bottom: 0rem;
-  z-index: 1;
   box-shadow: 0px -10px 10px -10px lightgrey;
   background-color: white;
   border-radius: 10% 10% 0 0;
@@ -93,6 +110,8 @@ const DestinationForm = styled.div`
     props.isFilled &&
     css`
       height: 100%;
+      box-shadow: none;
+      border-radius: 0;
     `}
 
   @media only screen and (min-width: 470px) {
