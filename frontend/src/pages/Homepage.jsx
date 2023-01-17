@@ -40,8 +40,8 @@ export default function HomePage() {
 }
 
 const Container = styled.div`
-  width: 100%;
-  height: 100vh;
+  flex: 1;
+  overflow: hidden;
 `;
 
 const LandingContainer = styled.div`
