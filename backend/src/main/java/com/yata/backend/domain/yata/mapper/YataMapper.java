@@ -4,6 +4,7 @@ import com.yata.backend.domain.yata.dto.LocationDto;
 import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.Yata;
+import com.yata.backend.global.utils.GeometryUtils;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
@@ -117,10 +118,10 @@ default List<YataDto.Response> yatasToYataResponses(List<Yata> yatas){
         }
 
         Location.LocationBuilder location = Location.builder();
-        String pointWKT = String.format("POINT(%s %s)", post.getLongitude(), post.getLatitude());
+
 
         // WKTReader를 통해 WKT를 실제 타입으로 변환합니다.
-        Point point = (Point) new WKTReader().read(pointWKT);
+        Point point = GeometryUtils.getPoint(post);
 
         location.location(point);
         location.address(post.getAddress());

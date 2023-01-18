@@ -21,7 +21,7 @@ const ScreenBlock = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: auto;
+  height: 100vh;
   background: white;
   @media only screen and (min-width: 470px) {
     width: 470px;

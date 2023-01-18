@@ -272,10 +272,6 @@ include::{snippets}/yata/get-location/response-fields.adoc[]
 
 .http-request
 include::{snippets}/yataRequest-postRequest/http-request.adoc[]
-.request-fields
-include::{snippets}/yataRequest-postRequest/request-fields.adoc[]
-.request-body
-include::{snippets}/yataRequest-postRequest/request-body.adoc[]
 .http-response
 include::{snippets}/yataRequest-postRequest/http-response.adoc[]
 .response-fields
@@ -289,8 +285,6 @@ include::{snippets}/yataRequest-postRequest/response-body.adoc[]
 include::{snippets}/yataRequest-postInvitation/http-request.adoc[]
 .request-fields
 include::{snippets}/yataRequest-postInvitation/request-fields.adoc[]
-.request-body
-include::{snippets}/yataRequest-postInvitation/request-body.adoc[]
 .http-response
 include::{snippets}/yataRequest-postInvitation/http-response.adoc[]
 .response-fields
@@ -320,8 +314,15 @@ include::{snippets}/yataRequest-delete/http-response.adoc[]
 .response-body
 include::{snippets}/yataRequest-delete/response-body.adoc
 
+== yataMemberController
+=== 신청/초대 수락
 
-
+.http-request
+include::{snippets}/yataMember-accept/http-request.adoc[]
+.path-parameters
+include::{snippets}/yataMember-accept/path-parameters.adoc[]
+.http-response
+include::{snippets}/yataMember-accept/http-response.adoc[]
 
 
 

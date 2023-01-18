@@ -40,8 +40,8 @@ out/
 /src/main/resources/application-hi.yml
 /src/main/resources/application-payment.yml
 /src/main/resources/application-kafka.yml
+/src/main/resources/application-local-mysql.yml
 application-payment.yml
 keystore.p12
 /src/main/resources/static/images/
 /src/test/resources/images/
-

@@ -56,15 +56,6 @@ public class YataRequestDto {
     }
 
     @AllArgsConstructor
-    @NoArgsConstructor
-    @Getter
-    @ToString
-    @Builder
-    public static class InvitationPost {
-        private Long yataId;
-    }
-
-    @AllArgsConstructor
     @Getter
     @ToString
     @Builder

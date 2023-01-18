@@ -7,6 +7,7 @@ import facebook from '../images/facebook_icon.svg';
 import google from '../images/google_icon.svg';
 import kakao from '../images/kakao_icon.png';
 import Header from '.././components/Header';
+import { useLogin } from '../hooks/useLogin';
 
 export default function Login() {
   const [id, setId] = useState('');
@@ -24,9 +25,9 @@ export default function Login() {
     else setIsValidPW(true);
     if (id === '' || password === '') return console.log('fail');
 
-    console.log('success');
-    console.log(id, password);
+    useLogin();
   };
+
   return (
     <>
       {isLogin || (
