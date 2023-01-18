@@ -39,7 +39,7 @@ public class PaymentServiceImpl implements PaymentService {
     public Payment requestTossPayment(Payment payment, String userEmail) {
         Member member = memberService.findMember(userEmail);
         if (payment.getAmount() < 1000) {
-            throw new IllegalArgumentException("최소 결제 금액은 1000원 입니다.");
+            throw new IllegalArgumentException("최소 결제 금액은 1000원 입니다."); // TODO
         }
         payment.setCustomer(member);
         return paymentRepository.save(payment);

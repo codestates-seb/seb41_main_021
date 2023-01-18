@@ -56,6 +56,14 @@ public class YataServiceImpl implements YataService{
 
         //존재하는 멤버인지 확인
         Member member = memberService.findMember(userName);
+        Yata findYata = getYata(yataId, member);
+
+        Yata updatingYata = beanUtils.copyNonNullProperties(yata, findYata);
+
+        return jpayataRepository.save(updatingYata);
+    }
+
+    private Yata getYata(long yataId, Member member) {
         //존재하는 게시물인지 확인
         Yata findYata = verifyYata(yataId);
         //게시글 작성자와 같은 멤버인지 확인
@@ -64,10 +72,7 @@ public class YataServiceImpl implements YataService{
         //예완 상태 아닌 게시물인지 확인
         //예안 게시물이면 -> 예외
         modifiableYata(yataId);
-
-        Yata updatingYata = beanUtils.copyNonNullProperties(yata, findYata);
-
-        return jpayataRepository.save(updatingYata);
+        return findYata;
     }
 
     @Override
