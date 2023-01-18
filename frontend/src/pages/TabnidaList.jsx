@@ -25,12 +25,16 @@ export default function TabnidaList() {
           date={'1월 3일 (화) 7:00PM'}
           journeyStart={'성수 SPOT 01 외'}
           journeyEnd={'용산 HUB'}
-          transit="1"></ListItem>
+          transit="1"
+          price="2000"
+          people="1"></ListItem>
         <ListItem
           date={'1월 3일 (화) 7:00PM'}
           journeyStart={'성수 SPOT 01 외'}
           journeyEnd={'용산 HUB'}
-          transit="1"></ListItem>
+          transit="1"
+          price="2000"
+          people="1"></ListItem>
         <CircleButton onClick={add} open={open}>
           <MdAdd />
         </CircleButton>

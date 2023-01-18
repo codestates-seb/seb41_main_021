@@ -19,7 +19,22 @@ public interface MemberMapper {
                 .build();
     }
 
-    MemberDto.Response memberToResponseMemberDto(Member member);
+    default MemberDto.Response memberToResponseMemberDto(Member member){
+        if (member == null) {
+            return null;
+        }
+        return MemberDto.Response.builder()
+                .email(member.getEmail())
+                .name(member.getName())
+                .nickname(member.getNickname())
+                .memberStatus(member.getMemberStatus())
+                .genders(member.getGenders())
+                .imgUrl(member.getImgUrl().getUrl() == null ? null : member.getImgUrl().getUrl())
+                .providerType(member.getProviderType())
+                .carImgUrl(member.getCarImgUrl())
+                .roles(member.getRoles())
+                .build();
+    }
 
     Member memberPatchDtoToMember(MemberDto.Patch memberPatchDto);
 }

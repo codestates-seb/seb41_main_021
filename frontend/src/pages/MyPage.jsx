@@ -56,6 +56,21 @@ export default function MyPage() {
           </PointContainer>
           <ListContainer>
             <List>
+              <ListTitle>포인트 관리</ListTitle>
+              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/point-history">
+                <JourneyRecord>
+                  <div className="title">충전 내역</div>
+                  <IoIosArrowForward />
+                </JourneyRecord>
+              </NavLink>
+              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/exchange-page">
+                <JourneyRecord>
+                  <div className="title">환전하기</div>
+                  <IoIosArrowForward />
+                </JourneyRecord>
+              </NavLink>
+            </List>
+            <List>
               <ListTitle>탑니다/태웁니다 관리</ListTitle>
               <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journey-list">
                 <JourneyRecord>
@@ -103,6 +118,7 @@ const MyPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: scroll;
 `;
 const ProfileContainer = styled.div`
   width: 80%;
@@ -231,7 +247,6 @@ const Compliment = styled.div``;
 const ListContainer = styled.div`
   width: 100%;
   margin-bottom: 60px;
-  overflow: scroll;
 `;
 
 const List = styled.div`
