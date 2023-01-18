@@ -1,12 +1,12 @@
 package com.yata.backend.domain.yata.controller;
 
-import com.yata.backend.domain.yata.dto.YataMemberDto;
-import com.yata.backend.domain.yata.dto.YataRequestDto;
 import com.yata.backend.domain.yata.entity.YataMember;
 import com.yata.backend.domain.yata.mapper.YataMemberMapper;
 import com.yata.backend.domain.yata.service.YataMemberService;
-import com.yata.backend.global.response.SingleResponse;
+import com.yata.backend.global.response.SliceInfo;
+import com.yata.backend.global.response.SliceResponseDto;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,31 +31,34 @@ public class YataMemberController {
     }
 
     // TODO yata 승인 - 204
-    @PostMapping("/yataRequest/{yataRequestId}/accept")
+    @PostMapping("/{yataRequestId}/accept")
     public ResponseEntity acceptRequest(@PathVariable("yataId") @Positive long yataId,
                                                  @PathVariable("yataRequestId") @Positive long yataRequestId,
-                                                 @Valid @RequestBody YataMemberDto.Post requestBody,
-                                                 @AuthenticationPrincipal User authMember) throws ParseException {
-        yataMemberService.accept(mapper.yataMemberPostDtoToYataMember(requestBody), authMember.getUsername(), yataRequestId, yataId);
+                                                 @AuthenticationPrincipal User authMember) {
+        yataMemberService.accept(authMember.getUsername(), yataRequestId, yataId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // TODO yata 거절 / 승인된 yata 거절 - 204
+    // yata 거절 / 승인된 yata 거절 - 204
     @PostMapping("/{yataRequestId}/reject")
     public ResponseEntity rejectRequest(@PathVariable("yataId") @Positive long yataId,
                                         @PathVariable("yataRequestId") @Positive long yataRequestId,
-                                        @Valid @RequestBody YataMemberDto.Post requestBody,
                                         @AuthenticationPrincipal User authMember) {
+        yataMemberService.reject(authMember.getUsername(), yataRequestId, yataId);
+
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     // TODO 승인된 yata 전체 조회 - 200
-    @GetMapping("/yataRequests")
-    public ResponseEntity getApprovedRequests(@PathVariable("yataId") @Positive long yataId,
-                                              @AuthenticationPrincipal User authMember,
-                                              Pageable pageable) {
-//        return new ResponseEntity<>(new SingleResponse<>());
-        return null;
-    }
+//    @GetMapping("/accept/yataRequests")
+//    public ResponseEntity getApprovedRequests(@PathVariable("yataId") @Positive long yataId,
+//                                              @RequestParam String approvalStatus,
+//                                              @AuthenticationPrincipal User authMember,
+//                                              Pageable pageable) {
+//        Slice<YataMember> acceptedRequests = yataMemberService.f(authMember.getUsername(), yataId, approvalStatus ,pageable);
+//        SliceInfo sliceInfo = new SliceInfo(pageable, acceptedRequests.getNumberOfElements(), acceptedRequests.hasNext());
+//        return new ResponseEntity<>(
+//                new SliceResponseDto<>(mapper.yataMembersToYataMembersResponses(acceptedRequests.getContent()), sliceInfo), HttpStatus.OK);
+//    }
 }

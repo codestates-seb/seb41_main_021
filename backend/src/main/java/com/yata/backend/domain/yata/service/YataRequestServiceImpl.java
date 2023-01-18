@@ -37,6 +37,7 @@ public class YataRequestServiceImpl implements YataRequestService {
     @Override
     public YataRequest createRequest(YataRequest yataRequest, String userName, Long yataId, int maxPeople) {
         Member member = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
+        /// 여기부터
         verifyRequest(userName, yataId); // 신청을 이미 했었는지 확인하고
         Yata yata = yataService.verifyYata(yataId);
 
@@ -48,6 +49,7 @@ public class YataRequestServiceImpl implements YataRequestService {
         }
 
         verifyMaxPeople(maxPeople, yata.getMaxPeople()); // 인원 수 검증
+        // 여기까지 밸리데이션 체크 따로 빼서 하는 거
 
         yataRequest.setYata(yata);
         yataRequest.setMember(member);
@@ -57,25 +59,6 @@ public class YataRequestServiceImpl implements YataRequestService {
     }
 
     // Yata 초대
-//    @Override
-//    public YataRequest createInvitation(YataRequest yataRequest, String userName, Long yataId) {
-//        Member member = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
-//        verifyInvitation(userName, yataId); // 초대를 이미 했었는지 확인하고
-//        Yata yata = yataService.verifyYata(yataId);
-//
-//        YataStatus yataStatus = yata.getYataStatus();
-//        if (yataStatus == YataStatus.YATA_NATA) {
-//            yataRequest.setRequestStatus(INVITE);
-//        } else {
-//            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
-//        }
-//
-//        yataRequest.setYata(yata);
-//        yataRequest.setMember(member);
-//        yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.NOT_YET);
-//
-//        return jpaYataRequestRepository.save(yataRequest);
-//    }
     @Override
     public YataRequest createInvitation(String userName, Long yataId) {
         Member member = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고

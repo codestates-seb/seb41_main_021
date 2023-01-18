@@ -13,6 +13,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 
 @Service
 @Transactional
@@ -21,6 +22,7 @@ public class YataMemberServiceImpl implements YataMemberService {
     private final YataRequestService yataRequestService;
     private final YataServiceImpl yataService;
     private final MemberService memberService;
+    private final long LEFT_TIME =  2 * 24 * 60 * 60 * 1000;
 
     public YataMemberServiceImpl(JpaYataMemberRepository jpaYataMemberRepository, YataRequestService yataRequestService, YataServiceImpl yataService, MemberService memberService) {
         this.jpaYataMemberRepository = jpaYataMemberRepository;
@@ -31,49 +33,54 @@ public class YataMemberServiceImpl implements YataMemberService {
 
     // yata 승인
     @Override
-    public void accept(YataMember yataMember, String userName, Long yataRequestId, Long yataId) {
+    public void accept(String userName, Long yataRequestId, Long yataId) {
         Member member = memberService.findMember(userName); // 해당 member 가 있는지 확인
         Yata yata = yataService.verifyYata(yataId); // 해당 yata 가 있는지 확인
+        YataRequest yataRequest = yataRequestService.findRequest(yataRequestId); // 해당 yataRequest 가 있는지 확인
 
         yataService.equalMember(member, yata.getMember()); // 승인하려는 member = 게시글 작성한 member 인지 확인
         // 인원 수 검증은 신청 시에 이미 했기 때문에 갠잔 / 초대는 자기가 알아서 판단해서 하겠지 모 자기 차니까
-
-        YataRequest yataRequest = yataRequestService.findRequest(yataRequestId); // 해당 yataRequest 가 있는지 확인
         yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.ACCEPTED);
-
-        yata.getYataRequests().add(yataRequest); // 상태 추가해주기
-
-        yataMember.setMember(member);
-        yataMember.setYata(yata);
-
-        jpaYataMemberRepository.save(yataMember);
     }
 
-    // TODO yata 거절 -> 탑승자, 운전자 모두 / 승인된 yata 거절 -> 운전자만
-//    @Override
-//    public YataMember reject(String userName, Long yataRequestId) {
-//        Member member = memberService.findMember(userName);
-//        // role 이 운전자인지 확인
-//        memberService.checkDriver(member);
-//
-//        YataRequest yataRequest = yataRequestService.findRequest(yataRequestId);
-//        YataRequest.ApprovalStatus approvalStatus = yataRequest.getApprovalStatus();
-//        // 승인 안받았으면
-//        if (approvalStatus.equals(YataRequest.ApprovalStatus.NOT_YET)) {
-//            jpaYataMemberRepository.delete(); // 아니면 아예 거절로 바꾸는 것도..? --> 이렇게 행
-//        }
-//        else { // 승인 받았으면
-//            // 해당 yata 게시물의 출발시간을 확인해서 현재 시각(new Date())으로 부터 2일(48시간)보다 많이 남았다면
-//            // --> 삭제 가능
-//
-//            // 2일(48시간) 이하로 남았다면
-//            // --> 운전자만 삭제 가능
-//        }
-//    }
+    // yata 거절 -> 탑승자, 운전자 모두 / 승인된 yata 거절 -> 운전자만
+    @Override
+    public void reject(String userName, Long yataRequestId, Long yataId) {
+        Member member = memberService.findMember(userName); // 요청 한 애
+        Yata yata = yataService.verifyYata(yataId); // 해당 yata 가 있는지 확인
 
-    // TODO 승인된 yata 전체 조회
+        YataRequest yataRequest = yataRequestService.findRequest(yataRequestId);
+        yataService.equalMember(member, yata.getMember()); // 거절하려는 member = 게시글 작성한 member 인지 확인
+        YataRequest.ApprovalStatus approvalStatus = yataRequest.getApprovalStatus();
+
+        // 상태가 NOT_YET 이면
+        if (approvalStatus.equals(YataRequest.ApprovalStatus.NOT_YET)) {
+            yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.REJECTED); // 상태 거절로 바꾸기
+            return;
+        }
+
+        // 상태가 ACCEPTED 면
+        long leftTime = yata.getDepartureTime().getTime() - System.currentTimeMillis(); //
+        if (leftTime < LEFT_TIME) { // 이틀보다 적게 남았을 경우 운전자인지 체크한 후에
+            memberService.checkDriver(member);
+        }
+        // TODO YATA MEMBER , 없을 수도 있으니 까 검증해서 stream 으로 list 에서 delete 할 것
+        yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.REJECTED); // 거절로 상태 변경
+    }
+
+    // TODO 승인된 yata 전체 조회 - status
 //    @Override
-//    public Slice<YataMember> findAcceptedRequests(String userEmail, Long yataId, Pageable pageable) {
-//        return null;
+//    public Slice<YataMember> findAcceptedRequests(String userEmail, Long yataId, String approvalStatus, Pageable pageable) {
+//        Yata yata = yataService.verifyYata(yataId);
+//        Member member = memberService.verifyMember(userEmail);
+//
+//        yataService.equalMember(member, yata.getMember()); // 게시글 작성자 == 조회하려는 사람 인지 확인
+//
+//        // status 가 accepted 인지 검증
+//        if(approvalStatus.equals("accepted")) {
+//            return jpaYataMemberRepository.findAllByYataRequest_ApprovalStatus(approvalStatus, pageable);
+//        } else {
+//            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
+//        }
 //    }
 }

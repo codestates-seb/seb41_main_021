@@ -10,8 +10,5 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface YataMemberMapper {
-    YataMember yataMemberPostDtoToYataMember(YataMemberDto.Post requestBody);
-
-    YataMemberDto.Response yataMemberToYataMemberResponse(YataMember yataMember);
     List<YataMemberDto.Response> yataMembersToYataMembersResponses(List<YataMember> yataMembers);
 }

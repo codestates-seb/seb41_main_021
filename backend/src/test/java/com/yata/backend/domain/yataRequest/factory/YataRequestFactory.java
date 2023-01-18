@@ -3,12 +3,10 @@ package com.yata.backend.domain.yataRequest.factory;
 import com.yata.backend.common.utils.RandomUtils;
 import com.yata.backend.domain.Yata.factory.YataFactory;
 import com.yata.backend.domain.yata.dto.LocationDto;
-import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.dto.YataRequestDto;
 import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataRequest;
-import com.yata.backend.domain.yata.entity.YataStatus;
 import com.yata.backend.global.utils.GeometryUtils;
 
 import java.text.ParseException;

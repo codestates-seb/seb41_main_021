@@ -243,8 +243,15 @@ include::{snippets}/yataRequest-delete/http-response.adoc[]
 .response-body
 include::{snippets}/yataRequest-delete/response-body.adoc
 
+== yataMemberController
+=== 신청/초대 수락
 
-
+.http-request
+include::{snippets}/yataMember-accept/http-request.adoc[]
+.path-parameters
+include::{snippets}/yataMember-accept/path-parameters.adoc[]
+.http-response
+include::{snippets}/yataMember-accept/http-response.adoc[]
 
 
 

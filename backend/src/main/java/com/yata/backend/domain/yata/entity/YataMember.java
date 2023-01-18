@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = "member")
 public class YataMember extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
