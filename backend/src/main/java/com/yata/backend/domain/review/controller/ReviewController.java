@@ -14,15 +14,14 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.text.ParseException;
 
 @RestController
 @Validated
 @RequestMapping("/api/v1/review")
 public class ReviewController {
 
-    private ReviewService reviewService;
-    private ReviewMapper mapper;
+    private final ReviewService reviewService;
+    private final ReviewMapper mapper;
 
     public ReviewController(ReviewService reviewService, ReviewMapper mapper) {
         this.reviewService = reviewService;
@@ -34,7 +33,7 @@ public class ReviewController {
                                      @Valid @RequestBody ReviewDto.Post requestBody,
                                      @AuthenticationPrincipal User authMember
     ) {
-        Review review = reviewService.createReview(mapper.reviewPostDtoToReview(requestBody), authMember.getUsername(),yataId);
+        Review review = reviewService.createReview(mapper.reviewPostDtoToChecklistIds(requestBody), authMember.getUsername(),yataId);
         return new ResponseEntity<>(
                 new SingleResponse<>(mapper.reviewToReviewResponse(review)), HttpStatus.CREATED);
     }

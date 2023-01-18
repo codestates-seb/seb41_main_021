@@ -12,6 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Review extends Auditable {
@@ -28,7 +29,8 @@ public class Review extends Auditable {
     @JoinColumn(name = "YATA_ID")
     private Yata yata;
 
-    @OneToMany(mappedBy = "review")
+    @OneToMany(mappedBy = "review",cascade = CascadeType.ALL)
     private List<ReviewChecklist> reviewChecklists = new ArrayList<>();
+
 
 }

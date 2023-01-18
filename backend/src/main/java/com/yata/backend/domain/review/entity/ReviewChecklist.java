@@ -24,11 +24,4 @@ public class ReviewChecklist {
     private Checklist checklist;
 
 
-//체크여부 확인
-    @Column(nullable = false)
-    private boolean checking;
-
-
-
-
 }

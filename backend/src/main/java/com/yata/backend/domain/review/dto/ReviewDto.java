@@ -1,5 +1,6 @@
 package com.yata.backend.domain.review.dto;
 
+import com.yata.backend.domain.review.entity.Checklist;
 import com.yata.backend.domain.yata.dto.LocationDto;
 import com.yata.backend.domain.yata.entity.YataStatus;
 import lombok.*;
@@ -23,10 +24,7 @@ public class ReviewDto {
     public static class Post{
 
         //yataId는 파라미터로, 입력 member는 Principal로 받을 것
-
-        @NotNull(message = "리뷰 항목 입력은 필수입니다.")
-        private List<ReviewChecklistDto.Post> reviewChecklists;
-
+        private List<Long> checklistIds; //체크한 리스트 아이디만 목록으로 가져옴
 
     }
 
