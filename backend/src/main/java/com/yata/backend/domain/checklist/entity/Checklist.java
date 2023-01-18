@@ -20,23 +20,6 @@ public class Checklist {
     @Column(nullable = false)
     private boolean checkPN;
 
-    @Enumerated(value = EnumType.STRING)
-    @Column(nullable = false)
-    private CheckKind checkKind;
-
-    public enum CheckKind {
-        REVIEW("리뷰"),
-        NEOTA("운전자"),
-        NATA("탑승자");
-
-        @Getter
-        private String status;
-
-        CheckKind(String status) {
-            this.status = status;
-        }
-    }
-
     @OneToMany(mappedBy = "checklist", cascade = CascadeType.ALL)
     private List<YataChecklist> yataChecklists = new ArrayList<>();
     // TODO 연결 후에 해요 ^^
