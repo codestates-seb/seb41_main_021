@@ -75,7 +75,9 @@ public class Yata extends Auditable {
     @OneToMany(mappedBy = "yata" , fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
     private List<YataRequest> yataRequests = new ArrayList<>();
 
-
+    // TODO lazy / eager 뭐 할지 생각 - 쿼리 어떻게 나오는지 확인하기
+    @OneToMany(mappedBy = "yata" , cascade = CascadeType.REMOVE)
+    private List<YataMember> yataMembers = new ArrayList<>();
 
     public enum PostStatus {
         POST_WAITING(1,"예약 전"),

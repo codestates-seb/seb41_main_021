@@ -17,11 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.SliceImpl;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,8 +31,6 @@ import static com.yata.backend.utils.ApiDocumentUtils.getResponsePreProcessor;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -131,32 +125,23 @@ public class YataRequestControllerTest extends AbstractControllerTest {
     @WithMockUser(username = "test2@gmail.com", roles = "USER")
     void postYataInvitationTest() throws Exception {
         //given
-        YataRequestDto.InvitationPost post = YataRequestFactory.createYataInvitationPostDto();
-
         YataRequest expected = YataRequestFactory.createYataRequest();
         YataRequestDto.InvitationResponse response = YataRequestFactory.createYataInvitationResponseDto(expected);
 
-        given(yataRequestService.createInvitation(any(), any(), anyLong())).willReturn(new YataRequest());
+        given(yataRequestService.createInvitation(any(), anyLong())).willReturn(new YataRequest());
         given(mapper.yataInvitationToYataInvitationResponse(any(YataRequest.class))).willReturn(response);
-
-        String content = gson.toJson(post);
 
         //when
         ResultActions actions = mockMvc.perform(post(BASE_URL + "/invite/{yataId}", response.getYataId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf())
-                        .content(content))
-                .andExpect(status().isCreated());
+                        .with(csrf()));
 
         //then
-        actions.andDo(document("yataRequest-postInvitation",
+        actions.andExpect(status().isCreated())
+                .andDo(document("yataRequest-postInvitation",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
                 pathParameters(
                         parameterWithName("yataId").description("야타 ID")
-                ),
-                requestFields(
-                        fieldWithPath("yataId").type(JsonFieldType.NUMBER).description("야타 ID")
                 ),
                 responseFields(
                         fieldWithPath("data").type(JsonFieldType.OBJECT).description("회원 정보"),
