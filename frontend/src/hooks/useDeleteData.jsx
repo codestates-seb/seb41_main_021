@@ -10,10 +10,10 @@ const header = {
 const useDeleteData = async (url, data) => {
   try {
     if (data) {
-      const response = await axios.get(url, data, header);
+      const response = await axios.delete(url, data, header);
       return response;
     }
-    const response = await axios.get(url, header);
+    const response = await axios.delete(url, header);
     return response;
   } catch (error) {
     return console.log(error);

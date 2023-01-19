@@ -8,9 +8,11 @@ import DestinationInput from '../components/DestinationInput';
 import { useNavigate } from 'react-router-dom';
 import { MdAdd } from 'react-icons/md';
 import useGetData from '../hooks/useGetData';
+import ListItemView from '../components/ListItemView';
 
 export default function TabnidaList() {
   const [open, setOpen] = useState(false);
+  const [list, setList] = useState([]);
   const navigate = useNavigate();
   const add = () => {
     setOpen(!open);
@@ -18,28 +20,15 @@ export default function TabnidaList() {
   };
 
   useEffect(() => {
-    useGetData('https://server.yata.kro.kr/api/v1/yata?yataStatus=nata').then(res => console.log(res.data.data));
+    useGetData('https://server.yata.kro.kr/api/v1/yata?yataStatus=nata').then(res => setList(res.data.data));
   }, []);
 
   return (
     <>
+      <Header title="탑니다" />
       <Container>
-        <Header title="탑니다" />
         <DestinationInput />
-        <ListItem
-          date={'1월 3일 (화) 7:00PM'}
-          journeyStart={'성수 SPOT 01 외'}
-          journeyEnd={'용산 HUB'}
-          transit="1"
-          price="2000"
-          people="1"></ListItem>
-        <ListItem
-          date={'1월 3일 (화) 7:00PM'}
-          journeyStart={'성수 SPOT 01 외'}
-          journeyEnd={'용산 HUB'}
-          transit="1"
-          price="2000"
-          people="1"></ListItem>
+        <ListItemView list={list} />
         <CircleButton onClick={add} open={open}>
           <MdAdd />
         </CircleButton>
@@ -50,8 +39,8 @@ export default function TabnidaList() {
 }
 
 const Container = styled.div`
-  width: 100%;
-  height: 100vh;
+  flex: 1;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -54,9 +54,8 @@ export default function RatingAdd(props) {
 
   return (
     <>
-      <NavBar />
+      <Header title={'매너 평가'}></Header>
       <Container>
-        <Header title={'매너 평가'}></Header>
         <ProfileCotainer>
           <Profile>
             <VscAccount />
@@ -71,13 +70,14 @@ export default function RatingAdd(props) {
 
         <FinishBtn>완료</FinishBtn>
       </Container>
+      <NavBar />
     </>
   );
 }
 
 const Container = styled.div`
-  width: 100%;
-  height: 100vh;
+  flex: 1;
+  overflow: scroll;
   display: flex;
   flex-direction: column;
   align-items: center;
