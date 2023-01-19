@@ -7,22 +7,22 @@ import RegisterListView from '../components/registerList/RegisterListView';
 export default function RegisterCheckList() {
   return (
     <>
-      <Navbar />
+      <Header title="RegisterCheckList" />
       <Content>
-        <Header title="RegisterCheckList" />
         <RegisterListView />
         <ButtonContainer>
           <RejectButton>거절하기</RejectButton>
           <Button>수락하기</Button>
         </ButtonContainer>
       </Content>
+      <Navbar />
     </>
   );
 }
 
 const Content = styled.div`
-  width: 100%;
-  height: 100vh;
+  flex: 1;
+  overflow: scroll;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -35,8 +35,6 @@ export default function Navbar() {
 const Container = styled.div`
   div {
     background-color: #fff;
-    position: absolute;
-    bottom: 0;
     box-shadow: 0 -5px 10px -8px lightgrey;
   }
 `;

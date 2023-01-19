@@ -6,8 +6,8 @@ import Button from '../components/common/Button';
 export default function ExchagePage() {
   return (
     <>
+      <Header title="포인트 환전하기" />
       <Container>
-        <Header title="포인트 환전하기" />
         <Contents>
           <Input label="거래 은행" placeholder="거래 은행 입력"></Input>
           <Input label="계좌 번호" placeholder='"-" 없이 입력'></Input>
@@ -20,8 +20,8 @@ export default function ExchagePage() {
 }
 
 const Container = styled.div`
-  width: 100%;
-  height: 100vh;
+  flex: 1;
+  overflow: scroll;
   display: flex;
   flex-direction: column;
   align-items: center;
