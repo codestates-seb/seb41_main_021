@@ -5,11 +5,9 @@ import com.yata.backend.domain.member.service.MemberService;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataStatus;
 import com.yata.backend.domain.yata.repository.yataRepo.JpaYataRepository;
-import com.yata.backend.domain.yata.repository.yataRepo.YataRepository;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
 import com.yata.backend.global.utils.CustomBeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
-import static com.yata.backend.domain.yata.entity.Yata.PostStatus.POST_WAITING;
 
 @Service
 @Transactional

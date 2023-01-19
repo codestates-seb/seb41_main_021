@@ -1,6 +1,7 @@
 package com.yata.backend.domain.yata.entity;
 
 import com.yata.backend.domain.member.entity.Member;
+import com.yata.backend.domain.review.entity.Review;
 import com.yata.backend.global.audit.Auditable;
 import lombok.*;
 
@@ -75,6 +76,10 @@ public class Yata extends Auditable {
     @OneToMany(mappedBy = "yata" , fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
     private List<YataRequest> yataRequests = new ArrayList<>();
 
+    @OneToMany(mappedBy = "yata" , fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
+    private List<Review> reviews = new ArrayList<>();
+
+
     // TODO lazy / eager 뭐 할지 생각 - 쿼리 어떻게 나오는지 확인하기
     @OneToMany(mappedBy = "yata" , cascade = CascadeType.REMOVE)
     private List<YataMember> yataMembers = new ArrayList<>();
@@ -103,5 +108,9 @@ public class Yata extends Auditable {
 
     public void addDestination(Location destination) {
         this.destination = destination;}
+
+    public Yata(long yataId){
+        this.yataId = yataId;
+    }
 
 }
