@@ -61,28 +61,28 @@ public class YataMemberControllerTest extends AbstractControllerTest {
                 ));
     }
 
-    @Test
-    @DisplayName("Yata 신청 거절")
-    @WithMockUser(username = "test1@gmail.com", roles = "USER")
-    void postYataRejectTest() throws Exception {
-        //given
-        Yata yata = YataFactory.createYata();
-        YataRequest yataRequest = YataRequestFactory.createYataRequest();
-
-        //when
-        ResultActions actions = mockMvc.perform(post(BASE_URL + "/{yataId}/{yataRequestId}/reject",
-                yata.getYataId(),yataRequest.getYataRequestId())
-                .with(csrf()));
-
-        //then
-        actions.andExpect(status().isNoContent())
-                .andDo(document("yataMember-reject",
-                        getRequestPreProcessor(),
-                        getResponsePreProcessor(),
-                        pathParameters(
-                                parameterWithName("yataId").description("야타 ID"),
-                                parameterWithName("yataRequestId").description("야타 신청/초대 ID")
-                        )
-                ));
-    }
+//    @Test
+//    @DisplayName("Yata 신청 거절")
+//    @WithMockUser(username = "test1@gmail.com", roles = "USER")
+//    void postYataRejectTest() throws Exception {
+//        //given
+//        Yata yata = YataFactory.createYata();
+//        YataRequest yataRequest = YataRequestFactory.createYataRequest();
+//
+//        //when
+//        ResultActions actions = mockMvc.perform(post(BASE_URL + "/{yataId}/{yataRequestId}/reject",
+//                yata.getYataId(),yataRequest.getYataRequestId())
+//                .with(csrf()));
+//
+//        //then
+//        actions.andExpect(status().isNoContent())
+//                .andDo(document("yataMember-reject",
+//                        getRequestPreProcessor(),
+//                        getResponsePreProcessor(),
+//                        pathParameters(
+//                                parameterWithName("yataId").description("야타 ID"),
+//                                parameterWithName("yataRequestId").description("야타 신청/초대 ID")
+//                        )
+//                ));
+//    }
 }

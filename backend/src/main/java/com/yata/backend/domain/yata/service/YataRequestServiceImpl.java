@@ -41,6 +41,8 @@ public class YataRequestServiceImpl implements YataRequestService {
         verifyRequest(userName, yataId); // 신청을 이미 했었는지 확인하고
         Yata yata = yataService.verifyYata(yataId);
 
+        compareMember(member, yata.getMember()); // 게시글을 쓴 멤버는 신청 못하도록
+
         YataStatus yataStatus = yata.getYataStatus();
         if (yataStatus == YataStatus.YATA_NEOTA) {
             yataRequest.setRequestStatus(APPLY);
@@ -144,6 +146,14 @@ public class YataRequestServiceImpl implements YataRequestService {
     public void verifyMaxPeople(int requestPeople, int maxPeople) {
         if (requestPeople > maxPeople) {
             throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
+        }
+    }
+
+    // 게시글 쓴 멤버와 신청하려는 멤버가 같다면 익셉션을 던지는 로직
+    @Override
+    public void compareMember(Member member, Member postMember) {
+        if (member.getEmail().equals(postMember.getEmail())) {
+            throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
         }
     }
 }

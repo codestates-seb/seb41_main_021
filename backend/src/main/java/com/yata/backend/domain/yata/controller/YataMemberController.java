@@ -51,14 +51,13 @@ public class YataMemberController {
     }
 
     // TODO 승인된 yata 전체 조회 - 200
-//    @GetMapping("/accept/yataRequests")
-//    public ResponseEntity getApprovedRequests(@PathVariable("yataId") @Positive long yataId,
-//                                              @RequestParam String approvalStatus,
-//                                              @AuthenticationPrincipal User authMember,
-//                                              Pageable pageable) {
-//        Slice<YataMember> acceptedRequests = yataMemberService.f(authMember.getUsername(), yataId, approvalStatus ,pageable);
-//        SliceInfo sliceInfo = new SliceInfo(pageable, acceptedRequests.getNumberOfElements(), acceptedRequests.hasNext());
-//        return new ResponseEntity<>(
-//                new SliceResponseDto<>(mapper.yataMembersToYataMembersResponses(acceptedRequests.getContent()), sliceInfo), HttpStatus.OK);
-//    }
+    @GetMapping("/accept/yataRequests")
+    public ResponseEntity getApprovedRequests(@PathVariable("yataId") @Positive long yataId,
+                                              @AuthenticationPrincipal User authMember,
+                                              Pageable pageable) {
+        Slice<YataMember> acceptedRequests = yataMemberService.findAcceptedRequests(authMember.getUsername(), yataId, pageable);
+        SliceInfo sliceInfo = new SliceInfo(pageable, acceptedRequests.getNumberOfElements(), acceptedRequests.hasNext());
+        return new ResponseEntity<>(
+                new SliceResponseDto<>(mapper.yataMembersToYataMembersResponses(acceptedRequests.getContent()), sliceInfo), HttpStatus.OK);
+    }
 }
