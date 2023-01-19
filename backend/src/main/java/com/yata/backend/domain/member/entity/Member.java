@@ -7,6 +7,7 @@ import com.yata.backend.domain.yata.entity.YataRequest;
 import com.yata.backend.global.audit.Auditable;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.stereotype.Indexed;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -19,6 +20,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = "yataRequests")
+@Table(indexes = {
+        @Index(name = "idx_member_email", columnList = "email", unique = true),
+        @Index(name = "idx_member_nickname", columnList = "nickname")
+})
 public class Member extends Auditable {
     @Id
     @Column(nullable = false,updatable = false, unique = true, length = 100) // 이메일 식별자

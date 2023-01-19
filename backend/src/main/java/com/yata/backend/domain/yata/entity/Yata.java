@@ -16,6 +16,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Table(indexes = {
+        @Index(name = "idx_yata_yataId", columnList = "yataId", unique = true),
+        @Index(name = "idx_yata_member", columnList = "member"),
+        @Index(name = "idx_yata_memberAndYata", columnList = "member,yataId", unique = true),
+})
 public class Yata extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

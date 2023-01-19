@@ -14,6 +14,10 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
+@Table(indexes = {
+        @Index(name = "idx_payment_member", columnList = "customer"),
+        @Index(name = "idx_payment_paymentKey", columnList = "paymentKey"),
+})
 public class Payment extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
