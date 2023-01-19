@@ -324,6 +324,14 @@ include::{snippets}/yataMember-accept/path-parameters.adoc[]
 .http-response
 include::{snippets}/yataMember-accept/http-response.adoc[]
 
+=== 신청/초대 거절 + 승인된 신청/초대 거절
+
+.http-request
+include::{snippets}/yataMember-reject/http-request.adoc[]
+.path-parameters
+include::{snippets}/yataMember-reject/path-parameters.adoc[]
+.http-response
+include::{snippets}/yataMember-reject/http-response.adoc[]
 
 
 

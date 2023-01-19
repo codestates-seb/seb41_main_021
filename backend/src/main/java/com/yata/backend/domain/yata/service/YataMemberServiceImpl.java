@@ -83,32 +83,24 @@ public class YataMemberServiceImpl implements YataMemberService {
         }
 
         // 상태가 ACCEPTED 면
-        long leftTime = yata.getDepartureTime().getTime() - System.currentTimeMillis(); //
+        long leftTime = yata.getDepartureTime().getTime() - System.currentTimeMillis();
         if (leftTime < LEFT_TIME) { // 이틀보다 적게 남았을 경우 운전자인지 체크한 후에
             memberService.checkDriver(member);
         }
 
-        // TODO yataMembers list 에서 해당 userName 를 가진 애가 있는지 검증 + 있다면 걔를 delete
-//        Predicate<YataMember> isQualified = yataMember -> yataMember.getYata().getYataRequests().get(0).getApprovalStatus() == YataRequest.ApprovalStatus.REJECTED;
-//
-//        List<Long> yataMembers = yata.getYataMembers().stream()
-//                .filter(r -> r.getYata().getYataRequests().get(0).getApprovalStatus() == YataRequest.ApprovalStatus.REJECTED)
-//                .map(YataMember::getYataMemberId)
-//                .toList();
+        // 신청을 한 멤버의 email 을 가진 멤버가 있는지 검증하고 걔를 빼옴
+        Optional<YataMember> yataMember = yata.getYataMembers().stream()
+                .filter(r -> r.getMember().getEmail().equals(yataRequest.getMember().getEmail()))
+                .findAny();
 
-//        yata.getYataMembers().stream()
-//                .filter(yataMember -> yataMember.getYata().getYataRequests().get(0).getApprovalStatus() == YataRequest.ApprovalStatus.REJECTED)
-//                .forEach(yataMember -> yataMember.getYata().getYataId());
-//
-//        yata.getYataMembers().removeIf(yataMember -> yataMember.getYata().getYataRequests().get(0).getApprovalStatus() == YataRequest.ApprovalStatus.REJECTED);
-
-//        boolean memberPresent = yata.getYataMembers().stream()
-//                        .anyMatch()
+        // 레포에서 delete
+        yataMember.ifPresent(yataMember2 -> jpaYataMemberRepository.delete(yataMember2));
 
         yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.REJECTED); // yataRequest 의 상태를 거절로 변경
     }
 
     // yataMember 전체 조회 ( 승인된 애들 조회 )
+    // TODO 한 명 위에서 reject 하니까 갑자기 이거 조회하면 다 rejcet 로 뜸 --> 저거 만들고 다시 수정
     @Override
     public Slice<YataMember> findAcceptedRequests(String userEmail, Long yataId, Pageable pageable) {
         Yata yata = yataService.verifyYata(yataId);
@@ -118,7 +110,4 @@ public class YataMemberServiceImpl implements YataMemberService {
 
         return jpaYataMemberRepository.findAllByYata(yata, pageable);
     }
-
-    // TODO yataMembers list 에 해당 yataRequestId 를 가진 애가 있는지 검증
-    //  yata.yataMembers()
 }
