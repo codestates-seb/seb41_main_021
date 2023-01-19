@@ -21,25 +21,27 @@ public interface ReviewMapper {
         return requestBody.getChecklistIds();
     }
 
- default ReviewDto.Response reviewToReviewResponse(Review review){
-     if (review == null) {
-         return null;
-     }
-     ReviewDto.Response.ResponseBuilder response = ReviewDto.Response.builder();
-     response.reviewId(review.getReviewId())
-             .yataId(review.getYata().getYataId())
-             .writerEmail(review.getMember().getEmail())
-             .responses(review.getReviewChecklists()
-                     .stream()
-                     .map(reviewChecklist -> {
-                        return ReviewChecklistDto.Response.builder()
-                                 .reviewCheckId(reviewChecklist.getReviewCheckId())
-                                 .checklistId(reviewChecklist.getChecklist().getChecklistId())
-                                 .build();
-                     }
-                     ).collect(Collectors.toList()));
+    default ReviewDto.Response reviewToReviewResponse(Review review) {
+        if (review == null) {
+            return null;
+        }
+        ReviewDto.Response.ResponseBuilder response = ReviewDto.Response.builder();
+        response.reviewId(review.getReviewId())
+                .yataId(review.getYata().getYataId())
+                .writerEmail(review.getMember().getEmail())
+                .responses(review.getReviewChecklists()
+                        .stream()
+                        .map(reviewChecklist -> {
+                                    return ReviewChecklistDto.Response.builder()
+                                          //  .reviewCheckId(reviewChecklist.getReviewCheckId())
+                                            .checklistId(reviewChecklist.getChecklist().getChecklistId())
+                                            .checkContent(reviewChecklist.getChecklist().getCheckContent())
+                                            .checkpn(reviewChecklist.getChecklist().isCheckpn())
+                                            .build();
+                                }
+                        ).collect(Collectors.toList()));
 
-     return response.build();
+        return response.build();
 
 
     }

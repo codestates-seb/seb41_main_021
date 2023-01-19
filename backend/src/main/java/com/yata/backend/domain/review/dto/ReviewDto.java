@@ -16,6 +16,7 @@ import java.util.List;
 @Setter
 @ToString
 public class ReviewDto {
+    @NoArgsConstructor
     @AllArgsConstructor
     @Getter
     @Setter

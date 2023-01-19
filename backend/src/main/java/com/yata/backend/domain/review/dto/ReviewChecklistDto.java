@@ -28,10 +28,12 @@ public class ReviewChecklistDto {
     @Builder
     public static class Response{
 
-        //리뷰 체크 아이디(필요할까?) / 체크 여부
-        private Long reviewCheckId;
+        //리뷰 체크 아이디(필요할까?)
+       // private Long reviewCheckId;
         //체크리스트 항목에 관한 내용
         private long checklistId;
+        private String checkContent;
+        private boolean checkpn;
 
     }
 }

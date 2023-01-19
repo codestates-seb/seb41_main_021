@@ -13,6 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class ReviewChecklist {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewCheckId; // reviewChecklistId
 
     @ManyToOne
