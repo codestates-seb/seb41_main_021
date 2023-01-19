@@ -29,9 +29,10 @@ public interface MemberMapper {
                 .nickname(member.getNickname())
                 .memberStatus(member.getMemberStatus())
                 .genders(member.getGenders())
-                .imgUrl(member.getImgUrl().getUrl() == null ? null : member.getImgUrl().getUrl())
+                .imgUrl(member.getImgUrl() == null ? null : member.getImgUrl().getUrl())
                 .providerType(member.getProviderType())
                 .carImgUrl(member.getCarImgUrl())
+                .fuelTank(member.getFuelTank())
                 .roles(member.getRoles())
                 .build();
     }

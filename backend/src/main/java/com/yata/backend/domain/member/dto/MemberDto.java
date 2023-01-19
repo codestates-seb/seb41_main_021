@@ -57,6 +57,7 @@ public class MemberDto {
         private String carImgUrl;
 
         private Member.MemberStatus memberStatus;
+        private Double fuelTank;
         private List<String> roles;
 
     }

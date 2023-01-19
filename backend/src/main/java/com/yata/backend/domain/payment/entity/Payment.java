@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Setter
 @Table(indexes = {
         @Index(name = "idx_payment_member", columnList = "customer"),
-        @Index(name = "idx_payment_paymentKey", columnList = "paymentKey"),
+        @Index(name = "idx_payment_paymentKey", columnList = "paymentKey" ),
 })
 public class Payment extends Auditable {
     @Id
@@ -35,6 +35,7 @@ public class Payment extends Auditable {
 
     private boolean paySuccessYN;
     @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "customer")
     private Member customer;
     @Column
     private String paymentKey;

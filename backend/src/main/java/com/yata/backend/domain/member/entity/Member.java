@@ -26,7 +26,7 @@ import java.util.List;
 })
 public class Member extends Auditable {
     @Id
-    @Column(nullable = false,updatable = false, unique = true, length = 100) // 이메일 식별자
+    @Column(nullable = false, updatable = false, unique = true, length = 100) // 이메일 식별자
     private String email;
     @Column(nullable = false, length = 100)
     private String password;
@@ -49,7 +49,6 @@ public class Member extends Auditable {
     @ElementCollection(fetch = FetchType.EAGER) // 권한 목록
     private List<String> roles;
 
-    @JoinColumn// 프로필 이미지
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
     private ImageEntity imgUrl;
     @Column // 차량 이미지
@@ -65,9 +64,9 @@ public class Member extends Auditable {
 
     // TODO phoneNumbers add
 
-    @OneToMany(mappedBy = "yata" , fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "yata", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<YataRequest> yataRequests = new ArrayList<>();
-    @OneToMany(mappedBy = "yata" , fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "yata", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<YataMember> yataMembers = new ArrayList<>();
 
     public enum MemberStatus {
@@ -82,12 +81,14 @@ public class Member extends Auditable {
             this.status = status;
         }
     }
+
     public enum MemberRole {
         DRIVER,
         PASSANGER,
         ADMIN,
     }
-    public enum Gender{
+
+    public enum Gender {
         MAN("남자"),
         NOT_CHECKED("미선택"),
         WOMAN("여자");
@@ -95,6 +96,7 @@ public class Member extends Auditable {
         Gender(String gender) {
             this.gender = gender;
         }
+
         @Getter
         private String gender;
     }

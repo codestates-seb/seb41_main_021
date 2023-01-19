@@ -7,6 +7,9 @@ import com.yata.backend.domain.member.utils.AuthoritiesUtils;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
 import com.yata.backend.global.utils.CustomBeanUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +47,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Cacheable(value = "member")
     public Member findMember(String email) {
         return verifyMember(email);
     }
@@ -53,6 +57,7 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findByEmail(email);
     }
 
+    // Private Methods 로 바꿀 것
     @Override
     public Member verifyMember(String email) {
         return memberRepository.findByEmail(email).orElseThrow(() -> new CustomLogicException(ExceptionCode.MEMBER_NONE));
@@ -72,6 +77,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @CachePut(value = "member", key = "#email")
     public Member updateMember(String email, Member patchMemberDtoToMember) {
         Member member = verifyMember(email);
         customBeanUtils.copyNonNullProperties(patchMemberDtoToMember, member);

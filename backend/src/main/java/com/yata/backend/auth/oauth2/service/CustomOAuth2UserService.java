@@ -9,6 +9,7 @@ import com.yata.backend.auth.oauth2.info.OAuth2UserInfoFactory;
 import com.yata.backend.domain.image.entity.ImageEntity;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.repository.JpaMemberRepository;
+import com.yata.backend.domain.member.utils.AuthoritiesUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
@@ -67,7 +68,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         Member user = Member.builder()
                 .email(userInfo.getEmail())
                 .password("oauth2")
-                .roles(Collections.singletonList(Member.MemberRole.PASSANGER.name()))
+                .roles(AuthoritiesUtils.createRoles(userInfo.getEmail()))
                 .providerType(providerType)
                 .memberStatus(Member.MemberStatus.MEMBER_ACTIVE)
                 .genders(Member.Gender.NOT_CHECKED)
@@ -77,7 +78,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .fuelTank(30.0)
                 .point(0L)
                 .build();
-
         return memberRepository.saveAndFlush(user);
     }
 
