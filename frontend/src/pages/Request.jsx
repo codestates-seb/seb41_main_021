@@ -3,16 +3,15 @@ import Header from '../components/Header';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button';
 
-export default function DriverAuth() {
+export default function Purchase() {
   return (
     <>
-      <Header title="운전자 인증하기" />
+      <Header title="신청하기" />
       <Container>
         <Contents>
-          <Input label="이름"></Input>
-          <Input label="운전면허 번호"></Input>
-          <Input label="발급일자"></Input>
-          <AuthBtn>인증하기</AuthBtn>
+          <Input label="탑승 인원" type="number" min="1" max="10" placeholder="1" />
+          <Input label="특이사항" placeholder="아이가 있어요, 흡연자입니다, 짐이 많아요, 등" />
+          <AuthBtn>신청하기</AuthBtn>
         </Contents>
       </Container>
     </>

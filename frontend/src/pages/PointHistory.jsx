@@ -5,8 +5,8 @@ import ChargeList from '../components/ChargeList';
 export default function PointHistory() {
   return (
     <>
+      <Header title="충전 내역" />
       <Container>
-        <Header title="충전 내역" />
         <ChargeList date="오늘" price="10000원" />
       </Container>
     </>
@@ -14,6 +14,6 @@ export default function PointHistory() {
 }
 
 const Container = styled.div`
-  width: 100%;
-  height: 100vh;
+  flex: 1;
+  overflow: scroll;
 `;

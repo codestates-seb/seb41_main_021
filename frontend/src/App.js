@@ -30,6 +30,11 @@ import DestinationList from './components/Tayo/DestinationList';
 import DestinationDetail from './components/Tayo/DestinationDetail';
 import ExchagePage from './pages/ExchangePage';
 import PointHistory from './pages/PointHistory';
+import Purchase from './pages/Purchase';
+import Request from './pages/Request';
+
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -63,7 +68,10 @@ function App() {
               <Route path="/destination-detail" element={<DestinationDetail />}></Route>
               <Route path="/exchange-page" element={<ExchagePage />}></Route>
               <Route path="/point-history" element={<PointHistory />}></Route>
+              <Route path="/purchase" element={<Purchase />}></Route>
+              <Route path="/request" element={<Request />}></Route>
             </Routes>
+            <ToastContainer position="top-center" />
           </Screen>
         </ThemeProvider>
       </Provider>

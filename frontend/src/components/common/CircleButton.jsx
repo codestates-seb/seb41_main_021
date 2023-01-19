@@ -18,7 +18,7 @@ const CircleButton = styled.button`
   font-size: 3.5rem;
   position: absolute;
   right: -1rem;
-  bottom: 9rem;
+  bottom: 4rem;
   transform: translate(-50%, 50%);
   color: white;
   border-radius: 50%;

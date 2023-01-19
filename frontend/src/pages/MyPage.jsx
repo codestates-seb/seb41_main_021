@@ -6,12 +6,15 @@ import { BiTrip, BiLike } from 'react-icons/bi';
 import { RiOilLine } from 'react-icons/ri';
 import { IoIosArrowForward } from 'react-icons/io';
 import { RiCoinsFill } from 'react-icons/ri';
+import usePayment from '../hooks/usePayment';
+
+import { useNavigate } from 'react-router-dom';
 
 export default function MyPage() {
+  const navigate = useNavigate();
   return (
     <>
       <Container>
-        <NavBar />
         <MyPageContainer>
           <ProfileContainer>
             <Profile>
@@ -49,7 +52,11 @@ export default function MyPage() {
               </div>
               <div className="point-amount">5,000원</div>
             </div>
-            <div className="buy-point">
+            <div
+              className="buy-point"
+              onClick={() => {
+                navigate('/purchase');
+              }}>
               <div className="title">포인트 충전하기</div>
               <IoIosArrowForward />
             </div>
@@ -103,13 +110,14 @@ export default function MyPage() {
           </ListContainer>
         </MyPageContainer>
       </Container>
+      <NavBar />
     </>
   );
 }
 
 const Container = styled.div`
-  width: 100%;
-  height: 100vh;
+  flex: 1;
+  overflow: scroll;
 `;
 
 const MyPageContainer = styled.div`
