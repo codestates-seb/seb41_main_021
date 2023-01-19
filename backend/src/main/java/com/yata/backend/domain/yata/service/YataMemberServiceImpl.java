@@ -42,12 +42,7 @@ public class YataMemberServiceImpl implements YataMemberService {
         yataService.equalMember(member, yata.getMember()); // 승인하려는 member = 게시글 작성한 member 인지 확인
         // 인원 수 검증은 신청 시에 이미 했기 때문에 갠잔 / 초대는 자기가 알아서 판단해서 하겠지 모 자기 차니까
 
-        // 승인하려는 yataRequest 가 해당 yata 게시물에 신청한 request 인지 검증
-        Optional<YataRequest> optionalYataRequest = yata.getYataRequests().stream() // 이렇게 requestId 로 하면 될 듯
-                .filter(r -> r.getYataRequestId().equals(yataRequestId))
-                .findAny();
-
-        optionalYataRequest.orElseThrow(() -> new CustomLogicException(ExceptionCode.INVALID_ELEMENT)); // 없다면 익셉션 던져
+        verifyAppliedRequest(yata, yataRequestId);
 
         // 승인 한 번 하면 다시 못하도록
         if (yataRequest.getApprovalStatus().equals(YataRequest.ApprovalStatus.ACCEPTED))
@@ -111,5 +106,15 @@ public class YataMemberServiceImpl implements YataMemberService {
         yataService.equalMember(member, yata.getMember()); // 게시글 작성자 == 조회하려는 사람 인지 확인
 
         return jpaYataMemberRepository.findAllByYata(yata, pageable);
+    }
+
+    @Override
+    public void verifyAppliedRequest(Yata yata, Long yataRequestId) {
+        // 승인하려는 yataRequest 가 해당 yata 게시물에 신청한 request 인지 검증
+        Optional<YataRequest> optionalYataRequest = yata.getYataRequests().stream() // 이렇게 requestId 로 하면 될 듯
+                .filter(r -> r.getYataRequestId().equals(yataRequestId))
+                .findAny();
+
+        optionalYataRequest.orElseThrow(() -> new CustomLogicException(ExceptionCode.INVALID_ELEMENT));
     }
 }
