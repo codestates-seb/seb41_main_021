@@ -1,3 +1,4 @@
+package com.yata.backend.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +16,7 @@ public class WebConfig implements WebMvcConfigurer {
                         .allowedOriginPatterns("*")
                         .allowedHeaders("*")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS" , "PATCH")
-                        .exposedHeaders("Authorization", "RefreshToken");
+                        .exposedHeaders("Authorization", "RefreshToken" , "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials");
                         //.allowCredentials(true);
             }
         };

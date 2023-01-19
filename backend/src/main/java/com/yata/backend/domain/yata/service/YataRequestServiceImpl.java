@@ -37,8 +37,11 @@ public class YataRequestServiceImpl implements YataRequestService {
     @Override
     public YataRequest createRequest(YataRequest yataRequest, String userName, Long yataId, int maxPeople) {
         Member member = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
+        /// 여기부터
         verifyRequest(userName, yataId); // 신청을 이미 했었는지 확인하고
         Yata yata = yataService.verifyYata(yataId);
+
+        compareMember(member, yata.getMember()); // 게시글을 쓴 멤버는 신청 못하도록
 
         YataStatus yataStatus = yata.getYataStatus();
         if (yataStatus == YataStatus.YATA_NEOTA) {
@@ -47,9 +50,10 @@ public class YataRequestServiceImpl implements YataRequestService {
             throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
         }
 
-        if (maxPeople > yata.getMaxPeople()) { // 신청 인원이 게시글의 최대 인원보다 많으면 익셉션
-            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
-        }
+        verifyMaxPeople(maxPeople, yata.getMaxPeople()); // 인원 수 검증
+        // 여기까지 밸리데이션 체크 따로 빼서 하는 거
+
+        // TODO 게시물의 가격과 비교하여 해당 멤버가 포인트가 충분한지 검증
 
         yataRequest.setYata(yata);
         yataRequest.setMember(member);
@@ -60,23 +64,22 @@ public class YataRequestServiceImpl implements YataRequestService {
 
     // Yata 초대
     @Override
-    public YataRequest createInvitation(YataRequest yataRequest, String userName, Long yataId) {
+    public YataRequest createInvitation(String userName, Long yataId) {
         Member member = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
         verifyInvitation(userName, yataId); // 초대를 이미 했었는지 확인하고
         Yata yata = yataService.verifyYata(yataId);
 
         YataStatus yataStatus = yata.getYataStatus();
         if (yataStatus == YataStatus.YATA_NATA) {
-            yataRequest.setRequestStatus(INVITE);
+            YataRequest yataRequest = new YataRequest();
+            yataRequest.setRequestStatus(YataRequest.RequestStatus.INVITE);
+            yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.NOT_YET);
+            yataRequest.setYata(yata);
+            yataRequest.setMember(member);
+            return jpaYataRequestRepository.save(yataRequest);
         } else {
             throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
         }
-
-        yataRequest.setYata(yata);
-        yataRequest.setMember(member);
-        yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.NOT_YET);
-
-        return jpaYataRequestRepository.save(yataRequest);
     }
 
     // Yata 신청 목록 조회
@@ -86,7 +89,7 @@ public class YataRequestServiceImpl implements YataRequestService {
         Member member = memberService.verifyMember(userEmail);
 
         // 게시글 작성자 == 조회하려는 사람 인지 확인
-        equalMember(member, yata.getMember());
+        yataService.equalMember(member, yata.getMember());
 
         return jpaYataRequestRepository.findAllByYata(yata, pageable);
     }
@@ -99,7 +102,7 @@ public class YataRequestServiceImpl implements YataRequestService {
         YataRequest yataRequest = findRequest(yataRequestId); // 해당 yataRequestId 로 한 신청/초대가 있는지 ( 신청/초대 )
 
         // 게시글 작성자 == 삭제하려는 사람 인지 확인
-        equalMember(member, yata.getMember());
+        yataService.equalMember(member, yata.getMember());
 
         YataRequest.ApprovalStatus approvalStatus = yataRequest.getApprovalStatus();
 
@@ -140,8 +143,19 @@ public class YataRequestServiceImpl implements YataRequestService {
         });
     }
 
-    public void equalMember(Member member, Member postMember) {
-        if (!member.getEmail().equals(postMember.getEmail()))
+    // 신청 인원과 게시글의 최대 인원을 비교하는 로직
+    @Override
+    public void verifyMaxPeople(int requestPeople, int maxPeople) {
+        if (requestPeople > maxPeople) {
+            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
+        }
+    }
+
+    // 게시글 쓴 멤버와 신청하려는 멤버가 같다면 익셉션을 던지는 로직
+    @Override
+    public void compareMember(Member member, Member postMember) {
+        if (member.getEmail().equals(postMember.getEmail())) {
             throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
+        }
     }
 }

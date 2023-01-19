@@ -1,17 +1,12 @@
 package com.yata.backend.domain.yata.controller;
 
 import com.yata.backend.domain.yata.dto.YataRequestDto;
-import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import com.yata.backend.domain.yata.mapper.YataRequestMapper;
 import com.yata.backend.domain.yata.service.YataRequestService;
-import com.yata.backend.domain.yata.service.YataRequestServiceImpl;
-import com.yata.backend.domain.yata.service.YataService;
-import com.yata.backend.domain.yata.service.YataServiceImpl;
 import com.yata.backend.global.response.SingleResponse;
 import com.yata.backend.global.response.SliceInfo;
 import com.yata.backend.global.response.SliceResponseDto;
-import org.apache.tomcat.util.net.openssl.ciphers.OpenSSLCipherConfigurationParser;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
@@ -23,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.util.List;
 
 @RestController
 @Validated
@@ -50,9 +44,9 @@ public class YataRequestController {
     // Yata 초대 - 201
     @PostMapping("/invite/{yataId}")
     public ResponseEntity postInvitation(@PathVariable("yataId") @Positive long yataId,
-                                      @Valid @RequestBody YataRequestDto.InvitationPost requestBody,
                                       @AuthenticationPrincipal User authMember) throws Exception {
-        YataRequest yataRequest = yataRequestService.createInvitation(mapper.yataInvitationPostDtoToYataInvitation(requestBody), authMember.getUsername(), yataId);
+        YataRequest yataRequest = yataRequestService.createInvitation(authMember.getUsername(), yataId);
+
         return new ResponseEntity<>(
                 new SingleResponse<>(mapper.yataInvitationToYataInvitationResponse(yataRequest)), HttpStatus.CREATED);
     }

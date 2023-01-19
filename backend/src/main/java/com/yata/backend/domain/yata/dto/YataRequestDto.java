@@ -1,5 +1,6 @@
 package com.yata.backend.domain.yata.dto;
 
+import com.yata.backend.domain.yata.entity.YataMember;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -53,15 +54,6 @@ public class YataRequestDto {
         private int maxWaitingTime;
         private LocationDto.Response strPoint;
         private LocationDto.Response destination;
-    }
-
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Getter
-    @ToString
-    @Builder
-    public static class InvitationPost {
-        private Long yataId;
     }
 
     @AllArgsConstructor

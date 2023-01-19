@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Navbar from '../components/NavBar';
 import Header from '../components/Header';
@@ -7,6 +7,7 @@ import ListItem from '../components/ListItem';
 import DestinationInput from '../components/DestinationInput';
 import { useNavigate } from 'react-router-dom';
 import { MdAdd } from 'react-icons/md';
+import useGetData from '../hooks/useGetData';
 
 export default function TabnidaList() {
   const [open, setOpen] = useState(false);
@@ -15,6 +16,10 @@ export default function TabnidaList() {
     setOpen(!open);
     navigate('/tabnida-add');
   };
+
+  useEffect(() => {
+    useGetData('https://server.yata.kro.kr/api/v1/yata?yataStatus=nata').then(res => console.log(res.data.data));
+  }, []);
 
   return (
     <>
@@ -25,12 +30,16 @@ export default function TabnidaList() {
           date={'1월 3일 (화) 7:00PM'}
           journeyStart={'성수 SPOT 01 외'}
           journeyEnd={'용산 HUB'}
-          transit="1"></ListItem>
+          transit="1"
+          price="2000"
+          people="1"></ListItem>
         <ListItem
           date={'1월 3일 (화) 7:00PM'}
           journeyStart={'성수 SPOT 01 외'}
           journeyEnd={'용산 HUB'}
-          transit="1"></ListItem>
+          transit="1"
+          price="2000"
+          people="1"></ListItem>
         <CircleButton onClick={add} open={open}>
           <MdAdd />
         </CircleButton>

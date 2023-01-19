@@ -62,6 +62,12 @@ public class Yata extends Auditable {
     @OneToOne(cascade = CascadeType.ALL)
     private Location destination;
 
+//    @OneToMany(mappedBy = "yata",cascade = CascadeType.ALL)
+//    private List<YataChecklist> yataChecklists = new ArrayList<>();
+
+
+//    @OneToMany(mappedBy = "yata" , cascade = CascadeType.ALL)
+//    private List<Location> waypoints = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "EMAIL")
@@ -74,6 +80,9 @@ public class Yata extends Auditable {
     private List<Review> reviews = new ArrayList<>();
 
 
+    // TODO lazy / eager 뭐 할지 생각 - 쿼리 어떻게 나오는지 확인하기
+    @OneToMany(mappedBy = "yata" , cascade = CascadeType.REMOVE)
+    private List<YataMember> yataMembers = new ArrayList<>();
 
     public enum PostStatus {
         POST_WAITING(1,"예약 전"),

@@ -1,14 +1,15 @@
 import styled, { css } from 'styled-components';
 import Button from '../common/Button';
+import { useNavigate } from 'react-router-dom';
 
 export default function DestinationItem(props) {
+  const navigate = useNavigate();
   // address_name // id // x // y //place_name
-  const { addressName, placeName } = props;
-  console.log(addressName, placeName);
+  const { addressName, placeName, x, y } = props;
 
   return (
     <>
-      <Container>
+      <Container onClick={() => navigate('/destination-detail')}>
         <div className="place-container">
           <h2 className="place-name">{placeName}</h2>
           <div className="place-address">{addressName}</div>

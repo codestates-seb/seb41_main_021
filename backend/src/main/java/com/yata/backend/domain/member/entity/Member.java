@@ -1,11 +1,15 @@
 package com.yata.backend.domain.member.entity;
 
 import com.yata.backend.auth.oauth2.dto.ProviderType;
+import com.yata.backend.domain.image.entity.ImageEntity;
+import com.yata.backend.domain.yata.entity.YataMember;
+import com.yata.backend.domain.yata.entity.YataRequest;
 import com.yata.backend.global.audit.Auditable;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,7 +18,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = "yataRequests")
 public class Member extends Auditable {
     @Id
     @Column(nullable = false,updatable = false, unique = true, length = 100) // 이메일 식별자
@@ -40,8 +44,9 @@ public class Member extends Auditable {
     @ElementCollection(fetch = FetchType.EAGER) // 권한 목록
     private List<String> roles;
 
-    @Column// 프로필 이미지
-    private String imgUrl;
+    @JoinColumn// 프로필 이미지
+    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+    private ImageEntity imgUrl;
     @Column // 차량 이미지
     private String carImgUrl;
 
@@ -54,6 +59,11 @@ public class Member extends Auditable {
     private Long point;
 
     // TODO phoneNumbers add
+
+    @OneToMany(mappedBy = "yata" , fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
+    private List<YataRequest> yataRequests = new ArrayList<>();
+    @OneToMany(mappedBy = "yata" , fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
+    private List<YataMember> yataMembers = new ArrayList<>();
 
     public enum MemberStatus {
         MEMBER_ACTIVE("활동중"),

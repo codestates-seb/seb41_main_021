@@ -2,6 +2,8 @@ import './App.css';
 import GlobalStyle from './styles/GlobalStyle';
 import { Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
+import { Provider } from 'react-redux';
+import store from './redux/store.jsx';
 import theme from './styles/theme';
 import Screen from './components/Screen';
 import DriverAuth from './pages/DriverAuth';
@@ -25,38 +27,46 @@ import TaeoondaList from './pages/TaeoondaList';
 import RegisterList from './pages/RegisterList';
 import RegisterCheckList from './pages/RegisterCheckList';
 import DestinationList from './components/Tayo/DestinationList';
+import DestinationDetail from './components/Tayo/DestinationDetail';
+import ExchagePage from './pages/ExchangePage';
+import PointHistory from './pages/PointHistory';
 
 function App() {
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <Screen>
-          <Routes>
-            <Route path="/" element={<Homepage />}></Route>
-            <Route path="/driver-auth" element={<DriverAuth />}></Route>
-            <Route path="/journey-list" element={<JourneyList />}></Route>
-            <Route path="/loading" element={<Loading />}></Route>
-            <Route path="/login" element={<LogIn />}></Route>
-            <Route path="/my-page" element={<MyPage />}></Route>
-            <Route path="/other-user-page" element={<OtherUserPage />}></Route>
-            <Route path="/rating-add" element={<RatingAdd />}></Route>
-            <Route path="/rating-list" element={<RatingList />}></Route>
-            <Route path="/signup" element={<SignUp />}></Route>
-            <Route path="/tabnida-add" element={<TabnidaAdd />}></Route>
-            <Route path="/tabnida-edit" element={<TabnidaEdit />}></Route>
-            <Route path="/tabnida-detail" element={<TabnidaDetail />}></Route>
-            <Route path="/tabnida-list" element={<TabnidaList />}></Route>
-            <Route path="/taeoonda-add" element={<TaeoondaAdd />}></Route>
-            <Route path="/taeoonda-edit" element={<TaeoondaEdit />}></Route>
-            <Route path="/taeoonda-detail" element={<TaeoondaDetail />}></Route>
-            <Route path="/taeoonda-list" element={<TaeoondaList />}></Route>
-            <Route path="/register-list" element={<RegisterList />}></Route>
-            <Route path="/register-checklist" element={<RegisterCheckList />}></Route>
-            <Route path="/destination-list" element={<DestinationList />}></Route>
-          </Routes>
-        </Screen>
-      </ThemeProvider>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          <Screen>
+            <Routes>
+              <Route path="/" element={<Homepage />}></Route>
+              <Route path="/driver-auth" element={<DriverAuth />}></Route>
+              <Route path="/journey-list" element={<JourneyList />}></Route>
+              <Route path="/loading" element={<Loading />}></Route>
+              <Route path="/login" element={<LogIn />}></Route>
+              <Route path="/my-page" element={<MyPage />}></Route>
+              <Route path="/other-user-page" element={<OtherUserPage />}></Route>
+              <Route path="/rating-add" element={<RatingAdd />}></Route>
+              <Route path="/rating-list" element={<RatingList />}></Route>
+              <Route path="/signup" element={<SignUp />}></Route>
+              <Route path="/tabnida-add" element={<TabnidaAdd />}></Route>
+              <Route path="/tabnida-edit" element={<TabnidaEdit />}></Route>
+              <Route path="/tabnida-detail" element={<TabnidaDetail />}></Route>
+              <Route path="/tabnida-list" element={<TabnidaList />}></Route>
+              <Route path="/taeoonda-add" element={<TaeoondaAdd />}></Route>
+              <Route path="/taeoonda-edit" element={<TaeoondaEdit />}></Route>
+              <Route path="/taeoonda-detail" element={<TaeoondaDetail />}></Route>
+              <Route path="/taeoonda-list" element={<TaeoondaList />}></Route>
+              <Route path="/register-list" element={<RegisterList />}></Route>
+              <Route path="/register-checklist" element={<RegisterCheckList />}></Route>
+              <Route path="/destination-list" element={<DestinationList />}></Route>
+              <Route path="/destination-detail" element={<DestinationDetail />}></Route>
+              <Route path="/exchange-page" element={<ExchagePage />}></Route>
+              <Route path="/point-history" element={<PointHistory />}></Route>
+            </Routes>
+          </Screen>
+        </ThemeProvider>
+      </Provider>
     </>
   );
 }

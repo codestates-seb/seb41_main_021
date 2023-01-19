@@ -118,7 +118,7 @@ public class YataServiceImpl implements YataService{
         }
     }
 
-    private void equalMember(Member member, Member postMember) {
+    public void equalMember(Member member, Member postMember) {
         if (!member.getEmail().equals(postMember.getEmail())) {
             throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
         }

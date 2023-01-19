@@ -9,7 +9,9 @@ export default function DestinationList(props) {
     <>
       <Container>
         {Places.map(el => {
-          return <DestinationItem addressName={el.address_name} placeName={el.place_name} />;
+          return (
+            <DestinationItem key={el.id} addressName={el.address_name} placeName={el.place_name} x={el.x} y={el.y} />
+          );
         })}
       </Container>
     </>

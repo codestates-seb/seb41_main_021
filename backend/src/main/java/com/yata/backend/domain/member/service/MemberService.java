@@ -2,6 +2,7 @@ package com.yata.backend.domain.member.service;
 
 
 import com.yata.backend.domain.member.entity.Member;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -17,6 +18,4 @@ public interface MemberService {
     Member updateMember(String email, Member patchMemberDtoToMember);
 
     void checkDriver(Member member);
-
-
 }
