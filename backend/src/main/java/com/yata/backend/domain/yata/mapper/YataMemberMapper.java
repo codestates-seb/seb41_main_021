@@ -20,8 +20,8 @@ public interface YataMemberMapper {
         // TODO 이거 get(0) 이거 하면 무조건 처음 꺼가 나오네..
         return yataMembers.stream()
                 .map(yataMember -> {
-                    List<YataRequestDto.RequestResponse> yataRequestResponses =
-                            yataMembersToYataMembersResponses(yataMember.getYata().getYataRequests());
+//                    List<YataRequestDto.RequestResponse> yataRequestResponses =
+//                            yataMembersToYataMembersResponses(yataMember.getYata().getYataRequests());
                     return YataMemberDto.Response.builder()
                             .yataMemberId(yataMember.getYataMemberId())
                             .yataId(yataMember.getYata().getYataId())
