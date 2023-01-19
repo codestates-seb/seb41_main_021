@@ -8,7 +8,10 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { RiCoinsFill } from 'react-icons/ri';
 import usePayment from '../hooks/usePayment';
 
+import { useNavigate } from 'react-router-dom';
+
 export default function MyPage() {
+  const navigate = useNavigate();
   return (
     <>
       <Container>
@@ -49,7 +52,11 @@ export default function MyPage() {
               </div>
               <div className="point-amount">5,000원</div>
             </div>
-            <div className="buy-point" onClick={() => usePayment()}>
+            <div
+              className="buy-point"
+              onClick={() => {
+                navigate('/purchase');
+              }}>
               <div className="title">포인트 충전하기</div>
               <IoIosArrowForward />
             </div>
