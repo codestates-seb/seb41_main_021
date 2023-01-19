@@ -1,11 +1,14 @@
 package com.yata.backend.domain.review.mapper;
 
+import com.yata.backend.domain.member.dto.MemberDto;
+import com.yata.backend.domain.review.dto.ReviewChecklistDto;
 import com.yata.backend.domain.review.dto.ReviewDto;
 import com.yata.backend.domain.review.entity.Checklist;
 import com.yata.backend.domain.review.entity.Review;
 import org.mapstruct.Mapper;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 //체크리스트 아이디로 체크리스트 가져와서 넣어줌
 @Mapper(componentModel = "spring")
@@ -18,19 +21,27 @@ public interface ReviewMapper {
         return requestBody.getChecklistIds();
     }
 
-    ReviewDto.Response reviewToReviewResponse(Review review);
+ default ReviewDto.Response reviewToReviewResponse(Review review){
+     if (review == null) {
+         return null;
+     }
+     ReviewDto.Response.ResponseBuilder response = ReviewDto.Response.builder();
+     response.reviewId(review.getReviewId())
+             .yataId(review.getYata().getYataId())
+             .writerEmail(review.getMember().getEmail())
+             .responses(review.getReviewChecklists()
+                     .stream()
+                     .map(reviewChecklist -> {
+                        return ReviewChecklistDto.Response.builder()
+                                 .reviewCheckId(reviewChecklist.getReviewCheckId())
+                                 .checklistId(reviewChecklist.getChecklist().getChecklistId())
+                                 .build();
+                     }
+                     ).collect(Collectors.toList()));
+
+     return response.build();
 
 
-//    default List<ReviewChecklist> reviewChecklistDtoToReviewChecklists (List<ReviewChecklistDto.Post> reviewChecklistDtos){
-//    if(reviewChecklistDtos ==null){
-//        return null;
-//    }
-//        return reviewChecklistDtos.stream()
-//                .map(n -> {
-//                    return ReviewChecklist.builder()
-//                       //    .checklist(n.getChecklistID())
-//                            .checking(n.isChecking()).build();}).collect(Collectors.toList());
-//
-//    }
-
+    }
 }
+
