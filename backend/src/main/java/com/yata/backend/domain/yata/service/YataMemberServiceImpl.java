@@ -35,12 +35,19 @@ public class YataMemberServiceImpl implements YataMemberService {
     // yata 승인
     @Override
     public void accept(String userName, Long yataRequestId, Long yataId) {
-        Member member = memberService.findMember(userName); // 해당 member 가 있는지 확인
-        Yata yata = yataService.verifyYata(yataId); // 해당 yata 가 있는지 확인
-        YataRequest yataRequest = yataRequestService.findRequest(yataRequestId); // 해당 yataRequest 가 있는지 확인
+        Member member = memberService.findMember(userName); // 해당 member 가 있는지 확인 ( 승인하려는 주체 )
+        Yata yata = yataService.verifyYata(yataId); // 해당 yata 가 있는지 확인 ( 승인하려는 게시물Id )
+        YataRequest yataRequest = yataRequestService.findRequest(yataRequestId); // 해당 yataRequest 가 있는지 확인 ( 승인하려는 신청Id )
 
         yataService.equalMember(member, yata.getMember()); // 승인하려는 member = 게시글 작성한 member 인지 확인
         // 인원 수 검증은 신청 시에 이미 했기 때문에 갠잔 / 초대는 자기가 알아서 판단해서 하겠지 모 자기 차니까
+
+        // 승인하려는 yataRequest 가 해당 yata 게시물에 신청한 request 인지 검증
+        Optional<YataRequest> optionalYataRequest = yata.getYataRequests().stream() // 이렇게 requestId 로 하면 될 듯
+                .filter(r -> r.getYataRequestId().equals(yataRequestId))
+                .findAny();
+
+        optionalYataRequest.orElseThrow(() -> new CustomLogicException(ExceptionCode.INVALID_ELEMENT)); // 없다면 익셉션 던져
 
         // 승인 한 번 하면 다시 못하도록
         if (yataRequest.getApprovalStatus().equals(YataRequest.ApprovalStatus.ACCEPTED))
@@ -95,7 +102,7 @@ public class YataMemberServiceImpl implements YataMemberService {
     }
 
     // yataMember 전체 조회 ( 승인된 애들 조회 )
-    // TODO 한 명 위에서 reject 하니까 갑자기 이거 조회하면 다 rejcet 로 뜸 --> 저거 만들고 다시 수정
+    // TODO 한 명 위에서 reject 하니까 갑자기 이거 조회하면 다 reject 로 뜸 --> 저거 만들고 다시 수정
     @Override
     public Slice<YataMember> findAcceptedRequests(String userEmail, Long yataId, Pageable pageable) {
         Yata yata = yataService.verifyYata(yataId);
