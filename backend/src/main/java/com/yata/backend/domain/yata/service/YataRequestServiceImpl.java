@@ -41,6 +41,8 @@ public class YataRequestServiceImpl implements YataRequestService {
         verifyRequest(userName, yataId); // 신청을 이미 했었는지 확인하고
         Yata yata = yataService.verifyYata(yataId);
 
+        compareMember(member, yata.getMember()); // 게시글을 쓴 멤버는 신청 못하도록
+
         YataStatus yataStatus = yata.getYataStatus();
         if (yataStatus == YataStatus.YATA_NEOTA) {
             yataRequest.setRequestStatus(APPLY);
@@ -50,6 +52,8 @@ public class YataRequestServiceImpl implements YataRequestService {
 
         verifyMaxPeople(maxPeople, yata.getMaxPeople()); // 인원 수 검증
         // 여기까지 밸리데이션 체크 따로 빼서 하는 거
+
+        // TODO 게시물의 가격과 비교하여 해당 멤버가 포인트가 충분한지 검증
 
         yataRequest.setYata(yata);
         yataRequest.setMember(member);
@@ -144,6 +148,14 @@ public class YataRequestServiceImpl implements YataRequestService {
     public void verifyMaxPeople(int requestPeople, int maxPeople) {
         if (requestPeople > maxPeople) {
             throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
+        }
+    }
+
+    // 게시글 쓴 멤버와 신청하려는 멤버가 같다면 익셉션을 던지는 로직
+    @Override
+    public void compareMember(Member member, Member postMember) {
+        if (member.getEmail().equals(postMember.getEmail())) {
+            throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
         }
     }
 }

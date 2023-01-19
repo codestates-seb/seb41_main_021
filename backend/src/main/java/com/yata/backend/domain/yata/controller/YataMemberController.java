@@ -14,9 +14,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.text.ParseException;
 
 @RestController
 @Validated
@@ -33,8 +31,8 @@ public class YataMemberController {
     // TODO yata 승인 - 204
     @PostMapping("/{yataRequestId}/accept")
     public ResponseEntity acceptRequest(@PathVariable("yataId") @Positive long yataId,
-                                                 @PathVariable("yataRequestId") @Positive long yataRequestId,
-                                                 @AuthenticationPrincipal User authMember) {
+                                        @PathVariable("yataRequestId") @Positive long yataRequestId,
+                                        @AuthenticationPrincipal User authMember) {
         yataMemberService.accept(authMember.getUsername(), yataRequestId, yataId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -51,14 +49,13 @@ public class YataMemberController {
     }
 
     // TODO 승인된 yata 전체 조회 - 200
-//    @GetMapping("/accept/yataRequests")
-//    public ResponseEntity getApprovedRequests(@PathVariable("yataId") @Positive long yataId,
-//                                              @RequestParam String approvalStatus,
-//                                              @AuthenticationPrincipal User authMember,
-//                                              Pageable pageable) {
-//        Slice<YataMember> acceptedRequests = yataMemberService.f(authMember.getUsername(), yataId, approvalStatus ,pageable);
-//        SliceInfo sliceInfo = new SliceInfo(pageable, acceptedRequests.getNumberOfElements(), acceptedRequests.hasNext());
-//        return new ResponseEntity<>(
-//                new SliceResponseDto<>(mapper.yataMembersToYataMembersResponses(acceptedRequests.getContent()), sliceInfo), HttpStatus.OK);
-//    }
+    @GetMapping("/accept/yataRequests")
+    public ResponseEntity getApprovedRequests(@PathVariable("yataId") @Positive long yataId,
+                                              @AuthenticationPrincipal User authMember,
+                                              Pageable pageable) {
+        Slice<YataMember> acceptedRequests = yataMemberService.findAcceptedRequests(authMember.getUsername(), yataId, pageable);
+        SliceInfo sliceInfo = new SliceInfo(pageable, acceptedRequests.getNumberOfElements(), acceptedRequests.hasNext());
+        return new ResponseEntity<>(
+                new SliceResponseDto<>(mapper.yataMembersToYataMembersResponses(acceptedRequests.getContent()), sliceInfo), HttpStatus.OK);
+    }
 }
