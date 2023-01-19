@@ -11,6 +11,8 @@ import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.service.YataService;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -42,12 +44,18 @@ public class ReviewServiceImpl implements ReviewService {
 //        if (yata.getPostStatus().getStatusNumber() != 5)
 //            throw new CustomLogicException(ExceptionCode.POST_STATUS_IS_NOT_SUITABLE);
 
-        //todo yataRequest apply 리뷰 작성자가 야타 리퀘스트에서 승인된 사람인지 확인
+
+//만약 yata가 너타인 경우
+        //todo yataRequest apply 리뷰 작성자가 야타 리퀘스트에서 결제된 사람인지 확인
         //일단은 멤버가 있는지만 확인하자!
         Member member = memberService.findMember(username);
         //->맞다면 멤버값 넣어줌 (여기서 멤버값은 작성자)
         Review review = new Review();
         review.setMember(member);
+
+        //만약 yata가 나타인경우
+
+
         //yata 값도 넣어줌
         review.setYata(yata);
 
@@ -59,12 +67,15 @@ public class ReviewServiceImpl implements ReviewService {
         }).collect(Collectors.toList());
 
         review.setReviewChecklists(reviewChecklists);
-
         calculateFuelTank(checklists, yata);
 
         //todo n+1 문제 어떻게 해결해야 할까?!?!? 생각해보자 캐싱?
 
         return jpaReviewRepository.save(review);
+    }
+
+    public Slice<Review> findAllReview(String userName,long yataId, Pageable pageable){
+        return null;
     }
 
     /*검증로직*/

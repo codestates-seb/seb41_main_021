@@ -5,6 +5,10 @@ import com.yata.backend.domain.review.entity.Review;
 import com.yata.backend.domain.review.mapper.ReviewMapper;
 import com.yata.backend.domain.review.service.ReviewService;
 import com.yata.backend.global.response.SingleResponse;
+import com.yata.backend.global.response.SliceInfo;
+import com.yata.backend.global.response.SliceResponseDto;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -39,6 +43,17 @@ public class ReviewController {
     }
 
 
-
-    //내가 쓴 리뷰조회는 다른곳에서 해야할 듯
+    //내가 받은 모든 리뷰 조회
+    //보여야 할 것 : list [[야타Id , 리뷰아이디 , 리뷰 체크리스트 항목들],[],[]] 최신순 정렬
+    @GetMapping("/{yata_id}")
+    public ResponseEntity getAllReview(@PathVariable("yata_id") @Positive long yataId,
+                                       @AuthenticationPrincipal User authMember
+                                       , Pageable pageable
+                                       ) {
+        Slice<Review> reviews = reviewService.findAllReview(authMember.getUsername(),yataId,pageable);
+        SliceInfo sliceInfo = new SliceInfo(pageable, reviews.getNumberOfElements(), reviews.hasNext());
+        return new ResponseEntity<>(
+                new SliceResponseDto<>(), HttpStatus.OK);
+    }
+    //내가 쓴 리뷰조회?필요할까?
 }
