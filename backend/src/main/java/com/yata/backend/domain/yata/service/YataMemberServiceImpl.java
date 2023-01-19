@@ -14,25 +14,19 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class YataMemberServiceImpl implements YataMemberService {
     private final JpaYataMemberRepository jpaYataMemberRepository;
-    private final JpaYataRequestRepository jpaYataRequestRepository;
     private final YataRequestService yataRequestService;
     private final YataServiceImpl yataService;
     private final MemberService memberService;
     private final long LEFT_TIME = 2 * 24 * 60 * 60 * 1000;
 
-    public YataMemberServiceImpl(JpaYataMemberRepository jpaYataMemberRepository, JpaYataRequestRepository jpaYataRequestRepository, YataRequestService yataRequestService, YataServiceImpl yataService, MemberService memberService) {
+    public YataMemberServiceImpl(JpaYataMemberRepository jpaYataMemberRepository, YataRequestService yataRequestService, YataServiceImpl yataService, MemberService memberService) {
         this.jpaYataMemberRepository = jpaYataMemberRepository;
-        this.jpaYataRequestRepository = jpaYataRequestRepository;
         this.yataRequestService = yataRequestService;
         this.yataService = yataService;
         this.memberService = memberService;
@@ -58,6 +52,7 @@ public class YataMemberServiceImpl implements YataMemberService {
         yata.getYataRequests().add(yataRequest);
         yataMember.setYata(yata);
         yataMember.setMember(yataRequest.getMember());
+        yataMember.setPayment(YataMember.Payment.NOT_YET); //지불 상태 set
 
         jpaYataMemberRepository.save(yataMember);
     }
@@ -94,7 +89,7 @@ public class YataMemberServiceImpl implements YataMemberService {
                 .findAny();
 
         // 레포에서 delete
-        yataMember.ifPresent(yataMember2 -> jpaYataMemberRepository.delete(yataMember2));
+        yataMember.ifPresent(jpaYataMemberRepository::delete);
 
         yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.REJECTED); // yataRequest 의 상태를 거절로 변경
     }

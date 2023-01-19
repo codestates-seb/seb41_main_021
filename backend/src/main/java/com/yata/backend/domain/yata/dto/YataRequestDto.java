@@ -1,5 +1,6 @@
 package com.yata.backend.domain.yata.dto;
 
+import com.yata.backend.domain.yata.entity.YataMember;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -45,6 +46,7 @@ public class YataRequestDto {
         private Long yataRequestId;
         private YataRequest.RequestStatus yataRequestStatus;
         private YataRequest.ApprovalStatus approvalStatus;
+        private YataMember.Payment payment;
         private String title;
         private String specifics;
         private Date departureTime;

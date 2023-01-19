@@ -18,6 +18,10 @@ public class YataMember extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long YataMemberId;
 
+    @Enumerated(value = EnumType.STRING)
+    @Column(length = 20, nullable = false)
+    private YataMember.Payment payment;
+
     @ManyToOne
     @JoinColumn(name = "YATA_ID")
     private Yata yata;
@@ -26,7 +30,7 @@ public class YataMember extends Auditable {
     @JoinColumn(name = "EMAIL")
     private Member member;
 
-    private enum Payment {
+    public enum Payment {
         PAID("지불 완료"),
         NOT_YET("지불 전");
 

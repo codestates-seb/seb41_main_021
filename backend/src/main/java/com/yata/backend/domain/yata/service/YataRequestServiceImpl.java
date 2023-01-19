@@ -53,6 +53,8 @@ public class YataRequestServiceImpl implements YataRequestService {
         verifyMaxPeople(maxPeople, yata.getMaxPeople()); // 인원 수 검증
         // 여기까지 밸리데이션 체크 따로 빼서 하는 거
 
+        // TODO 게시물의 가격과 비교하여 해당 멤버가 포인트가 충분한지 검증
+
         yataRequest.setYata(yata);
         yataRequest.setMember(member);
         yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.NOT_YET);

@@ -25,7 +25,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @WebMvcTest(YataMemberController.class)
 public class YataMemberControllerTest extends AbstractControllerTest {
     private final String BASE_URL = "/api/v1/yata";
@@ -46,7 +45,7 @@ public class YataMemberControllerTest extends AbstractControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(post(BASE_URL + "/{yataId}/{yataRequestId}/accept",
-                yata.getYataId(),yataRequest.getYataRequestId())
+                yata.getYataId(), yataRequest.getYataRequestId())
                 .with(csrf()));
 
         //then
@@ -71,7 +70,7 @@ public class YataMemberControllerTest extends AbstractControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(post(BASE_URL + "/{yataId}/{yataRequestId}/reject",
-                yata.getYataId(),yataRequest.getYataRequestId())
+                yata.getYataId(), yataRequest.getYataRequestId())
                 .with(csrf()));
 
         //then
