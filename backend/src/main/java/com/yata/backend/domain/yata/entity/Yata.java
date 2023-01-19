@@ -109,4 +109,8 @@ public class Yata extends Auditable {
     public void addDestination(Location destination) {
         this.destination = destination;}
 
+    public Yata(long yataId){
+        this.yataId = yataId;
+    }
+
 }
