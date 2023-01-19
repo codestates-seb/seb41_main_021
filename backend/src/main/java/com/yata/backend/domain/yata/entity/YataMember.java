@@ -28,16 +28,4 @@ public class YataMember extends Auditable {
     @ManyToOne
     @JoinColumn(name = "EMAIL")
     private Member member;
-
-    public enum Payment { // 이게 포인트 충전 내역
-        PAID("지불 완료"),
-        NOT_YET("지불 전");
-
-        @Getter
-        private String status;
-
-        Payment(String status) {
-            this.status = status;
-        }
-    }
 }
