@@ -1,7 +1,11 @@
 package com.yata.backend.domain.member.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.yata.backend.auth.oauth2.dto.ProviderType;
 import com.yata.backend.domain.image.entity.ImageEntity;
+import com.yata.backend.domain.image.entity.QImageEntity;
+import com.yata.backend.domain.member.dto.MemberDto;
 import com.yata.backend.domain.yata.entity.YataMember;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import com.yata.backend.global.audit.Auditable;
@@ -24,6 +28,7 @@ import java.util.List;
         @Index(name = "idx_member_email", columnList = "email", unique = true),
         @Index(name = "idx_member_nickname", columnList = "nickname")
 })
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "email")
 public class Member extends Auditable {
     @Id
     @Column(nullable = false, updatable = false, unique = true, length = 100) // 이메일 식별자
@@ -100,5 +105,18 @@ public class Member extends Auditable {
         @Getter
         private String gender;
     }
+    public  MemberDto.Response toResponseDto(){
+        return MemberDto.Response.builder()
+                .roles(new ArrayList<>(roles))
+                .email(email)
+                .name(name)
+                .genders(genders)
+                .imgUrl(imgUrl != null ? imgUrl.getUrl() : null)
+                .carImgUrl(carImgUrl)
+                .memberStatus(memberStatus)
+                .nickname(nickname)
+                .providerType(providerType)
+                .build();
 
+    }
 }

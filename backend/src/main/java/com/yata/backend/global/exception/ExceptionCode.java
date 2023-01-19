@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum ExceptionCode {
+    FILE_NOT_SUPPORTED(400,"파일 형식이 지원되지 않습니다."),
     PAYMENT_NOT_FOUND(404, "PAYMENT_NOT_FOUND"),
     PAYMENT_AMOUNT_EXP(400, "PAYMENT_AMOUNT_NOT_EQUAL"),
 
