@@ -46,7 +46,6 @@ public class YataRequestDto {
         private Long yataRequestId;
         private YataRequest.RequestStatus yataRequestStatus;
         private YataRequest.ApprovalStatus approvalStatus;
-//        private YataMember.Payment payment;
         private String title;
         private String specifics;
         private Date departureTime;

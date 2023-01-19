@@ -17,7 +17,7 @@ public class YataMemberDto {
         private Long yataId;
         private Long yataRequestId;
         private Long yataMemberId;
-        private YataMember.Payment payment;
+        private boolean yataPaid;
         private YataRequest.ApprovalStatus approvalStatus;
     }
 }

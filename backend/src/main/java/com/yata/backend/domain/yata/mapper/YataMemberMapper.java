@@ -26,7 +26,7 @@ public interface YataMemberMapper {
                             .yataMemberId(yataMember.getYataMemberId())
                             .yataId(yataMember.getYata().getYataId())
                             .yataRequestId(yataMember.getYata().getYataRequests().get(0).getYataRequestId())
-                            .payment(yataMember.getPayment())
+                            .yataPaid(yataMember.isYataPaid())
                             .approvalStatus(yataMember.getYata().getYataRequests().get(0).getApprovalStatus())
                             .build();
                 }).collect(Collectors.toList());

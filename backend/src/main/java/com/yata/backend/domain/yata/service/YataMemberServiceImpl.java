@@ -52,7 +52,7 @@ public class YataMemberServiceImpl implements YataMemberService {
         yata.getYataRequests().add(yataRequest);
         yataMember.setYata(yata);
         yataMember.setMember(yataRequest.getMember());
-        yataMember.setPayment(YataMember.Payment.NOT_YET); //지불 상태 set
+        yataMember.setYataPaid(false); //지불 상태 set
 
         jpaYataMemberRepository.save(yataMember);
     }
