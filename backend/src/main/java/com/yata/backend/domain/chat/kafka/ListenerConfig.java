@@ -1,5 +1,6 @@
 package com.yata.backend.domain.chat.kafka;
 
+import com.yata.backend.domain.chat.dto.ChatDto;
 import com.yata.backend.domain.chat.entity.ChatEntity;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -28,8 +29,8 @@ public class ListenerConfig {
 
 
     @Bean
-    ConcurrentKafkaListenerContainerFactory<String, ChatEntity> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, ChatEntity> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    ConcurrentKafkaListenerContainerFactory<String, ChatDto> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, ChatDto> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }
@@ -46,7 +47,7 @@ public class ListenerConfig {
     }
 
     @Bean
-    public ConsumerFactory<String, ChatEntity> consumerFactory() {
-        return new DefaultKafkaConsumerFactory<>(consumerConfigurations(), new StringDeserializer(), new JsonDeserializer<>(ChatEntity.class));
+    public ConsumerFactory<String, ChatDto> consumerFactory() {
+        return new DefaultKafkaConsumerFactory<>(consumerConfigurations(), new StringDeserializer(), new JsonDeserializer<>(ChatDto.class));
     }
 }

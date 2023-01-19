@@ -1,5 +1,6 @@
 package com.yata.backend.domain.chat.kafka;
 
+import com.yata.backend.domain.chat.dto.ChatDto;
 import com.yata.backend.domain.chat.entity.ChatEntity;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +26,7 @@ public class ProducerConfig {
     private String bootstrapServers;
 
     @Bean
-    public ProducerFactory<String, ChatEntity> producerFactory() {
+    public ProducerFactory<String, ChatDto> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigurations());
     }
 
@@ -40,7 +41,7 @@ public class ProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, ChatEntity> kafkaTemplate() {
+    public KafkaTemplate<String, ChatDto> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }

@@ -17,9 +17,8 @@ public class HeaderUtil {
             return null;
         }
 
-        if (headerValue.startsWith(TOKEN_PREFIX)) {
-            return headerValue.substring(TOKEN_PREFIX.length());
-        }
+        headerValue = getRemovePrefixBearer(headerValue);
+        if (headerValue != null) return headerValue;
 
         return null;
     }
@@ -29,11 +28,16 @@ public class HeaderUtil {
         if (headerValue == null) {
             return null;
         }
+        headerValue = getRemovePrefixBearer(headerValue);
+        if (headerValue != null) return headerValue;
 
+        return null;
+    }
+
+    public static String getRemovePrefixBearer(String headerValue) {
         if (headerValue.startsWith(TOKEN_PREFIX)) {
             return headerValue.substring(TOKEN_PREFIX.length());
         }
-
         return null;
     }
 }

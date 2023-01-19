@@ -18,9 +18,13 @@
     var stompClient;
     var output;
     var textMessge;
-    var textUser;
-    var textRoom;
+    var textUser = "test1@gmail.com"
+    var textRoom = 1;
     connect();
+    var headers = {
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MUBnbWFpbC5jb20iLCJyb2xlIjpbIkRSSVZFUiIsIlBBU1NBTkdFUiIsIkFETUlOIl0sImV4cCI6MTk2NzQwNTMyMjF9.NQE7dx7w-IQKP9pIzYAPf2hGROQPEPMxGlwo3_-D5rk",
+
+    }
 
     function init() {
         output = document.getElementById("output");
@@ -34,13 +38,13 @@
     function connect() {
         var socket = new SockJS(wsUri);
         stompClient = Stomp.over(socket);
-        stompClient.connect({}, function (frame) {
+        stompClient.connect(headers, function (frame) {
             onOpen();
             console.log('Connected: ' + frame);
             stompClient.subscribe('/topic/greetings', function (greeting) {
                 onMessage(JSON.parse(greeting.body).content);
             });
-            stompClient.subscribe('/subscribe/notice' + document.getElementById("textRoom").value, function (message) {
+            stompClient.subscribe('/subscribe/notice/' + document.getElementById("textRoom").value, function (message) {
                 onMessage(message.body);
             });
         });
@@ -59,7 +63,12 @@
         var user = textUser.value;
         var room = textRoom.value;
         // writeToScreen("Message Sent: " + message);
-        stompClient.send("/app/message", {}, JSON.stringify({ 'message': message, 'user' : user, 'room' : room }));
+
+        stompClient.send(
+            "/app/message",
+            headers,
+            JSON.stringify({ 'message': message, 'fromMember' : user, 'chatRoomId' : room }
+            ));
     }
 
     function onOpen() {
@@ -107,8 +116,10 @@
         <input id="msgIdx" type="hidden"/>
         <input id="prevBtn" value="prev" type="button">
         <input id="textMessge" name="message" value="Hello WebSocket!" type="text">
-        <input id="textUser" name="user" value="aaa" type="hidden">
-        <input id="textRoom"  name="room" value="1" type="hidden">
+        <br>
+        <label for="textUser">Username</label><input id="textUser" name="user" value="aaa">
+        <br>
+        <label for="textRoom">ChatRoomId</label><input id="textRoom"  name="room" value="1" type="hidden">
         <br>
     </form>
 </div>

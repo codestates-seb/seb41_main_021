@@ -1,10 +1,12 @@
 package com.yata.backend.domain.chat.entity;
 
 import com.yata.backend.domain.member.entity.Member;
+import com.yata.backend.global.audit.Auditable;
 import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 @Getter
@@ -13,12 +15,16 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ChatEntity {
+public class ChatEntity extends Auditable {
     @Id
     private Long chatId;
 
-    private String user;
-    private String room;
+    @ManyToOne
+    private Member fromMember;
     private String message;
-    private String timestamp;
+
+    @ManyToOne
+    private ChatRoomEntity chatRoom;
+
+
 }
