@@ -65,8 +65,8 @@ export default function TabnidaAdd() {
 
   return (
     <>
+      <Header title="탑니다 수정하기" />
       <Container>
-        <Header title="탑니다 수정하기" />
         <div className="map-container">
           <KakaoMap searchPlace={departure || destination} setPlaces={setPlaces} setDeparture={setDeparture} />
         </div>
@@ -130,8 +130,8 @@ export default function TabnidaAdd() {
   );
 }
 const Container = styled.div`
-  width: 100%;
-  height: 100vh;
+  flex: 1;
+  overflow: scroll;
   display: flex;
   flex-direction: column;
   overflow: hidden;

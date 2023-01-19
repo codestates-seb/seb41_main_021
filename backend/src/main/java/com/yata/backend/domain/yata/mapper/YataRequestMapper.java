@@ -1,7 +1,6 @@
 package com.yata.backend.domain.yata.mapper;
 
 import com.yata.backend.domain.yata.dto.LocationDto;
-import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.dto.YataRequestDto;
 import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.YataRequest;
@@ -9,12 +8,8 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.mapstruct.Mapper;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
@@ -67,8 +62,6 @@ public interface YataRequestMapper {
                             .build();
                 }).collect(Collectors.toList());
     }
-
-    YataRequest yataInvitationPostDtoToYataInvitation(YataRequestDto.InvitationPost requestBody);
 
     default YataRequestDto.InvitationResponse yataInvitationToYataInvitationResponse(YataRequest yataRequest) {
         if (yataRequest == null) {

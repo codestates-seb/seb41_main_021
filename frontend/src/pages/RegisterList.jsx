@@ -11,7 +11,6 @@ export default function RegisterList() {
   };
   return (
     <>
-      <Navbar />
       <Header title="요청 내역" />
       <Container>
         <ListItem
@@ -33,14 +32,14 @@ export default function RegisterList() {
         <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
         <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
       </Container>
+      <Navbar />
     </>
   );
 }
 
 const Container = styled.div`
+  flex: 1;
   overflow: scroll;
-  width: 100%;
-  height: calc(100vh - 10rem);
   display: flex;
   flex-direction: column;
   align-items: center;

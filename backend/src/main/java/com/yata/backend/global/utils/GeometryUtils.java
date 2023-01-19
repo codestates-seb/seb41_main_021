@@ -2,7 +2,9 @@ package com.yata.backend.global.utils;
 
 import com.yata.backend.domain.yata.dto.LocationDto;
 import com.yata.backend.domain.yata.entity.Location;
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
@@ -59,8 +61,8 @@ public class GeometryUtils {
    public static Point getPoint(LocationDto.Post location) throws ParseException {
       Double latitude = location.getLatitude();
       Double longitude = location.getLongitude();
-      String pointWKT = String.format("POINT(%s %s)", longitude, latitude);
-      return (Point)new WKTReader().read(pointWKT);
+      GeometryFactory gf = new GeometryFactory();
+      return gf.createPoint(new Coordinate(latitude, longitude));
    }
 
    public static Geometry getMBR(Geometry startGeometry, double distance) {

@@ -6,8 +6,8 @@ import Button from '../components/common/Button';
 export default function DriverAuth() {
   return (
     <>
+      <Header title="운전자 인증하기" />
       <Container>
-        <Header title="운전자 인증하기" />
         <Contents>
           <Input label="이름"></Input>
           <Input label="운전면허 번호"></Input>
@@ -20,8 +20,8 @@ export default function DriverAuth() {
 }
 
 const Container = styled.div`
-  width: 100%;
-  height: 100vh;
+  flex: 1;
+  overflow: scroll;
   display: flex;
   flex-direction: column;
   align-items: center;

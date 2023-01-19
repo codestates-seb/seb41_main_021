@@ -65,8 +65,8 @@ export default function TaeoondaAdd() {
 
   return (
     <>
+      <Header title="태웁니다 등록하기" />
       <Container>
-        <Header title="태웁니다 등록하기" />
         <div className="map-container">
           <KakaoMap searchPlace={departure || destination} setPlaces={setPlaces} setDeparture={setDeparture} />
         </div>
@@ -131,8 +131,8 @@ export default function TaeoondaAdd() {
   );
 }
 const Container = styled.div`
-  width: 100%;
-  height: 100vh;
+  flex: 1;
+  overflow: scroll;
   display: flex;
   flex-direction: column;
   overflow: hidden;

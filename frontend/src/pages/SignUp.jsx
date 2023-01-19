@@ -83,7 +83,6 @@ export default function SignUp() {
     <>
       {isLogin || (
         <>
-
           <Header title={'회원가입'} />
           <Container>
             <Contents>
@@ -139,9 +138,8 @@ export default function SignUp() {
 }
 
 const Container = styled.div`
+  flex: 1;
   overflow: scroll;
-  width: 100%;
-  height: calc(100vh - 5rem);
   display: flex;
   flex-direction: column;
   align-items: center;
