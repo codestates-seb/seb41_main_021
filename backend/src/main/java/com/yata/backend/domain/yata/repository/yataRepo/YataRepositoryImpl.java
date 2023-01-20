@@ -39,7 +39,7 @@ public class YataRepositoryImpl implements YataRepository {
                 .join(yata.member).fetchJoin()
                 .join(yata.strPoint).fetchJoin()
                 .join(yata.destination).fetchJoin()
-                .where(yata.destination.location.intersects(startMBR)
+                .where(yata.strPoint.location.intersects(startMBR)
                         .and(yata.destination.location.intersects(endMBR)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

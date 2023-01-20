@@ -44,72 +44,80 @@ public interface YataMapper {
         yata.strPoint(postToLocation(requestBody.getStrPoint()));
         yata.destination(postToLocation(requestBody.getDestination()));
         yata.yataStatus(requestBody.getYataStatus());
-        yata.postStatus(Yata.PostStatus.POST_WAITING);
+        yata.postStatus(Yata.PostStatus.POST_OPEN);
 
         return yata.build();
     }
 
     Yata yataPatchToYata(YataDto.Patch requestBody);
 
-    default YataDto.Response yataToYataResponse(Yata yata){
-        if ( yata == null ) {
+    default YataDto.Response yataToYataResponse(Yata yata) {
+        if (yata == null) {
             return null;
         }
 
         YataDto.Response.ResponseBuilder response = YataDto.Response.builder();
 
-        if ( yata.getYataId() != null ) {
-            response.yataId( yata.getYataId() );
+        if (yata.getYataId() != null) {
+            response.yataId(yata.getYataId());
         }
-        response.departureTime( yata.getDepartureTime() );
-        response.timeOfArrival( yata.getTimeOfArrival() );
-        response.title( yata.getTitle() );
-        response.specifics( yata.getSpecifics() );
-        response.maxWaitingTime( yata.getMaxWaitingTime() );
-        response.maxPeople( yata.getMaxPeople() );
-        response.amount( yata.getAmount() );
-        response.carModel( yata.getCarModel() );
-        response.strPoint( locationToResponse( yata.getStrPoint() ) );
-        response.destination( locationToResponse( yata.getDestination() ) );
-        response.postStatus( yata.getPostStatus() );
-        response.yataStatus( yata.getYataStatus() );
+        if (yata.getYataMembers() == null) response.reservedMemberNum(0);
+        else response.reservedMemberNum(yata.getYataMembers().size());
+        response.departureTime(yata.getDepartureTime());
+        response.timeOfArrival(yata.getTimeOfArrival());
+        response.title(yata.getTitle());
+        response.specifics(yata.getSpecifics());
+        response.maxWaitingTime(yata.getMaxWaitingTime());
+        response.maxPeople(yata.getMaxPeople());
+        response.amount(yata.getAmount());
+        response.carModel(yata.getCarModel());
+        response.strPoint(locationToResponse(yata.getStrPoint()));
+        response.destination(locationToResponse(yata.getDestination()));
+        response.postStatus(yata.getPostStatus());
+        response.yataStatus(yata.getYataStatus());
         response.email(yata.getMember().getEmail());
 
         return response.build();
     }
-//todo strPoint, destination mapping
-default List<YataDto.Response> yatasToYataResponses(List<Yata> yatas){
-    if (yatas == null) {
-        return null;
+
+    //todo strPoint, destination mapping
+    default List<YataDto.Response> yatasToYataResponses(List<Yata> yatas) {
+        if (yatas == null) {
+            return null;
+        }
+        return yatas.stream()
+                .map(yata -> {
+
+                    YataDto.Response.ResponseBuilder response = YataDto.Response.builder();
+                    if (yata.getYataMembers() == null) response.reservedMemberNum(0);
+                    else response.reservedMemberNum(yata.getYataMembers().size());
+
+                    return response.yataId(yata.getYataId())
+                            .postStatus(yata.getPostStatus())
+                            .yataStatus(yata.getYataStatus())
+                            .departureTime(yata.getDepartureTime())
+                            .timeOfArrival(yata.getTimeOfArrival())
+                            .title(yata.getTitle())
+                            .specifics(yata.getSpecifics())
+                            .maxWaitingTime(yata.getMaxWaitingTime())
+                            .maxPeople(yata.getMaxPeople())
+                            .amount(yata.getAmount())
+                            .carModel(yata.getCarModel())
+                            .email(yata.getMember().getEmail())
+                            .strPoint(locationToResponse(yata.getStrPoint()))
+                            .destination(locationToResponse(yata.getDestination()))
+                            .build();
+                }).collect(Collectors.toList());
     }
-    return yatas.stream()
-            .map(yata -> {
-                return YataDto.Response.builder()
-                        .yataId(yata.getYataId())
-                        .postStatus(yata.getPostStatus())
-                        .yataStatus(yata.getYataStatus())
-                        .departureTime(yata.getDepartureTime())
-                        .timeOfArrival(yata.getTimeOfArrival())
-                        .title(yata.getTitle())
-                        .specifics(yata.getSpecifics())
-                        .maxWaitingTime(yata.getMaxWaitingTime())
-                        .maxPeople(yata.getMaxPeople())
-                        .amount(yata.getAmount())
-                        .carModel(yata.getCarModel())
-                        .email(yata.getMember().getEmail())
-                        .strPoint(locationToResponse(yata.getStrPoint()))
-                        .destination(locationToResponse(yata.getDestination()))
-                        .build();
-            }).collect(Collectors.toList());
-}
-    default Slice<YataDto.Response> yatasToYataSliceResponses(Slice<Yata> yatas){
+
+    default Slice<YataDto.Response> yatasToYataSliceResponses(Slice<Yata> yatas) {
         if (yatas == null) {
             return null;
         }
 
         List<YataDto.Response> responses = yatasToYataResponses(yatas.getContent());
 
-        return new SliceImpl<>(responses , yatas.getPageable(), yatas.hasNext());
+        return new SliceImpl<>(responses, yatas.getPageable(), yatas.hasNext());
     }
 
     default Location postToLocation(LocationDto.Post post) throws ParseException {

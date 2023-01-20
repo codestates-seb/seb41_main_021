@@ -1,5 +1,8 @@
 package com.yata.backend.common.utils;
 
+import com.yata.backend.domain.review.entity.Checklist;
+
+import java.util.List;
 import java.util.Random;
 
 public class RandomUtils {
@@ -16,4 +19,10 @@ public class RandomUtils {
    public static Long getRandomLong() {
        return (long) (Math.random() * 50000) + 10000;
    }
+
+    public static boolean getRandomBoolean() {
+        return random.nextBoolean();
+    }
+
+
 }

@@ -3,6 +3,7 @@ package com.yata.backend.domain.yata.service;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.service.MemberService;
 import com.yata.backend.domain.yata.entity.Yata;
+import com.yata.backend.domain.yata.entity.YataMember;
 import com.yata.backend.domain.yata.entity.YataStatus;
 import com.yata.backend.domain.yata.repository.yataRepo.JpaYataRepository;
 import com.yata.backend.global.exception.CustomLogicException;
@@ -15,12 +16,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 
 @Service
 @Transactional
-public class YataServiceImpl implements YataService{
+public class YataServiceImpl implements YataService {
 
     private final MemberService memberService;
 
@@ -28,8 +30,7 @@ public class YataServiceImpl implements YataService{
     private final CustomBeanUtils<Yata> beanUtils;
 
 
-
-    public YataServiceImpl(JpaYataRepository jpayataRepository,CustomBeanUtils<Yata> beanUtils,MemberService memberService){
+    public YataServiceImpl(JpaYataRepository jpayataRepository, CustomBeanUtils<Yata> beanUtils, MemberService memberService) {
         this.jpayataRepository = jpayataRepository;
         this.beanUtils = beanUtils;
         this.memberService = memberService;
@@ -40,7 +41,7 @@ public class YataServiceImpl implements YataService{
 
         Member member = memberService.findMember(userName);
 
-        if(yata.getYataStatus().equals(YataStatus.YATA_NEOTA)) memberService.checkDriver(member);
+        if (yata.getYataStatus().equals(YataStatus.YATA_NEOTA)) memberService.checkDriver(member);
 
         yata.setMember(member);
 
@@ -74,25 +75,21 @@ public class YataServiceImpl implements YataService{
         Yata findYata = verifyYata(yataId);
         //게시글 작성자와 같은 멤버인지 확인
         equalMember(member, findYata.getMember());
-        switch (findYata.getPostStatus()) {
-            case POST_MOVING, POST_CLOSED, POST_RESERVED, POST_WARNING ->
-                    throw new CustomLogicException(ExceptionCode.CANNOT_DELETE);
-            default -> jpayataRepository.delete(findYata);
-        }
+        modifiableYata(yataId);
     }
 //public Slice<YataRequest> findRequests(boolean acceptable, String userEmail, Long yataId, Pageable pageable) {
 
-//     return jpaYataRequestRepository.findAllByYata(yata, pageable);
+    //     return jpaYataRequestRepository.findAllByYata(yata, pageable);
 //    }
     @Override
-    public Slice<Yata> findAllYata(String yataStatus,Pageable pageable) {
+    public Slice<Yata> findAllYata(String yataStatus, Pageable pageable) {
         YataStatus nowStatus;
-        switch(yataStatus){
+        switch (yataStatus) {
             case "neota" -> nowStatus = YataStatus.YATA_NEOTA;
             case "nata" -> nowStatus = YataStatus.YATA_NATA;
             default -> throw new CustomLogicException(ExceptionCode.YATA_STATUS_NONE);
         }
-        return jpayataRepository.findAllByYataStatusIs(nowStatus, PageRequest.of(0,20, Sort.by("yataId").descending()));
+        return jpayataRepository.findAllByYataStatusIs(nowStatus, PageRequest.of(0, 20, Sort.by("yataId").descending()));
     }
 
     @Override
@@ -111,9 +108,8 @@ public class YataServiceImpl implements YataService{
 
     private void modifiableYata(long yataId) {
         Yata findYata = verifyYata(yataId);
-        int statusNumber = findYata.getPostStatus().getStatusNumber();
-        //예약 전 상태가 아니면 게시물 변경 못하게
-        if (statusNumber > 1) {
+
+        if (!findYata.getYataMembers().isEmpty()) {
             throw new CustomLogicException(ExceptionCode.YATA_IS_NOT_MODIFIABLE_STATUS);
         }
     }
