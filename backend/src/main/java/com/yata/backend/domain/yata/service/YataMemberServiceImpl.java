@@ -43,6 +43,8 @@ public class YataMemberServiceImpl implements YataMemberService {
 
         verifyAppliedRequest(yata, yataRequestId);
 
+        // TODO 승인 시간과 게시글의 출발 시간 비교
+
         // 승인 한 번 하면 다시 못하도록
         if (yataRequest.getApprovalStatus().equals(YataRequest.ApprovalStatus.ACCEPTED))
             throw new CustomLogicException(ExceptionCode.ALREADY_APPROVED);
@@ -54,6 +56,7 @@ public class YataMemberServiceImpl implements YataMemberService {
         yataMember.setYata(yata);
         yataMember.setMember(yataRequest.getMember());
         yataMember.setYataPaid(false); //지불 상태 set
+        yataMember.setGoingStatus(YataMember.GoingStatus.STARTED_YET); //카풀 현황 set
 
         jpaYataMemberRepository.save(yataMember);
     }

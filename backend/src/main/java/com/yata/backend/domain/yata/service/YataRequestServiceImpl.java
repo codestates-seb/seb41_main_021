@@ -14,6 +14,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +44,9 @@ public class YataRequestServiceImpl implements YataRequestService {
 
         compareMember(member, yata.getMember()); // 게시글을 쓴 멤버는 신청 못하도록
 
+        // TODO 신청 시간과 게시글의 출발 시간 비교
+        Date departureTime = yata.getDepartureTime();
+
         YataStatus yataStatus = yata.getYataStatus();
         if (yataStatus == YataStatus.YATA_NEOTA) {
             yataRequest.setRequestStatus(APPLY);
@@ -68,6 +72,8 @@ public class YataRequestServiceImpl implements YataRequestService {
         Member member = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
         verifyInvitation(userName, yataId); // 초대를 이미 했었는지 확인하고
         Yata yata = yataService.verifyYata(yataId);
+
+        // TODO 초대 시간과 게시글의 출발 시간 비교
 
         YataStatus yataStatus = yata.getYataStatus();
         if (yataStatus == YataStatus.YATA_NATA) {
@@ -158,4 +164,12 @@ public class YataRequestServiceImpl implements YataRequestService {
             throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
         }
     }
+
+    // 현재 시간과 게시글의 출발시간을 비교하는 로직
+    // TODO util 클래스로 따로 빼기
+//    public void verifyTime(Date departureTime) {
+//        if (departureTime.getTime() <= System.currentTimeMillis()) { // 게시물의 출발시간 <= 현재시간 인 경우
+//            throw new CustomLogicException(ExceptionCode.)
+//        }
+//    }
 }

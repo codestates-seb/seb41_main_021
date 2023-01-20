@@ -133,23 +133,23 @@ public class YataRequestControllerTest extends AbstractControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(post(BASE_URL + "/invite/{yataId}", response.getYataId())
-                        .with(csrf()));
+                .with(csrf()));
 
         //then
         actions.andExpect(status().isCreated())
                 .andDo(document("yataRequest-postInvitation",
-                getRequestPreProcessor(),
-                getResponsePreProcessor(),
-                pathParameters(
-                        parameterWithName("yataId").description("야타 ID")
-                ),
-                responseFields(
-                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("회원 정보"),
-                        fieldWithPath("data.yataRequestId").type(JsonFieldType.NUMBER).description("야타 신청/초대 ID"),
-                        fieldWithPath("data.yataId").type(JsonFieldType.NUMBER).description("야타 ID"),
-                        fieldWithPath("data.yataRequestStatus").type(JsonFieldType.STRING).description("야타 신청 상태"),
-                        fieldWithPath("data.approvalStatus").type(JsonFieldType.STRING).description("야타 승인 상태")
-                )));
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        pathParameters(
+                                parameterWithName("yataId").description("야타 ID")
+                        ),
+                        responseFields(
+                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("회원 정보"),
+                                fieldWithPath("data.yataRequestId").type(JsonFieldType.NUMBER).description("야타 신청/초대 ID"),
+                                fieldWithPath("data.yataId").type(JsonFieldType.NUMBER).description("야타 ID"),
+                                fieldWithPath("data.yataRequestStatus").type(JsonFieldType.STRING).description("야타 신청 상태"),
+                                fieldWithPath("data.approvalStatus").type(JsonFieldType.STRING).description("야타 승인 상태")
+                        )));
     }
 
     @Test
@@ -165,17 +165,19 @@ public class YataRequestControllerTest extends AbstractControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(get(BASE_URL + "/apply/{yataId}", responses.get(1).getYataId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .with(csrf()))
-                ;
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(csrf()));
 
         //then
         actions.andExpect(status().isOk())
-                .andDo(document("yataRequest-get",
-                getRequestPreProcessor(),
-                getResponsePreProcessor(),
-                YataRequestSnippet.getListResponse()
+                .andDo(document("yataRequest-getAll",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        pathParameters(
+                                parameterWithName("yataId").description("야타 ID")
+                        ),
+                        YataRequestSnippet.getListResponse()
                 ));
     }
 

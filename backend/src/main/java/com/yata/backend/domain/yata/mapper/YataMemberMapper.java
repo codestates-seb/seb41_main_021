@@ -23,6 +23,7 @@ public interface YataMemberMapper {
                         .yataMemberId(yataMember.getYataMemberId())
                         .yataId(yataMember.getYata().getYataId())
                         .yataPaid(yataMember.isYataPaid())
+                        .goingStatus(yataMember.getGoingStatus())
                         .approvalStatus(
                                 yataMember.getYata()
                                         .getYataRequests()
