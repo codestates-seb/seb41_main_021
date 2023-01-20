@@ -1,12 +1,17 @@
 package com.yata.backend.domain.member.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.yata.backend.auth.oauth2.dto.ProviderType;
 import com.yata.backend.domain.image.entity.ImageEntity;
+import com.yata.backend.domain.image.entity.QImageEntity;
+import com.yata.backend.domain.member.dto.MemberDto;
 import com.yata.backend.domain.yata.entity.YataMember;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import com.yata.backend.global.audit.Auditable;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.stereotype.Indexed;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -19,9 +24,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = "yataRequests")
+@Table(indexes = {
+        @Index(name = "idx_member_email", columnList = "email", unique = true),
+        @Index(name = "idx_member_nickname", columnList = "nickname")
+})
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "email")
 public class Member extends Auditable {
     @Id
-    @Column(nullable = false,updatable = false, unique = true, length = 100) // 이메일 식별자
+    @Column(nullable = false, updatable = false, unique = true, length = 100) // 이메일 식별자
     private String email;
     @Column(nullable = false, length = 100)
     private String password;
@@ -44,7 +54,6 @@ public class Member extends Auditable {
     @ElementCollection(fetch = FetchType.EAGER) // 권한 목록
     private List<String> roles;
 
-    @JoinColumn// 프로필 이미지
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
     private ImageEntity imgUrl;
     @Column // 차량 이미지
@@ -60,9 +69,9 @@ public class Member extends Auditable {
 
     // TODO phoneNumbers add
 
-    @OneToMany(mappedBy = "yata" , fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "yata", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<YataRequest> yataRequests = new ArrayList<>();
-    @OneToMany(mappedBy = "yata" , fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "yata", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<YataMember> yataMembers = new ArrayList<>();
 
     public enum MemberStatus {
@@ -77,12 +86,14 @@ public class Member extends Auditable {
             this.status = status;
         }
     }
+
     public enum MemberRole {
         DRIVER,
         PASSANGER,
         ADMIN,
     }
-    public enum Gender{
+
+    public enum Gender {
         MAN("남자"),
         NOT_CHECKED("미선택"),
         WOMAN("여자");
@@ -90,8 +101,22 @@ public class Member extends Auditable {
         Gender(String gender) {
             this.gender = gender;
         }
+
         @Getter
         private String gender;
     }
+    public  MemberDto.Response toResponseDto(){
+        return MemberDto.Response.builder()
+                .roles(new ArrayList<>(roles))
+                .email(email)
+                .name(name)
+                .genders(genders)
+                .imgUrl(imgUrl != null ? imgUrl.getUrl() : null)
+                .carImgUrl(carImgUrl)
+                .memberStatus(memberStatus)
+                .nickname(nickname)
+                .providerType(providerType)
+                .build();
 
+    }
 }

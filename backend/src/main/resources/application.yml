@@ -1,4 +1,6 @@
 spring:
+  cache:
+    type: redis
   jpa:
     properties:
       hibernate:

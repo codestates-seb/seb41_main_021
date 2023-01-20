@@ -89,7 +89,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         // TODO : refresh 토큰 저장
         // DB 저장
         refreshService.saveRefreshToken(userInfo.getEmail() , refreshToken);
-
+        CookieUtil.addCookie(response, "RefreshToken", refreshToken.getToken(), (int) (System.currentTimeMillis() + jwtConfig.getRefreshTokenValidTime()));
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam(AUTHORIZATION, accessToken.getToken())
                 .queryParam(REFRESH_TOKEN, refreshToken.getToken())
