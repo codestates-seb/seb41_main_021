@@ -4,6 +4,8 @@ import com.yata.backend.domain.member.dto.MemberDto;
 import com.yata.backend.domain.member.entity.Member;
 import org.mapstruct.Mapper;
 
+import java.util.ArrayList;
+
 @Mapper(componentModel = "spring")
 public interface MemberMapper {
     default Member memberPostDtoToMember(MemberDto.Post memberPostDto){
@@ -29,10 +31,11 @@ public interface MemberMapper {
                 .nickname(member.getNickname())
                 .memberStatus(member.getMemberStatus())
                 .genders(member.getGenders())
-                .imgUrl(member.getImgUrl().getUrl() == null ? null : member.getImgUrl().getUrl())
+                .imgUrl(member.getImgUrl() == null ? null : member.getImgUrl().getUrl())
                 .providerType(member.getProviderType())
                 .carImgUrl(member.getCarImgUrl())
-                .roles(member.getRoles())
+                .fuelTank(member.getFuelTank())
+                .roles(new ArrayList<>(member.getRoles())) // 캐싱인데 elementCollection List<String> 이 영속성으로 관리 되기 때문에 에러 발생
                 .build();
     }
 
