@@ -9,7 +9,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 public class YataRequestSnippet {
     public static ResponseFieldsSnippet getListResponse() {
         return responseFields(
-                fieldWithPath("data").type(JsonFieldType.ARRAY).description("회원 정보"),
+                fieldWithPath("data").type(JsonFieldType.ARRAY).description("신청 정보"),
                 fieldWithPath("data[].yataId").type(JsonFieldType.NUMBER).description("야타 ID"),
                 fieldWithPath("data[].yataRequestId").type(JsonFieldType.NUMBER).description("야타 신청/초대 ID"),
                 fieldWithPath("data[].yataRequestStatus").type(JsonFieldType.STRING).description("야타 신청 상태"),
