@@ -1,14 +1,11 @@
 package com.yata.backend.domain.yata.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yata.backend.domain.member.dto.MemberDto;
 import com.yata.backend.domain.yata.entity.Yata;
-import com.yata.backend.domain.yata.entity.YataChecklist;
 import com.yata.backend.domain.yata.entity.YataStatus;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
