@@ -67,22 +67,13 @@ public class Yata extends Auditable {
     @OneToOne(cascade = CascadeType.ALL)
     private Location destination;
 
-//    @OneToMany(mappedBy = "yata",cascade = CascadeType.ALL)
-//    private List<YataChecklist> yataChecklists = new ArrayList<>();
-
-
-//    @OneToMany(mappedBy = "yata" , cascade = CascadeType.ALL)
-//    private List<Location> waypoints = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "EMAIL")
     private Member member;
 
-    @OneToMany(mappedBy = "yata" , fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
-    private List<YataRequest> yataRequests = new ArrayList<>();
-
-    @OneToMany(mappedBy = "yata" , fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
-    private List<Review> reviews = new ArrayList<>();
+//    @OneToMany(mappedBy = "yata" , fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
+//    private List<YataRequest> yataRequests = new ArrayList<>();
 
 
     // TODO lazy / eager 뭐 할지 생각 - 쿼리 어떻게 나오는지 확인하기

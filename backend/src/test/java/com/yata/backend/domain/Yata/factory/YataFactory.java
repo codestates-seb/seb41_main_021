@@ -15,8 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.yata.backend.common.utils.RandomUtils.getRandomLong;
-import static com.yata.backend.common.utils.RandomUtils.getRandomWord;
+import static com.yata.backend.common.utils.RandomUtils.*;
 
 
 public class YataFactory {
@@ -81,19 +80,20 @@ public class YataFactory {
 
     }
     public static Yata createYata() throws  org.locationtech.jts.io.ParseException {
+        List<YataMember> yatamembers = new ArrayList<>();
         return Yata.builder()
                 .yataId(getRandomLong())
                 .title(getRandomWord())
                 .specifics(getRandomWord())
-                .departureTime(new Date())
-                .timeOfArrival(new Date())
+                .departureTime(getRandomDate())
+                .timeOfArrival(getRandomDate())
                 .amount(getRandomLong())
-                .carModel(getRandomWord())
+                .carModel(getRandomWord(20))
                 .yataMembers(yatamembers)
                 .maxPeople(3)
                 .maxWaitingTime(20)
                 .yataStatus(YataStatus.YATA_NEOTA)
-                .postStatus(Yata.PostStatus.POST_WAITING)
+                .postStatus(Yata.PostStatus.POST_OPEN)
                 .strPoint(new Location(RandomUtils.getRandomLong() , GeometryUtils.getEmptyPoint() , getRandomWord() , null))
                 .destination(new Location(RandomUtils.getRandomLong() , GeometryUtils.getEmptyPoint() , getRandomWord() , null))
                 .build();
@@ -113,4 +113,11 @@ public class YataFactory {
         return yataResponseDtoList;
     }
 
+    public static Yata createYataInMember(Member member) throws org.locationtech.jts.io.ParseException {
+        List<YataMember> yatamembers = new ArrayList<>();
+        Yata yata =  createYata();
+        yata.setYataMembers(yatamembers);
+        yata.setMember(member);
+        return yata;
+    }
 }

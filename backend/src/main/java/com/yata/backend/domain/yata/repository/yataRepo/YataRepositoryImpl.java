@@ -60,9 +60,9 @@ public class YataRepositoryImpl implements YataRepository {
                 .join(yata.member).fetchJoin()
                 .join(yata.strPoint).fetchJoin()
                 .join(yata.destination).fetchJoin()
-                .join(yata.yataRequests).fetchJoin()
-                .join(yata.yataMembers).fetchJoin()
-                .where(yata.departureTime.before(now).and(yata.postStatus.ne(Yata.PostStatus.POST_CLOSED)))
+                /*.join(yata.yataRequests).fetchJoin()
+                .join(yata.yataMembers).fetchJoin()*/
+                .where(yata.departureTime.before(now).and(yata.postStatus.eq(Yata.PostStatus.POST_OPEN)))
                 .fetch();
         return yatas;
     }
