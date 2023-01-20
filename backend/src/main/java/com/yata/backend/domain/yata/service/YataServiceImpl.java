@@ -22,7 +22,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class YataServiceImpl implements YataService{
+public class YataServiceImpl implements YataService {
 
     private final MemberService memberService;
 
@@ -30,8 +30,7 @@ public class YataServiceImpl implements YataService{
     private final CustomBeanUtils<Yata> beanUtils;
 
 
-
-    public YataServiceImpl(JpaYataRepository jpayataRepository,CustomBeanUtils<Yata> beanUtils,MemberService memberService){
+    public YataServiceImpl(JpaYataRepository jpayataRepository, CustomBeanUtils<Yata> beanUtils, MemberService memberService) {
         this.jpayataRepository = jpayataRepository;
         this.beanUtils = beanUtils;
         this.memberService = memberService;
@@ -42,7 +41,7 @@ public class YataServiceImpl implements YataService{
 
         Member member = memberService.findMember(userName);
 
-        if(yata.getYataStatus().equals(YataStatus.YATA_NEOTA)) memberService.checkDriver(member);
+        if (yata.getYataStatus().equals(YataStatus.YATA_NEOTA)) memberService.checkDriver(member);
 
         yata.setMember(member);
 
@@ -80,17 +79,17 @@ public class YataServiceImpl implements YataService{
     }
 //public Slice<YataRequest> findRequests(boolean acceptable, String userEmail, Long yataId, Pageable pageable) {
 
-//     return jpaYataRequestRepository.findAllByYata(yata, pageable);
+    //     return jpaYataRequestRepository.findAllByYata(yata, pageable);
 //    }
     @Override
-    public Slice<Yata> findAllYata(String yataStatus,Pageable pageable) {
+    public Slice<Yata> findAllYata(String yataStatus, Pageable pageable) {
         YataStatus nowStatus;
-        switch(yataStatus){
+        switch (yataStatus) {
             case "neota" -> nowStatus = YataStatus.YATA_NEOTA;
             case "nata" -> nowStatus = YataStatus.YATA_NATA;
             default -> throw new CustomLogicException(ExceptionCode.YATA_STATUS_NONE);
         }
-        return jpayataRepository.findAllByYataStatusIs(nowStatus, PageRequest.of(0,20, Sort.by("yataId").descending()));
+        return jpayataRepository.findAllByYataStatusIs(nowStatus, PageRequest.of(0, 20, Sort.by("yataId").descending()));
     }
 
     @Override
