@@ -72,12 +72,12 @@ spring:
             user_name_attribute: id
 
 jwt:
-    secret: randomTestValueItisNotUsedInProdEnv
-    expiration: 1800000
-    # 30 minutes
-    refresh:
-        expiration: 604800000
-    # 7 days
+  secret: randomTestValueItisNotUsedInProdEnv
+  expiration: 1800000
+  # 30 minutes
+  refresh:
+    expiration: 604800000
+  # 7 days
 
 admin:
   email : test@gmail.com,test1@gmail.com

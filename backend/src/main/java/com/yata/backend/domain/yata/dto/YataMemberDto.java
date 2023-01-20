@@ -15,9 +15,9 @@ public class YataMemberDto {
     @Builder
     public static class Response {
         private Long yataId;
-        private Long yataRequestId;
         private Long yataMemberId;
         private boolean yataPaid;
         private YataRequest.ApprovalStatus approvalStatus;
+
     }
 }
