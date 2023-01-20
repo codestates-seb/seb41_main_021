@@ -18,7 +18,6 @@ public class YataMemberDto {
         private Long yataMemberId;
         private boolean yataPaid;
         private YataMember.GoingStatus goingStatus;
-        private YataRequest.ApprovalStatus approvalStatus;
 
     }
 }

@@ -40,7 +40,7 @@ public class ReviewServiceImpl implements ReviewService {
     public Review createReview(List<Long> checkListIds, String username, long yataId) {
 
         //야타 게시글이 마감 상태인지 확인 // 도착 상태인지 판단으로 변경
-        Yata yata = yataService.verifyYata(yataId);
+        Yata yata = yataService.findYata(yataId);
 //        if (yata.getPostStatus().getStatusNumber() != 5)
 //            throw new CustomLogicException(ExceptionCode.POST_STATUS_IS_NOT_SUITABLE);
 

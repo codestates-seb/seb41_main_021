@@ -26,9 +26,9 @@ import static com.yata.backend.domain.yata.entity.YataRequest.RequestStatus.INVI
 public class YataRequestServiceImpl implements YataRequestService {
     private final JpaYataRequestRepository jpaYataRequestRepository;
     private final MemberService memberService;
-    private final YataServiceImpl yataService;
+    private final YataService yataService;
 
-    public YataRequestServiceImpl(JpaYataRequestRepository jpaYataRequestRepository, MemberService memberService, YataServiceImpl yataService) {
+    public YataRequestServiceImpl(JpaYataRequestRepository jpaYataRequestRepository, MemberService memberService, YataService yataService) {
         this.jpaYataRequestRepository = jpaYataRequestRepository;
         this.memberService = memberService;
         this.yataService = yataService;
@@ -40,7 +40,7 @@ public class YataRequestServiceImpl implements YataRequestService {
         Member member = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
         /// 여기부터
         verifyRequest(userName, yataId); // 신청을 이미 했었는지 확인하고
-        Yata yata = yataService.verifyYata(yataId);
+        Yata yata = yataService.findYata(yataId);
 
         compareMember(member, yata.getMember()); // 게시글을 쓴 멤버는 신청 못하도록
 
@@ -71,7 +71,7 @@ public class YataRequestServiceImpl implements YataRequestService {
     public YataRequest createInvitation(String userName, Long yataId) {
         Member member = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
         verifyInvitation(userName, yataId); // 초대를 이미 했었는지 확인하고
-        Yata yata = yataService.verifyYata(yataId);
+        Yata yata = yataService.findYata(yataId);
 
         // TODO 초대 시간과 게시글의 출발 시간 비교
 
@@ -91,11 +91,11 @@ public class YataRequestServiceImpl implements YataRequestService {
     // Yata 신청 목록 조회
     @Override
     public Slice<YataRequest> findRequests(String userEmail, Long yataId, Pageable pageable) {
-        Yata yata = yataService.verifyYata(yataId);
+        Yata yata = yataService.findYata(yataId);
         Member member = memberService.verifyMember(userEmail);
 
         // 게시글 작성자 == 조회하려는 사람 인지 확인
-        yataService.equalMember(member, yata.getMember());
+        yataService.equalMember(member.getEmail(), yata.getMember().getEmail());
 
         return jpaYataRequestRepository.findAllByYata(yata, pageable);
     }
@@ -104,11 +104,11 @@ public class YataRequestServiceImpl implements YataRequestService {
     @Override
     public void deleteRequest(String userName, Long yataRequestId, Long yataId) {
         Member member = memberService.verifyMember(userName); // 해당 member 가 있는지
-        Yata yata = yataService.verifyYata(yataId); // 해당 yataId 가 있는지 ( 게시물 )
+        Yata yata = yataService.findYata(yataId); // 해당 yataId 가 있는지 ( 게시물 )
         YataRequest yataRequest = findRequest(yataRequestId); // 해당 yataRequestId 로 한 신청/초대가 있는지 ( 신청/초대 )
 
         // 게시글 작성자 == 삭제하려는 사람 인지 확인
-        yataService.equalMember(member, yata.getMember());
+        yataService.equalMember(member.getEmail(), yata.getMember().getEmail());
 
         YataRequest.ApprovalStatus approvalStatus = yataRequest.getApprovalStatus();
 
