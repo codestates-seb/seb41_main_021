@@ -6,7 +6,6 @@ import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataMember;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import com.yata.backend.domain.yata.repository.yataMemberRepo.JpaYataMemberRepository;
-import com.yata.backend.domain.yata.repository.yataRequestRepo.JpaYataRequestRepository;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
 import org.springframework.data.domain.Pageable;
@@ -44,6 +43,8 @@ public class YataMemberServiceImpl implements YataMemberService {
 
         verifyAppliedRequest(yata, yataRequestId);
 
+        // TODO 승인 시간과 게시글의 출발 시간 비교
+
         // 승인 한 번 하면 다시 못하도록
         if (yataRequest.getApprovalStatus().equals(YataRequest.ApprovalStatus.ACCEPTED))
             throw new CustomLogicException(ExceptionCode.ALREADY_APPROVED);
@@ -55,6 +56,7 @@ public class YataMemberServiceImpl implements YataMemberService {
         yataMember.setYata(yata);
         yataMember.setMember(yataRequest.getMember());
         yataMember.setYataPaid(false); //지불 상태 set
+        yataMember.setGoingStatus(YataMember.GoingStatus.STARTED_YET); //카풀 현황 set
 
         jpaYataMemberRepository.save(yataMember);
     }
@@ -87,7 +89,7 @@ public class YataMemberServiceImpl implements YataMemberService {
 
         // 신청을 한 멤버의 email 을 가진 멤버가 있는지 검증하고 걔를 빼옴
         Optional<YataMember> yataMember = yata.getYataMembers().stream()
-                .filter(r -> r.getMember().getEmail().equals(yataRequest.getMember().getEmail()))
+                .filter(r -> r.getMember().equals(yataRequest.getMember()))
                 .findAny();
 
         // 레포에서 delete
@@ -97,7 +99,6 @@ public class YataMemberServiceImpl implements YataMemberService {
     }
 
     // yataMember 전체 조회 ( 승인된 애들 조회 )
-    // TODO 한 명 위에서 reject 하니까 갑자기 이거 조회하면 다 reject 로 뜸 --> 저거 만들고 다시 수정
     @Override
     public Slice<YataMember> findAcceptedRequests(String userEmail, Long yataId, Pageable pageable) {
         Yata yata = yataService.verifyYata(yataId);
@@ -105,13 +106,16 @@ public class YataMemberServiceImpl implements YataMemberService {
 
         yataService.equalMember(member, yata.getMember()); // 게시글 작성자 == 조회하려는 사람 인지 확인
 
+        memberService.checkDriver(member); // 조회하려는 사람이 운전자인지 확인
+
         return jpaYataMemberRepository.findAllByYata(yata, pageable);
     }
 
+    // 승인하려는 yataRequest 가 해당 yata 게시물에 신청한 request 인지 검증
     @Override
     public void verifyAppliedRequest(Yata yata, Long yataRequestId) {
-        // 승인하려는 yataRequest 가 해당 yata 게시물에 신청한 request 인지 검증
-        Optional<YataRequest> optionalYataRequest = yata.getYataRequests().stream() // 이렇게 requestId 로 하면 될 듯
+
+        Optional<YataRequest> optionalYataRequest = yata.getYataRequests().stream()
                 .filter(r -> r.getYataRequestId().equals(yataRequestId))
                 .findAny();
 

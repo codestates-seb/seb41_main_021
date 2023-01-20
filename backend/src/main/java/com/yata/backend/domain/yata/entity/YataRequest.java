@@ -6,6 +6,7 @@ import com.yata.backend.global.audit.Auditable;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -70,5 +71,6 @@ public class YataRequest extends Auditable {
         ApprovalStatus(String status) {
             this.status = status;
         }
+
     }
 }
