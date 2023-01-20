@@ -61,6 +61,8 @@ public interface YataMapper {
         if ( yata.getYataId() != null ) {
             response.yataId( yata.getYataId() );
         }
+        if (yata.getYataMembers() == null) response.reservedMemberNum(0);
+        else response.reservedMemberNum(yata.getYataMembers().size());
         response.departureTime( yata.getDepartureTime() );
         response.timeOfArrival( yata.getTimeOfArrival() );
         response.title( yata.getTitle() );
@@ -84,8 +86,12 @@ default List<YataDto.Response> yatasToYataResponses(List<Yata> yatas){
     }
     return yatas.stream()
             .map(yata -> {
-                return YataDto.Response.builder()
-                        .yataId(yata.getYataId())
+
+                YataDto.Response.ResponseBuilder response = YataDto.Response.builder();
+                if (yata.getYataMembers() == null) response.reservedMemberNum(0);
+                else response.reservedMemberNum(yata.getYataMembers().size());
+
+                return response.yataId(yata.getYataId())
                         .postStatus(yata.getPostStatus())
                         .yataStatus(yata.getYataStatus())
                         .departureTime(yata.getDepartureTime())
