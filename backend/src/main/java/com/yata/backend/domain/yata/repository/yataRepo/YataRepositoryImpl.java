@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -50,6 +50,20 @@ public class YataRepositoryImpl implements YataRepository {
             hasNext = true;
         }
         return new SliceImpl<>(yatas, pageable, hasNext);*/
+        return yatas;
+    }
+
+    @Override
+    public List<Yata> findAllYataOverDepartureTime() {
+        Date now = new Date();
+        List<Yata> yatas = queryFactory.selectFrom(yata)
+                .join(yata.member).fetchJoin()
+                .join(yata.strPoint).fetchJoin()
+                .join(yata.destination).fetchJoin()
+                .join(yata.yataRequests).fetchJoin()
+                .join(yata.yataMembers).fetchJoin()
+                .where(yata.departureTime.before(now).and(yata.postStatus.ne(Yata.PostStatus.POST_CLOSED)))
+                .fetch();
         return yatas;
     }
 }

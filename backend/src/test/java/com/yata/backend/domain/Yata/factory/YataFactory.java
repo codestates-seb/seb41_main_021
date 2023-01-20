@@ -1,6 +1,7 @@
 package com.yata.backend.domain.Yata.factory;
 
 import com.yata.backend.common.utils.RandomUtils;
+import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.yata.dto.LocationDto;
 import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.entity.Location;
@@ -82,10 +83,10 @@ public class YataFactory {
                 .yataId(getRandomLong())
                 .title(getRandomWord())
                 .specifics(getRandomWord())
-                .departureTime(new Date())
+                .departureTime(RandomUtils.getRandomDate())
                 .timeOfArrival(new Date())
                 .amount(getRandomLong())
-                .carModel(getRandomWord())
+                .carModel(getRandomWord(15))
                 .maxPeople(3)
                 .maxWaitingTime(20)
                 .yataStatus(YataStatus.YATA_NEOTA)
@@ -93,6 +94,11 @@ public class YataFactory {
                 .strPoint(new Location(RandomUtils.getRandomLong() , GeometryUtils.getEmptyPoint() , getRandomWord() , null))
                 .destination(new Location(RandomUtils.getRandomLong() , GeometryUtils.getEmptyPoint() , getRandomWord() , null))
                 .build();
+    }
+    public static Yata createYataInMember(Member member) throws org.locationtech.jts.io.ParseException {
+        Yata yata = createYata();
+        yata.setMember(member);
+        return yata;
     }
     public static List<Yata> createYataList() throws ParseException, org.locationtech.jts.io.ParseException {
         List<Yata> yataList = new ArrayList<>();
