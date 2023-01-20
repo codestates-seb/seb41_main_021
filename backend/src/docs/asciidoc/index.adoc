@@ -265,6 +265,17 @@ include::{snippets}/yata/get-location/response-body.adoc[]
 .response-fields
 include::{snippets}/yata/get-location/response-fields.adoc[]
 
+== CheckListController
+=== 체크리스트 목록 조회
+GET /api/v1/checklist
+.http-request
+include::{snippets}/checklist/get/http-request.adoc[]
+.http-response
+include::{snippets}/checklist/get/http-response.adoc[]
+.response-body
+include::{snippets}/checklist/get/response-body.adoc[]
+.response-fields
+include::{snippets}/checklist/get/response-fields.adoc[]
 
 
 == yataRequestController
@@ -283,8 +294,6 @@ include::{snippets}/yataRequest-postRequest/response-body.adoc[]
 
 .http-request
 include::{snippets}/yataRequest-postInvitation/http-request.adoc[]
-.request-fields
-include::{snippets}/yataRequest-postInvitation/request-fields.adoc[]
 .http-response
 include::{snippets}/yataRequest-postInvitation/http-response.adoc[]
 .response-fields

@@ -4,6 +4,7 @@ import com.yata.backend.domain.member.dto.ChecklistDto;
 import com.yata.backend.domain.review.dto.ListCheckListDto;
 import com.yata.backend.domain.review.entity.Checklist;
 import com.yata.backend.domain.review.repository.Checklist.JpaChecklistRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -22,6 +23,7 @@ public class CheckListServiceImpl implements CheckListService {
     public List<Checklist> findAll(){
         return jpaChecklistRepository.findAll();
     }
+    @Cacheable(value = "checklist" , key = "#root.methodName")
     public ListCheckListDto findAllDto(){
         return Checklist.toListDto(findAll());
     }
