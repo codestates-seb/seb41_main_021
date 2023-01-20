@@ -120,6 +120,7 @@ public class YataDto {
         private String specifics;
         private Integer maxWaitingTime;
         private Integer maxPeople;
+        private Integer reservedMemberNum;
         private Long amount;
         private String carModel;
         private LocationDto.Response strPoint;

@@ -90,13 +90,8 @@ public class Yata extends Auditable {
     private List<YataMember> yataMembers = new ArrayList<>();
 
     public enum PostStatus {
-        POST_WAITING(1,"예약 전"),
-        POST_RESERVED(2,"예약 완료"),
-        POST_MOVING(3,"가는 중"),
-        POST_CLOSED(4,"마감"),
-        POST_WARNING(5,"경고"),
-        POST_ACCEPTED(6,"수락"),
-        POST_DENIED(7,"거절");
+        POST_OPEN(1,"신청가능"),
+        POST_CLOSED(2,"마감");
 
         @Getter
         private int statusNumber;
