@@ -22,7 +22,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(properties = {"spring.jpa.show-sql=false"})
+@SpringBootTest
 @Slf4j
 @Transactional
 class YataRepositoryImplTest {
