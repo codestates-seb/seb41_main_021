@@ -85,7 +85,7 @@ List<YataMember> yataMembers = new ArrayList<>();
                 .strPoint(new Location(1L, GeometryUtils.getEmptyPoint(),"인천",null))
                 .destination(new Location(2L, GeometryUtils.getEmptyPoint(),"부산",null))
                 .yataStatus(YataStatus.YATA_NEOTA)
-                .postStatus(Yata.PostStatus.POST_WAITING)
+                .postStatus(Yata.PostStatus.POST_OPEN)
                 .build();
 
 
@@ -253,7 +253,7 @@ List<YataMember> yataMembers = new ArrayList<>();
                 .strPoint(new Location(1L, GeometryUtils.getEmptyPoint(),"인천",null))
                 .destination(new Location(2L, GeometryUtils.getEmptyPoint(),"부산",null))
                 .yataStatus(YataStatus.YATA_NATA)
-                .postStatus(Yata.PostStatus.POST_WAITING)
+                .postStatus(Yata.PostStatus.POST_OPEN)
                 .build();
 
         given(yataService.verifyYata(anyLong())).willReturn(expected);

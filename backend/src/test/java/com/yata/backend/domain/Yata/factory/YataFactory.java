@@ -93,7 +93,7 @@ public class YataFactory {
                 .maxPeople(3)
                 .maxWaitingTime(20)
                 .yataStatus(YataStatus.YATA_NEOTA)
-                .postStatus(Yata.PostStatus.POST_WAITING)
+                .postStatus(Yata.PostStatus.POST_OPEN)
                 .strPoint(new Location(RandomUtils.getRandomLong() , GeometryUtils.getEmptyPoint() , getRandomWord() , null))
                 .destination(new Location(RandomUtils.getRandomLong() , GeometryUtils.getEmptyPoint() , getRandomWord() , null))
                 .build();
