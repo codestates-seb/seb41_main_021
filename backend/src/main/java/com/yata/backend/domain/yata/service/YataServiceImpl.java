@@ -3,9 +3,9 @@ package com.yata.backend.domain.yata.service;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.service.MemberService;
 import com.yata.backend.domain.yata.entity.Yata;
-import com.yata.backend.domain.yata.entity.YataMember;
 import com.yata.backend.domain.yata.entity.YataStatus;
 import com.yata.backend.domain.yata.repository.yataRepo.JpaYataRepository;
+import com.yata.backend.domain.yata.repository.yataRequestRepo.JpaYataRequestRepository;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
 import com.yata.backend.global.utils.CustomBeanUtils;
@@ -16,7 +16,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -26,14 +25,16 @@ public class YataServiceImpl implements YataService {
 
     private final MemberService memberService;
 
-    private final JpaYataRepository jpayataRepository;
+    private final JpaYataRepository jpaYataRepository;
+    private final JpaYataRequestRepository jpaYataRequestRepository;
     private final CustomBeanUtils<Yata> beanUtils;
 
 
-    public YataServiceImpl(JpaYataRepository jpayataRepository, CustomBeanUtils<Yata> beanUtils, MemberService memberService) {
-        this.jpayataRepository = jpayataRepository;
+    public YataServiceImpl(JpaYataRepository jpaYataRepository, CustomBeanUtils<Yata> beanUtils, MemberService memberService, JpaYataRequestRepository jpaYataRequestRepository) {
+        this.jpaYataRepository = jpaYataRepository;
         this.beanUtils = beanUtils;
         this.memberService = memberService;
+        this.jpaYataRequestRepository = jpaYataRequestRepository;
     }
 
     @Override
@@ -45,7 +46,7 @@ public class YataServiceImpl implements YataService {
 
         yata.setMember(member);
 
-        return jpayataRepository.save(yata);
+        return jpaYataRepository.save(yata);
     }
 
 
@@ -55,9 +56,9 @@ public class YataServiceImpl implements YataService {
         //존재하는 멤버인지 확인
         Member member = memberService.findMember(userName);
         //존재하는 게시물인지 확인
-        Yata findYata = verifyYata(yataId);
+        Yata findYata = findYata(yataId);
         //게시글 작성자와 같은 멤버인지 확인
-        equalMember(member, findYata.getMember());
+        equalMember(member.getEmail(), findYata.getMember().getEmail());
 
         //예완 상태 아닌 게시물인지 확인
         //예안 게시물이면 -> 예외
@@ -65,7 +66,7 @@ public class YataServiceImpl implements YataService {
 
         Yata updatingYata = beanUtils.copyNonNullProperties(yata, findYata);
 
-        return jpayataRepository.save(updatingYata);
+        return jpaYataRepository.save(updatingYata);
     }
 
     @Override
@@ -74,8 +75,11 @@ public class YataServiceImpl implements YataService {
         Member member = memberService.findMember(username);
         Yata findYata = verifyYata(yataId);
         //게시글 작성자와 같은 멤버인지 확인
-        equalMember(member, findYata.getMember());
+        equalMember(member.getEmail(), findYata.getMember().getEmail());
         modifiableYata(yataId);
+        // TODO 시간 validate 추가 해야함
+        jpaYataRequestRepository.deleteAllByYata(findYata);
+        jpaYataRepository.delete(findYata);
     }
 //public Slice<YataRequest> findRequests(boolean acceptable, String userEmail, Long yataId, Pageable pageable) {
 
@@ -89,18 +93,17 @@ public class YataServiceImpl implements YataService {
             case "nata" -> nowStatus = YataStatus.YATA_NATA;
             default -> throw new CustomLogicException(ExceptionCode.YATA_STATUS_NONE);
         }
-        return jpayataRepository.findAllByYataStatusIs(nowStatus, PageRequest.of(0, 20, Sort.by("yataId").descending()));
+        return jpaYataRepository.findAllByYataStatusIs(nowStatus, PageRequest.of(0, 20, Sort.by("yataId").descending()));
     }
 
     @Override
     public Yata findYata(long yataId) {
-        Yata findYata = verifyYata(yataId);
-        return findYata;
+        return verifyYata(yataId);
     }
 
     /*검증로직*/
-    public Yata verifyYata(long yataId) {
-        Optional<Yata> optionalYata = jpayataRepository.findById(yataId);
+    private Yata verifyYata(long yataId) {
+        Optional<Yata> optionalYata = jpaYataRepository.findById(yataId);
         Yata findYata = optionalYata.orElseThrow(() ->
                 new CustomLogicException(ExceptionCode.YATA_NONE));
         return findYata;
@@ -114,8 +117,8 @@ public class YataServiceImpl implements YataService {
         }
     }
 
-    public void equalMember(Member member, Member postMember) {
-        if (!member.getEmail().equals(postMember.getEmail())) {
+    public void equalMember(String email, String postEmail) {
+        if (!email.equals(postEmail)) {
             throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
         }
     }

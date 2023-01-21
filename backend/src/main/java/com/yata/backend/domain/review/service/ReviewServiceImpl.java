@@ -48,14 +48,11 @@ public class ReviewServiceImpl implements ReviewService {
 
     public Review createReview(List<Long> checkListIds, String username, long yataId,long yataMemeberId) {
 
-        Yata yata = yataService.verifyYata(yataId);
+        Yata yata = yataService.findYata(yataId);
 
         Member fromMember = memberService.findMember(username); //작성자
         YataMember yataMember = yataMemberService.verifyYataMember(yataMemeberId);
-
-        //일단 결제완료 (=도착 상태)가 아닌 경우 글을 못씀
-        //if(!yataMember.isYataPaid()) throw new CustomLogicException(ExceptionCode.PAYMENT_NOT_YET);
-
+        //야타 게시글이 마감 상태인지 확인 // 도착 상태인지 판단으로 변경//
 
         Review review = new Review();
 

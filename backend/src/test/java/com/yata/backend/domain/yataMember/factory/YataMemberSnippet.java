@@ -14,7 +14,6 @@ public class YataMemberSnippet {
                 fieldWithPath("data[].yataMemberId").type(JsonFieldType.NUMBER).description("승인된 신청 ID"),
                 fieldWithPath("data[].yataPaid").type(JsonFieldType.BOOLEAN).description("포인트 지불 상태"),
                 fieldWithPath("data[].goingStatus").type(JsonFieldType.STRING).description("카풀 현황 상태"),
-                fieldWithPath("data[].approvalStatus").type(JsonFieldType.STRING).description("야타 승인 상태"),
                 fieldWithPath("sliceInfo").type(JsonFieldType.OBJECT).description("슬라이스 정보"),
                 fieldWithPath("sliceInfo.getNumber").type(JsonFieldType.NUMBER).description("현재 슬라이스 번호"),
                 fieldWithPath("sliceInfo.getSize").type(JsonFieldType.NUMBER).description("현재 슬라이스 크기"),

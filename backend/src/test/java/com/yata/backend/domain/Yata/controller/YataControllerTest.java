@@ -82,8 +82,8 @@ List<YataMember> yataMembers = new ArrayList<>();
                 .maxPeople(3)
                 .maxWaitingTime(20)
                 .yataMembers(yataMembers)
-                .strPoint(new Location(1L, GeometryUtils.getEmptyPoint(),"인천",null))
-                .destination(new Location(2L, GeometryUtils.getEmptyPoint(),"부산",null))
+                .strPoint(new Location(1L, GeometryUtils.getEmptyPoint(), "인천", null))
+                .destination(new Location(2L, GeometryUtils.getEmptyPoint(), "부산", null))
                 .yataStatus(YataStatus.YATA_NEOTA)
                 .postStatus(Yata.PostStatus.POST_OPEN)
                 .build();
@@ -122,30 +122,30 @@ List<YataMember> yataMembers = new ArrayList<>();
                         fieldWithPath("departureTime").type(JsonFieldType.STRING).description("출발시간"),
                         fieldWithPath("timeOfArrival").type(JsonFieldType.STRING).description("도착시간"),
                         fieldWithPath("yataStatus").type(JsonFieldType.STRING).description("야타상태")),
-                        responseFields(
-                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("야타 게시글 정보"),
-                                fieldWithPath("data.yataId").type(JsonFieldType.NUMBER).description("야타 ID"),
-                                fieldWithPath("data.departureTime").type(JsonFieldType.STRING).description("출발 시간"),
-                                fieldWithPath("data.timeOfArrival").type(JsonFieldType.STRING).description("도착 시간"),
-                                fieldWithPath("data.title").type(JsonFieldType.STRING).description("야타 제목"),
-                                fieldWithPath("data.specifics").type(JsonFieldType.STRING).description("야타 특이사항"),
-                                fieldWithPath("data.maxWaitingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
-                                fieldWithPath("data.maxPeople").type(JsonFieldType.NUMBER).description("최대 인원"),
-                                fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
-                                fieldWithPath("data.amount").type(JsonFieldType.NUMBER).description("요금"),
-                                fieldWithPath("data.carModel").type(JsonFieldType.STRING).description("차량 모델"),
-                                fieldWithPath("data.strPoint").type(JsonFieldType.OBJECT).description("출발지"),
-                                fieldWithPath("data.strPoint.longitude").type(JsonFieldType.NUMBER).description("출발지 경도"),
-                                fieldWithPath("data.strPoint.latitude").type(JsonFieldType.NUMBER).description("출발지 위도"),
-                                fieldWithPath("data.strPoint.address").type(JsonFieldType.STRING).description("출발지 주소"),
-                                fieldWithPath("data.destination").type(JsonFieldType.OBJECT).description("도착지"),
-                                fieldWithPath("data.destination.longitude").type(JsonFieldType.NUMBER).description("도착지 경도"),
-                                fieldWithPath("data.destination.latitude").type(JsonFieldType.NUMBER).description("도착지 위도"),
-                                fieldWithPath("data.destination.address").type(JsonFieldType.STRING).description("도착지 주소"),
-                                fieldWithPath("data.postStatus").type(JsonFieldType.STRING).description("야타 게시글 상태"),
-                                fieldWithPath("data.yataStatus").type(JsonFieldType.STRING).description("야타 상태"),
-                                fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일")
-                        )));
+                responseFields(
+                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("야타 게시글 정보"),
+                        fieldWithPath("data.yataId").type(JsonFieldType.NUMBER).description("야타 ID"),
+                        fieldWithPath("data.departureTime").type(JsonFieldType.STRING).description("출발 시간"),
+                        fieldWithPath("data.timeOfArrival").type(JsonFieldType.STRING).description("도착 시간"),
+                        fieldWithPath("data.title").type(JsonFieldType.STRING).description("야타 제목"),
+                        fieldWithPath("data.specifics").type(JsonFieldType.STRING).description("야타 특이사항"),
+                        fieldWithPath("data.maxWaitingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
+                        fieldWithPath("data.maxPeople").type(JsonFieldType.NUMBER).description("최대 인원"),
+                        fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
+                        fieldWithPath("data.amount").type(JsonFieldType.NUMBER).description("요금"),
+                        fieldWithPath("data.carModel").type(JsonFieldType.STRING).description("차량 모델"),
+                        fieldWithPath("data.strPoint").type(JsonFieldType.OBJECT).description("출발지"),
+                        fieldWithPath("data.strPoint.longitude").type(JsonFieldType.NUMBER).description("출발지 경도"),
+                        fieldWithPath("data.strPoint.latitude").type(JsonFieldType.NUMBER).description("출발지 위도"),
+                        fieldWithPath("data.strPoint.address").type(JsonFieldType.STRING).description("출발지 주소"),
+                        fieldWithPath("data.destination").type(JsonFieldType.OBJECT).description("도착지"),
+                        fieldWithPath("data.destination.longitude").type(JsonFieldType.NUMBER).description("도착지 경도"),
+                        fieldWithPath("data.destination.latitude").type(JsonFieldType.NUMBER).description("도착지 위도"),
+                        fieldWithPath("data.destination.address").type(JsonFieldType.STRING).description("도착지 주소"),
+                        fieldWithPath("data.postStatus").type(JsonFieldType.STRING).description("야타 게시글 상태"),
+                        fieldWithPath("data.yataStatus").type(JsonFieldType.STRING).description("야타 상태"),
+                        fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일")
+                )));
 
     }
 
@@ -172,9 +172,9 @@ List<YataMember> yataMembers = new ArrayList<>();
 
         ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.
                 patch(BASE_URL + "/{yataId}", yataId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()) //csrf토큰 생성
-                        .content(json));
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(csrf()) //csrf토큰 생성
+                .content(json));
 
 
         //then
@@ -218,14 +218,14 @@ List<YataMember> yataMembers = new ArrayList<>();
                         fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
                         fieldWithPath("data.amount").type(JsonFieldType.NUMBER).description("요금"),
                         fieldWithPath("data.carModel").type(JsonFieldType.STRING).description("차량 모델"),
-                                fieldWithPath("data.strPoint").type(JsonFieldType.OBJECT).description("출발지"),
-                                fieldWithPath("data.strPoint.longitude").type(JsonFieldType.NUMBER).description("출발지 경도"),
-                                fieldWithPath("data.strPoint.latitude").type(JsonFieldType.NUMBER).description("출발지 위도"),
-                                fieldWithPath("data.strPoint.address").type(JsonFieldType.STRING).description("출발지 주소"),
-                                fieldWithPath("data.destination").type(JsonFieldType.OBJECT).description("도착지"),
-                                fieldWithPath("data.destination.longitude").type(JsonFieldType.NUMBER).description("도착지 경도"),
-                                fieldWithPath("data.destination.latitude").type(JsonFieldType.NUMBER).description("도착지 위도"),
-                                fieldWithPath("data.destination.address").type(JsonFieldType.STRING).description("도착지 주소"),
+                        fieldWithPath("data.strPoint").type(JsonFieldType.OBJECT).description("출발지"),
+                        fieldWithPath("data.strPoint.longitude").type(JsonFieldType.NUMBER).description("출발지 경도"),
+                        fieldWithPath("data.strPoint.latitude").type(JsonFieldType.NUMBER).description("출발지 위도"),
+                        fieldWithPath("data.strPoint.address").type(JsonFieldType.STRING).description("출발지 주소"),
+                        fieldWithPath("data.destination").type(JsonFieldType.OBJECT).description("도착지"),
+                        fieldWithPath("data.destination.longitude").type(JsonFieldType.NUMBER).description("도착지 경도"),
+                        fieldWithPath("data.destination.latitude").type(JsonFieldType.NUMBER).description("도착지 위도"),
+                        fieldWithPath("data.destination.address").type(JsonFieldType.STRING).description("도착지 주소"),
                         fieldWithPath("data.postStatus").type(JsonFieldType.STRING).description("야타 게시글 상태"),
                         fieldWithPath("data.yataStatus").type(JsonFieldType.STRING).description("야타 상태"),
                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일")
@@ -250,18 +250,18 @@ List<YataMember> yataMembers = new ArrayList<>();
                 .maxPeople(2)
                 .maxWaitingTime(10)
                 .yataMembers(yataMembers)
-                .strPoint(new Location(1L, GeometryUtils.getEmptyPoint(),"인천",null))
-                .destination(new Location(2L, GeometryUtils.getEmptyPoint(),"부산",null))
+                .strPoint(new Location(1L, GeometryUtils.getEmptyPoint(), "인천", null))
+                .destination(new Location(2L, GeometryUtils.getEmptyPoint(), "부산", null))
                 .yataStatus(YataStatus.YATA_NATA)
                 .postStatus(Yata.PostStatus.POST_OPEN)
                 .build();
 
-        given(yataService.verifyYata(anyLong())).willReturn(expected);
+        given(yataService.findYata(anyLong())).willReturn(expected);
 
         ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.
                 delete(BASE_URL + "/{yataId}", expected.getYataId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .with(csrf()));//csrf토큰 생성
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(csrf()));//csrf토큰 생성
 
 
         // then
@@ -270,9 +270,9 @@ List<YataMember> yataMembers = new ArrayList<>();
                 .andDo(document("yata-delete",
                                 getRequestPreProcessor(),
                                 getResponsePreProcessor(),
-                        pathParameters(
-                                parameterWithName("yataId").description("야타 ID")
-                        )
+                                pathParameters(
+                                        parameterWithName("yataId").description("야타 ID")
+                                )
                         )
                 );
 
@@ -294,9 +294,9 @@ List<YataMember> yataMembers = new ArrayList<>();
 
         ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.
                 get(BASE_URL + "/{yataId}", yata.getYataId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .with(csrf()));
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(csrf()));
 
         resultActions.andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.title").value(response.getTitle()))
@@ -305,36 +305,36 @@ List<YataMember> yataMembers = new ArrayList<>();
                 .andExpect(jsonPath("$.data.carModel").value(response.getCarModel()))
                 .andDo(print());
 
-                resultActions.andDo(document("yata-get",
-                        getRequestPreProcessor(),
-                        getResponsePreProcessor(),
-                        pathParameters(
-                                parameterWithName("yataId").description("야타 ID")
-                        ),
-                       responseFields(
-                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("야타 게시글 정보"),
-                                fieldWithPath("data.yataId").type(JsonFieldType.NUMBER).description("야타 ID"),
-                                fieldWithPath("data.departureTime").type(JsonFieldType.STRING).description("출발 시간"),
-                                fieldWithPath("data.timeOfArrival").type(JsonFieldType.STRING).description("도착 시간"),
-                                fieldWithPath("data.title").type(JsonFieldType.STRING).description("야타 제목"),
-                                fieldWithPath("data.specifics").type(JsonFieldType.STRING).description("야타 특이사항"),
-                                fieldWithPath("data.maxWaitingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
-                                fieldWithPath("data.maxPeople").type(JsonFieldType.NUMBER).description("최대 인원"),
-                               fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
-                               fieldWithPath("data.amount").type(JsonFieldType.NUMBER).description("요금"),
-                                fieldWithPath("data.carModel").type(JsonFieldType.STRING).description("차량 모델"),
-                                fieldWithPath("data.strPoint").type(JsonFieldType.OBJECT).description("출발지"),
-                                fieldWithPath("data.strPoint.longitude").type(JsonFieldType.NUMBER).description("출발지 경도"),
-                                fieldWithPath("data.strPoint.latitude").type(JsonFieldType.NUMBER).description("출발지 위도"),
-                                fieldWithPath("data.strPoint.address").type(JsonFieldType.STRING).description("출발지 주소"),
-                                fieldWithPath("data.destination").type(JsonFieldType.OBJECT).description("도착지"),
-                                fieldWithPath("data.destination.longitude").type(JsonFieldType.NUMBER).description("도착지 경도"),
-                                fieldWithPath("data.destination.latitude").type(JsonFieldType.NUMBER).description("도착지 위도"),
-                                fieldWithPath("data.destination.address").type(JsonFieldType.STRING).description("도착지 주소"),
-                                fieldWithPath("data.postStatus").type(JsonFieldType.STRING).description("야타 게시글 상태"),
-                                fieldWithPath("data.yataStatus").type(JsonFieldType.STRING).description("야타 상태"),
-                                fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일")
-                        )));
+        resultActions.andDo(document("yata-get",
+                getRequestPreProcessor(),
+                getResponsePreProcessor(),
+                pathParameters(
+                        parameterWithName("yataId").description("야타 ID")
+                ),
+                responseFields(
+                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("야타 게시글 정보"),
+                        fieldWithPath("data.yataId").type(JsonFieldType.NUMBER).description("야타 ID"),
+                        fieldWithPath("data.departureTime").type(JsonFieldType.STRING).description("출발 시간"),
+                        fieldWithPath("data.timeOfArrival").type(JsonFieldType.STRING).description("도착 시간"),
+                        fieldWithPath("data.title").type(JsonFieldType.STRING).description("야타 제목"),
+                        fieldWithPath("data.specifics").type(JsonFieldType.STRING).description("야타 특이사항"),
+                        fieldWithPath("data.maxWaitingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
+                        fieldWithPath("data.maxPeople").type(JsonFieldType.NUMBER).description("최대 인원"),
+                        fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
+                        fieldWithPath("data.amount").type(JsonFieldType.NUMBER).description("요금"),
+                        fieldWithPath("data.carModel").type(JsonFieldType.STRING).description("차량 모델"),
+                        fieldWithPath("data.strPoint").type(JsonFieldType.OBJECT).description("출발지"),
+                        fieldWithPath("data.strPoint.longitude").type(JsonFieldType.NUMBER).description("출발지 경도"),
+                        fieldWithPath("data.strPoint.latitude").type(JsonFieldType.NUMBER).description("출발지 위도"),
+                        fieldWithPath("data.strPoint.address").type(JsonFieldType.STRING).description("출발지 주소"),
+                        fieldWithPath("data.destination").type(JsonFieldType.OBJECT).description("도착지"),
+                        fieldWithPath("data.destination.longitude").type(JsonFieldType.NUMBER).description("도착지 경도"),
+                        fieldWithPath("data.destination.latitude").type(JsonFieldType.NUMBER).description("도착지 위도"),
+                        fieldWithPath("data.destination.address").type(JsonFieldType.STRING).description("도착지 주소"),
+                        fieldWithPath("data.postStatus").type(JsonFieldType.STRING).description("야타 게시글 상태"),
+                        fieldWithPath("data.yataStatus").type(JsonFieldType.STRING).description("야타 상태"),
+                        fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일")
+                )));
     }
 
     @Test
@@ -359,9 +359,9 @@ List<YataMember> yataMembers = new ArrayList<>();
         ResultActions actions =
                 mockMvc.perform(RestDocumentationRequestBuilders.
                         get(BASE_URL + "?yataStatus=neota")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .accept(MediaType.APPLICATION_JSON)
-                                .with(csrf()));
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf()));
 
         actions.andExpect(status().isOk())
                 .andDo(print());

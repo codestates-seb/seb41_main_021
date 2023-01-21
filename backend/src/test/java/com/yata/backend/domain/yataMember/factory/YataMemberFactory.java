@@ -52,7 +52,6 @@ public class YataMemberFactory {
                 .yataMemberId(yataMember.getYataMemberId())
                 .yataPaid(yataMember.isYataPaid())
                 .goingStatus(yataMember.getGoingStatus())
-                .approvalStatus(YataRequest.ApprovalStatus.ACCEPTED)
                 .build();
     }
 
