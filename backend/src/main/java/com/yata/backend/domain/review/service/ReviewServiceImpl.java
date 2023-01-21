@@ -32,21 +32,18 @@ public class ReviewServiceImpl implements ReviewService {
     private final YataService yataService;
     private final MemberService memberService;
     private final YataMemberService yataMemberService;
-    private final JpaYataMemberRepository jpaYataMemberRepository;
 
     public ReviewServiceImpl(YataService yataService,
                              MemberService memberService,
                              JpaReviewRepository jpaReviewRepository,
                              JpaChecklistRepository jpaChecklistRepository,
-                             YataMemberService yataMemberService,
-                             JpaYataMemberRepository jpaYataMemberRepository) {
+                             YataMemberService yataMemberService) {
 
         this.yataService = yataService;
         this.memberService = memberService;
         this.jpaReviewRepository = jpaReviewRepository;
         this.jpaChecklistRepository = jpaChecklistRepository;
         this.yataMemberService = yataMemberService;
-        this.jpaYataMemberRepository = jpaYataMemberRepository;
     }
 
     public Review createReview(List<Long> checkListIds, String username, long yataId,long yataMemeberId) {

@@ -64,7 +64,7 @@ public class ReviewControllerTest extends AbstractControllerTest {
 
         //when
         ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders.
-                post(BASE_URL + "/{yataId}",expected.getYata().getYataId())
+                post(BASE_URL + "/{yataId}/{yataMemberId}",expected.getYata().getYataId())
                 .contentType("application/json")
                 .with(csrf())
                 .content(json))
