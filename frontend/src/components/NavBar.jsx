@@ -4,6 +4,7 @@ import { AiOutlineUser } from 'react-icons/ai';
 import { FaCarSide } from 'react-icons/fa';
 import { RiSteeringLine } from 'react-icons/ri';
 import { TbHeartHandshake } from 'react-icons/tb';
+import { BsCheck2Circle } from 'react-icons/bs';
 
 export default function Navbar() {
   return (
@@ -19,8 +20,12 @@ export default function Navbar() {
             <p>탑니다</p>
           </NavLink>
           <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/register-list">
-            <TbHeartHandshake />
+            <BsCheck2Circle />
             <p>요청 내역</p>
+          </NavLink>
+          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journey-state">
+            <TbHeartHandshake />
+            <p>여정 현황</p>
           </NavLink>
           <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/my-page">
             <AiOutlineUser />
