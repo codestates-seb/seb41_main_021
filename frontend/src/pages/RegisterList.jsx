@@ -18,9 +18,20 @@ export default function RegisterList() {
           date={'1월 3일 (화) 7:00PM'}
           journeyStart={'서울'}
           journeyEnd={'부산'}
-          transit="1"></ListItem>
-        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
-        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
+          transit="1"
+          state="대기"></ListItem>
+        <ListItem
+          date={'1월 4일 (수) 7:00PM'}
+          journeyStart={'부산'}
+          journeyEnd={'서울'}
+          transit="1"
+          state="수락"></ListItem>
+        <ListItem
+          date={'1월 4일 (수) 7:00PM'}
+          journeyStart={'부산'}
+          journeyEnd={'서울'}
+          transit="1"
+          state="거절"></ListItem>
         <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
         <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
         <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
