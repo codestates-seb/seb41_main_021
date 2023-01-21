@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import { IoIosArrowForward, IoIosArrowRoundForward } from 'react-icons/io';
 import { BsCalendar4, BsPeople } from 'react-icons/bs';
-import { BiWon, BiCommentDetail } from 'react-icons/bi';
+import { BiWon } from 'react-icons/bi';
 
 const ListItem = props => {
   // api 응답 어떻게 올지 몰라서 대충 넣어놓음
-  const { date, journeyStart, journeyEnd, transit, price, people, onClick } = props;
+  const { date, journeyStart, journeyEnd, transit, price, people, state, onClick } = props;
   return (
     <>
       <Container onClick={onClick}>
@@ -13,6 +13,11 @@ const ListItem = props => {
           <DateContainer>
             <BsCalendar4 />
             {date}
+            {state && (
+              <TagContainer state={state}>
+                {state === '대기' ? '승인 대기' : state === '수락' ? '승인 확정' : '승인 거절'}
+              </TagContainer>
+            )}
           </DateContainer>
           <JourneyContainer>
             <JourneyText>
@@ -64,6 +69,25 @@ const DateContainer = styled.div`
   color: ${props => props.theme.colors.gray};
   font-weight: bold;
   margin-bottom: 0.8rem;
+`;
+
+const TagContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+  padding: 0.5rem;
+  height: 1.5rem;
+  color: white;
+  border-radius: 0.2rem;
+  font-size: 0.9rem;
+
+  background-color: ${props =>
+    props.state === '대기'
+      ? props.theme.colors.gray
+      : props.state === '수락'
+      ? props.theme.colors.main_blue
+      : props.theme.colors.light_red};
 `;
 
 const JourneyContainer = styled.div`
