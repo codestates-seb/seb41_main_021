@@ -32,6 +32,7 @@ import ExchagePage from './pages/ExchangePage';
 import PointHistory from './pages/PointHistory';
 import Purchase from './pages/Purchase';
 import Request from './pages/Request';
+import JourneyState from './pages/JourneyState';
 
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -70,6 +71,7 @@ function App() {
               <Route path="/point-history" element={<PointHistory />}></Route>
               <Route path="/purchase" element={<Purchase />}></Route>
               <Route path="/request" element={<Request />}></Route>
+              <Route path="/journey-state" element={<JourneyState />}></Route>
             </Routes>
             <ToastContainer position="top-center" />
           </Screen>
