@@ -97,6 +97,10 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     // scheduler
     implementation 'org.springframework.boot:spring-boot-starter-quartz'
+    // slack webhook
+    implementation 'com.github.maricn:logback-slack-appender:1.6.1'
+    implementation group: 'eu.bitwalker', name: 'UserAgentUtils', version: '1.17'
+    implementation 'net.gpedro.integrations.slack:slack-webhook:1.4.0'
 
 }
 
