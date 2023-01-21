@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface YataRepository {
     List<Yata> findYataByStartAndEndLocation(Location startLocation, Location endLocation,double distance , Pageable pageable);
-    List<Yata> findAllYataOverDepartureTime();
+    void updateYataOverDepartureTime();
 }

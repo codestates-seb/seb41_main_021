@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -22,7 +21,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
+@SpringBootTest(properties = "spring.jpa.show-sql=false")
 @Slf4j
 @Transactional
 class YataRepositoryImplTest {
@@ -47,8 +46,12 @@ class YataRepositoryImplTest {
                 .filter(yata -> yata.getDepartureTime().getTime() < System.currentTimeMillis())
                 .filter(yata -> yata.getPostStatus().equals(Yata.PostStatus.POST_OPEN))
                 .count();
-        List<Yata> yatas = jpaYataRepository.findAllYataOverDepartureTime();
-        assertEquals(count, yatas.size());
+        jpaYataRepository.updateYataOverDepartureTime();
+        long findCount = jpaYataRepository.findAll().stream()
+                .filter(yata -> yata.getDepartureTime().getTime() < System.currentTimeMillis())
+                .filter(yata -> yata.getPostStatus().equals(Yata.PostStatus.POST_CLOSED))
+                .count();
+        assertEquals(count, findCount);
         log.info("count : " + count);
 
     }

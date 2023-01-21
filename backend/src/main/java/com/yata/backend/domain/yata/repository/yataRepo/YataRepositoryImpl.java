@@ -54,15 +54,13 @@ public class YataRepositoryImpl implements YataRepository {
     }
 
     @Override
-    public List<Yata> findAllYataOverDepartureTime() {
+    public void updateYataOverDepartureTime() {
         Date now = new Date();
-        List<Yata> yatas = queryFactory.selectFrom(yata)
-                .join(yata.member).fetchJoin()
-                .join(yata.strPoint).fetchJoin()
-                .join(yata.destination).fetchJoin()
-                .leftJoin(yata.yataMembers).fetchJoin()
+        queryFactory.update(yata)
+                .set(yata.postStatus, Yata.PostStatus.POST_CLOSED)
                 .where(yata.departureTime.before(now).and(yata.postStatus.eq(Yata.PostStatus.POST_OPEN)))
-                .fetch();
-        return yatas;
+                .execute();
+        em.flush();
+        em.clear();
     }
 }
