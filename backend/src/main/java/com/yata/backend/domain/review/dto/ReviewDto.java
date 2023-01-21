@@ -42,7 +42,10 @@ public class ReviewDto {
         private long yataId;
 
         //작성자 이메일
-        private String writerEmail;
+        private String fromMemberEmail;
+
+        //리뷰대상자 이메일
+        private String toMemberEmail;
 
         //들어간 내용
         private List<ReviewChecklistDto.Response> responses;

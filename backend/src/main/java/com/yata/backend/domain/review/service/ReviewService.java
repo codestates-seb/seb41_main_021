@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 @Transactional
 public interface ReviewService {
-    Review createReview(List<Long> checklistIds, String username, long yataId);
+    Review createReview(List<Long> checklistIds, String username, long yataId,long yataMemberId);
 
     Slice<Review> findAllReview(String userName,long yataId, Pageable pageable);
 

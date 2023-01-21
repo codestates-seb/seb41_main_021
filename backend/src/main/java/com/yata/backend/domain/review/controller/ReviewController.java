@@ -32,12 +32,13 @@ public class ReviewController {
         this.mapper = mapper;
     }
     //리뷰작성
-    @PostMapping("/{yata_id}")
+    @PostMapping("/{yata_id}/{yata_member_id}")
     public ResponseEntity postReview(@PathVariable("yata_id") @Positive long yataId,
+                                     @PathVariable("yata_member_id") @Positive long yataMemberId,
                                      @Valid @RequestBody ReviewDto.Post requestBody,
                                      @AuthenticationPrincipal User authMember
     ) {
-        Review review = reviewService.createReview(mapper.reviewPostDtoToChecklistIds(requestBody), authMember.getUsername(),yataId);
+        Review review = reviewService.createReview(mapper.reviewPostDtoToChecklistIds(requestBody), authMember.getUsername(),yataId,yataMemberId);
         return new ResponseEntity<>(
                 new SingleResponse<>(mapper.reviewToReviewResponse(review)), HttpStatus.CREATED);
     }

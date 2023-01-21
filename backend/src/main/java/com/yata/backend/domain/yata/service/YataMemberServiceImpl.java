@@ -121,4 +121,13 @@ public class YataMemberServiceImpl implements YataMemberService {
 
         optionalYataRequest.orElseThrow(() -> new CustomLogicException(ExceptionCode.INVALID_ELEMENT));
     }
+
+    @Override
+    public YataMember verifyYataMember(long yataMemberId) {
+        Optional<YataMember> optionalYataMember = jpaYataMemberRepository.findById(yataMemberId);
+        YataMember findYataMember = optionalYataMember.orElseThrow(() ->
+            new CustomLogicException(ExceptionCode.YATA_MEMBER_NONE));
+
+        return findYataMember;
+    }
 }

@@ -8,6 +8,9 @@ import com.yata.backend.domain.review.entity.ReviewChecklist;
 import com.yata.backend.domain.review.repository.Checklist.JpaChecklistRepository;
 import com.yata.backend.domain.review.repository.Review.JpaReviewRepository;
 import com.yata.backend.domain.yata.entity.Yata;
+import com.yata.backend.domain.yata.entity.YataMember;
+import com.yata.backend.domain.yata.repository.yataMemberRepo.JpaYataMemberRepository;
+import com.yata.backend.domain.yata.service.YataMemberService;
 import com.yata.backend.domain.yata.service.YataService;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
@@ -28,39 +31,51 @@ public class ReviewServiceImpl implements ReviewService {
     private final JpaChecklistRepository jpaChecklistRepository;
     private final YataService yataService;
     private final MemberService memberService;
+    private final YataMemberService yataMemberService;
+    private final JpaYataMemberRepository jpaYataMemberRepository;
 
-    public ReviewServiceImpl(YataService yataService, MemberService memberService, JpaReviewRepository jpaReviewRepository, JpaChecklistRepository jpaChecklistRepository) {
+    public ReviewServiceImpl(YataService yataService,
+                             MemberService memberService,
+                             JpaReviewRepository jpaReviewRepository,
+                             JpaChecklistRepository jpaChecklistRepository,
+                             YataMemberService yataMemberService,
+                             JpaYataMemberRepository jpaYataMemberRepository) {
 
         this.yataService = yataService;
         this.memberService = memberService;
         this.jpaReviewRepository = jpaReviewRepository;
         this.jpaChecklistRepository = jpaChecklistRepository;
+        this.yataMemberService = yataMemberService;
+        this.jpaYataMemberRepository = jpaYataMemberRepository;
     }
 
-    public Review createReview(List<Long> checkListIds, String username, long yataId) {
+    public Review createReview(List<Long> checkListIds, String username, long yataId,long yataMemeberId) {
 
-        //야타 게시글이 마감 상태인지 확인 // 도착 상태인지 판단으로 변경
         Yata yata = yataService.verifyYata(yataId);
-//        if (yata.getPostStatus().getStatusNumber() != 5)
-//            throw new CustomLogicException(ExceptionCode.POST_STATUS_IS_NOT_SUITABLE);
+
+        Member fromMember = memberService.findMember(username); //작성자
+        YataMember yataMember = yataMemberService.verifyYataMember(yataMemeberId);
+
+        //일단 결제완료 (=도착 상태)가 아닌 경우 글을 못씀
+        //if(!yataMember.isYataPaid()) throw new CustomLogicException(ExceptionCode.PAYMENT_NOT_YET);
 
 
-//만약 yata가 너타인 경우
-        //todo yataRequest apply 리뷰 작성자가 야타 리퀘스트에서 결제된 사람인지 확인
-        //일단은 멤버가 있는지만 확인하자!
-        Member member = memberService.findMember(username);
-        //->맞다면 멤버값 넣어줌 (여기서 멤버값은 작성자)
         Review review = new Review();
-        review.setMember(member);
 
-        //만약 yata가 나타인경우
-        // review.toMember(toMember);
+        if(yataMember.getMember().equals(fromMember))   {//-> 작성자는 탑승자임
+            review.setFromMember(fromMember);
+            review.setToMember(yata.getMember()); //대상자 : yata글주인
+        }
 
-        //yata 값도 넣어줌
-        // 운전자 일경우 toMember 가 탑승자가 도착인지 판별 해야 하고
-        // 운전자가 야타 주인인지 판단해야하고
+        else if(yata.getMember().equals(fromMember)) {//-> 작성자는 운전자임
+            review.setFromMember(fromMember);
+            review.setToMember(yataMember.getMember()); //대상자 yataMember
+        }
+        else throw new CustomLogicException(ExceptionCode.UNAUTHORIZED); //둘다 아닌경우 -> 리뷰를 쓸 수 있는 자격이 없음
 
-        // 탑승자 일경우 toMember가 탑승자인지 판별해야 하고 , 해당 탑승자(자기)가 도착인지 판별 해야함
+        //이미 같은 야타 아이디 있으면 중복 작성 안되게 + 같은 reyatamember
+        Optional<Review> optionalReview = jpaReviewRepository.findByYataAndFromMemberAndToMember(yata,fromMember,review.getToMember());
+        if(optionalReview.isPresent()) throw new CustomLogicException(ExceptionCode.ALREADY_REVIEWED);
 
         review.setYata(yata);
 
@@ -72,7 +87,7 @@ public class ReviewServiceImpl implements ReviewService {
         }).collect(Collectors.toList());
 
         review.setReviewChecklists(reviewChecklists);
-        calculateFuelTank(checklists, yata);
+        calculateFuelTank(checklists, review.getToMember());
 
         //todo n+1 문제 어떻게 해결해야 할까?!?!? 생각해보자 캐싱?
 
@@ -91,15 +106,15 @@ public class ReviewServiceImpl implements ReviewService {
         return findChecklist;
     }
 
-    public void calculateFuelTank(List<Checklist> checklists, Yata yata) {
+    public void calculateFuelTank(List<Checklist> checklists, Member toMember) {
         int positiveCount = (int) checklists.stream().filter(Checklist::isCheckpn).count();
         int negativeCount = checklists.size() - positiveCount;
 
         BigDecimal ChangeNum = new BigDecimal(String.valueOf(0.1));
-        BigDecimal FuelTankScore = new BigDecimal(String.valueOf(yata.getMember().getFuelTank()));
+        BigDecimal FuelTankScore = new BigDecimal(String.valueOf(toMember.getFuelTank()));
 
-        if (positiveCount > negativeCount) yata.getMember().setFuelTank(FuelTankScore.add(ChangeNum).doubleValue());
-        else yata.getMember().setFuelTank(FuelTankScore.subtract(ChangeNum).doubleValue());
+        if (positiveCount > negativeCount) toMember.setFuelTank(FuelTankScore.add(ChangeNum).doubleValue());
+        else toMember.setFuelTank(FuelTankScore.subtract(ChangeNum).doubleValue());
     }
 }
 
