@@ -56,8 +56,8 @@ public class ReviewFactoty {
         return ReviewDto.Response.builder()
                 .reviewId(review.getReviewId())
                 .yataId(review.getYata().getYataId())
-                .toMemberEmail(review.getToMember().getEmail())
-                .fromMemberEmail(review.getFromMember().getEmail())
+                .toMemberNickName(review.getToMember().getEmail())
+                .fromMemberNickName(review.getFromMember().getEmail())
                 .responses(list).build();
     }
 

@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class YataMember extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long YataMemberId;
+    private Long yataMemberId;
 
     @Column(nullable = false)
     private boolean yataPaid; // 지불 여부

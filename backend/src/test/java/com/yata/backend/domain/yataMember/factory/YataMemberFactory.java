@@ -29,7 +29,7 @@ public class YataMemberFactory {
 //        yata.setYataRequests(List.of(yataRequest));
 
         return YataMember.builder()
-                .YataMemberId(getRandomLong())
+                .yataMemberId(getRandomLong())
                 .yata(yata)
                 .member(member)
                 .yataPaid(false)

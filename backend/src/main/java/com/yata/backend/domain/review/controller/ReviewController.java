@@ -32,9 +32,9 @@ public class ReviewController {
         this.mapper = mapper;
     }
     //리뷰작성
-    @PostMapping("/{yata_id}/{yata_member_id}")
+    @PostMapping("/{yata_id}")
     public ResponseEntity postReview(@PathVariable("yata_id") @Positive long yataId,
-                                     @PathVariable("yata_member_id") @Positive long yataMemberId,
+                                     @RequestParam(required = false) Long yataMemberId,
                                      @Valid @RequestBody ReviewDto.Post requestBody,
                                      @AuthenticationPrincipal User authMember
     ) {

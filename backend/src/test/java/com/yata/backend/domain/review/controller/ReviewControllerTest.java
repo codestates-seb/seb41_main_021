@@ -31,8 +31,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -51,7 +50,7 @@ public class ReviewControllerTest extends AbstractControllerTest {
     @Test
     @DisplayName("리뷰작성")
     @WithMockUser(username = "test@gmail.com", roles = "USER")
-    void createReview() throws Exception{
+    void createReview() throws Exception {
         ReviewDto.Post post = createReviewPostDto();
 
         String json = gson.toJson(post);
@@ -59,41 +58,38 @@ public class ReviewControllerTest extends AbstractControllerTest {
         Review expected = ReviewFactoty.createReview();
         long yataMemberId = 1L;
 
-        given(reviewService.createReview(any(),anyString(),anyLong(),anyLong())).willReturn(new Review());
+        given(reviewService.createReview(any(), anyString(), anyLong(), anyLong())).willReturn(new Review());
         given(mapper.reviewToReviewResponse(any())).willReturn(createReviewResponseDto(expected));
 
         //when
         ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders.
-                post(BASE_URL + "/{yataId}/{yataMemberId}",expected.getYata().getYataId(),yataMemberId)
-                .contentType("application/json")
-                .with(csrf())
-                .content(json))
-                        .andExpect(status().isCreated());
+                        post(BASE_URL + "/{yataId}?yataMemberId=1", expected.getYata().getYataId())
+                        .contentType("application/json")
+                        .with(csrf())
+                        .content(json))
+                .andExpect(status().isCreated());
 
 
         actions.andDo(print());
         actions.andDo(document("review-create",
                 getRequestPreProcessor(),
-//                requestFields(
-//                        fieldWithPath("checklistIds").type(JsonFieldType.ARRAY).description("선택한 체크리스트 항목 아이디")
-//                        ),
                 getResponsePreProcessor(),
                 pathParameters(
-                        parameterWithName("yataId").description("야타 ID"),
-                        parameterWithName("yataMemberId").description("야타 멤버 ID")
+                        parameterWithName("yataId").description("야타 ID")
+                ),
+                requestFields(
+                        fieldWithPath("checklistIds").type(JsonFieldType.ARRAY).description("선택한 체크리스트 항목 아이디")
                 ),
                 responseFields(
                         fieldWithPath("data.reviewId").type(JsonFieldType.NUMBER).description("리뷰 아이디"),
                         fieldWithPath("data.yataId").type(JsonFieldType.NUMBER).description("리뷰 관련 게시글 아이디"),
-                        fieldWithPath("data.toMemberEmail").type(JsonFieldType.STRING).description("리뷰 대상자 이메일"),
-                        fieldWithPath("data.fromMemberEmail").type(JsonFieldType.STRING).description("리뷰 작성자 이메일"),
+                        fieldWithPath("data.toMemberNickName").type(JsonFieldType.STRING).description("리뷰 대상자 이메일"),
+                        fieldWithPath("data.fromMemberNickName").type(JsonFieldType.STRING).description("리뷰 작성자 이메일"),
                         fieldWithPath("data.responses").type(JsonFieldType.ARRAY).description("체크한 항목들 정보"),
                         fieldWithPath("data.responses[].checklistId").type(JsonFieldType.NUMBER).description("체크한 항목들 정보"),
                         fieldWithPath("data.responses[].checkContent").type(JsonFieldType.STRING).description("체크한 항목들 정보"),
                         fieldWithPath("data.responses[].checkpn").type(JsonFieldType.BOOLEAN).description("체크한 항목들 정보")
-                        )));
-
-
+                )));
 
 
     }

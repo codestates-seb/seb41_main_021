@@ -26,8 +26,8 @@ public interface ReviewMapper {
         ReviewDto.Response.ResponseBuilder response = ReviewDto.Response.builder();
         response.reviewId(review.getReviewId())
                 .yataId(review.getYata().getYataId())
-                .fromMemberEmail(review.getFromMember().getEmail())
-                .toMemberEmail(review.getToMember().getEmail())
+                .fromMemberNickName(review.getFromMember().getNickname())
+                .toMemberNickName(review.getToMember().getNickname())
                 .responses(review.getReviewChecklists()
                         .stream()
                         .map(reviewChecklist -> {

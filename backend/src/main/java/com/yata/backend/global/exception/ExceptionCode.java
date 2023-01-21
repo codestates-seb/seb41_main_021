@@ -40,7 +40,8 @@ public enum ExceptionCode {
 
     PAYMENT_NOT_YET(403,"PAYMENT_NOT_YET"),
 
-    ALREADY_REVIEWED(409,"ALREADY_REVIEWED");
+    ALREADY_REVIEWED(409,"ALREADY_REVIEWED"),
+    CANNOT_CREATE_REVIEW(403,"CANNOT_CREATE_REVIEW");
 
     @Getter
     private final int code;

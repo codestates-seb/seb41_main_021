@@ -36,10 +36,10 @@ public class ReviewDto {
         private long yataId;
 
         //작성자 이메일
-        private String fromMemberEmail;
+        private String fromMemberNickName;
 
         //리뷰대상자 이메일
-        private String toMemberEmail;
+        private String toMemberNickName;
 
         //들어간 내용
         private List<ReviewChecklistDto.Response> responses;

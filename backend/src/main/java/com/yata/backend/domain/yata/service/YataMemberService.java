@@ -11,6 +11,5 @@ public interface YataMemberService {
     void reject(String userName, Long yataRequestId, Long yataId);
     Slice<YataMember> findAcceptedRequests(String userEmail, Long yataId, Pageable pageable);
     void verifyAppliedRequest(Yata yata, Long yataRequestId);
-
     YataMember verifyYataMember(long yataMemeberId);
 }
