@@ -2,20 +2,15 @@ package com.yata.backend.domain.yata.batch;
 
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.repository.yataRepo.JpaYataRepository;
-import com.yata.backend.domain.yata.repository.yataRepo.YataRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.List;
 
 @Configuration
 @Slf4j
@@ -43,12 +38,7 @@ public class YataBatchConfig {
     public Step yataStep() {
         return stepBuilderFactory.get("yataStep")
                 .tasklet((contribution, chunkContext) -> {
-                    yataRepository.findAllYataOverDepartureTime().forEach(
-                            yata -> {
-                                yata.setPostStatus(Yata.PostStatus.POST_CLOSED);
-                                log.info("YataBatchConfig yataStep yata :{}", yata);
-                            }
-                    );
+                    yataRepository.updateYataOverDepartureTime();
                     return RepeatStatus.FINISHED;
                 }).build();
 
