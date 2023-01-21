@@ -100,8 +100,10 @@ public class Yata extends Auditable {
     public void addDestination(Location destination) {
         this.destination = destination;}
 
-    public Yata(long yataId){
+    //테스트 위한 생성자
+    public Yata(long yataId,List<YataMember> yataMembers){
         this.yataId = yataId;
+        this.yataMembers = yataMembers;
     }
 
 }

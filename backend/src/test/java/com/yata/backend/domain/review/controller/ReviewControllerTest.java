@@ -35,7 +35,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ReviewController.class)
@@ -58,13 +57,14 @@ public class ReviewControllerTest extends AbstractControllerTest {
         String json = gson.toJson(post);
 
         Review expected = ReviewFactoty.createReview();
+        long yataMemberId = 1L;
 
-        given(reviewService.createReview(any(),anyString(),anyLong())).willReturn(new Review());
+        given(reviewService.createReview(any(),anyString(),anyLong(),anyLong())).willReturn(new Review());
         given(mapper.reviewToReviewResponse(any())).willReturn(createReviewResponseDto(expected));
 
         //when
         ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders.
-                post(BASE_URL + "/{yataId}/{yataMemberId}",expected.getYata().getYataId())
+                post(BASE_URL + "/{yataId}/{yataMemberId}",expected.getYata().getYataId(),yataMemberId)
                 .contentType("application/json")
                 .with(csrf())
                 .content(json))
@@ -79,12 +79,14 @@ public class ReviewControllerTest extends AbstractControllerTest {
 //                        ),
                 getResponsePreProcessor(),
                 pathParameters(
-                        parameterWithName("yataId").description("야타 ID")
+                        parameterWithName("yataId").description("야타 ID"),
+                        parameterWithName("yataMemberId").description("야타 멤버 ID")
                 ),
                 responseFields(
                         fieldWithPath("data.reviewId").type(JsonFieldType.NUMBER).description("리뷰 아이디"),
                         fieldWithPath("data.yataId").type(JsonFieldType.NUMBER).description("리뷰 관련 게시글 아이디"),
-                        fieldWithPath("data.writerEmail").type(JsonFieldType.STRING).description("리뷰 작성자 이메일"),
+                        fieldWithPath("data.toMemberEmail").type(JsonFieldType.STRING).description("리뷰 대상자 이메일"),
+                        fieldWithPath("data.fromMemberEmail").type(JsonFieldType.STRING).description("리뷰 작성자 이메일"),
                         fieldWithPath("data.responses").type(JsonFieldType.ARRAY).description("체크한 항목들 정보"),
                         fieldWithPath("data.responses[].checklistId").type(JsonFieldType.NUMBER).description("체크한 항목들 정보"),
                         fieldWithPath("data.responses[].checkContent").type(JsonFieldType.STRING).description("체크한 항목들 정보"),
