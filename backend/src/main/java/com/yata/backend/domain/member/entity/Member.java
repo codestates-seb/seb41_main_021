@@ -4,14 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.yata.backend.auth.oauth2.dto.ProviderType;
 import com.yata.backend.domain.image.entity.ImageEntity;
-import com.yata.backend.domain.image.entity.QImageEntity;
 import com.yata.backend.domain.member.dto.MemberDto;
 import com.yata.backend.domain.yata.entity.YataMember;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import com.yata.backend.global.audit.Auditable;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.stereotype.Indexed;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -89,7 +87,7 @@ public class Member extends Auditable {
 
     public enum MemberRole {
         DRIVER,
-        PASSANGER,
+        PASSENGER,
         ADMIN,
     }
 

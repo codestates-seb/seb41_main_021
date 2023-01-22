@@ -14,17 +14,14 @@ import com.yata.backend.global.utils.RedisUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Date;
 
@@ -97,7 +94,7 @@ class AuthControllerTest {
         // given
         Member member = MemberFactory.createMember(passwordEncoder);
         jpaMemberRepository.save(member);
-        AuthToken accessToken = GeneratedToken.createExpiredToken(authTokenProvider, member.getEmail() , Member.MemberRole.PASSANGER.name());
+        AuthToken accessToken = GeneratedToken.createExpiredToken(authTokenProvider, member.getEmail() , Member.MemberRole.PASSENGER.name());
         RefreshToken refreshToken = refreshTokenRepository
                 .save(new RefreshToken(member.getEmail(), authTokenProvider.createRefreshToken(member.getEmail()).getToken() , new Date(System.currentTimeMillis())));
         // when
@@ -120,7 +117,7 @@ class AuthControllerTest {
     void logout() throws Exception {
         Member member = MemberFactory.createMember(passwordEncoder);
         jpaMemberRepository.save(member);
-        AuthToken accessToken =  authTokenProvider.createAccessToken(member.getEmail(), Collections.singletonList(Member.MemberRole.PASSANGER.name()));
+        AuthToken accessToken =  authTokenProvider.createAccessToken(member.getEmail(), Collections.singletonList(Member.MemberRole.PASSENGER.name()));
         refreshTokenRepository
                 .save(new RefreshToken(member.getEmail(), authTokenProvider.createRefreshToken(member.getEmail()).getToken() , new Date(System.currentTimeMillis())));
 
