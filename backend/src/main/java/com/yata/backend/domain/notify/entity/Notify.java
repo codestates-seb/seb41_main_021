@@ -33,7 +33,7 @@ public class Notify extends Auditable {
    @Column(nullable = false)
    private NotificationType notificationType;
 
-   @ManyToOne(fetch = FetchType.LAZY)
+   @ManyToOne
    @JoinColumn(name = "member_id")
    @OnDelete(action = OnDeleteAction.CASCADE)
    private Member receiver;
