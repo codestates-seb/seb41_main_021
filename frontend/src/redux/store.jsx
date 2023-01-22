@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import TayoSlice from './slice/TayoSlice';
+import userSlice from './slice/UserSlice';
 
 const store = configureStore({
   reducer: {
-    counter: TayoSlice.reducer,
+    user: userSlice.reducer,
   },
 });
 
