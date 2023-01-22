@@ -7,25 +7,41 @@ import facebook from '../images/facebook_icon.svg';
 import google from '../images/google_icon.svg';
 import kakao from '../images/kakao_icon.png';
 import Header from '.././components/Header';
-import { useLogin } from '../hooks/useLogin';
+import { useLogin, useGetUserInfo } from '../hooks/useLogin';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../redux/slice/UserSlice';
 
 export default function Login() {
-  const [id, setId] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isValidID, setIsValidID] = useState(true);
+  const [isValidEmail, setIsValidEmail] = useState(true);
   const [isValidPW, setIsValidPW] = useState(true);
+  const dispatch = useDispatch();
+  const info = useSelector(state => {
+    return state.user;
+  });
 
   const isLogin = false;
+
   const handleSubmit = e => {
     e.preventDefault();
+    const data = {
+      email: email,
+      password: password,
+    };
 
-    if (id === '') setIsValidID(false);
-    else setIsValidID(true);
+    if (email === '') setIsValidEmail(false);
+    else setIsValidEmail(true);
     if (password === '') setIsValidPW(false);
     else setIsValidPW(true);
-    if (id === '' || password === '') return console.log('fail');
+    if (email === '' || password === '') return;
 
-    useLogin();
+    useLogin('https://server.yata.kro.kr/api/v1/auth/login', data).then(res => {
+      if (res === 200) {
+        useGetUserInfo().then(res => dispatch(loginUser(res)));
+        console.log(info);
+      }
+    });
   };
 
   return (
@@ -41,8 +57,8 @@ export default function Login() {
               </Title>
               <LoginForm onSubmit={handleSubmit}>
                 <IdWrapper>
-                  <Input label="아이디" placeholder="아이디 입력" state={id} setState={setId} />
-                  {isValidID || <ErrorMsg>아이디를 입력해주세요</ErrorMsg>}
+                  <Input label="아이디" placeholder="아이디 입력" state={email} setState={setEmail} />
+                  {isValidEmail || <ErrorMsg>아이디를 입력해주세요</ErrorMsg>}
                 </IdWrapper>
                 <PwWrapper>
                   <Input
