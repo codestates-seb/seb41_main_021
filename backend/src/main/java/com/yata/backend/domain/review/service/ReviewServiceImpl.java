@@ -9,9 +9,7 @@ import com.yata.backend.domain.review.repository.Checklist.JpaChecklistRepositor
 import com.yata.backend.domain.review.repository.Review.JpaReviewRepository;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataMember;
-import com.yata.backend.domain.yata.entity.YataMemberRepository;
 import com.yata.backend.domain.yata.repository.yataMemberRepo.JpaYataMemberRepository;
-import com.yata.backend.domain.yata.service.YataMemberService;
 import com.yata.backend.domain.yata.service.YataService;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
