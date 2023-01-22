@@ -1,6 +1,5 @@
 package com.yata.backend.domain.member.controller;
 
-import com.yata.backend.auth.dto.MemberPrincipal;
 import com.yata.backend.domain.member.dto.MemberDto;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.mapper.MemberMapper;
@@ -34,8 +33,8 @@ public class MemberController {
    }
    @GetMapping
    public ResponseEntity getMember(@AuthenticationPrincipal User principal) {
-      Member member = memberService.findMember(principal.getUsername());
-      return ResponseEntity.ok(new SingleResponse<>(memberMapper.memberToResponseMemberDto(member)));
+      MemberDto.Response member = memberService.findMemberDto(principal.getUsername());
+      return ResponseEntity.ok(new SingleResponse<>(member));
    }
    @PatchMapping
    public ResponseEntity updateMember(@AuthenticationPrincipal User principal, @Valid @RequestBody MemberDto.Patch memberPatchDto) {

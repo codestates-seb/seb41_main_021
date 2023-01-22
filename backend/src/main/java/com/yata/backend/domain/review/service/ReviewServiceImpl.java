@@ -39,8 +39,8 @@ public class ReviewServiceImpl implements ReviewService {
 
     public Review createReview(List<Long> checkListIds, String username, long yataId) {
 
-        //야타 게시글이 마감 상태인지 확인
-        Yata yata = yataService.verifyYata(yataId);
+        //야타 게시글이 마감 상태인지 확인 // 도착 상태인지 판단으로 변경
+        Yata yata = yataService.findYata(yataId);
 //        if (yata.getPostStatus().getStatusNumber() != 5)
 //            throw new CustomLogicException(ExceptionCode.POST_STATUS_IS_NOT_SUITABLE);
 
@@ -54,9 +54,14 @@ public class ReviewServiceImpl implements ReviewService {
         review.setMember(member);
 
         //만약 yata가 나타인경우
-
+        // review.toMember(toMember);
 
         //yata 값도 넣어줌
+        // 운전자 일경우 toMember 가 탑승자가 도착인지 판별 해야 하고
+        // 운전자가 야타 주인인지 판단해야하고
+
+        // 탑승자 일경우 toMember가 탑승자인지 판별해야 하고 , 해당 탑승자(자기)가 도착인지 판별 해야함
+
         review.setYata(yata);
 
         List<Checklist> checklists = checkListIds.stream()

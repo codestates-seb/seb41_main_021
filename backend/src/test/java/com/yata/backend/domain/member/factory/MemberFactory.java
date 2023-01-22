@@ -51,6 +51,7 @@ public class MemberFactory {
                 .carImgUrl(member.getCarImgUrl())
                 .roles(member.getRoles())
                 .genders(member.getGenders())
+                .fuelTank(member.getFuelTank())
                 .build();
     }
 

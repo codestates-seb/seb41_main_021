@@ -17,6 +17,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Table(indexes = {
+        @Index(name = "idx_yata_yataId", columnList = "yataId", unique = true),
+        @Index(name = "idx_yata_member", columnList = "EMAIL"),
+        @Index(name = "idx_yata_memberAndYata", columnList = "EMAIL,yataId", unique = true),
+})
 public class Yata extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,22 +67,13 @@ public class Yata extends Auditable {
     @OneToOne(cascade = CascadeType.ALL)
     private Location destination;
 
-//    @OneToMany(mappedBy = "yata",cascade = CascadeType.ALL)
-//    private List<YataChecklist> yataChecklists = new ArrayList<>();
-
-
-//    @OneToMany(mappedBy = "yata" , cascade = CascadeType.ALL)
-//    private List<Location> waypoints = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "EMAIL")
     private Member member;
 
-    @OneToMany(mappedBy = "yata" , fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
-    private List<YataRequest> yataRequests = new ArrayList<>();
-
-    @OneToMany(mappedBy = "yata" , fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
-    private List<Review> reviews = new ArrayList<>();
+//    @OneToMany(mappedBy = "yata" , fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
+//    private List<YataRequest> yataRequests = new ArrayList<>();
 
 
     // TODO lazy / eager 뭐 할지 생각 - 쿼리 어떻게 나오는지 확인하기
@@ -85,13 +81,8 @@ public class Yata extends Auditable {
     private List<YataMember> yataMembers = new ArrayList<>();
 
     public enum PostStatus {
-        POST_WAITING(1,"예약 전"),
-        POST_RESERVED(2,"예약 완료"),
-        POST_MOVING(3,"가는 중"),
-        POST_CLOSED(4,"마감"),
-        POST_WARNING(5,"경고"),
-        POST_ACCEPTED(6,"수락"),
-        POST_DENIED(7,"거절");
+        POST_OPEN(1,"신청가능"),
+        POST_CLOSED(2,"마감");
 
         @Getter
         private int statusNumber;

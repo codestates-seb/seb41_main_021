@@ -88,8 +88,7 @@ class MemberControllerTest extends AbstractControllerTest {
     void getMyInfo() throws Exception {
         // given
         Member member = MemberFactory.createMember(new BCryptPasswordEncoder());
-        given(memberService.findMember(any())).willReturn(member);
-        given(mapper.memberToResponseMemberDto(any())).willReturn(MemberFactory.createMemberResponseDto(member));
+        given(memberService.findMemberDto(any())).willReturn(MemberFactory.createMemberResponseDto(member));
         // when
         ResultActions resultActions = mockMvc.perform(get(BASE_URL)
                         .contentType("application/json")
@@ -116,7 +115,8 @@ class MemberControllerTest extends AbstractControllerTest {
                                 fieldWithPath("data.providerType").type(JsonFieldType.STRING).description("로그인 타입"),
                                 fieldWithPath("data.roles").type(JsonFieldType.ARRAY).description("로그인 권한 정보 리스트"),
                                 fieldWithPath("data.roles[]").type(JsonFieldType.ARRAY).description("로그인 권한 정보 DRIVER,PASSANGER ,ADMIN"),
-                                fieldWithPath("data.memberStatus").type(JsonFieldType.STRING).description("맴버 상태")
+                                fieldWithPath("data.memberStatus").type(JsonFieldType.STRING).description("맴버 상태"),
+                                fieldWithPath("data.fuelTank").type(JsonFieldType.NUMBER).description("연료탱크 점수")
                         )
                 ));
     }

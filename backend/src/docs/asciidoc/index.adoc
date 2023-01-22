@@ -265,6 +265,17 @@ include::{snippets}/yata/get-location/response-body.adoc[]
 .response-fields
 include::{snippets}/yata/get-location/response-fields.adoc[]
 
+== CheckListController
+=== 체크리스트 목록 조회
+GET /api/v1/checklist
+.http-request
+include::{snippets}/checklist/get/http-request.adoc[]
+.http-response
+include::{snippets}/checklist/get/http-response.adoc[]
+.response-body
+include::{snippets}/checklist/get/response-body.adoc[]
+.response-fields
+include::{snippets}/checklist/get/response-fields.adoc[]
 
 
 == yataRequestController
@@ -272,6 +283,12 @@ include::{snippets}/yata/get-location/response-fields.adoc[]
 
 .http-request
 include::{snippets}/yataRequest-postRequest/http-request.adoc[]
+.path-parameters
+include::{snippets}/yataRequest-postRequest/path-parameters.adoc[]
+.request-fields
+include::{snippets}/yataRequest-postRequest/request-fields.adoc[]
+.request-body
+include::{snippets}/yataRequest-postRequest/request-body.adoc[]
 .http-response
 include::{snippets}/yataRequest-postRequest/http-response.adoc[]
 .response-fields
@@ -283,8 +300,8 @@ include::{snippets}/yataRequest-postRequest/response-body.adoc[]
 
 .http-request
 include::{snippets}/yataRequest-postInvitation/http-request.adoc[]
-.request-fields
-include::{snippets}/yataRequest-postInvitation/request-fields.adoc[]
+.path-parameters
+include::{snippets}/yataRequest-postInvitation/path-parameters.adoc[]
 .http-response
 include::{snippets}/yataRequest-postInvitation/http-response.adoc[]
 .response-fields
@@ -295,13 +312,15 @@ include::{snippets}/yataRequest-postInvitation/response-body.adoc[]
 === 신청/초대 목록 조회
 
 .http-request
-include::{snippets}/yataRequest-get/http-request.adoc[]
+include::{snippets}/yataRequest-getAll/http-request.adoc[]
+.path-parameters
+include::{snippets}/yataRequest-getAll/path-parameters.adoc[]
 .http-response
-include::{snippets}/yataRequest-get/http-response.adoc[]
+include::{snippets}/yataRequest-getAll/http-response.adoc[]
 .response-fields
-include::{snippets}/yataRequest-get/response-fields.adoc[]
+include::{snippets}/yataRequest-getAll/response-fields.adoc[]
 .response-body
-include::{snippets}/yataRequest-get/response-body.adoc[]
+include::{snippets}/yataRequest-getAll/response-body.adoc[]
 
 === 신청/초대 삭제
 
@@ -332,6 +351,19 @@ include::{snippets}/yataMember-reject/http-request.adoc[]
 include::{snippets}/yataMember-reject/path-parameters.adoc[]
 .http-response
 include::{snippets}/yataMember-reject/http-response.adoc[]
+
+=== 승인된 신청/초대 목록 조회
+
+.http-request
+include::{snippets}/yataMember-getAll/http-request.adoc[]
+.path-parameters
+include::{snippets}/yataMember-getAll/path-parameters.adoc[]
+.http-response
+include::{snippets}/yataMember-getAll/http-response.adoc[]
+.response-fields
+include::{snippets}/yataMember-getAll/response-fields.adoc[]
+.response-body
+include::{snippets}/yataMember-getAll/response-body.adoc[]
 
 
 
