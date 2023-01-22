@@ -5,6 +5,8 @@ import com.yata.backend.domain.image.repository.JpaImageRepository;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.service.MemberService;
 import com.yata.backend.domain.uploadfile.service.Uploader;
+import com.yata.backend.global.exception.CustomLogicException;
+import com.yata.backend.global.exception.ExceptionCode;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,6 +39,7 @@ public class ImageUploadService implements ImageUploader {
         }
         member.setImgUrl(imageEntity);
         jpaImageRepository.save(imageEntity);
+        memberService.updateMemberCache(member);
         return imageEntity.getUrl();
 
     }
@@ -45,7 +48,7 @@ public class ImageUploadService implements ImageUploader {
     public String[] uploadImage(MultipartFile file) throws IOException {
         System.out.println(file.getContentType());
         if (!Objects.requireNonNull(file.getContentType()).startsWith("image")) {
-            throw new IllegalArgumentException("이미지 파일만 업로드 가능합니다.");
+            throw new CustomLogicException(ExceptionCode.FILE_NOT_SUPPORTED);
         }
         return uploader.upload(file);
     }

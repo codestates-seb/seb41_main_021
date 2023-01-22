@@ -11,7 +11,7 @@ const header = {
   },
 };
 
-// 4.4, 4.5
+// 4.4, 4.5, 5.3
 const useTayoGet = async (url, data) => {
   await useGetData(url, data, header).then(res => {
     if (res.response.status === 401) {
@@ -38,7 +38,7 @@ const useTayoEdit = async (url, data) => {
   });
 };
 
-// 4.3
+// 4.3, 5.4
 const useTayoDelete = async (url, data) => {
   await useDeleteData(url, data, header).then(res => {
     if (res.response.status === 401) {
@@ -47,6 +47,7 @@ const useTayoDelete = async (url, data) => {
   });
 };
 
+// 5.1
 const useTayoRequest = async (url, data) => {
   await usePostData(url, data, header).then(res => {
     if (res.response.status === 401) {
@@ -55,6 +56,7 @@ const useTayoRequest = async (url, data) => {
   });
 };
 
+// 5.2
 const useTayoInvite = async (url, data) => {
   await usePostData(url, data, header).then(res => {
     if (res.response.status === 401) {
@@ -63,4 +65,13 @@ const useTayoInvite = async (url, data) => {
   });
 };
 
-export { useTayoGet, useTayoCreate, useTayoEdit, useTayoDelete, useTayoRequest, useTayoInvite };
+// 6.1 6.2
+const useTayoAccept = async (url, data) => {
+  await usePostData(url, data, header).then(res => {
+    if (res.response.status === 401) {
+      toast.warning('오류오류오류');
+    }
+  });
+};
+
+export { useTayoGet, useTayoCreate, useTayoEdit, useTayoDelete, useTayoRequest, useTayoInvite, useTayoAccept };

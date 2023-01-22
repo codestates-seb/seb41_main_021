@@ -21,6 +21,10 @@ public class YataMember extends Auditable {
     @Column(nullable = false)
     private boolean yataPaid; // 지불 여부
 
+    @Enumerated(value = EnumType.STRING)
+    @Column(length = 20, nullable = false)
+    private GoingStatus goingStatus;
+
     @ManyToOne
     @JoinColumn(name = "YATA_ID")
     private Yata yata;
@@ -29,14 +33,14 @@ public class YataMember extends Auditable {
     @JoinColumn(name = "EMAIL")
     private Member member;
 
-    public enum Payment { // 이게 포인트 충전 내역
-        PAID("지불 완료"),
-        NOT_YET("지불 전");
+    public enum GoingStatus {
+        STARTED_YET("출발 전"),
+        ARRIVED("도착 완료");
 
         @Getter
         private String status;
 
-        Payment(String status) {
+        GoingStatus(String status) {
             this.status = status;
         }
     }

@@ -1,12 +1,15 @@
 package com.yata.backend.domain.member.service;
 
 import com.yata.backend.auth.oauth2.dto.ProviderType;
+import com.yata.backend.domain.member.dto.MemberDto;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.repository.JpaMemberRepository;
 import com.yata.backend.domain.member.utils.AuthoritiesUtils;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
 import com.yata.backend.global.utils.CustomBeanUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +23,6 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
     private final CustomBeanUtils customBeanUtils;
     private final SignUpVerifyService signUpVerifyService;
-
 
 
     public MemberServiceImpl(JpaMemberRepository memberRepository, PasswordEncoder passwordEncoder, CustomBeanUtils customBeanUtils, SignUpVerifyService signUpVerifyService) {
@@ -47,12 +49,18 @@ public class MemberServiceImpl implements MemberService {
     public Member findMember(String email) {
         return verifyMember(email);
     }
+    @Override
+    @Cacheable(value = "member", key = "#email")
+    public MemberDto.Response findMemberDto(String email) {
+        return findMember(email).toResponseDto();
+    }
 
     @Override
     public Optional<Member> findMemberByEmail(String email) {
         return memberRepository.findByEmail(email);
     }
 
+    // Private Methods 로 바꿀 것
     @Override
     public Member verifyMember(String email) {
         return memberRepository.findByEmail(email).orElseThrow(() -> new CustomLogicException(ExceptionCode.MEMBER_NONE));
@@ -74,8 +82,13 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member updateMember(String email, Member patchMemberDtoToMember) {
         Member member = verifyMember(email);
+        updateMemberCache(member);
         customBeanUtils.copyNonNullProperties(patchMemberDtoToMember, member);
         return member;
+    }
+    @CacheEvict(value = "member", key = "#member.email")
+    public MemberDto.Response updateMemberCache(Member member) {
+        return member.toResponseDto();
     }
 
     @Override

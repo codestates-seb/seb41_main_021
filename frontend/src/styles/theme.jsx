@@ -57,6 +57,9 @@ const colors = {
   darker_blue: '#537bc3',
   light_blue: '#8bcad9',
   lighter_blue: '#c4eef2',
+  light_red: '#ff8787',
+  red: '#ff6b6b',
+  dark_red: '#fa5252',
 };
 
 const device = {

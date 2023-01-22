@@ -48,7 +48,11 @@ export default function HomePage() {
             }}>
             로그인
           </button>
-          <button className="signup-btn" onClick={signup}>
+          <button
+            className="signup-btn"
+            onClick={() => {
+              navigate('/signup');
+            }}>
             가입하기
           </button>
         </ButtonContainer>

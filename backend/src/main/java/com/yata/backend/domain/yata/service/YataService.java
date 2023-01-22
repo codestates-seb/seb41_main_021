@@ -16,7 +16,6 @@ public interface YataService {
 
     Yata findYata(long yataId);
 
-    Yata verifyYata(long yataId);
-
+    void equalMember(String email, String postEmail);
 
 }

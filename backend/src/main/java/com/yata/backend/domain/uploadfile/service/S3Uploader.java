@@ -48,7 +48,6 @@ public class S3Uploader implements Uploader {
               new PutObjectRequest(bucket, fileName, uploadFile)
                       .withCannedAcl(CannedAccessControlList.PublicRead)	// PublicRead 권한으로 업로드 됨
       );
-      System.out.println(amazonS3Client.getUrl(bucket, fileName));
       return amazonS3Client.getUrl(bucket, fileName).toString();
    }
 
