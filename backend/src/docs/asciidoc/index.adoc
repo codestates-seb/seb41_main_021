@@ -365,6 +365,27 @@ include::{snippets}/yataMember-getAll/response-fields.adoc[]
 .response-body
 include::{snippets}/yataMember-getAll/response-body.adoc[]
 
+=== 리뷰 생성
+운전자의 경우 yataMemberId 값을 queryParam으로 넣어주고,
+탑승자의 경우 yataMemberId값을 넘겨줄 필요가 없습니다.
+
+POST /api/v1/review/{yataId}?yataMemberId={yataMemberId}
+
+.http-request
+include::{snippets}/review-create/http-request.adoc[]
+.path-parameters
+include::{snippets}/review-create/path-parameters.adoc[]
+.request-fields
+include::{snippets}/review-create/request-fields.adoc[]
+.http-response
+include::{snippets}/review-create/http-response.adoc[]
+.response-fields
+include::{snippets}/review-create/response-fields.adoc[]
+.response-body
+include::{snippets}/review-create/response-body.adoc[]
+
+
+
 
 
 

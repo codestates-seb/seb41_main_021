@@ -22,8 +22,12 @@ public class Review extends Auditable {
     private Long reviewId;
 
     @ManyToOne
-    @JoinColumn(name = "EMAIL")
-    private Member member;
+    @JoinColumn(name = "TO_MEMBER") //리뷰 대상자
+    private Member toMember;
+
+    @ManyToOne
+    @JoinColumn(name = "FROM_MEMBER") //리뷰작성자
+    private Member fromMember;
 
     @ManyToOne
     @JoinColumn(name = "YATA_ID")

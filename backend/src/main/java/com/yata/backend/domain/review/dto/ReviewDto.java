@@ -1,15 +1,9 @@
 package com.yata.backend.domain.review.dto;
 
-import com.yata.backend.domain.review.entity.Checklist;
-import com.yata.backend.domain.yata.dto.LocationDto;
-import com.yata.backend.domain.yata.entity.YataStatus;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.util.Date;
+
+
 import java.util.List;
 
 @Getter
@@ -42,7 +36,10 @@ public class ReviewDto {
         private long yataId;
 
         //작성자 이메일
-        private String writerEmail;
+        private String fromMemberNickName;
+
+        //리뷰대상자 이메일
+        private String toMemberNickName;
 
         //들어간 내용
         private List<ReviewChecklistDto.Response> responses;
