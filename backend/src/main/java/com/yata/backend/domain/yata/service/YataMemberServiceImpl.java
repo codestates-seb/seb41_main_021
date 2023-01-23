@@ -133,4 +133,5 @@ public class YataMemberServiceImpl implements YataMemberService {
 
         return findYataMember;
     }
+
 }

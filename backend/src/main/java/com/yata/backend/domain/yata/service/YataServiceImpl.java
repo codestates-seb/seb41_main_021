@@ -26,15 +26,13 @@ public class YataServiceImpl implements YataService {
     private final MemberService memberService;
 
     private final JpaYataRepository jpaYataRepository;
-    private final JpaYataRequestRepository jpaYataRequestRepository;
     private final CustomBeanUtils<Yata> beanUtils;
 
 
-    public YataServiceImpl(JpaYataRepository jpaYataRepository, CustomBeanUtils<Yata> beanUtils, MemberService memberService, JpaYataRequestRepository jpaYataRequestRepository) {
+    public YataServiceImpl(JpaYataRepository jpaYataRepository, CustomBeanUtils<Yata> beanUtils, MemberService memberService) {
         this.jpaYataRepository = jpaYataRepository;
         this.beanUtils = beanUtils;
         this.memberService = memberService;
-        this.jpaYataRequestRepository = jpaYataRequestRepository;
     }
 
     @Override
@@ -78,7 +76,7 @@ public class YataServiceImpl implements YataService {
         equalMember(member.getEmail(), findYata.getMember().getEmail());
         modifiableYata(yataId);
         // TODO 시간 validate 추가 해야함
-        jpaYataRequestRepository.deleteAllByYata(findYata);
+
         jpaYataRepository.delete(findYata);
     }
 //public Slice<YataRequest> findRequests(boolean acceptable, String userEmail, Long yataId, Pageable pageable) {
