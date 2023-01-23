@@ -28,20 +28,24 @@ public class NotifyAspect {
     @Pointcut("execution(* com.yata.backend.domain.yata.service.YataRequestService.createRequest(..))")
     public void requestNotify() {
     }
+
     @Pointcut("execution(* com.yata.backend.domain.yata.service.YataRequestService.createInvitation(..))")
     public void inviteNotify() {
     }
+
     // 포인트 컷 합치기
-    public void notifying(){}
+    public void notifying() {
+    }
 
     @Async
     @AfterReturning(pointcut = "requestNotify() || inviteNotify()", returning = "result")
     public void checkValue(JoinPoint joinPoint, Object result) throws Throwable {
+        YataRequest yataResult = (YataRequest) result;
         notifyService.send(
-                ((YataRequest) result).getYata().getMember(),
+                yataResult.getYata().getMember(),
                 Notify.NotificationType.YATA,
                 NotifyMessage.YATA_NEW_REQUEST.getMessage(),
-                "/api/v1/yata/" + ((YataRequest) result).getYata().getYataId()
+                "/api/v1/yata/" + (yataResult.getYata().getYataId())
         );
         log.info("result = {}", result);
     }

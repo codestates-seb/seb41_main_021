@@ -1,5 +1,6 @@
 package com.yata.backend.domain.yata.repository.yataMemberRepo;
 
+import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataMember;
 import org.springframework.data.domain.Pageable;
@@ -12,5 +13,5 @@ public interface JpaYataMemberRepository extends JpaRepository<YataMember, Long>
     Slice<YataMember> findAllByYata(Yata yata, Pageable pageable);
     Optional<YataMember> findById(long yataMemberId);
     Optional<YataMember> findByYataMemberIdAndYata(Long yataMemberId,Yata yata);
-    Optional<YataMember> findByYataAndMember(Yata yata, String Email);
+    Optional<YataMember> findByYataAndMember(Yata yata, Member member);
 }
