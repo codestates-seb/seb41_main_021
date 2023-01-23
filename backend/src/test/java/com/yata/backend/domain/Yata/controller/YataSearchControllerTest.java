@@ -14,6 +14,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
@@ -58,7 +61,8 @@ class YataSearchControllerTest extends AbstractControllerTest {
                 .append("sort=").append("yataId,desc");
         List<Yata> yataList = YataFactory.createYataList();
         List<YataDto.Response> responseList = YataFactory.createYataResponseDtoList(yataList);
-        given(yataSearchService.findYataByLocation(any(), any(), anyDouble(), any())).willReturn(yataList);
+        Slice<Yata> yataSlice = new SliceImpl<>(yataList , PageRequest.of(0, 10), true);
+        given(yataSearchService.findYataByLocation(any(), any(), anyDouble(), any())).willReturn(yataSlice);
         given(mapper.yatasToYataResponses(yataList)).willReturn(responseList);
         given(mapper.postToLocation(any())).willReturn(new Location());
         // when
@@ -84,7 +88,7 @@ class YataSearchControllerTest extends AbstractControllerTest {
                                 parameterWithName("sort").description("정렬"),
                                 parameterWithName("_csrf").description("무시 : csrf 토큰")
                         ),
-                        YataSnippet.getListResponse()
+                        YataSnippet.getSliceResponses()
                 ));
 
     }

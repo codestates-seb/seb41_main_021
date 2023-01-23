@@ -4,9 +4,11 @@ import com.yata.backend.domain.yata.dto.LocationDto;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.mapper.YataMapper;
 import com.yata.backend.domain.yata.service.YataSearchService;
-import com.yata.backend.global.response.ListResponse;
+import com.yata.backend.global.response.SliceInfo;
+import com.yata.backend.global.response.SliceResponseDto;
 import org.locationtech.jts.io.ParseException;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -42,13 +44,16 @@ public class YataSearchController {
                                       @PageableDefault Pageable pageable) throws ParseException {
         LocationDto.Post startLocationDto = LocationDto.Post.of(startLon, startLat, startAddress);
         LocationDto.Post endLocationDto = LocationDto.Post.of(endLon, endLat, endAddress);
-        List<Yata> yataList = yataSearchService.findYataByLocation(
+        Slice<Yata> yataList = yataSearchService.findYataByLocation(
                 mapper.postToLocation(startLocationDto),
                 mapper.postToLocation(endLocationDto),
                 distance,
                 pageable
         );
         //mapper.yatasToYataResponses(yataList)
-        return ResponseEntity.ok(new ListResponse<>(mapper.yatasToYataResponses(yataList)));
+        return ResponseEntity.ok(new SliceResponseDto<>(
+                mapper.yatasToYataResponses(yataList.getContent()),
+                new SliceInfo(pageable, yataList.getNumberOfElements(), yataList.hasNext())
+        ));
     }
 }

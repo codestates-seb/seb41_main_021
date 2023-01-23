@@ -30,7 +30,7 @@ public class YataRepositoryImpl implements YataRepository {
     }
 
     @Override
-    public List<Yata> findYataByStartAndEndLocation(Location startLocation, Location endLocation, double distance, Pageable pageable) {
+    public Slice<Yata> findYataByStartAndEndLocation(Location startLocation, Location endLocation, double distance, Pageable pageable) {
         // MBR
         Geometry startMBR = GeometryUtils.getMBR(startLocation.getLocation(), distance / 100);
         Geometry endMBR = GeometryUtils.getMBR(endLocation.getLocation(), distance / 100);
@@ -44,13 +44,13 @@ public class YataRepositoryImpl implements YataRepository {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
-       /* boolean hasNext = false;
+        boolean hasNext = false;
         if (yatas.size() > pageable.getPageSize()) {
             yatas.remove(pageable.getPageSize());
             hasNext = true;
         }
-        return new SliceImpl<>(yatas, pageable, hasNext);*/
-        return yatas;
+        return new SliceImpl<>(yatas, pageable, hasNext);
+
     }
 
     @Override
