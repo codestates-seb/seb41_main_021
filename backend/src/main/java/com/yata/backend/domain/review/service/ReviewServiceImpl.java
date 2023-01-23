@@ -51,7 +51,7 @@ public class ReviewServiceImpl implements ReviewService {
         Review review = new Review();
         YataMember yataMember = null;
         if (yataMemberId == null) {
-            yataMember = verifyPossibleYataMemberByuserName(yata, username); // 야타 멤버 서비스 쪽에서 만들것 지금 리뷰 서비스에서 안할게 많은데요?
+            yataMember = verifyPossibleYataMemberByuserName(yata, fromMember); // 야타 멤버 서비스 쪽에서 만들것 지금 리뷰 서비스에서 안할게 많은데요?
             review.setToMember(yata.getMember()); //대상자 : yata글주인
         } else {
             yataMember = verifyPossibleYataMember(yataMemberId, yata);//존재하는 야타멤버아이딘지 확인해주고  // 야타 멤버 서비스 쪽에서 만들것 지금 리뷰 서비스에서 안할게 많은데요?
@@ -121,8 +121,8 @@ public class ReviewServiceImpl implements ReviewService {
         return findYataMember;
     }
 
-    public YataMember verifyPossibleYataMemberByuserName(Yata yata, String userName) {
-        Optional<YataMember> optionalYataMember = jpaYataMemberRepository.findByYataAndMember(yata, userName);
+    public YataMember verifyPossibleYataMemberByuserName(Yata yata, Member member) {
+        Optional<YataMember> optionalYataMember = jpaYataMemberRepository.findByYataAndMember(yata, member);
         YataMember findYataMember = optionalYataMember.orElseThrow(() ->
                 new CustomLogicException(ExceptionCode.CANNOT_CREATE_REVIEW));
         return findYataMember;
