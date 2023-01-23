@@ -3,7 +3,7 @@ package com.yata.backend.domain.review.dto;
 import lombok.*;
 
 
-
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -35,6 +35,10 @@ public class ReviewDto {
         //리뷰 관련 게시글 아이디
         private long yataId;
 
+        private LocalDateTime createdAt;
+
+        private LocalDateTime modifiedAt;
+
         //작성자 이메일
         private String fromMemberNickName;
 
@@ -43,8 +47,13 @@ public class ReviewDto {
 
         //들어간 내용
         private List<ReviewChecklistDto.Response> responses;
-
-
     }
-
+//    @Getter
+//    @Setter
+//    @NoArgsConstructor
+//    @AllArgsConstructor
+//    @Builder
+//    public static class FindResponse {
+//        private List<FindReviewDto> findReviewDtos;
+//    }
 }

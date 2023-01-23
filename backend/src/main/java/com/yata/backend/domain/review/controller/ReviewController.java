@@ -34,7 +34,7 @@ public class ReviewController {
     //리뷰작성
     @PostMapping("/{yata_id}")
     public ResponseEntity postReview(@PathVariable("yata_id") @Positive long yataId,
-                                     @RequestParam(required = false) Long yataMemberId,
+                                     @RequestParam(value = "yataMemberId", required = false) Long yataMemberId,
                                      @Valid @RequestBody ReviewDto.Post requestBody,
                                      @AuthenticationPrincipal User authMember
     ) {
@@ -46,6 +46,7 @@ public class ReviewController {
 
     //내가 받은 모든 리뷰 조회
     //보여야 할 것 : list [[야타Id , 리뷰아이디 , 리뷰 체크리스트 항목들],[],[]] 최신순 정렬
+    //할 필요 없이 뭐 몇개 받았는지 계산해보기 
     @GetMapping("/{yata_id}")
     public ResponseEntity getAllReview(@PathVariable("yata_id") @Positive long yataId,
                                        @AuthenticationPrincipal User authMember

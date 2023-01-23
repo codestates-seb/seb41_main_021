@@ -52,7 +52,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         Review review = new Review();
 
-            if (yataMemberId == null) {//-> 작성자는 탑승자임
+            if (yataMemberId.describeConstable().isEmpty()) {//-> 작성자는 탑승자임
                 YataMember yataMember = verifyPossibleYataMemberByuserName(yata,username);
                 verifyPaidYataMember(yataMember);
                 review.setFromMember(fromMember);
@@ -67,7 +67,7 @@ public class ReviewServiceImpl implements ReviewService {
                 else throw new CustomLogicException(ExceptionCode.UNAUTHORIZED); //작성자와 야타멤버가 같지 않은 경우
          }
 
-                //todo stream ? 이미 같은 야타 아이디 있으면 중복 작성 안되게 + 같은 yatamember
+                //이미 같은 야타 아이디 있으면 중복 작성 안되게 + 같은 yata member
                 Optional<Review> optionalReview = jpaReviewRepository.findByYataAndFromMemberAndToMember(yata, fromMember, review.getToMember());
                 if (optionalReview.isPresent()) throw new CustomLogicException(ExceptionCode.ALREADY_REVIEWED);
 
@@ -127,9 +127,9 @@ public class ReviewServiceImpl implements ReviewService {
         return findYataMember;
     }
 
-    //yatamember가 결제 상태인지 검증
+    //yatamember가 결제 상태인지 검증 //todo 테스트때만 Paid아닌 경우 리뷰 작성 가능하게 함 나중에 고칠 것!
     public void verifyPaidYataMember(YataMember yataMember){
-        if(!yataMember.isYataPaid()) throw new CustomLogicException(ExceptionCode.PAYMENT_NOT_YET);
+        if(yataMember.isYataPaid()) throw new CustomLogicException(ExceptionCode.PAYMENT_NOT_YET);
     }
 
 }
