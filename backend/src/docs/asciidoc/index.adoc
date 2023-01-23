@@ -79,6 +79,57 @@ include::{snippets}/verify-email/http-request.adoc[]
 include::{snippets}/verify-email/response-body.adoc[]
 
 
+== NotifyController
+
+text/event-stream 은 테스트 하기 어려워서 테스트 코드를 작성하지 않았습니다.
+
+=== 알림 구독
+
+GET /api/v1/notify/subscribe
+
+==== RequestHeader
+
+Authorization: Bearer {access_token}
+
+Last-Event-ID: {last_event_id}
+
+==== Response
+
+[source]
+----
+id : 로그인한 요청 유저 ID email
+
+type : notify 타입 , "sse" 로 고정
+
+Data : notify 내용
+----
+
+===== response 구독 시
+
+[source]
+----
+data : EventStream Created. [userEmail=test1@gmail.com]
+----
+
+===== response 알림 시
+
+[source]
+----
+data : {
+    "id":"3",
+
+    "name":"첫번째",
+
+    "content":"새로운 야타 참가 요청이 있습니다.",
+
+    "type":null,
+
+    "createdAt":"2023-01-23T00:07:40.869236800"
+}
+----
+
+구독시 Last-Event-ID 헤더 를 통해 마지막으로 받은 notify 의 id 를 보내주면 그 이후의 notify 만 받을 수 있습니다.
+
 
 
 
@@ -364,6 +415,27 @@ include::{snippets}/yataMember-getAll/http-response.adoc[]
 include::{snippets}/yataMember-getAll/response-fields.adoc[]
 .response-body
 include::{snippets}/yataMember-getAll/response-body.adoc[]
+
+=== 리뷰 생성
+운전자의 경우 yataMemberId 값을 queryParam으로 넣어주고,
+탑승자의 경우 yataMemberId값을 넘겨줄 필요가 없습니다.
+
+POST /api/v1/review/{yataId}?yataMemberId={yataMemberId}
+
+.http-request
+include::{snippets}/review-create/http-request.adoc[]
+.path-parameters
+include::{snippets}/review-create/path-parameters.adoc[]
+.request-fields
+include::{snippets}/review-create/request-fields.adoc[]
+.http-response
+include::{snippets}/review-create/http-response.adoc[]
+.response-fields
+include::{snippets}/review-create/response-fields.adoc[]
+.response-body
+include::{snippets}/review-create/response-body.adoc[]
+
+
 
 
 

@@ -1,9 +1,7 @@
 package com.yata.backend.domain.review.mapper;
 
-import com.yata.backend.domain.member.dto.MemberDto;
 import com.yata.backend.domain.review.dto.ReviewChecklistDto;
 import com.yata.backend.domain.review.dto.ReviewDto;
-import com.yata.backend.domain.review.entity.Checklist;
 import com.yata.backend.domain.review.entity.Review;
 import org.mapstruct.Mapper;
 
@@ -28,7 +26,8 @@ public interface ReviewMapper {
         ReviewDto.Response.ResponseBuilder response = ReviewDto.Response.builder();
         response.reviewId(review.getReviewId())
                 .yataId(review.getYata().getYataId())
-                .writerEmail(review.getMember().getEmail())
+                .fromMemberNickName(review.getFromMember().getNickname())
+                .toMemberNickName(review.getToMember().getNickname())
                 .responses(review.getReviewChecklists()
                         .stream()
                         .map(reviewChecklist -> {
