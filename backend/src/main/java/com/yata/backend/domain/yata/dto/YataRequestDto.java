@@ -1,5 +1,6 @@
 package com.yata.backend.domain.yata.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yata.backend.domain.yata.entity.YataMember;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import lombok.*;
@@ -7,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -28,7 +30,8 @@ public class YataRequestDto {
         @NotNull(message = "도착 시간을 입력하세요.")
         @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss" , iso = DateTimeFormat.ISO.DATE_TIME)
         private Date timeOfArrival;
-        private int maxPeople;
+        @NotNull(message = "탑승 인원을 입력해주세요.")
+        private int boardingPersonCount;
         private int maxWaitingTime;
         @Valid
         private LocationDto.Post strPoint;
@@ -48,12 +51,15 @@ public class YataRequestDto {
         private YataRequest.ApprovalStatus approvalStatus;
         private String title;
         private String specifics;
+        @JsonFormat(shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd'T'HH:mm:ss" , timezone = "Asia/Seoul")
         private Date departureTime;
+        @JsonFormat(shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd'T'HH:mm:ss" , timezone = "Asia/Seoul")
         private Date timeOfArrival;
-        private int maxPeople;
+        private int boardingPersonCount;
         private int maxWaitingTime;
         private LocationDto.Response strPoint;
         private LocationDto.Response destination;
+        private LocalDateTime createdAt;
     }
 
     @AllArgsConstructor
@@ -65,5 +71,6 @@ public class YataRequestDto {
         private Long yataId;
         private YataRequest.RequestStatus yataRequestStatus;
         private YataRequest.ApprovalStatus approvalStatus;
+        private LocalDateTime createdAt;
     }
 }

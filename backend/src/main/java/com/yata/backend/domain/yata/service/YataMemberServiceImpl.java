@@ -6,6 +6,7 @@ import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataMember;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import com.yata.backend.domain.yata.repository.yataMemberRepo.JpaYataMemberRepository;
+import com.yata.backend.domain.yata.util.TimeCheckUtils;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,8 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -41,9 +44,11 @@ public class YataMemberServiceImpl implements YataMemberService {
         yataService.equalMember(member.getEmail(), yata.getMember().getEmail()); // 승인하려는 member = 게시글 작성한 member 인지 확인
         // 인원 수 검증은 신청 시에 이미 했기 때문에 갠잔 / 초대는 자기가 알아서 판단해서 하겠지 모 자기 차니까
 
+        // 승인하려는 yataRequest 가 해당 yata 게시물에 신청한 request 인지 검증
         verifyAppliedRequest(yata, yataRequestId);
 
-        // TODO 승인 시간과 게시글의 출발 시간 비교
+        // 현재 시간과 자신의 게시글의 출발 시간 비교 --> 게시물의 출발시간이 이미 지난 경우(마감인 경우) 익셉션 --> 승인 불가
+        yataRequestService.verifyTimeAndSetApprovalStatus(yata, yataRequest);
 
         // 승인 한 번 하면 다시 못하도록
         if (yataRequest.getApprovalStatus().equals(YataRequest.ApprovalStatus.ACCEPTED))
@@ -52,7 +57,6 @@ public class YataMemberServiceImpl implements YataMemberService {
         yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.ACCEPTED);
 
         YataMember yataMember = new YataMember();
-        // yata.getYataRequests().add(yataRequest); 이건 왜 넣었던 것?
         yataMember.setYata(yata);
         yataMember.setMember(yataRequest.getMember());
         yataMember.setYataPaid(false); //지불 상태 set
@@ -114,11 +118,6 @@ public class YataMemberServiceImpl implements YataMemberService {
     // 승인하려는 yataRequest 가 해당 yata 게시물에 신청한 request 인지 검증
     @Override
     public void verifyAppliedRequest(Yata yata, Long yataRequestId) {
-
-        /*Optional<YataRequest> optionalYataRequest = yata.getYataRequests().stream()
-                .filter(r -> r.getYataRequestId().equals(yataRequestId))
-                .findAny();
-        */ // Stream 보다 이게 더 빠를듯?
         YataRequest request = yataRequestService.findRequest(yataRequestId);
         if (!request.getYata().equals(yata)) {
             throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
