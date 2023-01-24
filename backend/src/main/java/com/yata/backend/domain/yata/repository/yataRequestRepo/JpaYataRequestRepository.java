@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface JpaYataRequestRepository extends JpaRepository<YataRequest, Long>, YataRequestRepository {
     Optional<YataRequest> findByMember_EmailAndYata_YataId(String email, Long yataId);
     Slice<YataRequest> findAllByYata(Yata yata, Pageable pageable);
-
+    Slice<YataRequest> findAllByMember_Email(String Email, Pageable pageable);
+    List<YataRequest> findAllByYata_YataId(Long yataId);
     void deleteAllByYata(Yata findYata);
 }

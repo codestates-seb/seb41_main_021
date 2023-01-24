@@ -8,8 +8,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.io.Serial;
-import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -29,6 +28,18 @@ public class YataRequest extends Auditable {
 
     @Column(length = 100)
     private String specifics;
+
+    @Column
+    private Date departureTime;
+
+    @Column
+    private Date timeOfArrival;
+
+    @Column(length = 20, nullable = false)
+    private int boardingPersonCount;
+
+    @Column(nullable = false)
+    private int maxWaitingTime;
 
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20, nullable = false)

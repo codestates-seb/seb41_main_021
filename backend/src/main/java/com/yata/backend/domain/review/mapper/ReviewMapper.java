@@ -1,5 +1,7 @@
 package com.yata.backend.domain.review.mapper;
 
+import com.yata.backend.domain.member.entity.Member;
+import com.yata.backend.domain.review.dto.FindReviewDto;
 import com.yata.backend.domain.review.dto.ReviewChecklistDto;
 import com.yata.backend.domain.review.dto.ReviewDto;
 import com.yata.backend.domain.review.entity.Review;
@@ -28,6 +30,8 @@ public interface ReviewMapper {
                 .yataId(review.getYata().getYataId())
                 .fromMemberNickName(review.getFromMember().getNickname())
                 .toMemberNickName(review.getToMember().getNickname())
+                .createdAt(review.getCreatedAt())
+                .modifiedAt(review.getModifiedAt())
                 .responses(review.getReviewChecklists()
                         .stream()
                         .map(reviewChecklist -> {
@@ -42,7 +46,9 @@ public interface ReviewMapper {
 
         return response.build();
 
-
     }
+//    default List<FindReviewDto> reviewToFindReviewResponses(Member member)
+//        return List<FindReviewDto> null = null;
+//    }
 }
 

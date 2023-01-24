@@ -30,12 +30,13 @@ public interface YataRequestMapper {
         response.approvalStatus(yataRequest.getApprovalStatus());
         response.title(yataRequest.getTitle());
         response.specifics(yataRequest.getSpecifics());
-        response.departureTime(yataRequest.getYata().getDepartureTime());
-        response.timeOfArrival(yataRequest.getYata().getTimeOfArrival());
-        response.maxPeople(yataRequest.getYata().getMaxPeople());
-        response.maxWaitingTime(yataRequest.getYata().getMaxWaitingTime());
+        response.departureTime(yataRequest.getDepartureTime());
+        response.timeOfArrival(yataRequest.getTimeOfArrival());
+        response.boardingPersonCount(yataRequest.getBoardingPersonCount());
+        response.maxWaitingTime(yataRequest.getMaxWaitingTime());
         response.strPoint(locationToResponse(yataRequest.getStrPoint()));
         response.destination(locationToResponse(yataRequest.getDestination()));
+        response.createdAt(yataRequest.getCreatedAt());
 
         return response.build();
     }
@@ -54,11 +55,13 @@ public interface YataRequestMapper {
                             .approvalStatus(yataRequest.getApprovalStatus())
                             .title(yataRequest.getTitle())
                             .specifics(yataRequest.getSpecifics())
-                            .departureTime(yataRequest.getYata().getDepartureTime())
-                            .timeOfArrival(yataRequest.getYata().getTimeOfArrival())
-                            .maxWaitingTime(yataRequest.getYata().getMaxWaitingTime())
+                            .departureTime(yataRequest.getDepartureTime())
+                            .timeOfArrival(yataRequest.getTimeOfArrival())
+                            .boardingPersonCount(yataRequest.getBoardingPersonCount())
+                            .maxWaitingTime(yataRequest.getMaxWaitingTime())
                             .strPoint(locationToResponse(yataRequest.getStrPoint()))
                             .destination(locationToResponse(yataRequest.getDestination()))
+                            .createdAt(yataRequest.getCreatedAt())
                             .build();
                 }).collect(Collectors.toList());
     }
@@ -76,6 +79,7 @@ public interface YataRequestMapper {
         response.yataId(yataRequest.getYata().getYataId());
         response.yataRequestStatus(yataRequest.getRequestStatus());
         response.approvalStatus(yataRequest.getApprovalStatus());
+        response.createdAt(yataRequest.getCreatedAt());
 
         return response.build();
     }
