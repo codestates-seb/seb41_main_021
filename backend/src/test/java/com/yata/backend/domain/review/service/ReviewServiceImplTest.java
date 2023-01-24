@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.yata.backend.domain.review.factory.CheckListFactory.createCheckListList;
+import static com.yata.backend.domain.review.factory.CheckListFactory.createCheckListListJpa;
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -46,7 +47,7 @@ class ReviewServiceImplTest {
         Member reviewMember = memberRepository.save(MemberFactory.createMember("test2@gmail.com"));
         memberRepository.saveAll(List.of(member, reviewMember));
         //given
-        List<Checklist> checklists = createCheckListList();
+        List<Checklist> checklists = createCheckListListJpa();
         checklistRepository.saveAll(checklists);
 
         Review review = Review.builder()
