@@ -31,14 +31,15 @@ public class ReviewController {
         this.reviewService = reviewService;
         this.mapper = mapper;
     }
+
     //리뷰작성
     @PostMapping("/{yata_id}")
     public ResponseEntity postReview(@PathVariable("yata_id") @Positive long yataId,
-                                     @RequestParam(required = false) Long yataMemberId,
+                                     @RequestParam(value = "yataMemberId", required = false) Long yataMemberId,
                                      @Valid @RequestBody ReviewDto.Post requestBody,
                                      @AuthenticationPrincipal User authMember
     ) {
-        Review review = reviewService.createReview(mapper.reviewPostDtoToChecklistIds(requestBody), authMember.getUsername(),yataId,yataMemberId);
+        Review review = reviewService.createReview(mapper.reviewPostDtoToChecklistIds(requestBody), authMember.getUsername(), yataId, yataMemberId);
         return new ResponseEntity<>(
                 new SingleResponse<>(mapper.reviewToReviewResponse(review)), HttpStatus.CREATED);
     }
@@ -46,12 +47,13 @@ public class ReviewController {
 
     //내가 받은 모든 리뷰 조회
     //보여야 할 것 : list [[야타Id , 리뷰아이디 , 리뷰 체크리스트 항목들],[],[]] 최신순 정렬
+    //할 필요 없이 뭐 몇개 받았는지 계산해보기 
     @GetMapping("/{yata_id}")
     public ResponseEntity getAllReview(@PathVariable("yata_id") @Positive long yataId,
                                        @AuthenticationPrincipal User authMember
-                                       , Pageable pageable
-                                       ) {
-        Slice<Review> reviews = reviewService.findAllReview(authMember.getUsername(),yataId,pageable);
+            , Pageable pageable
+    ) {
+        Slice<Review> reviews = reviewService.findAllReview(authMember.getUsername(), yataId, pageable);
         SliceInfo sliceInfo = new SliceInfo(pageable, reviews.getNumberOfElements(), reviews.hasNext());
         return new ResponseEntity<>(
                 new SliceResponseDto<>(), HttpStatus.OK);

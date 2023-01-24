@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -118,6 +119,8 @@ public class YataDto {
         private Date timeOfArrival;
         private String title;
         private String specifics;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
         private Integer maxWaitingTime;
         private Integer maxPeople;
         private Integer reservedMemberNum;
