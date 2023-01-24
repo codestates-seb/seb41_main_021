@@ -1,13 +1,16 @@
 package com.yata.backend.domain.review.mapper;
 
+import com.yata.backend.domain.member.dto.ChecklistDto;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.review.dto.FindReviewDto;
 import com.yata.backend.domain.review.dto.ReviewChecklistDto;
 import com.yata.backend.domain.review.dto.ReviewDto;
+import com.yata.backend.domain.review.entity.Checklist;
 import com.yata.backend.domain.review.entity.Review;
 import org.mapstruct.Mapper;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 //체크리스트 아이디로 체크리스트 가져와서 넣어줌
@@ -36,7 +39,7 @@ public interface ReviewMapper {
                         .stream()
                         .map(reviewChecklist -> {
                                     return ReviewChecklistDto.Response.builder()
-                                          //  .reviewCheckId(reviewChecklist.getReviewCheckId())
+                                            //  .reviewCheckId(reviewChecklist.getReviewCheckId())
                                             .checklistId(reviewChecklist.getChecklist().getChecklistId())
                                             .checkContent(reviewChecklist.getChecklist().getCheckContent())
                                             .checkpn(reviewChecklist.getChecklist().isCheckpn())
@@ -47,8 +50,13 @@ public interface ReviewMapper {
         return response.build();
 
     }
-//    default List<FindReviewDto> reviewToFindReviewResponses(Member member)
-//        return List<FindReviewDto> null = null;
-//    }
+
+    default List<FindReviewDto> reviewsToFindReviewResponses(Map<Checklist, Long> rewiews) {
+
+        List<FindReviewDto> findReviewDtos = rewiews.entrySet().stream()
+                .map(entry -> new FindReviewDto(new ChecklistDto.Response(entry.getKey()), entry.getValue()))
+                .collect(Collectors.toList());
+        return findReviewDtos;
+    }
 }
 

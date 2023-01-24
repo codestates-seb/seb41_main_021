@@ -31,6 +31,7 @@ public class YataSnippet {
                 fieldWithPath("data[].postStatus").type(JsonFieldType.STRING).description("야타 게시글 상태"),
                 fieldWithPath("data[].yataStatus").type(JsonFieldType.STRING).description("야타 상태"),
                 fieldWithPath("data[].email").type(JsonFieldType.STRING).description("이메일"),
+                fieldWithPath("data[].nickName").type(JsonFieldType.STRING).description("야타 게시글 작성자 닉네임"),
                 fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
                 fieldWithPath("data[].modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각")
         );

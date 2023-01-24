@@ -9,14 +9,13 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
 public interface ReviewService {
     Review createReview(List<Long> checklistIds, String username, long yataId,Long yataMemberId);
 
-    Slice<Review> findAllReview(String userName,long yataId, Pageable pageable);
-
-
+    Map<Checklist,Long> findAllReview(String userName);
 
 }

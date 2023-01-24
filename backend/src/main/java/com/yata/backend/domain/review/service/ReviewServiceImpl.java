@@ -6,6 +6,7 @@ import com.yata.backend.domain.review.entity.Checklist;
 import com.yata.backend.domain.review.entity.Review;
 import com.yata.backend.domain.review.entity.ReviewChecklist;
 import com.yata.backend.domain.review.repository.Review.JpaReviewRepository;
+import com.yata.backend.domain.review.repository.ReviewChecklist.JpaReviewChecklistRepository;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataMember;
 import com.yata.backend.domain.yata.service.YataMemberService;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -29,18 +32,21 @@ public class ReviewServiceImpl implements ReviewService {
     private final MemberService memberService;
     private final YataMemberService yataMemberService;
     private final CheckListService checkListService;
+    private final JpaReviewChecklistRepository jpaReviewChecklistRepository;
 
     public ReviewServiceImpl(YataService yataService,
                              MemberService memberService,
                              JpaReviewRepository jpaReviewRepository,
                              YataMemberService yataMemberservice,
-                             CheckListService checkListService) {
+                             CheckListService checkListService,
+                             JpaReviewChecklistRepository jpaReviewChecklistRepository) {
 
         this.yataService = yataService;
         this.memberService = memberService;
         this.jpaReviewRepository = jpaReviewRepository;
         this.yataMemberService = yataMemberservice;
         this.checkListService = checkListService;
+        this.jpaReviewChecklistRepository = jpaReviewChecklistRepository;
     }
 
     public Review createReview(List<Long> checkListIds, String username, long yataId, Long yataMemberId) {
@@ -70,8 +76,24 @@ public class ReviewServiceImpl implements ReviewService {
         return jpaReviewRepository.save(review);
     }
 
-    public Slice<Review> findAllReview(String userName, long yataId, Pageable pageable) {
-        return null;
+    public Map<Checklist, Long> findAllReview(String userName) {
+        Member member = memberService.findMember(userName);
+        List<Review> myReviews = jpaReviewRepository.findAllByToMember(member);
+
+        System.out.println("---------------리스트출력---------------------");
+        System.out.println(myReviews);
+
+        Map<Checklist, Long> checklistIntegerMap = myReviews.stream()
+                .flatMap(review -> review.getReviewChecklists().stream())
+                .collect(Collectors.groupingBy(ReviewChecklist::getChecklist,
+                        Collectors.counting()));
+
+        System.out.println("----------------Map값 출력 --------------------");
+        for (Map.Entry<Checklist, Long> entrySet : checklistIntegerMap.entrySet()) {
+            System.out.println(entrySet.getKey() + " : " + entrySet.getValue());
+        }
+
+        return checklistIntegerMap; //countioncollector의 반환 타입은 Long임
     }
 
     /*검증로직*/
@@ -102,7 +124,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     //yatamember가 결제 상태인지 검증
     private void verifyPaidYataMember(YataMember yataMember) {
-        if (!yataMember.isYataPaid()) throw new CustomLogicException(ExceptionCode.PAYMENT_NOT_YET);
+     //   if (!yataMember.isYataPaid()) throw new CustomLogicException(ExceptionCode.PAYMENT_NOT_YET);
     }
 
 }

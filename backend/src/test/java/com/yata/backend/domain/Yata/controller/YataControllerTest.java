@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.yata.backend.domain.AbstractControllerTest;
 import com.yata.backend.domain.Yata.factory.YataFactory;
 import com.yata.backend.domain.Yata.factory.YataSnippet;
+import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.yata.controller.YataController;
 import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.entity.Location;
@@ -72,7 +73,10 @@ public class YataControllerTest extends AbstractControllerTest {
 
         String json = gson.toJson(post);
 
-List<YataMember> yataMembers = new ArrayList<>();
+        List<YataMember> yataMembers = new ArrayList<>();
+        Member member = new Member();
+        member.setNickname("채은");
+
         Yata expected = Yata.builder()
                 .yataId(1L)
                 .title("부산까지 같이가실 분~")
@@ -83,15 +87,15 @@ List<YataMember> yataMembers = new ArrayList<>();
                 .carModel("bmw")
                 .maxPeople(3)
                 .maxWaitingTime(20)
+                .member(member)
                 .yataMembers(yataMembers)
                 .strPoint(new Location(1L, GeometryUtils.getEmptyPoint(), "인천", null))
                 .destination(new Location(2L, GeometryUtils.getEmptyPoint(), "부산", null))
                 .yataStatus(YataStatus.YATA_NEOTA)
                 .postStatus(Yata.PostStatus.POST_OPEN)
                 .build();
-        expected.setCreatedAt(LocalDateTime.of(LocalDate.now(),LocalDateTime.now().toLocalTime()));
-        expected.setModifiedAt(LocalDateTime.of(LocalDate.now(),LocalDateTime.now().toLocalTime()));
-
+        expected.setCreatedAt(LocalDateTime.of(LocalDate.now(), LocalDateTime.now().toLocalTime()));
+        expected.setModifiedAt(LocalDateTime.of(LocalDate.now(), LocalDateTime.now().toLocalTime()));
 
         given(yataService.createYata(any(), any())).willReturn(expected);
         given(mapper.yataToYataResponse(any())).willReturn(createYataResponseDto(expected));
@@ -149,6 +153,7 @@ List<YataMember> yataMembers = new ArrayList<>();
                         fieldWithPath("data.postStatus").type(JsonFieldType.STRING).description("야타 게시글 상태"),
                         fieldWithPath("data.yataStatus").type(JsonFieldType.STRING).description("야타 상태"),
                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
+                        fieldWithPath("data.nickName").type(JsonFieldType.STRING).description("작성자 닉네임"),
                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
                         fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각")
                 )));
@@ -235,6 +240,7 @@ List<YataMember> yataMembers = new ArrayList<>();
                         fieldWithPath("data.postStatus").type(JsonFieldType.STRING).description("야타 게시글 상태"),
                         fieldWithPath("data.yataStatus").type(JsonFieldType.STRING).description("야타 상태"),
                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
+                        fieldWithPath("data.nickName").type(JsonFieldType.STRING).description("작성자 닉네임"),
                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
                         fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각")
                 )));
@@ -342,6 +348,7 @@ List<YataMember> yataMembers = new ArrayList<>();
                         fieldWithPath("data.postStatus").type(JsonFieldType.STRING).description("야타 게시글 상태"),
                         fieldWithPath("data.yataStatus").type(JsonFieldType.STRING).description("야타 상태"),
                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
+                        fieldWithPath("data.nickName").type(JsonFieldType.STRING).description("작성자 닉네임"),
                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
                         fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각")
                 )));
