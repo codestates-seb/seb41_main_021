@@ -1,5 +1,6 @@
 package com.yata.backend.domain.yata.service;
 
+import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataMember;
 import com.yata.backend.domain.yata.entity.YataRequest;
@@ -12,4 +13,6 @@ public interface YataMemberService {
     Slice<YataMember> findAcceptedRequests(String userEmail, Long yataId, Pageable pageable);
     void verifyAppliedRequest(Yata yata, Long yataRequestId);
     YataMember verifyYataMember(long yataMemeberId);
+    YataMember verifyPossibleYataMember(Long yataMemberId, Yata yata);
+    YataMember verifyPossibleYataMemberByuserName(Yata yata, Member member);
 }

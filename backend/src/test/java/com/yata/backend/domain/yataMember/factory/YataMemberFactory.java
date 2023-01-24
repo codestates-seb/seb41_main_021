@@ -25,8 +25,6 @@ public class YataMemberFactory {
     public static YataMember createYataMember() throws org.locationtech.jts.io.ParseException {
         Yata yata = YataFactory.createYata();
         Member member = MemberFactory.createMember(new BCryptPasswordEncoder());
-//        YataRequest yataRequest = YataRequestFactory.createYataRequest();
-//        yata.setYataRequests(List.of(yataRequest));
 
         return YataMember.builder()
                 .yataMemberId(getRandomLong())

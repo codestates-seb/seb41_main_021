@@ -67,6 +67,8 @@ public interface YataMapper {
         response.timeOfArrival(yata.getTimeOfArrival());
         response.title(yata.getTitle());
         response.specifics(yata.getSpecifics());
+        response.createdAt(yata.getCreatedAt());
+        response.modifiedAt(yata.getModifiedAt());
         response.maxWaitingTime(yata.getMaxWaitingTime());
         response.maxPeople(yata.getMaxPeople());
         response.amount(yata.getAmount());
@@ -99,6 +101,8 @@ public interface YataMapper {
                             .timeOfArrival(yata.getTimeOfArrival())
                             .title(yata.getTitle())
                             .specifics(yata.getSpecifics())
+                            .createdAt(yata.getCreatedAt())
+                            .modifiedAt(yata.getModifiedAt())
                             .maxWaitingTime(yata.getMaxWaitingTime())
                             .maxPeople(yata.getMaxPeople())
                             .amount(yata.getAmount())

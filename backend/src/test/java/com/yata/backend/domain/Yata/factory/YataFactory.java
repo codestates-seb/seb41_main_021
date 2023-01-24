@@ -11,6 +11,8 @@ import com.yata.backend.domain.yata.entity.YataStatus;
 import com.yata.backend.global.utils.GeometryUtils;
 
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,8 +33,8 @@ public class YataFactory {
                 .carModel("bmw")
                 .maxPeople(3)
                 .maxWaitingTime(20)
-                .strPoint(new LocationDto.Post(5,4,"인천"))
-                .destination(new LocationDto.Post(3,2,"부산"))
+                .strPoint(new LocationDto.Post(5, 4, "인천"))
+                .destination(new LocationDto.Post(3, 2, "부산"))
                 .yataStatus(YataStatus.YATA_NEOTA)
                 .build();
     }
@@ -47,19 +49,21 @@ public class YataFactory {
                 .amount(1500L)
                 .carModel("porsche")
                 .maxPeople(2)
-                .strPoint(new LocationDto.Post(5,4,"부산"))
-                .destination(new LocationDto.Post(3,2,"인천"))
+                .strPoint(new LocationDto.Post(5, 4, "부산"))
+                .destination(new LocationDto.Post(3, 2, "인천"))
                 .maxWaitingTime(10)
                 .build();
     }
 
-    public static YataDto.Response createYataResponseDto(Yata yata){
+    public static YataDto.Response createYataResponseDto(Yata yata) {
         return YataDto.Response.builder()
                 .yataId(yata.getYataId())
                 .title(yata.getTitle())
                 .specifics(yata.getSpecifics())
                 .timeOfArrival(yata.getTimeOfArrival())
                 .departureTime(yata.getDepartureTime())
+                .createdAt(yata.getCreatedAt())
+                .modifiedAt(yata.getModifiedAt())
                 .amount(yata.getAmount())
                 .carModel(yata.getCarModel())
                 .maxPeople(yata.getMaxPeople())
@@ -69,19 +73,20 @@ public class YataFactory {
                 .reservedMemberNum(0)
                 .strPoint(new LocationDto.Response(
                         yata.getStrPoint().getLocation().getX(),
-                        yata.getStrPoint().getLocation().getY() ,
+                        yata.getStrPoint().getLocation().getY(),
                         yata.getStrPoint().getAddress()))
                 .destination(new LocationDto.Response(
                         yata.getDestination().getLocation().getX(),
-                        yata.getDestination().getLocation().getY() ,
+                        yata.getDestination().getLocation().getY(),
                         yata.getDestination().getAddress()))
                 .email(RandomUtils.getRandomWord() + "@gmail.com")
                 .build();
 
     }
-    public static Yata createYata() throws  org.locationtech.jts.io.ParseException {
+
+    public static Yata createYata() throws org.locationtech.jts.io.ParseException {
         List<YataMember> yatamembers = new ArrayList<>();
-        return Yata.builder()
+        Yata yata = Yata.builder()
                 .yataId(getRandomLong())
                 .title(getRandomWord())
                 .specifics(getRandomWord())
@@ -97,17 +102,23 @@ public class YataFactory {
                 .strPoint(new Location(RandomUtils.getRandomLong() , GeometryUtils.getEmptyPoint() , getRandomWord() , null))
                 .destination(new Location(RandomUtils.getRandomLong() , GeometryUtils.getEmptyPoint() , getRandomWord() , null))
                 .build();
+        yata.setCreatedAt(LocalDateTime.of(LocalDate.now(),LocalDateTime.now().toLocalTime()));
+        yata.setModifiedAt(LocalDateTime.of(LocalDate.now(),LocalDateTime.now().toLocalTime()));
+
+        return yata;
     }
+
     public static List<Yata> createYataList() throws ParseException, org.locationtech.jts.io.ParseException {
         List<Yata> yataList = new ArrayList<>();
-        for(int i=0; i<10; i++){
+        for (int i = 0; i < 10; i++) {
             yataList.add(createYata());
         }
         return yataList;
     }
-    public static List<YataDto.Response> createYataResponseDtoList(List<Yata> yataList){
+
+    public static List<YataDto.Response> createYataResponseDtoList(List<Yata> yataList) {
         List<YataDto.Response> yataResponseDtoList = new ArrayList<>();
-        for(Yata yata : yataList){
+        for (Yata yata : yataList) {
             yataResponseDtoList.add(createYataResponseDto(yata));
         }
         return yataResponseDtoList;
@@ -115,7 +126,7 @@ public class YataFactory {
 
     public static Yata createYataInMember(Member member) throws org.locationtech.jts.io.ParseException {
         List<YataMember> yatamembers = new ArrayList<>();
-        Yata yata =  createYata();
+        Yata yata = createYata();
         yata.setYataMembers(yatamembers);
         yata.setMember(member);
         return yata;

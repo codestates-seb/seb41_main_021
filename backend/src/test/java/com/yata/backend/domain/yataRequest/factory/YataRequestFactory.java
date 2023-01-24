@@ -10,12 +10,12 @@ import com.yata.backend.domain.yata.entity.YataRequest;
 import com.yata.backend.global.utils.GeometryUtils;
 
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.yata.backend.common.utils.RandomUtils.getRandomLong;
-import static com.yata.backend.common.utils.RandomUtils.getRandomWord;
+import static com.yata.backend.common.utils.RandomUtils.*;
 
 public class YataRequestFactory {
     // Request / Invitation 모두 이거 사용
@@ -28,6 +28,10 @@ public class YataRequestFactory {
                 .approvalStatus(YataRequest.ApprovalStatus.NOT_YET)
                 .title(getRandomWord())
                 .specifics(getRandomWord())
+                .departureTime(getRandomDate())
+                .timeOfArrival(getRandomDate())
+                .boardingPersonCount(2)
+                .maxWaitingTime(10)
                 .yata(yata)
                 .strPoint(new Location(RandomUtils.getRandomLong() , GeometryUtils.getEmptyPoint() , getRandomWord() , null))
                 .destination(new Location(RandomUtils.getRandomLong() , GeometryUtils.getEmptyPoint() , getRandomWord() , null))
@@ -43,7 +47,7 @@ public class YataRequestFactory {
                 .specifics("애완견을 동반하고싶어요")
                 .departureTime(new Date())
                 .timeOfArrival(new Date())
-                .maxPeople(3)
+                .boardingPersonCount(2)
                 .maxWaitingTime(10)
                 .strPoint(strPoint)
                 .destination(destination)
@@ -58,10 +62,10 @@ public class YataRequestFactory {
                 .approvalStatus(yataRequest.getApprovalStatus())
                 .title(yataRequest.getTitle())
                 .specifics(yataRequest.getSpecifics())
-                .departureTime(yataRequest.getYata().getDepartureTime())
-                .timeOfArrival(yataRequest.getYata().getTimeOfArrival())
-                .maxPeople(yataRequest.getYata().getMaxPeople())
-                .maxWaitingTime(yataRequest.getYata().getMaxWaitingTime())
+                .departureTime(yataRequest.getDepartureTime())
+                .timeOfArrival(yataRequest.getTimeOfArrival())
+                .boardingPersonCount(yataRequest.getBoardingPersonCount())
+                .maxWaitingTime(yataRequest.getMaxWaitingTime())
                 .strPoint(new LocationDto.Response(
                         yataRequest.getStrPoint().getLocation().getX(),
                         yataRequest.getStrPoint().getLocation().getY(),
@@ -70,6 +74,7 @@ public class YataRequestFactory {
                         yataRequest.getDestination().getLocation().getX(),
                         yataRequest.getDestination().getLocation().getY(),
                         yataRequest.getDestination().getAddress()))
+                .createdAt(LocalDateTime.now())
                 .build();
     }
 
@@ -79,6 +84,7 @@ public class YataRequestFactory {
                 .yataId(yataRequest.getYata().getYataId())
                 .yataRequestStatus(yataRequest.getRequestStatus())
                 .approvalStatus(yataRequest.getApprovalStatus())
+                .createdAt(LocalDateTime.now())
                 .build();
     }
 

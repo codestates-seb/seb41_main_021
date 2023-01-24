@@ -13,16 +13,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.yata.backend.domain.Yata.factory.YataFactory.createYataResponseDto;
 import static com.yata.backend.domain.review.factory.ReviewFactoty.createReviewPostDto;
 import static com.yata.backend.domain.review.factory.ReviewFactoty.createReviewResponseDto;
 import static com.yata.backend.utils.ApiDocumentUtils.getRequestPreProcessor;
@@ -82,6 +77,8 @@ public class ReviewControllerTest extends AbstractControllerTest {
                 ),
                 responseFields(
                         fieldWithPath("data.reviewId").type(JsonFieldType.NUMBER).description("리뷰 아이디"),
+                        fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("리뷰 작성 시각"),
+                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("리뷰 수정 시각"),
                         fieldWithPath("data.yataId").type(JsonFieldType.NUMBER).description("리뷰 관련 게시글 아이디"),
                         fieldWithPath("data.toMemberNickName").type(JsonFieldType.STRING).description("리뷰 대상자 이메일"),
                         fieldWithPath("data.fromMemberNickName").type(JsonFieldType.STRING).description("리뷰 작성자 이메일"),
