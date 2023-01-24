@@ -1,13 +1,8 @@
 package com.yata.backend.domain.yata.service;
 
-import com.yata.backend.domain.member.entity.Member;
-import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-
-import java.util.Date;
-import java.util.List;
 
 public interface YataRequestService {
     YataRequest createRequest(YataRequest yataRequest, String userName, Long yataId) throws Exception;

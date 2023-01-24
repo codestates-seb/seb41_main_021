@@ -2,7 +2,6 @@ package com.yata.backend.domain.yata.service;
 
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.service.MemberService;
-import com.yata.backend.domain.yata.dto.YataRequestDto;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import com.yata.backend.domain.yata.entity.YataStatus;
@@ -11,24 +10,14 @@ import com.yata.backend.domain.yata.util.TimeCheckUtils;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
 
-import com.yata.backend.global.response.SliceInfo;
-import com.yata.backend.global.response.SliceResponseDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import static com.yata.backend.domain.yata.entity.YataRequest.RequestStatus.APPLY;
-import static com.yata.backend.domain.yata.entity.YataRequest.RequestStatus.INVITE;
 
 @Service
 @Transactional

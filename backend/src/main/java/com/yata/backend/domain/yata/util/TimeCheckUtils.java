@@ -4,8 +4,6 @@ import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-
 @Component
 public class TimeCheckUtils {
 
