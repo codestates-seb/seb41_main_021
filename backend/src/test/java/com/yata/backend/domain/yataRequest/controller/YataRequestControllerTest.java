@@ -61,7 +61,7 @@ public class YataRequestControllerTest extends AbstractControllerTest {
         YataRequest expected = YataRequestFactory.createYataRequest();
         YataRequestDto.RequestResponse response = YataRequestFactory.createYataRequestResponseDto(expected);
 
-        given(yataRequestService.createRequest(any(), any(), anyLong(), anyInt())).willReturn(new YataRequest());
+        given(yataRequestService.createRequest(any(), any(), anyLong())).willReturn(new YataRequest());
         given(mapper.yataRequestToYataRequestResponse(Mockito.any(YataRequest.class))).willReturn(response);
 
         String content = gson.toJson(post);
@@ -86,7 +86,7 @@ public class YataRequestControllerTest extends AbstractControllerTest {
                                 fieldWithPath("specifics").type(JsonFieldType.STRING).description("야타 특이사항"),
                                 fieldWithPath("departureTime").type(JsonFieldType.STRING).description("출발 시간"),
                                 fieldWithPath("timeOfArrival").type(JsonFieldType.STRING).description("도착 시간"),
-                                fieldWithPath("maxPeople").type(JsonFieldType.NUMBER).description("최대 인원"),
+                                fieldWithPath("boardingPersonCount").type(JsonFieldType.NUMBER).description("탑승 인원"),
                                 fieldWithPath("maxWaitingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
                                 fieldWithPath("strPoint").type(JsonFieldType.OBJECT).description("출발지"),
                                 fieldWithPath("strPoint.longitude").type(JsonFieldType.NUMBER).description("출발지 경도"),
@@ -107,7 +107,7 @@ public class YataRequestControllerTest extends AbstractControllerTest {
                                 fieldWithPath("data.specifics").type(JsonFieldType.STRING).description("야타 특이사항"),
                                 fieldWithPath("data.departureTime").type(JsonFieldType.STRING).description("출발 시간"),
                                 fieldWithPath("data.timeOfArrival").type(JsonFieldType.STRING).description("도착 시간"),
-                                fieldWithPath("data.maxPeople").type(JsonFieldType.NUMBER).description("최대 인원"),
+                                fieldWithPath("data.boardingPersonCount").type(JsonFieldType.NUMBER).description("탑승 인원"),
                                 fieldWithPath("data.maxWaitingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
                                 fieldWithPath("data.strPoint").type(JsonFieldType.OBJECT).description("출발지"),
                                 fieldWithPath("data.strPoint.longitude").type(JsonFieldType.NUMBER).description("출발지 경도"),
@@ -116,7 +116,8 @@ public class YataRequestControllerTest extends AbstractControllerTest {
                                 fieldWithPath("data.destination").type(JsonFieldType.OBJECT).description("도착지"),
                                 fieldWithPath("data.destination.longitude").type(JsonFieldType.NUMBER).description("도착지 경도"),
                                 fieldWithPath("data.destination.latitude").type(JsonFieldType.NUMBER).description("도착지 위도"),
-                                fieldWithPath("data.destination.address").type(JsonFieldType.STRING).description("도착지 주소")
+                                fieldWithPath("data.destination.address").type(JsonFieldType.STRING).description("도착지 주소"),
+                                fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성 시간")
                         )));
     }
 
@@ -148,7 +149,8 @@ public class YataRequestControllerTest extends AbstractControllerTest {
                                 fieldWithPath("data.yataRequestId").type(JsonFieldType.NUMBER).description("야타 신청/초대 ID"),
                                 fieldWithPath("data.yataId").type(JsonFieldType.NUMBER).description("야타 ID"),
                                 fieldWithPath("data.yataRequestStatus").type(JsonFieldType.STRING).description("야타 신청 상태"),
-                                fieldWithPath("data.approvalStatus").type(JsonFieldType.STRING).description("야타 승인 상태")
+                                fieldWithPath("data.approvalStatus").type(JsonFieldType.STRING).description("야타 승인 상태"),
+                                fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성 시간")
                         )));
     }
 
@@ -160,7 +162,7 @@ public class YataRequestControllerTest extends AbstractControllerTest {
         List<YataRequest> yataRequests = YataRequestFactory.createYataRequestList();
         List<YataRequestDto.RequestResponse> responses = YataRequestFactory.createYataRquestResponseDtoList(yataRequests);
 
-        given(yataRequestService.findRequests(any(), anyLong(), any())).willReturn(new SliceImpl<>(yataRequests));
+        given(yataRequestService.findRequestsByDriver(any(), anyLong(), any())).willReturn(new SliceImpl<>(yataRequests));
         given(mapper.yataRequestsToYataRequestResponses(any())).willReturn(responses);
 
         //when
@@ -171,12 +173,38 @@ public class YataRequestControllerTest extends AbstractControllerTest {
 
         //then
         actions.andExpect(status().isOk())
-                .andDo(document("yataRequest-getAll",
+                .andDo(document("yataRequest-getAllByDriver",
                         getRequestPreProcessor(),
                         getResponsePreProcessor(),
                         pathParameters(
                                 parameterWithName("yataId").description("야타 ID")
                         ),
+                        YataRequestSnippet.getListResponse()
+                ));
+    }
+
+    @Test
+    @DisplayName("자기가 한 신청/초대 목록 조회")
+    @WithMockUser(username = "test1@gmail.com", roles = "USER")
+    void getRequestsByPassengerTest() throws Exception {
+        //given
+        List<YataRequest> yataRequests = YataRequestFactory.createYataRequestList();
+        List<YataRequestDto.RequestResponse> responses = YataRequestFactory.createYataRquestResponseDtoList(yataRequests);
+
+        given(yataRequestService.findRequestsByPassenger(any(), any())).willReturn(new SliceImpl<>(yataRequests));
+        given(mapper.yataRequestsToYataRequestResponses(any())).willReturn(responses);
+
+        //when
+        ResultActions actions = mockMvc.perform(get(BASE_URL + "/apply/yataRequests")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(csrf()));
+
+        //then
+        actions.andExpect(status().isOk())
+                .andDo(document("yataRequest-getAllByPassenger",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
                         YataRequestSnippet.getListResponse()
                 ));
     }
