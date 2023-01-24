@@ -12,7 +12,8 @@ import java.util.List;
 public interface YataRequestService {
     YataRequest createRequest(YataRequest yataRequest, String userName, Long yataId) throws Exception;
     YataRequest createInvitation(String userName, Long yataId) throws Exception;
-    Slice<YataRequest> findRequests(String userEmail, Long yataId, Pageable pageable);
+    Slice<YataRequest> findRequestsByDriver(String userEmail, Long yataId, Pageable pageable);
+    Slice<YataRequest> findRequestsByPassenger(String userEmail, Pageable pageable);
     void deleteRequest(String userName, Long yataRequestId, Long yataId);
     void verifyRequest(String userName, Long yataId);
     void verifyInvitation(String userName, Long yataId);
@@ -20,7 +21,4 @@ public interface YataRequestService {
     void verifyMaxPeople(int requestPeople, int maxPeople);
     void compareMember(String email, String postEmail);
     void verifyPoint(Long price, Long point);
-    List<YataRequest> findAllYataRequestsByYataId(Long yataId);
-    void verifyTimeAndSetApprovalStatus(Yata yata, YataRequest yataRequest);
-
 }

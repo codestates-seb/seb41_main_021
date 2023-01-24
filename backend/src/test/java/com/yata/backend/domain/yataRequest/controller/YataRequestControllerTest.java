@@ -162,7 +162,7 @@ public class YataRequestControllerTest extends AbstractControllerTest {
         List<YataRequest> yataRequests = YataRequestFactory.createYataRequestList();
         List<YataRequestDto.RequestResponse> responses = YataRequestFactory.createYataRquestResponseDtoList(yataRequests);
 
-        given(yataRequestService.findRequests(any(), anyLong(), any())).willReturn(new SliceImpl<>(yataRequests));
+        given(yataRequestService.findRequestsByDriver(any(), anyLong(), any())).willReturn(new SliceImpl<>(yataRequests));
         given(mapper.yataRequestsToYataRequestResponses(any())).willReturn(responses);
 
         //when
@@ -173,12 +173,38 @@ public class YataRequestControllerTest extends AbstractControllerTest {
 
         //then
         actions.andExpect(status().isOk())
-                .andDo(document("yataRequest-getAll",
+                .andDo(document("yataRequest-getAllByDriver",
                         getRequestPreProcessor(),
                         getResponsePreProcessor(),
                         pathParameters(
                                 parameterWithName("yataId").description("야타 ID")
                         ),
+                        YataRequestSnippet.getListResponse()
+                ));
+    }
+
+    @Test
+    @DisplayName("자기가 한 신청/초대 목록 조회")
+    @WithMockUser(username = "test1@gmail.com", roles = "USER")
+    void getRequestsByPassengerTest() throws Exception {
+        //given
+        List<YataRequest> yataRequests = YataRequestFactory.createYataRequestList();
+        List<YataRequestDto.RequestResponse> responses = YataRequestFactory.createYataRquestResponseDtoList(yataRequests);
+
+        given(yataRequestService.findRequestsByPassenger(any(), any())).willReturn(new SliceImpl<>(yataRequests));
+        given(mapper.yataRequestsToYataRequestResponses(any())).willReturn(responses);
+
+        //when
+        ResultActions actions = mockMvc.perform(get(BASE_URL + "/apply/yataRequests")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(csrf()));
+
+        //then
+        actions.andExpect(status().isOk())
+                .andDo(document("yataRequest-getAllByPassenger",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
                         YataRequestSnippet.getListResponse()
                 ));
     }

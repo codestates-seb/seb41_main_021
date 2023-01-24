@@ -2,6 +2,7 @@ package com.yata.backend.domain.yata.service;
 
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.service.MemberService;
+import com.yata.backend.domain.yata.dto.YataRequestDto;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import com.yata.backend.domain.yata.entity.YataStatus;
@@ -10,9 +11,16 @@ import com.yata.backend.domain.yata.util.TimeCheckUtils;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
 
+import com.yata.backend.global.response.SliceInfo;
+import com.yata.backend.global.response.SliceResponseDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.transaction.Transactional;
 import java.util.Date;
@@ -98,9 +106,9 @@ public class YataRequestServiceImpl implements YataRequestService {
         }
     }
 
-    // Yata 신청 목록 조회
+    // Yata 신청 목록 조회 - by driver
     @Override
-    public Slice<YataRequest> findRequests(String userEmail, Long yataId, Pageable pageable) {
+    public Slice<YataRequest> findRequestsByDriver(String userEmail, Long yataId, Pageable pageable) {
         Yata yata = yataService.findYata(yataId);
         Member member = memberService.verifyMember(userEmail);
 
@@ -108,6 +116,13 @@ public class YataRequestServiceImpl implements YataRequestService {
         yataService.equalMember(member.getEmail(), yata.getMember().getEmail());
 
         return jpaYataRequestRepository.findAllByYata(yata, pageable);
+    }
+
+    // 자기가 한 신청 목록 조회 - by Passenger
+    @Override
+    public Slice<YataRequest> findRequestsByPassenger(String userEmail, Pageable pageable) {
+
+        return jpaYataRequestRepository.findAllByMember_Email(userEmail, pageable);
     }
 
     // Yata 신청 취소 / 초대 취소
@@ -181,35 +196,6 @@ public class YataRequestServiceImpl implements YataRequestService {
     public void verifyPoint(Long price, Long point) {
         if (price > point) {
             throw new CustomLogicException(ExceptionCode.PAYMENT_NOT_ENOUGH_POINT);
-        }
-    }
-
-    @Override
-    public List<YataRequest> findAllYataRequestsByYataId(Long yataId) {
-        List<YataRequest> yataRequests = jpaYataRequestRepository.findAllByYata_YataId(yataId);
-
-        return yataRequests;
-    }
-
-    @Override
-    public void verifyTimeAndSetApprovalStatus(Yata yata, YataRequest yataRequest) {
-        try {
-            TimeCheckUtils.verifyTime(yata.getDepartureTime().getTime(), System.currentTimeMillis());
-        } catch (CustomLogicException e) {
-            if (e.getExceptionCode().equals(ExceptionCode.INVALID_TIME)) {
-
-                // 해당 yata 에 신청한 yataRequests 들 중, 상태가 NOT_YET 인 애들만 approvalStatus 거절로 바꾸기
-                List<YataRequest> yataRequests = findAllYataRequestsByYataId(yata.getYataId());
-                yataRequests.stream()
-                        .filter(r -> r.getApprovalStatus().equals(YataRequest.ApprovalStatus.NOT_YET))
-                        .forEach(r -> r.setApprovalStatus(YataRequest.ApprovalStatus.REJECTED));
-                yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.REJECTED);
-                jpaYataRequestRepository.saveAll(yataRequests);
-                jpaYataRequestRepository.saveAndFlush(yataRequest);
-                // TODO throw e; 하면 익셉션은 나타나고 안에 로직은 반영 안되고
-                //  이대로 하면 나머지는 rejected 로 바뀌는데 해당 request 는 왜 accepted 가 되지,,
-//                throw e;
-            }
         }
     }
 }

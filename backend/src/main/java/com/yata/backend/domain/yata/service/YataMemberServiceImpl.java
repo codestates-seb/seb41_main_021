@@ -47,8 +47,8 @@ public class YataMemberServiceImpl implements YataMemberService {
         // 승인하려는 yataRequest 가 해당 yata 게시물에 신청한 request 인지 검증
         verifyAppliedRequest(yata, yataRequestId);
 
-        // 현재 시간과 자신의 게시글의 출발 시간 비교 --> 게시물의 출발시간이 이미 지난 경우(마감인 경우) 익셉션 --> 승인 불가
-        yataRequestService.verifyTimeAndSetApprovalStatus(yata, yataRequest);
+        // 게시물의 출발 시간이 현재 시간을 지났으면 승인 불가
+        TimeCheckUtils.verifyTime(yata.getDepartureTime().getTime(), System.currentTimeMillis());
 
         // 승인 한 번 하면 다시 못하도록
         if (yataRequest.getApprovalStatus().equals(YataRequest.ApprovalStatus.ACCEPTED))
