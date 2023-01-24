@@ -2,12 +2,10 @@ package com.yata.backend.auth.dto;
 
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.utils.AuthoritiesUtils;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
@@ -15,8 +13,8 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
+
 @Getter
 @Setter
 // 인증 정보를 담을 클래스
@@ -55,7 +53,7 @@ public class MemberPrincipal extends Member implements UserDetails , OAuth2User 
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return AuthoritiesUtils.getAuthorities(getRoles());
+        return AuthoritiesUtils.getAuthoritiesByEntity(getRoles());
     }
 
     /**

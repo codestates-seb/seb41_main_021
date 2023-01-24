@@ -16,7 +16,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws java.io.IOException, javax.servlet.ServletException {
         response.setStatus(200);
-        response.getWriter().write(new Gson().toJson(ResponseEntity.ok().body(new SingleResponse("Login Success"))));
+        response.getWriter().write(new Gson().toJson(new SingleResponse("Login Success")));
         log.info("LOGIN SUCCESS : " + authentication.getName());
     }
 }

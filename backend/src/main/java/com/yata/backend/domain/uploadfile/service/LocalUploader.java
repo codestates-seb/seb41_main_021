@@ -34,7 +34,7 @@ public class LocalUploader implements Uploader {
     }
 
     private String putLocal(File uploadFile, String fileName) {
-        String baseUrl = "http://localhost:8080/images/";
+        String baseUrl = "http://localhost:8080/images";
         return baseUrl  + fileName;
     }
 

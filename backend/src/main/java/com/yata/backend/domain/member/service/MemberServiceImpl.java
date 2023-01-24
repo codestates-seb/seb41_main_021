@@ -9,6 +9,7 @@ import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
 import com.yata.backend.global.utils.CustomBeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,8 @@ public class MemberServiceImpl implements MemberService {
         member.setProviderType(ProviderType.NATIVE);
         member.setFuelTank(30.0);// 기본 값 30
         member.setPoint(0L);// 기본 값 0
-        member.setRoles(AuthoritiesUtils.createRoles(member.getEmail()));
+        //member.setRoles(AuthoritiesUtils.createRoles(member.getEmail()));
+        member.setRoles(AuthoritiesUtils.createAuthorities(member));
         return memberRepository.save(member);
     }
 
@@ -50,7 +52,7 @@ public class MemberServiceImpl implements MemberService {
         return verifyMember(email);
     }
     @Override
-    @Cacheable(value = "member", key = "#email")
+    @Cacheable(value = "memberDto", key = "#email")
     public MemberDto.Response findMemberDto(String email) {
         return findMember(email).toResponseDto();
     }
@@ -82,11 +84,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member updateMember(String email, Member patchMemberDtoToMember) {
         Member member = verifyMember(email);
-        updateMemberCache(member);
         customBeanUtils.copyNonNullProperties(patchMemberDtoToMember, member);
+        updateMemberCache(member);
         return member;
     }
-    @CacheEvict(value = "member", key = "#member.email")
+    @CachePut(value = "memberDto", key = "#member.email")
     public MemberDto.Response updateMemberCache(Member member) {
         return member.toResponseDto();
     }
@@ -96,7 +98,7 @@ public class MemberServiceImpl implements MemberService {
         member
                 .getRoles()
                 .stream()
-                .filter(role -> role.equals(Member.MemberRole.DRIVER.name()))
+                .filter(role -> role.getRole().name().equals(Member.MemberRole.DRIVER.name()))
                 .findAny()
                 .orElseThrow(() -> new CustomLogicException(ExceptionCode.MEMBER_NOT_DRIVER));
     }
