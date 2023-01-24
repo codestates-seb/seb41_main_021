@@ -378,13 +378,13 @@ include::{snippets}/yataRequest-getAllByDriver/response-body.adoc[]
 -> 탑승자가 자기가 신청했던 목록 조회
 
 .http-request
-include::{snippets}/yataRequest-getAllByDriver/http-request.adoc[]
+include::{snippets}/yataRequest-getAllByPassenger/http-request.adoc[]
 .http-response
-include::{snippets}/yataRequest-getAllByDriver/http-response.adoc[]
+include::{snippets}/yataRequest-getAllByPassenger/http-response.adoc[]
 .response-fields
-include::{snippets}/yataRequest-getAllByDriver/response-fields.adoc[]
+include::{snippets}/yataRequest-getAllByPassenger/response-fields.adoc[]
 .response-body
-include::{snippets}/yataRequest-getAllByDriver/response-body.adoc[]
+include::{snippets}/yataRequest-getAllByPassenger/response-body.adoc[]
 
 === 신청/초대 삭제
 
