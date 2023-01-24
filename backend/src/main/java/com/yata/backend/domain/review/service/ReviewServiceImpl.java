@@ -70,6 +70,22 @@ public class ReviewServiceImpl implements ReviewService {
         return jpaReviewRepository.save(review);
     }
 
+    public Slice<Review> findAllReview(String userName, long yataId, Pageable pageable) {
+        return null;
+    }
+
+    /*검증로직*/
+    private void calculateFuelTank(List<Checklist> checklists, Member toMember) {
+        int positiveCount = (int) checklists.stream().filter(Checklist::isCheckpn).count();
+        int negativeCount = checklists.size() - positiveCount;
+
+        BigDecimal ChangeNum = new BigDecimal(String.valueOf(0.1));
+        BigDecimal FuelTankScore = new BigDecimal(String.valueOf(toMember.getFuelTank()));
+
+        if (positiveCount > negativeCount) toMember.setFuelTank(FuelTankScore.add(ChangeNum).doubleValue());
+        else toMember.setFuelTank(FuelTankScore.subtract(ChangeNum).doubleValue());
+    }
+
     private void alreadyReviewed(Yata yata, Member fromMember, Review review) {
         //todo stream ? 이미 같은 야타 아이디 있으면 중복 작성 안되게 + 같은 yatamember
         jpaReviewRepository.findByYataAndFromMemberAndToMember(yata, fromMember, review.getToMember()).ifPresent(r -> {
@@ -83,24 +99,9 @@ public class ReviewServiceImpl implements ReviewService {
         }
     }
 
-    public Slice<Review> findAllReview(String userName, long yataId, Pageable pageable) {
-        return null;
-    }
-
-    /*검증로직*/
-    public void calculateFuelTank(List<Checklist> checklists, Member toMember) {
-        int positiveCount = (int) checklists.stream().filter(Checklist::isCheckpn).count();
-        int negativeCount = checklists.size() - positiveCount;
-
-        BigDecimal ChangeNum = new BigDecimal(String.valueOf(0.1));
-        BigDecimal FuelTankScore = new BigDecimal(String.valueOf(toMember.getFuelTank()));
-
-        if (positiveCount > negativeCount) toMember.setFuelTank(FuelTankScore.add(ChangeNum).doubleValue());
-        else toMember.setFuelTank(FuelTankScore.subtract(ChangeNum).doubleValue());
-    }
 
     //yatamember가 결제 상태인지 검증
-    public void verifyPaidYataMember(YataMember yataMember) {
+    private void verifyPaidYataMember(YataMember yataMember) {
         if (!yataMember.isYataPaid()) throw new CustomLogicException(ExceptionCode.PAYMENT_NOT_YET);
     }
 

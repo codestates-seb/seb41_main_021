@@ -13,16 +13,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.yata.backend.domain.Yata.factory.YataFactory.createYataResponseDto;
 import static com.yata.backend.domain.review.factory.ReviewFactoty.createReviewPostDto;
 import static com.yata.backend.domain.review.factory.ReviewFactoty.createReviewResponseDto;
 import static com.yata.backend.utils.ApiDocumentUtils.getRequestPreProcessor;

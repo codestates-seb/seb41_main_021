@@ -31,6 +31,7 @@ public class ReviewController {
         this.reviewService = reviewService;
         this.mapper = mapper;
     }
+
     //리뷰작성
     @PostMapping("/{yata_id}")
     public ResponseEntity postReview(@PathVariable("yata_id") @Positive long yataId,
@@ -38,7 +39,7 @@ public class ReviewController {
                                      @Valid @RequestBody ReviewDto.Post requestBody,
                                      @AuthenticationPrincipal User authMember
     ) {
-        Review review = reviewService.createReview(mapper.reviewPostDtoToChecklistIds(requestBody), authMember.getUsername(),yataId,yataMemberId);
+        Review review = reviewService.createReview(mapper.reviewPostDtoToChecklistIds(requestBody), authMember.getUsername(), yataId, yataMemberId);
         return new ResponseEntity<>(
                 new SingleResponse<>(mapper.reviewToReviewResponse(review)), HttpStatus.CREATED);
     }
@@ -50,9 +51,9 @@ public class ReviewController {
     @GetMapping("/{yata_id}")
     public ResponseEntity getAllReview(@PathVariable("yata_id") @Positive long yataId,
                                        @AuthenticationPrincipal User authMember
-                                       , Pageable pageable
-                                       ) {
-        Slice<Review> reviews = reviewService.findAllReview(authMember.getUsername(),yataId,pageable);
+            , Pageable pageable
+    ) {
+        Slice<Review> reviews = reviewService.findAllReview(authMember.getUsername(), yataId, pageable);
         SliceInfo sliceInfo = new SliceInfo(pageable, reviews.getNumberOfElements(), reviews.hasNext());
         return new ResponseEntity<>(
                 new SliceResponseDto<>(), HttpStatus.OK);
