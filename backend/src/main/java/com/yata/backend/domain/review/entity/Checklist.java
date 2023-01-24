@@ -26,8 +26,8 @@ public class Checklist {
     @Column(nullable = false)
     private boolean checkpn;
 
-    @OneToMany(mappedBy = "checklist", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ReviewChecklist> reviewChecklists = new ArrayList<>();
+   /* @OneToMany(mappedBy = "checklist", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ReviewChecklist> reviewChecklists = new ArrayList<>();*/
 
     public static ListCheckListDto toListDto(List<Checklist> checklists) {
         List<ChecklistDto.Response> positiveList = checklists.stream()

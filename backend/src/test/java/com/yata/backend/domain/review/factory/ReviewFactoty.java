@@ -3,6 +3,7 @@ package com.yata.backend.domain.review.factory;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.review.dto.ReviewChecklistDto;
 import com.yata.backend.domain.review.dto.ReviewDto;
+import com.yata.backend.domain.review.entity.Checklist;
 import com.yata.backend.domain.review.entity.Review;
 import com.yata.backend.domain.review.entity.ReviewChecklist;
 import com.yata.backend.domain.yata.entity.Yata;
@@ -84,4 +85,11 @@ public class ReviewFactoty {
     }
 
 
+    public static List<ReviewChecklist> createReviewChecklistList(Review review,List<Checklist> checklists) {
+        List<ReviewChecklist> reviewChecklists = new ArrayList<>();
+        for (Checklist checklist : checklists) {
+            reviewChecklists.add(new ReviewChecklist(null,review, checklist));
+        }
+        return reviewChecklists;
+    }
 }

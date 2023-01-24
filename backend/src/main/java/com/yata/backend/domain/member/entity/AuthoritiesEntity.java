@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Getter
 @AllArgsConstructor
 @Cacheable
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AuthoritiesEntity extends Auditable  {
 
     @Id

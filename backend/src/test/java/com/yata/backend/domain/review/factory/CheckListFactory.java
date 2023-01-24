@@ -11,11 +11,11 @@ import static com.yata.backend.common.utils.RandomUtils.*;
 
 public class CheckListFactory {
     public static Checklist createCheckList(Long id, String description, boolean pn) {
-        return new Checklist(id, description, pn, null);
+        return new Checklist(id, description, pn);
     }
 
     public static Checklist createCheckList() {
-        return new Checklist(getRandomLong(), getRandomWord(), getRandomBoolean(), null);
+        return new Checklist(null, getRandomWord(10), getRandomBoolean());
     }
 
     public static List<Checklist> createCheckListList() {
