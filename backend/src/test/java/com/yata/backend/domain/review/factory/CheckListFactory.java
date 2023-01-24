@@ -15,7 +15,7 @@ public class CheckListFactory {
     }
 
     public static Checklist createCheckList() {
-        return new Checklist(null, getRandomWord(10), getRandomBoolean());
+        return new Checklist(getRandomLong(), getRandomWord(10), getRandomBoolean());
     }
 
     public static List<Checklist> createCheckListList() {
