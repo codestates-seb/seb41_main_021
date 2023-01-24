@@ -16,6 +16,6 @@ import java.util.Map;
 public interface ReviewService {
     Review createReview(List<Long> checklistIds, String username, long yataId,Long yataMemberId);
 
-    Map<Checklist,Long> findAllReview(String userName);
+    Map<Checklist,Long> findAllReview(String email);
 
 }

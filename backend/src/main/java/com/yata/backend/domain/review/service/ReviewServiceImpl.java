@@ -13,8 +13,6 @@ import com.yata.backend.domain.yata.service.YataMemberService;
 import com.yata.backend.domain.yata.service.YataService;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -55,10 +53,10 @@ public class ReviewServiceImpl implements ReviewService {
         Review review = new Review();
         YataMember yataMember = null;
         if (yataMemberId == null) {
-            yataMember = yataMemberService.verifyPossibleYataMemberByuserName(yata, fromMember); // 야타 멤버 서비스 쪽에서 만들것 지금 리뷰 서비스에서 안할게 많은데요?
+            yataMember = yataMemberService.verifyPossibleYataMemberByuserName(yata, fromMember);
             review.setToMember(yata.getMember()); //대상자 : yata글주인
         } else {
-            yataMember = yataMemberService.verifyPossibleYataMember(yataMemberId, yata);//존재하는 야타멤버아이딘지 확인해주고  // 야타 멤버 서비스 쪽에서 만들것 지금 리뷰 서비스에서 안할게 많은데요?
+            yataMember = yataMemberService.verifyPossibleYataMember(yataMemberId, yata);//존재하는 야타멤버아이딘지 확인해주고
             review.setToMember(yataMember.getMember()); //대상자 yataMember 리뷰 조회,
         }
         validateYataOwner(yataMemberId, yata, fromMember); // 운전자 일 경우 글주인 체크
@@ -76,8 +74,8 @@ public class ReviewServiceImpl implements ReviewService {
         return jpaReviewRepository.save(review);
     }
 
-    public Map<Checklist, Long> findAllReview(String userName) {
-        Member member = memberService.findMember(userName);
+    public Map<Checklist, Long> findAllReview(String email) {
+        Member member = memberService.findMember(email);
         List<Review> myReviews = jpaReviewRepository.findAllByToMember(member);
 
         System.out.println("---------------리스트출력---------------------");

@@ -40,7 +40,7 @@ public class YataServiceImpl implements YataService {
         Member member = memberService.findMember(userName);
 
         if (yata.getYataStatus().equals(YataStatus.YATA_NEOTA)) memberService.checkDriver(member);
-
+        compareTime(yata);
         yata.setMember(member);
 
         return jpaYataRepository.save(yata);
@@ -120,5 +120,10 @@ public class YataServiceImpl implements YataService {
         }
     }
 
-    private void compareTime(Yata yata){}
+    private void compareTime(Yata yata) {
+        //출발시간이 도착시간보다 전이면 에러
+        if (yata.getTimeOfArrival().before(yata.getDepartureTime()))
+            throw new CustomLogicException(ExceptionCode.INVALID_TIME_OF_ARRIVAL);
+
+    }
 }

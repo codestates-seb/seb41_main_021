@@ -48,9 +48,9 @@ public class ReviewController {
                 new SingleResponse<>(mapper.reviewToReviewResponse(review)), HttpStatus.CREATED);
     }
 
-    @GetMapping("/total")
-    public ResponseEntity getAllReview(@AuthenticationPrincipal User authMember) {
-        Map<Checklist, Long> reviews = reviewService.findAllReview(authMember.getUsername());
+    @GetMapping("/{email}")
+    public ResponseEntity getAllReview(@PathVariable("email") String email) {
+        Map<Checklist, Long> reviews = reviewService.findAllReview(email);
         return new ResponseEntity<>(
                 new ListResponse<>(mapper.reviewsToFindReviewResponses(reviews)), HttpStatus.OK);
     }
