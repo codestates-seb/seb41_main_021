@@ -82,6 +82,8 @@ public class ReviewControllerTest extends AbstractControllerTest {
                 ),
                 responseFields(
                         fieldWithPath("data.reviewId").type(JsonFieldType.NUMBER).description("리뷰 아이디"),
+                        fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("리뷰 작성 시각"),
+                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("리뷰 수정 시각"),
                         fieldWithPath("data.yataId").type(JsonFieldType.NUMBER).description("리뷰 관련 게시글 아이디"),
                         fieldWithPath("data.toMemberNickName").type(JsonFieldType.STRING).description("리뷰 대상자 이메일"),
                         fieldWithPath("data.fromMemberNickName").type(JsonFieldType.STRING).description("리뷰 작성자 이메일"),

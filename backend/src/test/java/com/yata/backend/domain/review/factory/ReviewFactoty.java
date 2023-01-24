@@ -9,6 +9,7 @@ import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataMember;
 
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +59,8 @@ public class ReviewFactoty {
                 .yataId(review.getYata().getYataId())
                 .toMemberNickName(review.getToMember().getEmail())
                 .fromMemberNickName(review.getFromMember().getEmail())
+                .createdAt(review.getCreatedAt())
+                .modifiedAt(review.getModifiedAt())
                 .responses(list).build();
     }
 
@@ -74,13 +77,17 @@ public class ReviewFactoty {
         Member fromMember = new Member();
         toMember.setEmail("toMember@gmail.com");
         fromMember.setEmail("fromMember@gmail.com");
-        return Review.builder()
+        Review review = Review.builder()
                 .reviewId(getRandomLong())
                 .toMember(toMember)
                 .fromMember(fromMember)
                 .yata(new Yata(1L, yataMembers))
                 .reviewChecklists(list)
                 .build();
+        review.setCreatedAt(LocalDateTime.now());
+        review.setModifiedAt(LocalDateTime.now());
+
+        return review;
     }
 
 

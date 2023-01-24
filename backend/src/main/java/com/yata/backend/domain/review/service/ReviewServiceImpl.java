@@ -5,11 +5,10 @@ import com.yata.backend.domain.member.service.MemberService;
 import com.yata.backend.domain.review.entity.Checklist;
 import com.yata.backend.domain.review.entity.Review;
 import com.yata.backend.domain.review.entity.ReviewChecklist;
-import com.yata.backend.domain.review.repository.Checklist.JpaChecklistRepository;
 import com.yata.backend.domain.review.repository.Review.JpaReviewRepository;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataMember;
-import com.yata.backend.domain.yata.repository.yataMemberRepo.JpaYataMemberRepository;
+import com.yata.backend.domain.yata.service.YataMemberService;
 import com.yata.backend.domain.yata.service.YataService;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
@@ -20,29 +19,28 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @Service
 @Transactional
 public class ReviewServiceImpl implements ReviewService {
     private final JpaReviewRepository jpaReviewRepository;
-    private final JpaChecklistRepository jpaChecklistRepository;
     private final YataService yataService;
     private final MemberService memberService;
-    private final JpaYataMemberRepository jpaYataMemberRepository;
+    private final YataMemberService yataMemberService;
+    private final CheckListService checkListService;
 
     public ReviewServiceImpl(YataService yataService,
                              MemberService memberService,
                              JpaReviewRepository jpaReviewRepository,
-                             JpaChecklistRepository jpaChecklistRepository,
-                             JpaYataMemberRepository jpaYataMemberRepository) {
+                             YataMemberService yataMemberservice,
+                             CheckListService checkListService) {
 
         this.yataService = yataService;
         this.memberService = memberService;
         this.jpaReviewRepository = jpaReviewRepository;
-        this.jpaChecklistRepository = jpaChecklistRepository;
-        this.jpaYataMemberRepository = jpaYataMemberRepository;
+        this.yataMemberService = yataMemberservice;
+        this.checkListService = checkListService;
     }
 
     public Review createReview(List<Long> checkListIds, String username, long yataId, Long yataMemberId) {
@@ -51,10 +49,10 @@ public class ReviewServiceImpl implements ReviewService {
         Review review = new Review();
         YataMember yataMember = null;
         if (yataMemberId == null) {
-            yataMember = verifyPossibleYataMemberByuserName(yata, fromMember); // 야타 멤버 서비스 쪽에서 만들것 지금 리뷰 서비스에서 안할게 많은데요?
+            yataMember = yataMemberService.verifyPossibleYataMemberByuserName(yata, fromMember); // 야타 멤버 서비스 쪽에서 만들것 지금 리뷰 서비스에서 안할게 많은데요?
             review.setToMember(yata.getMember()); //대상자 : yata글주인
         } else {
-            yataMember = verifyPossibleYataMember(yataMemberId, yata);//존재하는 야타멤버아이딘지 확인해주고  // 야타 멤버 서비스 쪽에서 만들것 지금 리뷰 서비스에서 안할게 많은데요?
+            yataMember = yataMemberService.verifyPossibleYataMember(yataMemberId, yata);//존재하는 야타멤버아이딘지 확인해주고  // 야타 멤버 서비스 쪽에서 만들것 지금 리뷰 서비스에서 안할게 많은데요?
             review.setToMember(yataMember.getMember()); //대상자 yataMember 리뷰 조회,
         }
         validateYataOwner(yataMemberId, yata, fromMember); // 운전자 일 경우 글주인 체크
@@ -62,14 +60,10 @@ public class ReviewServiceImpl implements ReviewService {
         verifyPaidYataMember(yataMember); // 지불 했는지 확인
         review.setFromMember(fromMember);
         review.setYata(yata);
-        // TODO 바꿀 것
-        // 이것 또한 체크리스트 서비스에서 만들어서 가져오는게 좋을 것 같아요
+
         //todo n+1 문제 어떻게 해결해야 할까?!?!? 생각해보자
-        List<Checklist> checklists = checkListIds.stream()
-                .map(this::verifyChecklist).collect(Collectors.toList());
-        List<ReviewChecklist> reviewChecklists = checklists.stream().map(checklist -> {
-            return ReviewChecklist.builder().checklist(checklist).build();
-        }).collect(Collectors.toList());
+        List<Checklist> checklists = checkListService.checklistIdsToChecklists(checkListIds);
+        List<ReviewChecklist> reviewChecklists = checkListService.checklistsToReviewChecklists(checklists);
 
         review.setReviewChecklists(reviewChecklists);
         calculateFuelTank(checklists, review.getToMember());
@@ -94,14 +88,6 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     /*검증로직*/
-    // TODO 여기도 체크리스트 서비스로 이관
-    public Checklist verifyChecklist(long checklistId) {
-        Optional<Checklist> optionalChecklist = jpaChecklistRepository.findById(checklistId);
-        Checklist findChecklist = optionalChecklist.orElseThrow(() ->
-                new CustomLogicException(ExceptionCode.CHECKLIST_NONE));
-        return findChecklist;
-    }
-
     public void calculateFuelTank(List<Checklist> checklists, Member toMember) {
         int positiveCount = (int) checklists.stream().filter(Checklist::isCheckpn).count();
         int negativeCount = checklists.size() - positiveCount;
@@ -111,21 +97,6 @@ public class ReviewServiceImpl implements ReviewService {
 
         if (positiveCount > negativeCount) toMember.setFuelTank(FuelTankScore.add(ChangeNum).doubleValue());
         else toMember.setFuelTank(FuelTankScore.subtract(ChangeNum).doubleValue());
-    }
-    //TODO 아래 두개는 야타 멤버 서비스에서 만들어서 가져오는게 좋을 것 같아요
-    //해당 게시글에 해당 yataMemberId가 있는지를 검증하는 로직
-    public YataMember verifyPossibleYataMember(Long yataMemberId, Yata yata) {
-        Optional<YataMember> optionalYataMember = jpaYataMemberRepository.findByYataMemberIdAndYata(yataMemberId, yata);
-        YataMember findYataMember = optionalYataMember.orElseThrow(() ->
-                new CustomLogicException(ExceptionCode.CANNOT_CREATE_REVIEW));
-        return findYataMember;
-    }
-
-    public YataMember verifyPossibleYataMemberByuserName(Yata yata, Member member) {
-        Optional<YataMember> optionalYataMember = jpaYataMemberRepository.findByYataAndMember(yata, member);
-        YataMember findYataMember = optionalYataMember.orElseThrow(() ->
-                new CustomLogicException(ExceptionCode.CANNOT_CREATE_REVIEW));
-        return findYataMember;
     }
 
     //yatamember가 결제 상태인지 검증

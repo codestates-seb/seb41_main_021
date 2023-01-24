@@ -134,4 +134,19 @@ public class YataMemberServiceImpl implements YataMemberService {
         return findYataMember;
     }
 
+    //해당 게시글에 해당 yataMemberId가 있는지를 검증하는 로직
+    public YataMember verifyPossibleYataMember(Long yataMemberId, Yata yata) {
+        Optional<YataMember> optionalYataMember = jpaYataMemberRepository.findByYataMemberIdAndYata(yataMemberId, yata);
+        YataMember findYataMember = optionalYataMember.orElseThrow(() ->
+                new CustomLogicException(ExceptionCode.CANNOT_CREATE_REVIEW));
+        return findYataMember;
+    }
+
+    public YataMember verifyPossibleYataMemberByuserName(Yata yata, Member member) {
+        Optional<YataMember> optionalYataMember = jpaYataMemberRepository.findByYataAndMember(yata, member);
+        YataMember findYataMember = optionalYataMember.orElseThrow(() ->
+                new CustomLogicException(ExceptionCode.CANNOT_CREATE_REVIEW));
+        return findYataMember;
+    }
+
 }
