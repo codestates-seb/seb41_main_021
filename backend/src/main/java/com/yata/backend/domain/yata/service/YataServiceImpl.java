@@ -24,7 +24,6 @@ import java.util.Optional;
 public class YataServiceImpl implements YataService {
 
     private final MemberService memberService;
-
     private final JpaYataRepository jpaYataRepository;
     private final CustomBeanUtils<Yata> beanUtils;
 
@@ -120,4 +119,6 @@ public class YataServiceImpl implements YataService {
             throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
         }
     }
+
+    private void compareTime(Yata yata){}
 }
