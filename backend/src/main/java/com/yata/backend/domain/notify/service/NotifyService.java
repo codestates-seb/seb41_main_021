@@ -18,6 +18,8 @@ public class NotifyService {
     private final EmitterRepository emitterRepository;
     private final NotifyRepository notifyRepository;
 
+
+
     public NotifyService(EmitterRepository emitterRepository, NotifyRepository notifyRepository) {
         this.emitterRepository = emitterRepository;
         this.notifyRepository = notifyRepository;
@@ -50,7 +52,8 @@ public class NotifyService {
             emitter.send(SseEmitter.event()
                     .id(eventId)
                     .name("sse")
-                    .data(data));
+                    .data(data)
+            );
         } catch (IOException exception) {
             emitterRepository.deleteById(emitterId);
         }

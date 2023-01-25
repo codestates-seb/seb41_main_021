@@ -5,6 +5,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+
 @RestController
 @RequestMapping("/api/v1/notify")
 public class NotifyController {
@@ -14,10 +16,11 @@ public class NotifyController {
       this.notifyService = notifyService;
    }
 
-
    @GetMapping(value = "/subscribe", produces = "text/event-stream")
    public SseEmitter subscribe(@AuthenticationPrincipal User principal,
                                @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
       return notifyService.subscribe(principal.getUsername(), lastEventId);
    }
+   // 나중에는 redis pub/sub으로 변경 , sse + redis  ? or websocket + redis
+   // kafka pub/sub
 }
