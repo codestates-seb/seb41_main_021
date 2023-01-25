@@ -1,7 +1,7 @@
 package com.yata.backend.domain.yata.batch;
 
-import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.repository.yataRepo.JpaYataRepository;
+import com.yata.backend.domain.yata.repository.yataRequestRepo.JpaYataRequestRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -20,11 +20,13 @@ public class YataBatchConfig {
     private final StepBuilderFactory stepBuilderFactory;
 
     private final JpaYataRepository yataRepository;
+    private final JpaYataRequestRepository yataRequestRepository;
 
-    public YataBatchConfig(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, JpaYataRepository yataRepository) {
+    public YataBatchConfig(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, JpaYataRepository yataRepository, JpaYataRequestRepository yataRequestRepository) {
         this.jobBuilderFactory = jobBuilderFactory;
         this.stepBuilderFactory = stepBuilderFactory;
         this.yataRepository = yataRepository;
+        this.yataRequestRepository = yataRequestRepository;
     }
 
     @Bean
@@ -40,7 +42,12 @@ public class YataBatchConfig {
                 .tasklet((contribution, chunkContext) -> {
                     yataRepository.updateYataOverDepartureTime();
                     return RepeatStatus.FINISHED;
-                }).build();
+                })
+                .tasklet((contribution, chunkContext) -> {
+                    yataRequestRepository.updateExpiredYataRequest();
+                    return RepeatStatus.FINISHED;
+                })
+                .build();
 
     }
 
