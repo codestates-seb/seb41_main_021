@@ -4,33 +4,35 @@ import { BsCalendar4, BsPeople } from 'react-icons/bs';
 import { BiWon, BiCommentDetail } from 'react-icons/bi';
 
 export default function InfoContainer(props) {
-  const { state } = props;
+  const { data } = props;
 
   return (
     <ContentContainer>
       <JourneyContainer>
-        <h2>출발지</h2>
+        <h2>{data.strPoint.address}</h2>
         <IoIosArrowRoundForward />
         <h2>경유지</h2>
         <IoIosArrowRoundForward />
-        <h2>도착지</h2>
-        {state && <TagContainer state={state}>{state === '가능' ? '신청 가능' : '신청 마감'}</TagContainer>}
+        <h2>{data.destination.address}</h2>
+        <TagContainer state={data.postStatus}>
+          {data.postStatus === 'YATA_OPEN' ? '신청 가능' : '신청 마감'}
+        </TagContainer>
       </JourneyContainer>
       <DateContainer>
         <BsCalendar4 />
-        <p className="date-txt">2월 11일 토요일, 오후 5:00</p>
+        <p className="date-txt">{data.departureTime}</p>
       </DateContainer>
       <PriceContainer>
         <BiWon />
-        <p className="price-txt">10,000 원</p>
+        <p className="price-txt">{data.amount}원</p>
       </PriceContainer>
       <AmountContainer>
         <BsPeople />
-        <p className="amount-txt">2 명</p>
+        <p className="amount-txt">{data.reservedMemberNum} 명</p>
       </AmountContainer>
       <MemoContainer>
         <BiCommentDetail />
-        <p className="memo-txt">짐이 많아요 ㅠ ㅠ</p>
+        <p className="memo-txt">{data.specifics}</p>
       </MemoContainer>
     </ContentContainer>
   );
@@ -72,7 +74,8 @@ const TagContainer = styled.div`
   color: white;
   border-radius: 0.2rem;
 
-  background-color: ${props => (props.state === '가능' ? props.theme.colors.main_blue : props.theme.colors.light_gray)};
+  background-color: ${props =>
+    props.state === 'YATA_OPEN' ? props.theme.colors.main_blue : props.theme.colors.light_gray};
 `;
 
 const DateContainer = styled.div``;
