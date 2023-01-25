@@ -7,8 +7,34 @@ import { BsCalendar4, BsPeople } from 'react-icons/bs';
 import { BiWon, BiCommentDetail } from 'react-icons/bi';
 import { VscAccount } from 'react-icons/vsc';
 import { AiOutlineCar } from 'react-icons/ai';
+import { useTayoRequest } from '../hooks/useTayo';
 
 export default function TabnidaDetail() {
+  const requestHandler = () => {
+    const data = {
+      title: '태워주세욥',
+      specifics: '애완견을 동반하고싶어요',
+      departureTime: '2023-01-25T16:00:34',
+      timeOfArrival: '2023-01-25T16:00:34',
+      boardingPersonCount: 2,
+      maxWaitingTime: 10,
+      strPoint: {
+        longitude: 2.5,
+        latitude: 2.0,
+        address: '강원도 원주시',
+      },
+      destination: {
+        longitude: 2.5,
+        latitude: 2.0,
+        address: '강원도 원주시',
+      },
+    };
+
+    useTayoRequest('https://server.yata.kro.kr/api/v1/yata/apply', data).then(res => {
+      console.log(res);
+    });
+  };
+
   return (
     <>
       <Header title={'태웁니다'}></Header>
@@ -56,7 +82,7 @@ export default function TabnidaDetail() {
           </MemoContainer>
         </InfoContainer>
 
-        <RequestButton>신청하기</RequestButton>
+        <RequestButton onClick={requestHandler}>신청하기</RequestButton>
       </Container>
       <NavBar />
     </>

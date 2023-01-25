@@ -1,14 +1,25 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { IoIosArrowForward, IoIosArrowRoundForward } from 'react-icons/io';
 import { BsCalendar4, BsPeople } from 'react-icons/bs';
 import { BiWon } from 'react-icons/bi';
 
 const ListItem = props => {
+  const { date, journeyStart, journeyEnd, transit, price, people, state, yataId, yataStatus } = props;
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    yataStatus === 'YATA_NEOTA'
+      ? navigate(`/taeoonda-detail/${yataId}`)
+      : yataStatus === 'YATA_NATA'
+      ? navigate(`/tabnida-detail/${yataId}`)
+      : navigate(`/register-checklist`);
+  };
+
   // api 응답 어떻게 올지 몰라서 대충 넣어놓음
-  const { date, journeyStart, journeyEnd, transit, price, people, state, onClick } = props;
   return (
     <>
-      <Container onClick={onClick}>
+      <Container onClick={handleClick}>
         <TextContainer>
           <DateContainer>
             <BsCalendar4 />

@@ -3,8 +3,10 @@ import { IoIosArrowRoundForward } from 'react-icons/io';
 import { BsCalendar4, BsPeople } from 'react-icons/bs';
 import { BiWon } from 'react-icons/bi';
 import Button from '../common/Button';
+import { useNavigate } from 'react-router';
 
 const JourneyItem = props => {
+  const navigate = useNavigate();
   // api 응답 어떻게 올지 몰라서 대충 넣어놓음
   const { date, journeyStart, journeyEnd, transit, price, people, state, onClick, isPay } = props;
   return (
@@ -23,7 +25,7 @@ const JourneyItem = props => {
               {journeyEnd}
               <TransitContainer>경유 {transit}회</TransitContainer>
             </JourneyText>
-            {isPay ? <Button>리뷰 남기기</Button> : <Button>결제하기</Button>}
+            {isPay ? <Button onClick={() => navigate('/rating-add')}>리뷰 남기기</Button> : <Button>결제하기</Button>}
           </JourneyContainer>
           <BottomContainer>
             <PriceContainer>

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import Navbar from '../components/NavBar';
 import Header from '../components/Header';
 import CircleButton from '../components/common/CircleButton';
-import ListItem from '../components/ListItem';
 import DestinationInput from '../components/DestinationInput';
 import { useNavigate } from 'react-router-dom';
 import { MdAdd } from 'react-icons/md';
@@ -11,9 +10,10 @@ import useGetData from '../hooks/useGetData';
 import ListItemView from '../components/ListItemView';
 
 export default function TabnidaList() {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [list, setList] = useState([]);
-  const navigate = useNavigate();
+
   const add = () => {
     setOpen(!open);
     navigate('/tabnida-add');
