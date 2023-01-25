@@ -5,6 +5,7 @@ import Header from '../components/Header';
 import ProfileContainer from '../components/Tayo/ProfileContainer';
 import InfoContainer from '../components/Tayo/InfoContainer';
 import MemberContainer from '../components/Tayo/MemberContainer';
+import { useTayoGet } from '../hooks/useTayo';
 
 export default function TabnidaDetail() {
   return (

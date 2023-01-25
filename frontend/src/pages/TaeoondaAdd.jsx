@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import KakaoMap from '../components/KakaoMap';
 import Input from '../components/common/Input';
@@ -7,20 +8,56 @@ import DestinationList from '../components/Tayo/DestinationList';
 import Header from '../components/Header';
 import { BsPlusLg } from 'react-icons/bs';
 import { TiDeleteOutline } from 'react-icons/ti';
+import { useTayoCreate } from '../hooks/useTayo';
 
 export default function TaeoondaAdd() {
+  const navigate = useNavigate();
   const [isFilled, setIsFilled] = useState(false);
   const [departure, setDeparture] = useState('');
   const [destination, setDestination] = useState('');
+  const [departureTime, setDepartureTime] = useState('');
   const [isDeparture, setIsDeparture] = useState(false);
   const [isDestination, setIsDestination] = useState(false);
   const [Places, setPlaces] = useState([]);
+  const [amount, setAmount] = useState('');
+  const [maxPeople, setMaxPeople] = useState('');
+  const [carModel, setCarModel] = useState('');
+  const [specifics, setSpecifics] = useState('');
 
   const [inputFields, setInputFields] = useState([
     {
       fullName: '',
     },
   ]);
+
+  const createTaeoonda = () => {
+    const data = {
+      title: '제목',
+      specifics,
+      departureTime,
+      timeOfArrival: '2023-01-23T22:38:28',
+      maxWaitingTime: 0,
+      maxPeople,
+      yataStatus: 'YATA_NEOTA',
+      amount,
+      carModel,
+      strPoint: {
+        longitude: 5.0,
+        latitude: 4.0,
+        address: '인천',
+      },
+      destination: {
+        longitude: 3.0,
+        latitude: 2.0,
+        address: '부산',
+      },
+    };
+
+    useTayoCreate('https://server.yata.kro.kr/api/v1/yata?yataStatus=neota', data).then(res => {
+      console.log(res);
+      // navigate('/taeoonda-list');
+    });
+  };
 
   const addInputField = () => {
     setInputFields([
@@ -111,13 +148,40 @@ export default function TaeoondaAdd() {
           {isFilled &&
             (isDeparture && isDestination ? (
               <>
-                <Input label="출발 일시" type="datetime-local" />
-                <Input label="인당 금액" type="number" placeholder="인당 금액 입력" />
-                <Input label="탑승 인원" type="number" min="1" max="10" placeholder="1" />
-                <Input label="차종" type="text" placeholder="XM3, 싼타페, 그랜저 IG, 등" />
-                <Input label="특이사항" placeholder="아이가 있어요, 흡연자입니다, 짐이 많아요, 등" />
+                <Input label="출발 일시" type="datetime-local" state={departureTime} setState={setDepartureTime} />
+                <Input
+                  label="인당 금액"
+                  type="number"
+                  placeholder="인당 금액 입력"
+                  state={amount}
+                  setState={setAmount}
+                />
+                <Input
+                  label="탑승 인원"
+                  type="number"
+                  min="1"
+                  max="10"
+                  placeholder="1"
+                  state={maxPeople}
+                  setState={setMaxPeople}
+                />
+                <Input
+                  label="차종"
+                  type="text"
+                  placeholder="XM3, 싼타페, 그랜저 IG, 등"
+                  state={carModel}
+                  setState={setCarModel}
+                />
+                <Input
+                  label="특이사항"
+                  placeholder="아이가 있어요, 흡연자입니다, 짐이 많아요, 등"
+                  state={specifics}
+                  setState={setSpecifics}
+                />
                 <ButtonContainer>
-                  <Button className="register-btn">등록하기</Button>
+                  <Button className="register-btn" onClick={createTaeoonda}>
+                    등록하기
+                  </Button>
                 </ButtonContainer>
               </>
             ) : (
