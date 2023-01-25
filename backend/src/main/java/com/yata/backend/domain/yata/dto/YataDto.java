@@ -113,6 +113,7 @@ public class YataDto {
     @Builder
     public static class Response {
         private long yataId;
+        private String nickName;
         @JsonFormat(shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd'T'HH:mm:ss" , timezone = "Asia/Seoul")
         private Date departureTime;
         @JsonFormat(shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd'T'HH:mm:ss" , timezone = "Asia/Seoul")

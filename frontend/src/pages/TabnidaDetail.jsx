@@ -5,16 +5,22 @@ import Header from '../components/Header';
 import ProfileContainer from '../components/Tayo/ProfileContainer';
 import InfoContainer from '../components/Tayo/InfoContainer';
 import MemberContainer from '../components/Tayo/MemberContainer';
-import { useTayoGet } from '../hooks/useTayo';
+import { useEffect, useState } from 'react';
+import useGetData from '../hooks/useGetData';
+
 
 export default function TabnidaDetail() {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    useGetData('https://server.yata.kro.kr/api/v1/yata/13').then(res => setData(res.data.data));
+  }, []);
   return (
     <>
       <Header title={'탑니다'}></Header>
       <Container>
-        <ProfileContainer />
-        <InfoContainer state="가능" />
-        <MemberContainer />
+        <ProfileContainer data={data} />
+        <InfoContainer data={data} />
+        <MemberContainer data={data} />
         <InviteButton>초대하기</InviteButton>
       </Container>
       <NavBar />

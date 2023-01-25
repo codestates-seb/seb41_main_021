@@ -3,6 +3,7 @@ package com.yata.backend.domain.review.service;
 import com.yata.backend.domain.member.dto.ChecklistDto;
 import com.yata.backend.domain.review.dto.ListCheckListDto;
 import com.yata.backend.domain.review.entity.Checklist;
+import com.yata.backend.domain.review.entity.Review;
 import com.yata.backend.domain.review.entity.ReviewChecklist;
 import com.yata.backend.domain.review.repository.Checklist.JpaChecklistRepository;
 import com.yata.backend.global.exception.CustomLogicException;
@@ -38,9 +39,9 @@ public class CheckListServiceImpl implements CheckListService {
        return checkListIds.stream()
                 .map(this::verifyChecklist).collect(Collectors.toList());
     }
-    public List<ReviewChecklist> checklistsToReviewChecklists(List<Checklist> checklists) {
+    public List<ReviewChecklist> checklistsToReviewChecklists(List<Checklist> checklists, Review review) {
         return checklists.stream().map(checklist -> {
-            return ReviewChecklist.builder().checklist(checklist).build();
+            return ReviewChecklist.builder().checklist(checklist).review(review).build();
         }).collect(Collectors.toList());
     }
     @Cacheable(value = "checklist" , key = "#root.methodName")

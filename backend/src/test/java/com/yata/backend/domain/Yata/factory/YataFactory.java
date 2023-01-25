@@ -67,6 +67,7 @@ public class YataFactory {
                 .amount(yata.getAmount())
                 .carModel(yata.getCarModel())
                 .maxPeople(yata.getMaxPeople())
+                .nickName(yata.getMember().getNickname())
                 .maxWaitingTime(yata.getMaxWaitingTime())
                 .yataStatus(yata.getYataStatus())
                 .postStatus(yata.getPostStatus())
@@ -86,6 +87,8 @@ public class YataFactory {
 
     public static Yata createYata() throws org.locationtech.jts.io.ParseException {
         List<YataMember> yatamembers = new ArrayList<>();
+        Member member = new Member();
+        member.setNickname("채은");
         Yata yata = Yata.builder()
                 .yataId(getRandomLong())
                 .title(getRandomWord())
@@ -93,6 +96,7 @@ public class YataFactory {
                 .departureTime(getRandomDate())
                 .timeOfArrival(getRandomDate())
                 .amount(getRandomLong())
+                .member(member)
                 .carModel(getRandomWord(20))
                 .yataMembers(yatamembers)
                 .maxPeople(3)
