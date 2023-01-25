@@ -21,11 +21,11 @@ export default function Navbar() {
           </NavLink>
           <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/register-list">
             <BsCheck2Circle />
-            <p>요청 내역</p>
+            <p>내가 받은 요청</p>
           </NavLink>
           <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journey-state">
             <TbHeartHandshake />
-            <p>여정 현황</p>
+            <p>확정된 여정</p>
           </NavLink>
           <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/my-page">
             <AiOutlineUser />

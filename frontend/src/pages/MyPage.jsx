@@ -79,9 +79,15 @@ export default function MyPage() {
             </List>
             <List>
               <ListTitle>탑니다/태웁니다 관리</ListTitle>
-              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journey-list">
+              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journey-history">
                 <JourneyRecord>
-                  <div className="title">여정 내역</div>
+                  <div className="title">나의 지난 여정 내역</div>
+                  <IoIosArrowForward />
+                </JourneyRecord>
+              </NavLink>
+              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/my-register-history">
+                <JourneyRecord>
+                  <div className="title">나의 신청 내역</div>
                   <IoIosArrowForward />
                 </JourneyRecord>
               </NavLink>
