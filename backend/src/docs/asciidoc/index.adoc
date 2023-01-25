@@ -237,7 +237,7 @@ include::{snippets}/payment-toss-cancel-point/http-response.adoc[]
 
 === 게시글 생성
 
-POST /api/v1/yata?yataStatus=nata/neota
+POST /api/v1/yata
 
 .http-request
 include::{snippets}/yata-create/http-request.adoc[]
