@@ -1,9 +1,11 @@
 package com.yata.backend.domain.review.controller;
 
 import com.yata.backend.domain.review.dto.ReviewDto;
+import com.yata.backend.domain.review.entity.Checklist;
 import com.yata.backend.domain.review.entity.Review;
 import com.yata.backend.domain.review.mapper.ReviewMapper;
 import com.yata.backend.domain.review.service.ReviewService;
+import com.yata.backend.global.response.ListResponse;
 import com.yata.backend.global.response.SingleResponse;
 import com.yata.backend.global.response.SliceInfo;
 import com.yata.backend.global.response.SliceResponseDto;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @Validated
@@ -44,21 +48,10 @@ public class ReviewController {
                 new SingleResponse<>(mapper.reviewToReviewResponse(review)), HttpStatus.CREATED);
     }
 
-
-    //내가 받은 모든 리뷰 조회
-    //보여야 할 것 : list [[야타Id , 리뷰아이디 , 리뷰 체크리스트 항목들],[],[]] 최신순 정렬
-    //할 필요 없이 뭐 몇개 받았는지 계산해보기 
-    @GetMapping("/{yata_id}")
-    public ResponseEntity getAllReview(@PathVariable("yata_id") @Positive long yataId,
-                                       @AuthenticationPrincipal User authMember
-            , Pageable pageable
-    ) {
-        Slice<Review> reviews = reviewService.findAllReview(authMember.getUsername(), yataId, pageable);
-        SliceInfo sliceInfo = new SliceInfo(pageable, reviews.getNumberOfElements(), reviews.hasNext());
+    @GetMapping("/{email}")
+    public ResponseEntity getAllReview(@PathVariable("email") String email) {
+        Map<Checklist, Long> reviews = reviewService.findAllReview(email);
         return new ResponseEntity<>(
-                new SliceResponseDto<>(), HttpStatus.OK);
+                new ListResponse<>(mapper.reviewsToFindReviewResponses(reviews)), HttpStatus.OK);
     }
-    //내가 쓴 리뷰조회?필요할까?
-
-    // 필요 없을 듯 ?
 }
