@@ -241,6 +241,8 @@ POST /api/v1/yata
 
 .http-request
 include::{snippets}/yata-create/http-request.adoc[]
+.request-headers
+include::{snippets}/yata-create/request-headers.adoc[]
 .request-body
 include::{snippets}/yata-create/request-body.adoc[]
 .request-fields
@@ -262,13 +264,15 @@ PATCH /api/v1/yata/{yata_id}
 .http-request
 include::{snippets}/yata-update/http-request.adoc[]
 .path-parameters
-include::{snippets}/yata-get/path-parameters.adoc[]
+include::{snippets}/yata-update/path-parameters.adoc[]
+.request-headers
+include::{snippets}/yata-update/request-headers.adoc[]
 .request-fields
 include::{snippets}/yata-update/request-fields.adoc[]
 .http-response
 include::{snippets}/yata-update/http-response.adoc[]
 .response-fields
-include::{snippets}/yata-create/response-fields.adoc[]
+include::{snippets}/yata-update/response-fields.adoc[]
 
 
 === 게시글 삭제
@@ -277,8 +281,10 @@ DELETE /api/v1/yata/{yata_id}
 
 .http-request
 include::{snippets}/yata-delete/http-request.adoc[]
+.request-headers
+include::{snippets}/yata-delete/request-headers.adoc[]
 .path-parameters
-include::{snippets}/yata-get/path-parameters.adoc[]
+include::{snippets}/yata-delete/path-parameters.adoc[]
 .response-body
 include::{snippets}/yata-delete/response-body.adoc[]
 http-response
@@ -346,6 +352,8 @@ include::{snippets}/checklist/get/response-fields.adoc[]
 
 .http-request
 include::{snippets}/yataRequest-postRequest/http-request.adoc[]
+.request-headers
+include::{snippets}/yataRequest-postRequest/request-headers.adoc[]
 .path-parameters
 include::{snippets}/yataRequest-postRequest/path-parameters.adoc[]
 .request-fields
@@ -363,6 +371,8 @@ include::{snippets}/yataRequest-postRequest/response-body.adoc[]
 
 .http-request
 include::{snippets}/yataRequest-postInvitation/http-request.adoc[]
+.request-headers
+include::{snippets}/yataRequest-postInvitation/request-headers.adoc[]
 .path-parameters
 include::{snippets}/yataRequest-postInvitation/path-parameters.adoc[]
 .http-response
@@ -377,6 +387,8 @@ include::{snippets}/yataRequest-postInvitation/response-body.adoc[]
 
 .http-request
 include::{snippets}/yataRequest-getAllByDriver/http-request.adoc[]
+.request-headers
+include::{snippets}/yataRequest-getAllByDriver/request-headers.adoc[]
 .path-parameters
 include::{snippets}/yataRequest-getAllByDriver/path-parameters.adoc[]
 .http-response
@@ -391,6 +403,8 @@ include::{snippets}/yataRequest-getAllByDriver/response-body.adoc[]
 
 .http-request
 include::{snippets}/yataRequest-getAllByPassenger/http-request.adoc[]
+.request-headers
+include::{snippets}/yataRequest-getAllByPassenger/request-headers.adoc[]
 .http-response
 include::{snippets}/yataRequest-getAllByPassenger/http-response.adoc[]
 .response-fields
@@ -402,6 +416,8 @@ include::{snippets}/yataRequest-getAllByPassenger/response-body.adoc[]
 
 .http-request
 include::{snippets}/yataRequest-delete/http-request.adoc[]
+.request-headers
+include::{snippets}/yataRequest-delete/request-headers.adoc[]
 .path-parameters
 include::{snippets}/yataRequest-delete/path-parameters.adoc[]
 .http-response
@@ -414,6 +430,8 @@ include::{snippets}/yataRequest-delete/response-body.adoc
 
 .http-request
 include::{snippets}/yataMember-accept/http-request.adoc[]
+.request-headers
+include::{snippets}/yataMember-accept/request-headers.adoc[]
 .path-parameters
 include::{snippets}/yataMember-accept/path-parameters.adoc[]
 .http-response
@@ -423,6 +441,8 @@ include::{snippets}/yataMember-accept/http-response.adoc[]
 
 .http-request
 include::{snippets}/yataMember-reject/http-request.adoc[]
+.request-headers
+include::{snippets}/yataMember-reject/request-headers.adoc[]
 .path-parameters
 include::{snippets}/yataMember-reject/path-parameters.adoc[]
 .http-response
@@ -432,6 +452,8 @@ include::{snippets}/yataMember-reject/http-response.adoc[]
 
 .http-request
 include::{snippets}/yataMember-getAll/http-request.adoc[]
+.request-headers
+include::{snippets}/yataMember-getAll/request-headers.adoc[]
 .path-parameters
 include::{snippets}/yataMember-getAll/path-parameters.adoc[]
 .http-response
@@ -451,6 +473,8 @@ POST /api/v1/review/{yataId}?yataMemberId={yataMemberId}
 
 .http-request
 include::{snippets}/review-create/http-request.adoc[]
+.request-headers
+include::{snippets}/review-create/request-headers.adoc[]
 .path-parameters
 include::{snippets}/review-create/path-parameters.adoc[]
 .request-fields

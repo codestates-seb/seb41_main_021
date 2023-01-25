@@ -1,6 +1,7 @@
 package com.yata.backend.domain.yataMember.controller;
 
 import com.google.gson.Gson;
+import com.yata.backend.common.token.GeneratedToken;
 import com.yata.backend.domain.AbstractControllerTest;
 import com.yata.backend.domain.Yata.factory.YataFactory;
 import com.yata.backend.domain.yata.controller.YataMemberController;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.SliceImpl;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -29,6 +31,8 @@ import static com.yata.backend.utils.ApiDocumentUtils.getResponsePreProcessor;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -56,6 +60,7 @@ public class YataMemberControllerTest extends AbstractControllerTest {
         //when
         ResultActions actions = mockMvc.perform(post(BASE_URL + "/{yataId}/{yataRequestId}/accept",
                 yata.getYataId(), yataRequest.getYataRequestId())
+                .headers(GeneratedToken.getMockHeaderToken())
                 .with(csrf()));
 
         //then
@@ -63,6 +68,9 @@ public class YataMemberControllerTest extends AbstractControllerTest {
                 .andDo(document("yataMember-accept",
                         getRequestPreProcessor(),
                         getResponsePreProcessor(),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 토큰")
+                        ),
                         pathParameters(
                                 parameterWithName("yataId").description("야타 ID"),
                                 parameterWithName("yataRequestId").description("야타 신청/초대 ID")
@@ -81,6 +89,7 @@ public class YataMemberControllerTest extends AbstractControllerTest {
         //when
         ResultActions actions = mockMvc.perform(post(BASE_URL + "/{yataId}/{yataRequestId}/reject",
                 yata.getYataId(), yataRequest.getYataRequestId())
+                .headers(GeneratedToken.getMockHeaderToken())
                 .with(csrf()));
 
         //then
@@ -88,6 +97,9 @@ public class YataMemberControllerTest extends AbstractControllerTest {
                 .andDo(document("yataMember-reject",
                         getRequestPreProcessor(),
                         getResponsePreProcessor(),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 토큰")
+                        ),
                         pathParameters(
                                 parameterWithName("yataId").description("야타 ID"),
                                 parameterWithName("yataRequestId").description("야타 신청/초대 ID")
@@ -107,6 +119,7 @@ public class YataMemberControllerTest extends AbstractControllerTest {
         given(mapper.yataMembersToYataMembersResponses(any())).willReturn(responses);
         //when
         ResultActions actions = mockMvc.perform(get(BASE_URL + "/{yataId}/accept/yataRequests", responses.get(0).getYataId())
+                .headers(GeneratedToken.getMockHeaderToken())
                 .with(csrf()));
 
         //then
@@ -114,6 +127,9 @@ public class YataMemberControllerTest extends AbstractControllerTest {
                 .andDo(document("yataMember-getAll",
                         getRequestPreProcessor(),
                         getResponsePreProcessor(),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 토큰")
+                        ),
                         pathParameters(
                                 parameterWithName("yataId").description("야타 ID")
                         ),

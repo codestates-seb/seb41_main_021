@@ -2,6 +2,7 @@ package com.yata.backend.domain.Yata.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.yata.backend.common.token.GeneratedToken;
 import com.yata.backend.domain.AbstractControllerTest;
 import com.yata.backend.domain.Yata.factory.YataFactory;
 import com.yata.backend.domain.Yata.factory.YataSnippet;
@@ -21,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.*;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -39,6 +41,8 @@ import static com.yata.backend.utils.ApiDocumentUtils.getResponsePreProcessor;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 
@@ -108,6 +112,7 @@ public class YataControllerTest extends AbstractControllerTest {
         ResultActions resultActions = mockMvc.perform(
                         post(BASE_URL)
                                 .contentType("application/json")
+                                .headers(GeneratedToken.getMockHeaderToken())
                                 .with(csrf()) //csrf토큰 생성
                                 .content(json))
                 .andExpect(status().isCreated());
@@ -117,6 +122,9 @@ public class YataControllerTest extends AbstractControllerTest {
         resultActions.andDo(document("yata-create",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
+                requestHeaders(
+                        headerWithName("Authorization").description("JWT 토큰")
+                ),
                 requestFields(
                         fieldWithPath("strPoint.longitude").type(JsonFieldType.NUMBER).description("출발지 경도"),
                         fieldWithPath("strPoint.latitude").type(JsonFieldType.NUMBER).description("출발지 위도"),
@@ -190,6 +198,7 @@ public class YataControllerTest extends AbstractControllerTest {
         ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.
                 patch(BASE_URL + "/{yataId}", yataId)
                 .contentType(MediaType.APPLICATION_JSON)
+                .headers(GeneratedToken.getMockHeaderToken())
                 .with(csrf()) //csrf토큰 생성
                 .content(json));
 
@@ -205,6 +214,9 @@ public class YataControllerTest extends AbstractControllerTest {
         resultActions.andDo(document("yata-update",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
+                requestHeaders(
+                        headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 토큰")
+                ),
                 pathParameters(
                         parameterWithName("yataId").description("야타 ID")
                 ),
@@ -289,6 +301,7 @@ public class YataControllerTest extends AbstractControllerTest {
         ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.
                 delete(BASE_URL + "/{yataId}", expected.getYataId())
                 .contentType(MediaType.APPLICATION_JSON)
+                .headers(GeneratedToken.getMockHeaderToken())
                 .with(csrf()));//csrf토큰 생성
 
 
@@ -298,6 +311,9 @@ public class YataControllerTest extends AbstractControllerTest {
                 .andDo(document("yata-delete",
                                 getRequestPreProcessor(),
                                 getResponsePreProcessor(),
+                        requestHeaders(
+                                headerWithName("Authorization").description("JWT 토큰")
+                        ),
                                 pathParameters(
                                         parameterWithName("yataId").description("야타 ID")
                                 )
@@ -329,6 +345,7 @@ public class YataControllerTest extends AbstractControllerTest {
         ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.
                 get(BASE_URL + "/{yataId}", yata.getYataId())
                 .contentType(MediaType.APPLICATION_JSON)
+                .headers(GeneratedToken.getMockHeaderToken())
                 .accept(MediaType.APPLICATION_JSON)
                 .with(csrf()));
 
@@ -342,6 +359,9 @@ public class YataControllerTest extends AbstractControllerTest {
         resultActions.andDo(document("yata-get",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
+                requestHeaders(
+                        headerWithName("Authorization").description("JWT 토큰")
+                ),
                 pathParameters(
                         parameterWithName("yataId").description("야타 ID")
                 ),
