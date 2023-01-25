@@ -68,7 +68,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         Member user = Member.builder()
                 .email(userInfo.getEmail())
                 .password("oauth2")
-                .roles(AuthoritiesUtils.createRoles(userInfo.getEmail()))
+                //.roles(AuthoritiesUtils.createRoles(userInfo.getEmail()))
                 .providerType(providerType)
                 .memberStatus(Member.MemberStatus.MEMBER_ACTIVE)
                 .genders(Member.Gender.NOT_CHECKED)
@@ -78,6 +78,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .fuelTank(30.0)
                 .point(0L)
                 .build();
+        user.setRoles(AuthoritiesUtils.createAuthorities(user));
         return memberRepository.saveAndFlush(user);
     }
 

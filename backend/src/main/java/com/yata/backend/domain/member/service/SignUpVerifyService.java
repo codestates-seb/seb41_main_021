@@ -5,8 +5,9 @@ import com.yata.backend.domain.member.entity.EmailVerifyEntity;
 
 public interface SignUpVerifyService {
 
- void sendAuthMail(String email);
+    void sendAuthMail(String email);
 
- boolean verifyAuthCode(EmailAuthDto emailAuthDto);
- EmailVerifyEntity verifyEmail(String email);
+    boolean verifyAuthCode(EmailAuthDto emailAuthDto);
+
+    EmailVerifyEntity verifyEmail(String email);
 }

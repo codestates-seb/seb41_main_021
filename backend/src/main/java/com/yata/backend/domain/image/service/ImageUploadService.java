@@ -46,7 +46,6 @@ public class ImageUploadService implements ImageUploader {
 
     @Override
     public String[] uploadImage(MultipartFile file) throws IOException {
-        System.out.println(file.getContentType());
         if (!Objects.requireNonNull(file.getContentType()).startsWith("image")) {
             throw new CustomLogicException(ExceptionCode.FILE_NOT_SUPPORTED);
         }

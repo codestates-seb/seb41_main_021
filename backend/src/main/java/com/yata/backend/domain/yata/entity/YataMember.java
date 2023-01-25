@@ -5,6 +5,8 @@ import com.yata.backend.global.audit.Auditable;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serial;
+import java.io.Serializable;
 
 @Entity
 @Getter
