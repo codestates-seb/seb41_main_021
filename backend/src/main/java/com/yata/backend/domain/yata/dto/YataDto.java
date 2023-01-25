@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -114,6 +115,7 @@ public class YataDto {
     public static class Response {
         private long yataId;
         private String nickName;
+        private Double feulTank;
         @JsonFormat(shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd'T'HH:mm:ss" , timezone = "Asia/Seoul")
         private Date departureTime;
         @JsonFormat(shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd'T'HH:mm:ss" , timezone = "Asia/Seoul")
@@ -132,7 +134,7 @@ public class YataDto {
         private Yata.PostStatus postStatus;
         private YataStatus yataStatus;
         private String email;
-
+        private List<YataMemberDto.Response> yataMembers;
     }
 
 
