@@ -1,7 +1,10 @@
 package com.yata.backend.domain.member.service;
 
+import com.yata.backend.domain.member.dto.DriverAuthDto;
 import com.yata.backend.domain.member.dto.EmailAuthDto;
+import com.yata.backend.domain.member.entity.AuthoritiesEntity;
 import com.yata.backend.domain.member.entity.EmailVerifyEntity;
+import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.event.EmailAuthApplicationEvent;
 import com.yata.backend.domain.member.repository.JpaEmailVerifyRepository;
 import com.yata.backend.global.exception.CustomLogicException;
@@ -20,11 +23,13 @@ public class SignUpVerifyServiceImpl implements SignUpVerifyService {
     private final ApplicationEventPublisher eventPublisher;
     private final RedisUtils redisUtils;
     private final JpaEmailVerifyRepository jpaEmailVerifyRepository;
+    private final MemberService memberService;
 
-    public SignUpVerifyServiceImpl( ApplicationEventPublisher eventPublisher, RedisUtils redisUtils, JpaEmailVerifyRepository jpaEmailVerifyRepository) {
+    public SignUpVerifyServiceImpl(ApplicationEventPublisher eventPublisher, RedisUtils redisUtils, JpaEmailVerifyRepository jpaEmailVerifyRepository, MemberService memberService) {
         this.eventPublisher = eventPublisher;
         this.redisUtils = redisUtils;
         this.jpaEmailVerifyRepository = jpaEmailVerifyRepository;
+        this.memberService = memberService;
     }
 
 
@@ -61,4 +66,6 @@ public class SignUpVerifyServiceImpl implements SignUpVerifyService {
         }
         return authCode.toString();
     }
+
+
 }
