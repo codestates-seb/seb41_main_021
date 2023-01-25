@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../components/common/Button';
 import Input from '../components/common/Input';
@@ -23,6 +24,8 @@ export default function Login() {
 
   const isLogin = false;
 
+  const navigate = useNavigate();
+
   const handleSubmit = e => {
     e.preventDefault();
     const data = {
@@ -39,6 +42,7 @@ export default function Login() {
     useLogin('https://server.yata.kro.kr/api/v1/auth/login', data).then(res => {
       if (res === 200) {
         useGetUserInfo().then(res => dispatch(loginUser(res)));
+        navigate('/tabnida-list');
         console.log(info);
       }
     });
@@ -57,8 +61,8 @@ export default function Login() {
               </Title>
               <LoginForm onSubmit={handleSubmit}>
                 <IdWrapper>
-                  <Input label="아이디" placeholder="아이디 입력" state={email} setState={setEmail} />
-                  {isValidEmail || <ErrorMsg>아이디를 입력해주세요</ErrorMsg>}
+                  <Input label="이메일" placeholder="이메일 입력" state={email} setState={setEmail} />
+                  {isValidEmail || <ErrorMsg>이메일을 입력해주세요</ErrorMsg>}
                 </IdWrapper>
                 <PwWrapper>
                   <Input
