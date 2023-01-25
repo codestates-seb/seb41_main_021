@@ -8,6 +8,7 @@ import com.yata.backend.domain.Yata.factory.YataSnippet;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.yata.controller.YataController;
 import com.yata.backend.domain.yata.dto.YataDto;
+import com.yata.backend.domain.yata.dto.YataMemberDto;
 import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataMember;
@@ -75,6 +76,8 @@ public class YataControllerTest extends AbstractControllerTest {
 
         List<YataMember> yataMembers = new ArrayList<>();
         Member member = new Member();
+        yataMembers.add(new YataMember(1L, true, YataMember.GoingStatus.STARTED_YET, null, null));
+
         member.setNickname("채은");
 
         Yata expected = Yata.builder()
@@ -139,7 +142,6 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.specifics").type(JsonFieldType.STRING).description("야타 특이사항"),
                         fieldWithPath("data.maxWaitingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
                         fieldWithPath("data.maxPeople").type(JsonFieldType.NUMBER).description("최대 인원"),
-                        fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
                         fieldWithPath("data.amount").type(JsonFieldType.NUMBER).description("요금"),
                         fieldWithPath("data.carModel").type(JsonFieldType.STRING).description("차량 모델"),
                         fieldWithPath("data.strPoint").type(JsonFieldType.OBJECT).description("출발지"),
@@ -155,7 +157,11 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.yataStatus").type(JsonFieldType.STRING).description("야타 상태 , YATA_NATA , YATA_NEOTA"),
                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
-                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각")
+                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각"),
+                        fieldWithPath("data.feulTank").type(JsonFieldType.NUMBER).description("작성자 연료통 점수"),
+                        fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
+                        fieldWithPath("data.yataMembers").type(JsonFieldType.NULL).description("예약 인원 정보(null)")
+
                 )));
 
     }
@@ -226,7 +232,6 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.specifics").type(JsonFieldType.STRING).description("야타 특이사항"),
                         fieldWithPath("data.maxWaitingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
                         fieldWithPath("data.maxPeople").type(JsonFieldType.NUMBER).description("최대 인원"),
-                        fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
                         fieldWithPath("data.amount").type(JsonFieldType.NUMBER).description("요금"),
                         fieldWithPath("data.carModel").type(JsonFieldType.STRING).description("차량 모델"),
                         fieldWithPath("data.strPoint").type(JsonFieldType.OBJECT).description("출발지"),
@@ -242,7 +247,16 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
                         fieldWithPath("data.nickName").type(JsonFieldType.STRING).description("작성자 닉네임"),
                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
-                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각")
+                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각"),
+                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각"),
+                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각"),
+                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각"),
+                        fieldWithPath("data.nickName").type(JsonFieldType.STRING).description("작성자 닉네임"),
+                        fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
+                        fieldWithPath("data.feulTank").type(JsonFieldType.NUMBER).description("작성자 연료통 점수"),
+                        fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
+                        fieldWithPath("data.yataMembers").type(JsonFieldType.NULL).description("예약 인원 정보(null)")
+
                 )));
     }
 
@@ -302,6 +316,12 @@ public class YataControllerTest extends AbstractControllerTest {
 
         YataDto.Response response = createYataResponseDto(yata);
 
+        YataMemberDto.Response yataMemberResponse = new YataMemberDto.Response(1L, 1L, true, YataMember.GoingStatus.STARTED_YET);
+        List<YataMemberDto.Response> yataMembers = new ArrayList<>();
+        yataMembers.add(yataMemberResponse);
+
+        response.setYataMembers(yataMembers);
+
         given(yataService.findYata(anyLong())).willReturn(yata);
         given(mapper.yataToYataResponse(any())).willReturn(response);
         //when
@@ -334,7 +354,6 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.specifics").type(JsonFieldType.STRING).description("야타 특이사항"),
                         fieldWithPath("data.maxWaitingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
                         fieldWithPath("data.maxPeople").type(JsonFieldType.NUMBER).description("최대 인원"),
-                        fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
                         fieldWithPath("data.amount").type(JsonFieldType.NUMBER).description("요금"),
                         fieldWithPath("data.carModel").type(JsonFieldType.STRING).description("차량 모델"),
                         fieldWithPath("data.strPoint").type(JsonFieldType.OBJECT).description("출발지"),
@@ -350,7 +369,16 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
                         fieldWithPath("data.nickName").type(JsonFieldType.STRING).description("작성자 닉네임"),
                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
-                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각")
+                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각"),
+                        fieldWithPath("data.feulTank").type(JsonFieldType.NUMBER).description("작성자 연료통 점수"),
+                        fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
+                        fieldWithPath("data.yataMembers").type(JsonFieldType.ARRAY).description("예약 인원 정보"),
+                        fieldWithPath("data.yataMembers[].yataId").type(JsonFieldType.NUMBER).description("야타 아이디"),
+                        fieldWithPath("data.yataMembers[].yataMemberId").type(JsonFieldType.NUMBER).description("야타멤버(예약자)아이디"),
+                        fieldWithPath("data.yataMembers[].yataPaid").type(JsonFieldType.BOOLEAN).description("지불여부"),
+                        fieldWithPath("data.yataMembers[].goingStatus").type(JsonFieldType.STRING).description("가는 상태 'STARTED_YET,ARRIVED'")
+
+
                 )));
     }
 
@@ -362,8 +390,7 @@ public class YataControllerTest extends AbstractControllerTest {
         //given
         List<Yata> yatas = YataFactory.createYataList();
         List<YataDto.Response> responses = YataFactory.createYataResponseDtoList(yatas);
-        System.out.println(responses.size());
-        System.out.println(new SliceImpl<>(responses).getSize());
+
         Slice<Yata> yataSlice = new SliceImpl<>(yatas);
 
         given(yataService.findAllYata(anyString(), any())).willReturn(
