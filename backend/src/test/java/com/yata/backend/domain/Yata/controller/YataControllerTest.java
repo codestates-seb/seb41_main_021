@@ -129,7 +129,7 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("maxWaitingTime").type(JsonFieldType.NUMBER).description("최대대기시간"),
                         fieldWithPath("departureTime").type(JsonFieldType.STRING).description("출발시간"),
                         fieldWithPath("timeOfArrival").type(JsonFieldType.STRING).description("도착시간"),
-                        fieldWithPath("yataStatus").type(JsonFieldType.STRING).description("야타상태")),
+                        fieldWithPath("yataStatus").type(JsonFieldType.STRING).description("야타상태 , YATA_NEOTA,YATA_NATA")),
                 responseFields(
                         fieldWithPath("data").type(JsonFieldType.OBJECT).description("야타 게시글 정보"),
                         fieldWithPath("data.yataId").type(JsonFieldType.NUMBER).description("야타 ID"),
@@ -151,9 +151,8 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.destination.latitude").type(JsonFieldType.NUMBER).description("도착지 위도"),
                         fieldWithPath("data.destination.address").type(JsonFieldType.STRING).description("도착지 주소"),
                         fieldWithPath("data.postStatus").type(JsonFieldType.STRING).description("야타 게시글 상태"),
-                        fieldWithPath("data.yataStatus").type(JsonFieldType.STRING).description("야타 상태"),
+                        fieldWithPath("data.yataStatus").type(JsonFieldType.STRING).description("야타 상태 , YATA_NATA , YATA_NEOTA"),
                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
-                        fieldWithPath("data.nickName").type(JsonFieldType.STRING).description("작성자 닉네임"),
                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
                         fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각")
                 )));

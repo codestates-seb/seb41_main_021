@@ -1,7 +1,10 @@
 package com.yata.backend.domain.member.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.yata.backend.common.token.GeneratedToken;
 import com.yata.backend.domain.AbstractControllerTest;
+import com.yata.backend.domain.member.dto.DriverAuthDto;
 import com.yata.backend.domain.member.dto.EmailAuthDto;
 import com.yata.backend.domain.member.factory.MemberFactory;
 import com.yata.backend.domain.member.service.MemberService;
@@ -14,15 +17,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.Date;
+
 import static com.yata.backend.utils.ApiDocumentUtils.getRequestPreProcessor;
 import static com.yata.backend.utils.ApiDocumentUtils.getResponsePreProcessor;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -30,8 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(SignUpVerifyController.class)
 class SignUpVerifyControllerTest extends AbstractControllerTest {
-    @Autowired
-    private Gson gson;
+    private final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
     private final String BASE_URL = "/api/v1/validation";
     @MockBean
     private SignUpVerifyService signUpVerifyService;
@@ -106,6 +109,35 @@ class SignUpVerifyControllerTest extends AbstractControllerTest {
                 ),
                 responseFields(
                         fieldWithPath("data").type("boolean").description("인증코드 일치 여부 , true : 일치, false : 불일치 ")
+                )
+        ));
+    }
+
+    @Test
+    @WithMockUser
+    @DisplayName("운전자 인증")
+    void verifyDriver() throws Exception {
+        // given
+        DriverAuthDto driverAuthDto = new DriverAuthDto("박토스야", "123456789ABC", new Date());
+        //when
+        ResultActions resultActions = mockMvc.perform(patch(BASE_URL + "/driver-license")
+                .contentType("application/json")
+                .header("Authorization", GeneratedToken.createMockToken())
+                .content(gson.toJson(driverAuthDto))
+                .with(csrf()));
+        // then
+        resultActions.andExpect(status().isNoContent())
+                .andDo(print());
+        resultActions.andDo(document("verify-driver-license",
+                getRequestPreProcessor(),
+                getResponsePreProcessor(),
+                requestHeaders(
+                        headerWithName("Authorization").description("JWT 토큰")
+                ),
+                requestFields(
+                        fieldWithPath("name").type("String").description("이름"),
+                        fieldWithPath("driverLicenseNumber").type("String").description("면허번호 12자리 A-Z, 0-9"),
+                        fieldWithPath("dateOfIssue").type("Date").description("면허만료일")
                 )
         ));
     }

@@ -76,7 +76,9 @@ class PaymentControllerTest extends AbstractControllerTest {
                                         Stream.of(PayType.values()).map(PayType::name)
                                                 .reduce((a, b) -> a + ", " + b).get()),
                         fieldWithPath("amount").type(JsonFieldType.NUMBER).description("결제 요청 금액"),
-                        fieldWithPath("orderName").type(JsonFieldType.STRING).description("주문 이름")
+                        fieldWithPath("orderName").type(JsonFieldType.STRING).description("주문 이름"),
+                        fieldWithPath("yourSuccessUrl").type(JsonFieldType.STRING).description("결제 성공시 이동할 URL,안보내면 서버 기본 URL로 이동"),
+                        fieldWithPath("yourFailUrl").type(JsonFieldType.STRING).description("결제 실패시 이동할 URL , 안보내면 서버 기본 URL로 이동")
                 ),
                 responseFields(
                         fieldWithPath("data").type(JsonFieldType.OBJECT).description("결제 요청 데이터"),
