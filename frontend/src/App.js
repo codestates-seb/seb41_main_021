@@ -1,10 +1,5 @@
 import './App.css';
 import GlobalStyle from './styles/GlobalStyle';
-import { Route, Routes } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
-import { Provider } from 'react-redux';
-import store from './redux/store.jsx';
-import theme from './styles/theme';
 import Screen from './components/Screen';
 import DriverAuth from './pages/DriverAuth';
 import Homepage from './pages/Homepage';
@@ -35,14 +30,33 @@ import Request from './pages/Request';
 import JourneyState from './pages/JourneyState';
 import MyRegisterHistory from './pages/MyRegisterHistory';
 
+import { useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from './redux/slice/UserSlice';
+import { useTokenRefresh, useGetUserInfo, useIsLogin } from './hooks/useLogin';
 
 function App() {
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    if (localStorage.ACCESS) {
+      useGetUserInfo().then(res => dispatch(loginUser(res)));
+      setTimeout(() => setIsLoading(false), 100);
+    } else {
+      setIsLoading(false);
+    }
+    // if (localStorage.REFRESH) {
+    //   console.log(localStorage);
+    //   useTokenRefresh();
+    // }
+  }, []);
   return (
     <>
-      <Provider store={store}>
-        <ThemeProvider theme={theme}>
+      {isLoading || (
+        <>
           <GlobalStyle />
           <Screen>
             <Routes>
@@ -77,8 +91,8 @@ function App() {
             </Routes>
             <ToastContainer position="top-center" />
           </Screen>
-        </ThemeProvider>
-      </Provider>
+        </>
+      )}
     </>
   );
 }

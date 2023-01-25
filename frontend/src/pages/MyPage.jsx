@@ -6,12 +6,32 @@ import { BiTrip, BiLike } from 'react-icons/bi';
 import { RiOilLine } from 'react-icons/ri';
 import { IoIosArrowForward } from 'react-icons/io';
 import { RiCoinsFill } from 'react-icons/ri';
-import usePayment from '../hooks/usePayment';
 
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { checkIfLogined } from '../hooks/useLogin';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearUser } from '../redux/slice/UserSlice';
 
 export default function MyPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const logout = () => {
+    localStorage.clear();
+    dispatch(clearUser());
+    navigate('/');
+  };
+  const info = useSelector(state => {
+    return state.user;
+  });
+  const isLogin = checkIfLogined();
+
+  useEffect(() => {
+    if (!isLogin) {
+      navigate('/');
+    }
+  }, []);
   return (
     <>
       <Container>
@@ -20,10 +40,9 @@ export default function MyPage() {
             <Profile>
               <VscAccount />
               <Info>
-                <div className="text">문재웅</div>
-                <div className="text">mjwoong</div>
-                <div className="text">010-xxxx-xxxx</div>
-                <div className="text">abcde@gmail.com</div>
+                <div className="text">{info.name}</div>
+                <div className="text">{info.nickname}</div>
+                <div className="text">{info.email}</div>
               </Info>
             </Profile>
           </ProfileContainer>
@@ -31,7 +50,7 @@ export default function MyPage() {
             <OilLevel>
               <RiOilLine />
               <div className="title">기름통 레벨</div>
-              <div className="bottom"> 70L </div>
+              <div className="bottom"> {info.fuelTank}L </div>
             </OilLevel>
             <TripNumber>
               <BiTrip />
@@ -106,12 +125,11 @@ export default function MyPage() {
                   <IoIosArrowForward />
                 </JourneyRecord>
               </NavLink>
-              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/">
-                <JourneyRecord>
-                  <div className="title">로그아웃</div>
-                  <IoIosArrowForward />
-                </JourneyRecord>
-              </NavLink>
+
+              <JourneyRecord onClick={logout}>
+                <div className="title">로그아웃</div>
+                <IoIosArrowForward />
+              </JourneyRecord>
             </List>
           </ListContainer>
         </MyPageContainer>
