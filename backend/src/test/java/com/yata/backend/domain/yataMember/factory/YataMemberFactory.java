@@ -48,7 +48,10 @@ public class YataMemberFactory {
         return YataMemberDto.Response.builder()
                 .yataId(yataMember.getYata().getYataId())
                 .yataMemberId(yataMember.getYataMemberId())
+                .email(yataMember.getMember().getEmail())
+                .nickname(yataMember.getMember().getNickname())
                 .yataPaid(yataMember.isYataPaid())
+                .point(yataMember.getMember().getPoint())
                 .goingStatus(yataMember.getGoingStatus())
                 .build();
     }

@@ -22,8 +22,28 @@ public interface YataMemberMapper {
                 .map(yataMember -> YataMemberDto.Response.builder()
                         .yataMemberId(yataMember.getYataMemberId())
                         .yataId(yataMember.getYata().getYataId())
+                        .email(yataMember.getMember().getEmail())
+                        .nickname(yataMember.getMember().getNickname())
                         .yataPaid(yataMember.isYataPaid())
+                        .point(yataMember.getMember().getPoint())
                         .goingStatus(yataMember.getGoingStatus())
                         .build()).collect(Collectors.toList());
     }
+
+//    default YataMemberDto.pointPaymentResponse yataMemberToYataMemberResponse(YataMember yataMember) {
+//        if (yataMember == null) {
+//            return null;
+//        }
+//
+//        long yataMemberId = yataMember.getYataMemberId();
+//        long yataId = yataMember.getYata().getYataId();
+//        boolean yataPaid = yataMember.isYataPaid();
+//        long point = yataMember.getMember().getPoint();
+//        YataMember.GoingStatus goingStatus = yataMember.getGoingStatus();
+//
+//        YataMemberDto.pointPaymentResponse response = new YataMemberDto.pointPaymentResponse(
+//                yataMemberId, yataId, yataPaid, point, goingStatus);
+//
+//        return response;
+//    }
 }

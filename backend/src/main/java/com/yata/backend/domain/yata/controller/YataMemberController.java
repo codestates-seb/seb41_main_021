@@ -3,6 +3,7 @@ package com.yata.backend.domain.yata.controller;
 import com.yata.backend.domain.yata.entity.YataMember;
 import com.yata.backend.domain.yata.mapper.YataMemberMapper;
 import com.yata.backend.domain.yata.service.YataMemberService;
+import com.yata.backend.global.response.SingleResponse;
 import com.yata.backend.global.response.SliceInfo;
 import com.yata.backend.global.response.SliceResponseDto;
 import org.springframework.data.domain.Pageable;
@@ -57,5 +58,14 @@ public class YataMemberController {
         SliceInfo sliceInfo = new SliceInfo(pageable, acceptedRequests.getNumberOfElements(), acceptedRequests.hasNext());
         return new ResponseEntity<>(
                 new SliceResponseDto<>(mapper.yataMembersToYataMembersResponses(acceptedRequests.getContent()), sliceInfo), HttpStatus.OK);
+    }
+
+    // TODO 포인트 지불 - 200 / response 없이
+    @PostMapping("/{yataMemberId}/payPoint")
+    public ResponseEntity payPoint(@PathVariable("yataId") @Positive long yataId,
+                                   @PathVariable("yataMemberId") @Positive long yataMemberId,
+                                   @AuthenticationPrincipal User authMember) {
+        yataMemberService.payPoint(authMember.getUsername(), yataId, yataMemberId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -13,6 +13,4 @@ public interface JpaYataRequestRepository extends JpaRepository<YataRequest, Lon
     Optional<YataRequest> findByMember_EmailAndYata_YataId(String email, Long yataId);
     Slice<YataRequest> findAllByYata(Yata yata, Pageable pageable);
     Slice<YataRequest> findAllByMember_Email(String Email, Pageable pageable);
-    List<YataRequest> findAllByYata_YataId(Long yataId);
-    void deleteAllByYata(Yata findYata);
 }
