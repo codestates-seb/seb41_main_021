@@ -80,20 +80,10 @@ public class ReviewServiceImpl implements ReviewService {
         Member member = memberService.findMember(email);
         List<Review> myReviews = jpaReviewRepository.findAllByToMember(member);
 
-        System.out.println("---------------리스트출력---------------------");
-        System.out.println(myReviews.size());
-
         Map<Checklist, Long> checklistCount = myReviews.stream()
                 .flatMap(review -> review.getReviewChecklists().stream())
                 .collect(Collectors.groupingBy(ReviewChecklist::getChecklist,
                         Collectors.counting()));
-
-        System.out.println("----------------Map값 출력 --------------------");
-        for (Map.Entry<Checklist, Long> entrySet : checklistCount.entrySet()) {
-            System.out.println(entrySet.getKey() + " : " + entrySet.getValue());
-        }
-        System.out.println("------------------리뷰.리뷰체크리스트 출력----------");
-
 
         return checklistCount; //countioncollector의 반환 타입은 Long임
     }
@@ -126,7 +116,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     //yatamember가 결제 상태인지 검증
     private void verifyPaidYataMember(YataMember yataMember) {
-     //   if (!yataMember.isYataPaid()) throw new CustomLogicException(ExceptionCode.PAYMENT_NOT_YET);
+        //   if (!yataMember.isYataPaid()) throw new CustomLogicException(ExceptionCode.PAYMENT_NOT_YET);
     }
 
 }
