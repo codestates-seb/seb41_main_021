@@ -1,47 +1,40 @@
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Navbar from '../components/NavBar';
-import ListItem from '../components/ListItem';
-import { useNavigate } from 'react-router-dom';
+import ListItemView from '../components/ListItemView';
 import Header from '../components/Header';
+import useGetData from '../hooks/useGetData';
 
 export default function RegisterList() {
   const navigate = useNavigate();
-  const go = () => {
-    navigate('/register-checklist');
-  };
+  const params = useParams();
+  const yataId = params.yataId;
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    useGetData(`https://server.yata.kro.kr/api/v1/yata/apply/${yataId}`).then(res => setList(res.data.data));
+  }, []);
+
   return (
     <>
       <Header title="요청 내역" />
       <Container>
-        <ListItem
-          onClick={go}
-          date={'1월 3일 (화) 7:00PM'}
-          journeyStart={'서울'}
-          journeyEnd={'부산'}
-          transit="1"
-          state="대기"></ListItem>
-        <ListItem
-          date={'1월 4일 (수) 7:00PM'}
-          journeyStart={'부산'}
-          journeyEnd={'서울'}
-          transit="1"
-          state="수락"></ListItem>
-        <ListItem
-          date={'1월 4일 (수) 7:00PM'}
-          journeyStart={'부산'}
-          journeyEnd={'서울'}
-          transit="1"
-          state="거절"></ListItem>
-        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
-        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
-        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
-        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
-        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
-        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
-        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
-        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
-        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
-        <ListItem date={'1월 4일 (수) 7:00PM'} journeyStart={'부산'} journeyEnd={'서울'} transit="1"></ListItem>
+        {list.map(e => {
+          return (
+            <ListItemView
+              onClick={() => {
+                navigate('/register-checklist');
+              }}
+              date={'1월 3일 (화) 7:00PM'}
+              journeyStart={'서울'}
+              journeyEnd={'부산'}
+              transit="1"
+              state="대기"
+            />
+          );
+        })}
       </Container>
       <Navbar />
     </>

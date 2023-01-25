@@ -52,20 +52,30 @@ const useTayoDelete = async (url, data) => {
 
 // 5.1
 const useTayoRequest = async (url, data) => {
-  await usePostData(url, data, header).then(res => {
-    if (res.response.status === 401) {
+  try {
+    const response = await axios.post(url, data, header);
+    return response;
+  } catch (error) {
+    if (error.response.status === 403) {
+      toast.warning('본인 게시물에 신청할 수 없습니다.');
+    } else {
       toast.warning('신청에 실패했습니다.');
     }
-  });
+  }
 };
 
 // 5.2
 const useTayoInvite = async (url, data) => {
-  await usePostData(url, data, header).then(res => {
-    if (res.response.status === 401) {
+  try {
+    const response = await axios.post(url, data, header);
+    return response;
+  } catch (error) {
+    if (error.response.status === 403) {
+      toast.warning('본인 게시물에 초대 수 없습니다.');
+    } else {
       toast.warning('신청에 실패했습니다.');
     }
-  });
+  }
 };
 
 // 6.1 6.2
