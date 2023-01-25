@@ -14,7 +14,7 @@ import LogIn from './pages/LogIn';
 import MyPage from './pages/MyPage';
 import OtherUserPage from './pages/OtherUserPage';
 import RatingAdd from './pages/RatingAdd';
-import RatingList from './pages/RatingList';
+import Rating from './pages/Rating';
 import SignUp from './pages/SignUp';
 import TabnidaList from './pages/TabnidaList';
 import TabnidaDetail from './pages/TabnidaDetail';
@@ -53,15 +53,15 @@ function App() {
               <Route path="/my-page" element={<MyPage />}></Route>
               <Route path="/other-user-page" element={<OtherUserPage />}></Route>
               <Route path="/rating-add" element={<RatingAdd />}></Route>
-              <Route path="/rating-list" element={<RatingList />}></Route>
+              <Route path="/rating" element={<Rating />}></Route>
               <Route path="/signup" element={<SignUp />}></Route>
               <Route path="/tabnida-add" element={<TabnidaAdd />}></Route>
               <Route path="/tabnida-edit" element={<TabnidaEdit />}></Route>
-              <Route path="/tabnida-detail" element={<TabnidaDetail />}></Route>
+              <Route path="/tabnida-detail/:yataId" element={<TabnidaDetail />}></Route>
               <Route path="/tabnida-list" element={<TabnidaList />}></Route>
               <Route path="/taeoonda-add" element={<TaeoondaAdd />}></Route>
               <Route path="/taeoonda-edit" element={<TaeoondaEdit />}></Route>
-              <Route path="/taeoonda-detail" element={<TaeoondaDetail />}></Route>
+              <Route path="/taeoonda-detail/:yataId" element={<TaeoondaDetail />}></Route>
               <Route path="/taeoonda-list" element={<TaeoondaList />}></Route>
               <Route path="/register-list" element={<RegisterList />}></Route>
               <Route path="/register-checklist" element={<RegisterCheckList />}></Route>

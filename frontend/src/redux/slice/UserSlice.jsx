@@ -44,7 +44,6 @@ const userSlice = createSlice({
     },
   },
 });
-8;
 
 // 액션크리에이터는 컴포넌트에서 사용하기 위해 export 하고
 export const { loginUser, clearUser } = userSlice.actions;
