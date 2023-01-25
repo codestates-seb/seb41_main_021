@@ -70,6 +70,7 @@ public class SecurityConfig {
                                 .antMatchers("/api/v1/members/**").permitAll()
 
                                 // validation
+                                .antMatchers(HttpMethod.PATCH, "/api/v1/validation/**").authenticated()
                                 .antMatchers("/api/v1/validation/**").permitAll()
                                 // pay
                                 .antMatchers(HttpMethod.POST, "/api/v1/payments/**").authenticated()
@@ -79,7 +80,8 @@ public class SecurityConfig {
                                 .antMatchers("/api/v1/yata/apply/**").authenticated()
                                 .antMatchers("/api/v1/yata/invite/**").hasRole(Member.MemberRole.DRIVER.name())
                                 .antMatchers("/api/v1/yata/**").authenticated()
-
+                                // notify
+                                .antMatchers(HttpMethod.GET,"/api/v1/notify/**").authenticated()
 
                                 // basic
                                 .antMatchers("/docs/index.html").permitAll()

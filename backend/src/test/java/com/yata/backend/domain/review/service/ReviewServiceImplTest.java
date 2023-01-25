@@ -69,8 +69,6 @@ class ReviewServiceImplTest {
         }
         assertEquals(checklistCount.size() , checklists.size());
     }
-    public Map<Long, List<Checklist>> groupingBySingleArgument(List<Checklist> people){
-        return people.stream().collect(Collectors.groupingBy(Checklist::getChecklistId));
-    }
+
 
 }

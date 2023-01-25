@@ -1,6 +1,7 @@
 package com.yata.backend.domain.member.service;
 
 
+import com.yata.backend.domain.member.dto.DriverAuthDto;
 import com.yata.backend.domain.member.dto.MemberDto;
 import com.yata.backend.domain.member.entity.Member;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,4 +23,6 @@ public interface MemberService {
     Member updateMember(String email, Member patchMemberDtoToMember);
 
     void checkDriver(Member member);
+    void verifyDriverLicense(String email, DriverAuthDto driverAuthDto);
+
 }

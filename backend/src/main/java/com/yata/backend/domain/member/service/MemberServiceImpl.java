@@ -1,7 +1,9 @@
 package com.yata.backend.domain.member.service;
 
 import com.yata.backend.auth.oauth2.dto.ProviderType;
+import com.yata.backend.domain.member.dto.DriverAuthDto;
 import com.yata.backend.domain.member.dto.MemberDto;
+import com.yata.backend.domain.member.entity.AuthoritiesEntity;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.repository.JpaMemberRepository;
 import com.yata.backend.domain.member.utils.AuthoritiesUtils;
@@ -102,6 +104,11 @@ public class MemberServiceImpl implements MemberService {
                 .findAny()
                 .orElseThrow(() -> new CustomLogicException(ExceptionCode.MEMBER_NOT_DRIVER));
     }
-
+    @Override
+    public void verifyDriverLicense(String email, DriverAuthDto driverAuthDto) {
+        // TODO Auto-generated method stub 추후 비지니스화 하면 구현 할 로직 OPEN API 활용
+        Member member = findMember(email);
+        member.getRoles().add(new AuthoritiesEntity(member, "DRIVER"));
+    }
 
 }
