@@ -2,6 +2,7 @@ package com.yata.backend.domain.yata.mapper;
 
 import com.yata.backend.domain.yata.dto.LocationDto;
 import com.yata.backend.domain.yata.dto.YataDto;
+import com.yata.backend.domain.yata.dto.YataMemberDto;
 import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.global.utils.GeometryUtils;
@@ -79,7 +80,17 @@ public interface YataMapper {
         response.yataStatus(yata.getYataStatus());
         response.email(yata.getMember().getEmail());
         response.nickName(yata.getMember().getNickname());
-
+        response.feulTank(yata.getMember().getFuelTank());
+        if (yata.getYataMembers() != null) {
+            response.yataMembers(yata.getYataMembers().stream()
+                    .map(yataMember -> {
+                        return YataMemberDto.Response.builder()
+                                .yataId(yataMember.getYata().getYataId())
+                                .yataMemberId(yataMember.getYataMemberId())
+                                .yataPaid(yataMember.isYataPaid())
+                                .goingStatus(yataMember.getGoingStatus()).build();
+                    }).collect(Collectors.toList())); //여기선 넣어주고
+        }
         return response.build();
     }
 
@@ -112,6 +123,7 @@ public interface YataMapper {
                             .strPoint(locationToResponse(yata.getStrPoint()))
                             .destination(locationToResponse(yata.getDestination()))
                             .nickName(yata.getMember().getNickname())
+                            .yataMembers(null)
                             .build();
                 }).collect(Collectors.toList());
     }

@@ -17,7 +17,6 @@ public class YataSnippet {
                 fieldWithPath("data[].specifics").type(JsonFieldType.STRING).description("야타 특이사항"),
                 fieldWithPath("data[].maxWaitingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
                 fieldWithPath("data[].maxPeople").type(JsonFieldType.NUMBER).description("최대 인원"),
-                fieldWithPath("data[].reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
                 fieldWithPath("data[].amount").type(JsonFieldType.NUMBER).description("요금"),
                 fieldWithPath("data[].carModel").type(JsonFieldType.STRING).description("차량 모델"),
                 fieldWithPath("data[].strPoint").type(JsonFieldType.OBJECT).description("출발지"),
@@ -33,7 +32,11 @@ public class YataSnippet {
                 fieldWithPath("data[].email").type(JsonFieldType.STRING).description("이메일"),
                 fieldWithPath("data[].nickName").type(JsonFieldType.STRING).description("야타 게시글 작성자 닉네임"),
                 fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
-                fieldWithPath("data[].modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각")
+                fieldWithPath("data[].modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각"),
+                fieldWithPath("data[].feulTank").type(JsonFieldType.NUMBER).description("작성자 연료통 점수"),
+                fieldWithPath("data[].reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
+                fieldWithPath("data[].yataMembers").type(JsonFieldType.NULL).description("예약 인원 정보(null)")
+
         );
     }
 

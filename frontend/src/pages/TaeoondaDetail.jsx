@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router';
 
 export default function TabnidaDetail() {
   const navigate = useNavigate();
+
   const requestHandler = () => {
     const data = {
       title: '태워주세욥',
