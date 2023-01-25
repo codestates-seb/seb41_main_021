@@ -31,7 +31,6 @@ const useLogin = async (url, data) => {
 };
 
 const useGetUserInfo = async () => {
-  // const dispatch = useDispatch();
   try {
     const response = await axios.get('https://server.yata.kro.kr/api/v1/members', header);
     return response.data.data;
@@ -50,4 +49,31 @@ const useLogout = async () => {
   return null;
 };
 
-export { useLogin, useLogout, useGetUserInfo };
+const useTokenRefresh = async () => {
+  try {
+    const response = await axios.post('https://server.yata.kro.kr/api/v1/auth/refresh', {
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        Authorization: localStorage.ACCESS,
+        RefreshToken: localStorage.REFRESH,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+    toast.warning('유저 정보를 불러오지 못했습니다.');
+  }
+};
+
+import { useSelector } from 'react-redux';
+
+const checkIfLogined = () => {
+  const isLogin = useSelector(state => state.user.isLogin);
+  if (isLogin) {
+  } else {
+    toast.warning('로그인이 필요한 페이지 입니다.');
+  }
+  return isLogin;
+};
+
+export { useLogin, useLogout, useGetUserInfo, useTokenRefresh, checkIfLogined };

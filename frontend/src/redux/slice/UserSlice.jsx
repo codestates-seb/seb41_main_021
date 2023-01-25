@@ -9,6 +9,7 @@ const initialState = {
   providerType: '',
   carImgUrl: '',
   memberStatus: '',
+  fuelTank: '',
   roles: '',
   isLogin: false,
 };
@@ -26,6 +27,7 @@ const userSlice = createSlice({
       state.providerType = action.payload.providerType;
       state.carImgUrl = action.payload.carImgUrl;
       state.memberStatus = action.payload.memberStatus;
+      state.fuelTank = action.payload.fuelTank;
       state.roles = action.payload.roles;
       state.isLogin = true;
     },
@@ -39,6 +41,7 @@ const userSlice = createSlice({
       state.providerType = '';
       state.carImgUrl = '';
       state.memberStatus = '';
+      state.fuelTank = '';
       state.roles = '';
       state.isLogin = false;
     },

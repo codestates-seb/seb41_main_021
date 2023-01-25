@@ -4,9 +4,12 @@ import Button from '../components/common/Button';
 import Input from '../components/common/Input';
 import LinkTo from '../components/common/LinkTo';
 import Header from '../components/Header';
+
 import { useSignup } from '../hooks/useSignup';
 import { toast } from 'react-toastify';
 import { useEmailAuth, useEmailAuthConfirm, useEmailExistingConfirm } from '../hooks/useEmail';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignUp() {
   const [name, setName] = useState('');
@@ -22,10 +25,13 @@ export default function SignUp() {
   const [pwCheckValidity, setPwCheckValidity] = useState(false);
   const [numberValidity, setNumberValidity] = useState(false);
   const [authValidity, setAuthValidity] = useState(false);
-  const [emailExisting, setEmailExisting] = useState(false);
 
-  //임시
-  const isLogin = false;
+  const isLogin = useSelector(state => state.user.isLogin);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    isLogin && navigate('/my-page');
+  }, []);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -35,7 +41,6 @@ export default function SignUp() {
     if (!authValidity) {
       return toast.warning('이메일 인증을 해주세요.');
     }
-
     console.log('success');
     console.log([name, nickname, email, password, pwCheck, number]);
   };
@@ -62,7 +67,6 @@ export default function SignUp() {
       return console.log(res.data.data);
     });
   };
-
   // 회원가입
   const signUp = () => {
     const body = {
@@ -77,7 +81,6 @@ export default function SignUp() {
       return console.log(res);
     });
   };
-
   // 이름 유효성 검사
   const nameValidation = e => {
     setName(e.target.value.replace(/[a-z0-9]|[ \[\]{}()<>?|`~!@#$%^&*-_+=,.;:\"'\\]/g, ''));
@@ -87,7 +90,6 @@ export default function SignUp() {
       setNameValidity(false);
     }
   };
-
   // 이메일 유효성 검사
   const emailValidation = e => {
     setEmail(e.target.value);
@@ -98,7 +100,6 @@ export default function SignUp() {
       setEmailValidity(false);
     }
   };
-
   //오토 하이픈, 유효성 검사
   const autoHyphen = e => {
     setNumber(
@@ -113,7 +114,6 @@ export default function SignUp() {
       setNumberValidity(false);
     }
   };
-
   // 비밀번호, 비밀번호 확인 유효성 검사
   useEffect(() => {
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
@@ -122,6 +122,7 @@ export default function SignUp() {
     } else {
       setPwValidity(false);
     }
+
     if (password !== pwCheck) {
       setPwCheckValidity(true);
     } else {
@@ -130,75 +131,67 @@ export default function SignUp() {
   }, [password, pwCheck]);
   return (
     <>
-      {isLogin || (
-        <>
-          <Header title={'회원가입'} />
-          <Container>
-            <Contents>
-              <Title>
-                <MainTitle>Welcome!</MainTitle>
-                <SubTitle>언제 어디서나 YATA와 함께하세요</SubTitle>
-              </Title>
-              <SignupForm onSubmit={handleSubmit}>
-                <Wrapper>
-                  <Input label="이름" placeholder="이름 입력" state={name} onChange={nameValidation} />
-                  {nameValidity && <ErrorMsg>이름을 입력해주세요</ErrorMsg>}
-                </Wrapper>
-                <Wrapper>
-                  <Input label="닉네임" placeholder="닉네임 입력" state={nickname} setState={setNickname} />
-                </Wrapper>
-                <Wrapper>
-                  <EmailWrapper>
-                    <Input label="이메일" placeholder="이메일 입력" state={email} onChange={emailValidation} />
-                    <Button type="button" onClick={emailAuth}>
-                      ㅎㅇ
-                    </Button>
-                  </EmailWrapper>
-                  {emailValidity && <ErrorMsg>올바른 이메일 형식이 아닙니다</ErrorMsg>}
-                </Wrapper>
-                <Wrapper>
-                  <EmailWrapper>
-                    <Input
-                      label="인증 코드"
-                      placeholder="이메일 인증 코드"
-                      state={authCode}
-                      setState={setAuthCode}></Input>
-                    <Button type="button" onClick={emailAuthConfirm}>
-                      인증
-                    </Button>
-                  </EmailWrapper>
-                </Wrapper>
-                <Wrapper>
-                  <Input
-                    label="비밀번호"
-                    state={password}
-                    setState={setPassword}
-                    type="password"
-                    placeholder="영문, 숫자, 특수문자 포함 8글자"
-                  />
-                  {pwValidity && <ErrorMsg>영문, 숫자, 특수문자 포함 8글자 이상이어야 합니다.</ErrorMsg>}
-                </Wrapper>
-                <Wrapper>
-                  <Input
-                    label="비밀번호 확인"
-                    placeholder="비밀번호 재입력"
-                    state={pwCheck}
-                    setState={setPwCheck}
-                    type="password"
-                  />
-                  {pwCheckValidity && <ErrorMsg>비밀번호가 일치하지 않습니다.</ErrorMsg>}
-                </Wrapper>
-                <Wrapper>
-                  <Input type="tel" placeholder="전화번호 입력" label="전화번호" state={number} onChange={autoHyphen} />
-                  {numberValidity && <ErrorMsg>올바른 전화번호 형식이 아닙니다.</ErrorMsg>}
-                </Wrapper>
-                <SubmitButton onClick={signUp}>회원가입</SubmitButton>
-              </SignupForm>
-            </Contents>
-            <LinkTo message="이미 회원이신가요?" link="/login" linkText="로그인" />
-          </Container>
-        </>
-      )}
+      <Header title={'회원가입'} />
+      <Container>
+        <Contents>
+          <Title>
+            <MainTitle>Welcome!</MainTitle>
+            <SubTitle>언제 어디서나 YATA와 함께하세요</SubTitle>
+          </Title>
+          <SignupForm onSubmit={handleSubmit}>
+            <Wrapper>
+              <Input label="이름" placeholder="이름 입력" state={name} onChange={nameValidation} />
+              {nameValidity && <ErrorMsg>이름을 입력해주세요</ErrorMsg>}
+            </Wrapper>
+            <Wrapper>
+              <Input label="닉네임" placeholder="닉네임 입력" state={nickname} setState={setNickname} />
+            </Wrapper>
+            <Wrapper>
+              <EmailWrapper>
+                <Input label="이메일" placeholder="이메일 입력" state={email} onChange={emailValidation} />
+                <Button type="button" onClick={emailAuth}>
+                  ㅎㅇ
+                </Button>
+              </EmailWrapper>
+              {emailValidity && <ErrorMsg>올바른 이메일 형식이 아닙니다</ErrorMsg>}
+            </Wrapper>
+            <Wrapper>
+              <EmailWrapper>
+                <Input label="인증 코드" placeholder="이메일 인증 코드" state={authCode} setState={setAuthCode}></Input>
+                <Button type="button" onClick={emailAuthConfirm}>
+                  인증
+                </Button>
+              </EmailWrapper>
+            </Wrapper>
+            <Wrapper>
+              <Input
+                label="비밀번호"
+                state={password}
+                setState={setPassword}
+                type="password"
+                placeholder="영문, 숫자, 특수문자 포함 8글자"
+              />
+              {pwValidity && <ErrorMsg>영문, 숫자, 특수문자 포함 8글자 이상이어야 합니다.</ErrorMsg>}
+            </Wrapper>
+            <Wrapper>
+              <Input
+                label="비밀번호 확인"
+                placeholder="비밀번호 재입력"
+                state={pwCheck}
+                setState={setPwCheck}
+                type="password"
+              />
+              {pwCheckValidity && <ErrorMsg>비밀번호가 일치하지 않습니다.</ErrorMsg>}
+            </Wrapper>
+            <Wrapper>
+              <Input type="tel" placeholder="전화번호 입력" label="전화번호" state={number} onChange={autoHyphen} />
+              {numberValidity && <ErrorMsg>올바른 전화번호 형식이 아닙니다.</ErrorMsg>}
+            </Wrapper>
+            <SubmitButton onClick={signUp}>회원가입</SubmitButton>
+          </SignupForm>
+        </Contents>
+        <LinkTo message="이미 회원이신가요?" link="/login" linkText="로그인" />
+      </Container>
     </>
   );
 }
@@ -256,7 +249,6 @@ const Wrapper = styled.div`
   position: relative;
   flex-direction: column;
 `;
-
 const EmailWrapper = styled.div`
   display: flex;
   align-items: flex-end;
