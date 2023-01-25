@@ -5,10 +5,14 @@ import Input from '../components/common/Input';
 import LinkTo from '../components/common/LinkTo';
 import Header from '../components/Header';
 
+import { toast } from 'react-toastify';
+import { useEmailAuth, useEmailAuthConfirm } from '../hooks/useEmail';
+
 export default function SignUp() {
   const [name, setName] = useState('');
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
+  const [authCode, setAuthCode] = useState('');
   const [password, setPassword] = useState('');
   const [pwCheck, setPwCheck] = useState('');
   const [number, setNumber] = useState('');
@@ -17,6 +21,7 @@ export default function SignUp() {
   const [pwValidity, setPwValidity] = useState(false);
   const [pwCheckValidity, setPwCheckValidity] = useState(false);
   const [numberValidity, setNumberValidity] = useState(false);
+  const [authValidity, setAuthValidity] = useState(false);
 
   //임시
   const isLogin = false;
@@ -26,9 +31,32 @@ export default function SignUp() {
     if (nameValidity || nickname === '' || emailValidity || pwValidity || pwCheckValidity || numberValidity) {
       return console.log('fail');
     }
-
+    if (!authValidity) {
+      return toast.warning('이메일 인증을 해주세요.');
+    }
     console.log('success');
     console.log([name, nickname, email, password, pwCheck, number]);
+  };
+
+  //인증 요청
+  const emailAuth = () => {
+    if (!emailValidity) {
+      useEmailAuth(email);
+    } else {
+      return;
+    }
+  };
+
+  //인증 확인
+  const emailAuthConfirm = () => {
+    const body = {
+      email,
+      authCode,
+    };
+    useEmailAuthConfirm(body).then(res => {
+      setAuthValidity(res.data.data);
+      return console.log(res.data.data);
+    });
   };
 
   // 이름 유효성 검사
@@ -99,8 +127,25 @@ export default function SignUp() {
                   <Input label="닉네임" placeholder="닉네임 입력" state={nickname} setState={setNickname} />
                 </Wrapper>
                 <Wrapper>
-                  <Input label="Email" placeholder="이메일 입력" state={email} onChange={emailValidation} />
+                  <EmailWrapper>
+                    <Input label="이메일" placeholder="이메일 입력" state={email} onChange={emailValidation} />
+                    <Button type="button" onClick={emailAuth}>
+                      ㅎㅇ
+                    </Button>
+                  </EmailWrapper>
                   {emailValidity && <ErrorMsg>올바른 이메일 형식이 아닙니다</ErrorMsg>}
+                </Wrapper>
+                <Wrapper>
+                  <EmailWrapper>
+                    <Input
+                      label="인증 코드"
+                      placeholder="이메일 인증 코드"
+                      state={authCode}
+                      setState={setAuthCode}></Input>
+                    <Button type="button" onClick={emailAuthConfirm}>
+                      인증
+                    </Button>
+                  </EmailWrapper>
                 </Wrapper>
                 <Wrapper>
                   <Input
@@ -189,6 +234,17 @@ const Wrapper = styled.div`
   display: flex;
   position: relative;
   flex-direction: column;
+`;
+const EmailWrapper = styled.div`
+  display: flex;
+  align-items: flex-end;
+  button {
+    display: flex;
+    height: 3rem;
+    font-size: 1rem;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 const SubmitButton = styled(Button)`
