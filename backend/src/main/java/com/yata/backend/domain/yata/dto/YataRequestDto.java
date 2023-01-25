@@ -31,7 +31,7 @@ public class YataRequestDto {
         @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss" , iso = DateTimeFormat.ISO.DATE_TIME)
         private Date timeOfArrival;
         @NotNull(message = "탑승 인원을 입력해주세요.")
-        private int boardingPersonCount;
+        private Integer boardingPersonCount;
         private int maxWaitingTime;
         @Valid
         private LocationDto.Post strPoint;

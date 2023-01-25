@@ -136,4 +136,33 @@ public class YataMemberControllerTest extends AbstractControllerTest {
                         YataMemberSnippet.getListResponse()
                 ));
     }
+
+    @Test
+    @DisplayName("포인트 결제")
+    @WithMockUser(username = "test1@gmail.com", roles = "USER")
+    void payPointTest() throws Exception {
+        //given
+        Yata yata = YataFactory.createYata();
+        YataMember yataMember = YataMemberFactory.createYataMember();
+
+        //when
+        ResultActions actions = mockMvc.perform(post(BASE_URL + "/{yataId}/{yataMemberId}/payPoint", yata.getYataId(), yataMember.getYataMemberId())
+                .headers(GeneratedToken.getMockHeaderToken())
+                .with(csrf()));
+
+        //then
+        actions.andExpect(status().isOk())
+                .andDo(document("yataMember-payPoint",
+                        getRequestPreProcessor(),
+                        getResponsePreProcessor(),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("yataId").description("야타 ID"),
+                                parameterWithName("yataMemberId").description("승인된 야타 신청 ID")
+
+                        )
+                ));
+    }
 }

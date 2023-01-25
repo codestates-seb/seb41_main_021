@@ -134,14 +134,14 @@ public class YataMemberServiceImpl implements YataMemberService {
         verifyPossibleYataMember(yataMemberId, yata);
 
         Optional<YataRequest> yataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(userName, yataId);
-        int boardingPeopleCount = yataRequest.map(YataRequest::getBoardingPersonCount).orElseThrow();
+        int boardingPeopleCount = yataRequest.get().getBoardingPersonCount();
         // 포인트 잔액 = member 에서 가져온 point - ( yata 게시물의 가격 * yataRequest 에 신청한 인원 )
         Long balance = member.getPoint() - ( yata.getAmount() * boardingPeopleCount );
         member.setPoint(balance);
 
         yataMember.setYataPaid(true); // 지불 여부 true 로
         yataMember.setGoingStatus(YataMember.GoingStatus.ARRIVED); // goingStatus 도착으로
-        member.setYataMembers(List.of(yataMember));
+//        member.setYataMembers(List.of(yataMember));
 
         PayHistory payHistory = new PayHistory();
         payHistory.setMember(member);
