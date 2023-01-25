@@ -4,9 +4,9 @@ import Button from '../components/common/Button';
 import Input from '../components/common/Input';
 import LinkTo from '../components/common/LinkTo';
 import Header from '../components/Header';
-
+import { useSignup } from '../hooks/useSignup';
 import { toast } from 'react-toastify';
-import { useEmailAuth, useEmailAuthConfirm } from '../hooks/useEmail';
+import { useEmailAuth, useEmailAuthConfirm, useEmailExistingConfirm } from '../hooks/useEmail';
 
 export default function SignUp() {
   const [name, setName] = useState('');
@@ -22,6 +22,7 @@ export default function SignUp() {
   const [pwCheckValidity, setPwCheckValidity] = useState(false);
   const [numberValidity, setNumberValidity] = useState(false);
   const [authValidity, setAuthValidity] = useState(false);
+  const [emailExisting, setEmailExisting] = useState(false);
 
   //임시
   const isLogin = false;
@@ -34,17 +35,20 @@ export default function SignUp() {
     if (!authValidity) {
       return toast.warning('이메일 인증을 해주세요.');
     }
+
     console.log('success');
     console.log([name, nickname, email, password, pwCheck, number]);
   };
 
-  //인증 요청
+  //인증 요청, 중복 확인
   const emailAuth = () => {
-    if (!emailValidity) {
-      useEmailAuth(email);
-    } else {
-      return;
-    }
+    useEmailExistingConfirm(email).then(res => {
+      if (res.data.data) {
+        useEmailAuth(email);
+      } else {
+        return toast.warning('이미 가입된 이메일입니다.');
+      }
+    });
   };
 
   //인증 확인
@@ -59,6 +63,21 @@ export default function SignUp() {
     });
   };
 
+  // 회원가입
+  const signUp = () => {
+    const body = {
+      email,
+      password,
+      name,
+      nickname,
+      genders: 'MAN',
+    };
+    console.log(body);
+    useSignup(body).then(res => {
+      return console.log(res);
+    });
+  };
+
   // 이름 유효성 검사
   const nameValidation = e => {
     setName(e.target.value.replace(/[a-z0-9]|[ \[\]{}()<>?|`~!@#$%^&*-_+=,.;:\"'\\]/g, ''));
@@ -68,6 +87,7 @@ export default function SignUp() {
       setNameValidity(false);
     }
   };
+
   // 이메일 유효성 검사
   const emailValidation = e => {
     setEmail(e.target.value);
@@ -78,6 +98,7 @@ export default function SignUp() {
       setEmailValidity(false);
     }
   };
+
   //오토 하이픈, 유효성 검사
   const autoHyphen = e => {
     setNumber(
@@ -92,6 +113,7 @@ export default function SignUp() {
       setNumberValidity(false);
     }
   };
+
   // 비밀번호, 비밀번호 확인 유효성 검사
   useEffect(() => {
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
@@ -100,7 +122,6 @@ export default function SignUp() {
     } else {
       setPwValidity(false);
     }
-
     if (password !== pwCheck) {
       setPwCheckValidity(true);
     } else {
@@ -121,7 +142,7 @@ export default function SignUp() {
               <SignupForm onSubmit={handleSubmit}>
                 <Wrapper>
                   <Input label="이름" placeholder="이름 입력" state={name} onChange={nameValidation} />
-                  {nameValidity && <ErrorMsg>아이디를 입력해주세요</ErrorMsg>}
+                  {nameValidity && <ErrorMsg>이름을 입력해주세요</ErrorMsg>}
                 </Wrapper>
                 <Wrapper>
                   <Input label="닉네임" placeholder="닉네임 입력" state={nickname} setState={setNickname} />
@@ -171,7 +192,7 @@ export default function SignUp() {
                   <Input type="tel" placeholder="전화번호 입력" label="전화번호" state={number} onChange={autoHyphen} />
                   {numberValidity && <ErrorMsg>올바른 전화번호 형식이 아닙니다.</ErrorMsg>}
                 </Wrapper>
-                <SubmitButton>회원가입</SubmitButton>
+                <SubmitButton onClick={signUp}>회원가입</SubmitButton>
               </SignupForm>
             </Contents>
             <LinkTo message="이미 회원이신가요?" link="/login" linkText="로그인" />
@@ -235,6 +256,7 @@ const Wrapper = styled.div`
   position: relative;
   flex-direction: column;
 `;
+
 const EmailWrapper = styled.div`
   display: flex;
   align-items: flex-end;

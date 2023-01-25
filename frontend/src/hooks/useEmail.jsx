@@ -24,4 +24,13 @@ const useEmailAuthConfirm = async body => {
   }
 };
 
-export { useEmailAuth, useEmailAuthConfirm };
+const useEmailExistingConfirm = async email => {
+  try {
+    const response = await axios.get(`https://server.yata.kro.kr/api/v1/validation/email/${email}`);
+    return response;
+  } catch (error) {
+    return console.log(error);
+  }
+};
+
+export { useEmailAuth, useEmailAuthConfirm, useEmailExistingConfirm };
