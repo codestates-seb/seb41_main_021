@@ -2,7 +2,8 @@ import styled from 'styled-components';
 import { IoIosArrowRoundForward, IoIosArrowForward } from 'react-icons/io';
 import { VscAccount } from 'react-icons/vsc';
 
-export default function ProfileContainer() {
+export default function ProfileContainer(props) {
+  const { data } = props;
   return (
     <ContentContainer>
       <ProfileInfoContainer>
