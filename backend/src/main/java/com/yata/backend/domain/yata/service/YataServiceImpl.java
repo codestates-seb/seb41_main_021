@@ -6,6 +6,7 @@ import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataStatus;
 import com.yata.backend.domain.yata.repository.yataRepo.JpaYataRepository;
 import com.yata.backend.domain.yata.repository.yataRequestRepo.JpaYataRequestRepository;
+import com.yata.backend.domain.yata.util.TimeCheckUtils;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
 import com.yata.backend.global.utils.CustomBeanUtils;
@@ -41,7 +42,7 @@ public class YataServiceImpl implements YataService {
         Member member = memberService.findMember(userName);
 
         if (yata.getYataStatus().equals(YataStatus.YATA_NEOTA)) memberService.checkDriver(member);
-
+        TimeCheckUtils.verifyTime( yata.getTimeOfArrival().getTime(),yata.getDepartureTime().getTime());
         yata.setMember(member);
 
         return jpaYataRepository.save(yata);
@@ -121,5 +122,9 @@ public class YataServiceImpl implements YataService {
         }
     }
 
-    private void compareTime(Yata yata){}
+    private void compareTime(Yata yata) {
+        //출발시간이 도착시간보다 전이면 에러
+        if (yata.getTimeOfArrival().before(yata.getDepartureTime()))
+            throw new CustomLogicException(ExceptionCode.INVALID_TIME_OF_ARRIVAL);
+    }
 }

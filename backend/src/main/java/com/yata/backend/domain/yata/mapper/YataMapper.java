@@ -78,6 +78,7 @@ public interface YataMapper {
         response.postStatus(yata.getPostStatus());
         response.yataStatus(yata.getYataStatus());
         response.email(yata.getMember().getEmail());
+        response.nickName(yata.getMember().getNickname());
 
         return response.build();
     }
@@ -110,6 +111,7 @@ public interface YataMapper {
                             .email(yata.getMember().getEmail())
                             .strPoint(locationToResponse(yata.getStrPoint()))
                             .destination(locationToResponse(yata.getDestination()))
+                            .nickName(yata.getMember().getNickname())
                             .build();
                 }).collect(Collectors.toList());
     }

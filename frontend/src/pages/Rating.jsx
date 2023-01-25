@@ -1,25 +1,37 @@
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Navbar from '../components/NavBar';
 import Header from '../components/Header';
+import useGetData from '../hooks/useGetData';
 
-export default function RatingList() {
+export default function Rating() {
+  const [positiveList, setPositiveList] = useState([]);
+  const [negativeList, setNegativeList] = useState([]);
+
+  useEffect(() => {
+    useGetData('https://server.yata.kro.kr/api/v1/checklist').then(res => {
+      setPositiveList(res.data.data.positiveList);
+      setNegativeList(res.data.data.negativeList);
+    });
+  }, []);
+
   return (
     <>
+      <Header title={'매너 평가'}></Header>
       <Container>
-        <Header title={'매너 평가'}></Header>
         <GoodContainer>
           <Title>
             <div>👍 좋았던 점</div>
           </Title>
           <List>
-            <Item>
-              <div>운전을 잘해요.</div>
-              <div>3</div>
-            </Item>
-            <Item>
-              <div>응답이 빨라요.</div>
-              <div>2</div>
-            </Item>
+            {positiveList.map(el => {
+              return (
+                <Item key={el.checklistId}>
+                  <div>{el.checkContent}</div>
+                  <div>3</div>
+                </Item>
+              );
+            })}
           </List>
         </GoodContainer>
         <BadContainer>
@@ -27,14 +39,14 @@ export default function RatingList() {
             <div>👎 아쉬웠던 점</div>
           </Title>
           <List>
-            <Item>
-              <div>불친절해요.</div>
-              <div>2</div>
-            </Item>
-            <Item>
-              <div>운전을 못해요.</div>
-              <div>1</div>
-            </Item>
+            {negativeList.map(el => {
+              return (
+                <Item key={el.checklistId}>
+                  <div>{el.checkContent}</div>
+                  <div>3</div>
+                </Item>
+              );
+            })}
           </List>
         </BadContainer>
         <BadContainer></BadContainer>
@@ -54,12 +66,10 @@ const Container = styled.div`
 const GoodContainer = styled.div`
   width: 90%;
   height: auto;
-  margin-top: 3rem;
 `;
 const BadContainer = styled.div`
   width: 90%;
   height: auto;
-  margin-top: 3rem;
 `;
 const Title = styled.div`
   width: 100%;
