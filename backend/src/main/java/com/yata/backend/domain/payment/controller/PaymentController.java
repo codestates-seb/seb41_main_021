@@ -29,8 +29,8 @@ public class PaymentController {
     @PostMapping("/toss")
     public ResponseEntity requestTossPayment(@AuthenticationPrincipal User principal, @RequestBody @Valid PaymentDto paymentReqDto) {
         PaymentResDto paymentResDto = paymentService.requestTossPayment(paymentReqDto.toEntity(), principal.getUsername()).toPaymentResDto();
-        paymentResDto.setSuccessUrl(tossPaymentConfig.getSuccessUrl());
-        paymentResDto.setFailUrl(tossPaymentConfig.getFailUrl());
+        paymentResDto.setSuccessUrl(paymentReqDto.getYourSuccessUrl() == null ? tossPaymentConfig.getSuccessUrl() : paymentReqDto.getYourSuccessUrl());
+        paymentResDto.setFailUrl(paymentReqDto.getYourFailUrl() == null ? tossPaymentConfig.getFailUrl() : paymentReqDto.getYourFailUrl());
         return ResponseEntity.ok().body(new SingleResponse<>(paymentResDto));
     }
     @GetMapping("/toss/success")

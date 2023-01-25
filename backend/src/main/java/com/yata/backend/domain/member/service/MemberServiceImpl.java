@@ -1,7 +1,9 @@
 package com.yata.backend.domain.member.service;
 
 import com.yata.backend.auth.oauth2.dto.ProviderType;
+import com.yata.backend.domain.member.dto.DriverAuthDto;
 import com.yata.backend.domain.member.dto.MemberDto;
+import com.yata.backend.domain.member.entity.AuthoritiesEntity;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.repository.JpaMemberRepository;
 import com.yata.backend.domain.member.utils.AuthoritiesUtils;
@@ -9,6 +11,7 @@ import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
 import com.yata.backend.global.utils.CustomBeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,7 +44,8 @@ public class MemberServiceImpl implements MemberService {
         member.setProviderType(ProviderType.NATIVE);
         member.setFuelTank(30.0);// 기본 값 30
         member.setPoint(0L);// 기본 값 0
-        member.setRoles(AuthoritiesUtils.createRoles(member.getEmail()));
+        //member.setRoles(AuthoritiesUtils.createRoles(member.getEmail()));
+        member.setRoles(AuthoritiesUtils.createAuthorities(member));
         return memberRepository.save(member);
     }
 
@@ -50,7 +54,7 @@ public class MemberServiceImpl implements MemberService {
         return verifyMember(email);
     }
     @Override
-    @Cacheable(value = "member", key = "#email")
+    @Cacheable(value = "memberDto", key = "#email")
     public MemberDto.Response findMemberDto(String email) {
         return findMember(email).toResponseDto();
     }
@@ -82,11 +86,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member updateMember(String email, Member patchMemberDtoToMember) {
         Member member = verifyMember(email);
-        updateMemberCache(member);
         customBeanUtils.copyNonNullProperties(patchMemberDtoToMember, member);
+        updateMemberCache(member);
         return member;
     }
-    @CacheEvict(value = "member", key = "#member.email")
+    @CachePut(value = "memberDto", key = "#member.email")
     public MemberDto.Response updateMemberCache(Member member) {
         return member.toResponseDto();
     }
@@ -96,10 +100,15 @@ public class MemberServiceImpl implements MemberService {
         member
                 .getRoles()
                 .stream()
-                .filter(role -> role.equals(Member.MemberRole.DRIVER.name()))
+                .filter(role -> role.getRole().name().equals(Member.MemberRole.DRIVER.name()))
                 .findAny()
                 .orElseThrow(() -> new CustomLogicException(ExceptionCode.MEMBER_NOT_DRIVER));
     }
-
+    @Override
+    public void verifyDriverLicense(String email, DriverAuthDto driverAuthDto) {
+        // TODO Auto-generated method stub 추후 비지니스화 하면 구현 할 로직 OPEN API 활용
+        Member member = findMember(email);
+        member.getRoles().add(new AuthoritiesEntity(member, "DRIVER"));
+    }
 
 }

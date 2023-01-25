@@ -3,6 +3,10 @@ spring:
     type: redis
   jpa:
     properties:
+      javax:
+        persistence:
+          sharedCache:
+            mode: ENABLE_SELECTIVE
       hibernate:
         jdbc: # 중요 설정 geo
           lob:
@@ -10,6 +14,11 @@ spring:
         format_sql: true  # (3) SQL pretty print
         # 중요설정 geo
         dialect: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
+        cache:
+          use_second_level_cache: true
+          region:
+            factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
+        #generate_statistics: true
     hibernate:
       ddl-auto: create
     defer-datasource-initialization: true
@@ -78,7 +87,7 @@ spring:
       enabled: false
 jwt:
   secret: randomTestValueItisNotUsedInProdEnv
-  expiration: 1800000
+  expiration: 1800000000
   # 30 minutes
   refresh:
     expiration: 604800000

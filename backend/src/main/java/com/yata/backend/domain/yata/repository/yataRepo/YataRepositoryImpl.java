@@ -24,7 +24,7 @@ public class YataRepositoryImpl implements YataRepository {
     private final JPAQueryFactory queryFactory;
     private final QYata yata = QYata.yata;
 
-    public YataRepositoryImpl(EntityManager em) {
+    public YataRepositoryImpl(EntityManager em ) {
         this.em = em;
         this.queryFactory = new JPAQueryFactory(em);
     }
@@ -54,6 +54,7 @@ public class YataRepositoryImpl implements YataRepository {
     }
 
     @Override
+    @Transactional
     public void updateYataOverDepartureTime() {
         Date now = new Date();
         queryFactory.update(yata)

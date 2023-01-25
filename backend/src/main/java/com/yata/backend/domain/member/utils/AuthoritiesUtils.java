@@ -1,5 +1,6 @@
 package com.yata.backend.domain.member.utils;
 
+import com.yata.backend.domain.member.entity.AuthoritiesEntity;
 import com.yata.backend.domain.member.entity.Member;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,10 +34,20 @@ public class AuthoritiesUtils {
 
         return List.of(Member.MemberRole.PASSENGER.name());
     }
+    public static List<AuthoritiesEntity> createAuthorities(Member member) {
+        return createRoles(member.getEmail()).stream()
+                .map(role -> new AuthoritiesEntity(member,role))
+                .toList();
+    }
 
     public static List<GrantedAuthority> getAuthorities(List<String> roles) {
         return roles.stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                .collect(Collectors.toList());
+    }
+    public static List<GrantedAuthority> getAuthoritiesByEntity(List<AuthoritiesEntity> roles) {
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRole().name()))
                 .collect(Collectors.toList());
     }
 

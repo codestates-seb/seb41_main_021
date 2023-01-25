@@ -1,0 +1,11 @@
+<ehcache>
+    <defaultCache
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="1200"
+        timeToLiveSeconds="1200"
+        diskExpiryThreadIntervalSeconds="1200"
+        memoryStoreEvictionPolicy="LRU"/>
+</ehcache>
+<!--하이버네이트 ehcache 설정 -->
+<!--https://kimyhcj.tistory.com/253 참고-->
