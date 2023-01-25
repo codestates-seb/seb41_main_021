@@ -54,7 +54,7 @@ const useTayoDelete = async (url, data) => {
 const useTayoRequest = async (url, data) => {
   await usePostData(url, data, header).then(res => {
     if (res.response.status === 401) {
-      toast.warning('오류오류오류');
+      toast.warning('신청에 실패했습니다.');
     }
   });
 };
@@ -63,7 +63,7 @@ const useTayoRequest = async (url, data) => {
 const useTayoInvite = async (url, data) => {
   await usePostData(url, data, header).then(res => {
     if (res.response.status === 401) {
-      toast.warning('오류오류오류');
+      toast.warning('신청에 실패했습니다.');
     }
   });
 };
@@ -72,7 +72,7 @@ const useTayoInvite = async (url, data) => {
 const useTayoAccept = async (url, data) => {
   await usePostData(url, data, header).then(res => {
     if (res.response.status === 401) {
-      toast.warning('오류오류오류');
+      toast.warning('신청에 실패했습니다.');
     }
   });
 };
