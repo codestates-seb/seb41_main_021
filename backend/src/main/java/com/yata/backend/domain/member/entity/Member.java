@@ -12,8 +12,11 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -26,8 +29,11 @@ import java.util.List;
         @Index(name = "idx_member_email", columnList = "email", unique = true),
         @Index(name = "idx_member_nickname", columnList = "nickname")
 })
+@Cacheable
+@org.hibernate.annotations.Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_WRITE)
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "email")
-public class Member extends Auditable {
+public class Member extends Auditable  {
+
     @Id
     @Column(nullable = false, updatable = false, unique = true, length = 100) // 이메일 식별자
     private String email;
@@ -48,11 +54,12 @@ public class Member extends Auditable {
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20, nullable = false)
     private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
-
-    @ElementCollection(fetch = FetchType.EAGER) // 권한 목록
-    private List<String> roles;
+    @org.hibernate.annotations.Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_WRITE)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL , fetch = FetchType.EAGER)
+    private List<AuthoritiesEntity> roles;
 
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+    @org.hibernate.annotations.Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_WRITE)
     private ImageEntity imgUrl;
     @Column // 차량 이미지
     private String carImgUrl;
@@ -67,10 +74,10 @@ public class Member extends Auditable {
 
     // TODO phoneNumbers add
 
-    @OneToMany(mappedBy = "yata", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    /*@OneToMany(mappedBy = "yata", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<YataRequest> yataRequests = new ArrayList<>();
     @OneToMany(mappedBy = "yata", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<YataMember> yataMembers = new ArrayList<>();
+    private List<YataMember> yataMembers = new ArrayList<>();*/
 
     public enum MemberStatus {
         MEMBER_ACTIVE("활동중"),
@@ -105,7 +112,7 @@ public class Member extends Auditable {
     }
     public  MemberDto.Response toResponseDto(){
         return MemberDto.Response.builder()
-                .roles(new ArrayList<>(roles))
+                .roles(roles.stream().map(role -> role.getRole().name()).collect(Collectors.toList()))
                 .email(email)
                 .name(name)
                 .genders(genders)

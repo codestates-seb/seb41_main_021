@@ -25,6 +25,8 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -70,7 +72,7 @@ public class YataControllerTest extends AbstractControllerTest {
 
         String json = gson.toJson(post);
 
-List<YataMember> yataMembers = new ArrayList<>();
+        List<YataMember> yataMembers = new ArrayList<>();
         Yata expected = Yata.builder()
                 .yataId(1L)
                 .title("부산까지 같이가실 분~")
@@ -87,6 +89,8 @@ List<YataMember> yataMembers = new ArrayList<>();
                 .yataStatus(YataStatus.YATA_NEOTA)
                 .postStatus(Yata.PostStatus.POST_OPEN)
                 .build();
+        expected.setCreatedAt(LocalDateTime.of(LocalDate.now(), LocalDateTime.now().toLocalTime()));
+        expected.setModifiedAt(LocalDateTime.of(LocalDate.now(), LocalDateTime.now().toLocalTime()));
 
 
         given(yataService.createYata(any(), any())).willReturn(expected);
@@ -121,7 +125,7 @@ List<YataMember> yataMembers = new ArrayList<>();
                         fieldWithPath("maxWaitingTime").type(JsonFieldType.NUMBER).description("최대대기시간"),
                         fieldWithPath("departureTime").type(JsonFieldType.STRING).description("출발시간"),
                         fieldWithPath("timeOfArrival").type(JsonFieldType.STRING).description("도착시간"),
-                        fieldWithPath("yataStatus").type(JsonFieldType.STRING).description("야타상태")),
+                        fieldWithPath("yataStatus").type(JsonFieldType.STRING).description("야타상태 , YATA_NEOTA,YATA_NATA")),
                 responseFields(
                         fieldWithPath("data").type(JsonFieldType.OBJECT).description("야타 게시글 정보"),
                         fieldWithPath("data.yataId").type(JsonFieldType.NUMBER).description("야타 ID"),
@@ -143,8 +147,10 @@ List<YataMember> yataMembers = new ArrayList<>();
                         fieldWithPath("data.destination.latitude").type(JsonFieldType.NUMBER).description("도착지 위도"),
                         fieldWithPath("data.destination.address").type(JsonFieldType.STRING).description("도착지 주소"),
                         fieldWithPath("data.postStatus").type(JsonFieldType.STRING).description("야타 게시글 상태"),
-                        fieldWithPath("data.yataStatus").type(JsonFieldType.STRING).description("야타 상태"),
-                        fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일")
+                        fieldWithPath("data.yataStatus").type(JsonFieldType.STRING).description("야타 상태 , YATA_NATA , YATA_NEOTA"),
+                        fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
+                        fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
+                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각")
                 )));
 
     }
@@ -228,7 +234,9 @@ List<YataMember> yataMembers = new ArrayList<>();
                         fieldWithPath("data.destination.address").type(JsonFieldType.STRING).description("도착지 주소"),
                         fieldWithPath("data.postStatus").type(JsonFieldType.STRING).description("야타 게시글 상태"),
                         fieldWithPath("data.yataStatus").type(JsonFieldType.STRING).description("야타 상태"),
-                        fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일")
+                        fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
+                        fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
+                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각")
                 )));
     }
 
@@ -333,7 +341,9 @@ List<YataMember> yataMembers = new ArrayList<>();
                         fieldWithPath("data.destination.address").type(JsonFieldType.STRING).description("도착지 주소"),
                         fieldWithPath("data.postStatus").type(JsonFieldType.STRING).description("야타 게시글 상태"),
                         fieldWithPath("data.yataStatus").type(JsonFieldType.STRING).description("야타 상태"),
-                        fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일")
+                        fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
+                        fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
+                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각")
                 )));
     }
 

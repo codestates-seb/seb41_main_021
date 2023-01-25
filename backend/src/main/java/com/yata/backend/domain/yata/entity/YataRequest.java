@@ -4,8 +4,11 @@ import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.global.audit.Auditable;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -26,6 +29,18 @@ public class YataRequest extends Auditable {
     @Column(length = 100)
     private String specifics;
 
+    @Column
+    private Date departureTime;
+
+    @Column
+    private Date timeOfArrival;
+
+    @Column(length = 20, nullable = false)
+    private int boardingPersonCount;
+
+    @Column(nullable = false)
+    private int maxWaitingTime;
+
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20, nullable = false)
     private YataRequest.RequestStatus requestStatus;
@@ -36,6 +51,7 @@ public class YataRequest extends Auditable {
 
     @ManyToOne
     @JoinColumn(name = "YATA_ID")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Yata yata;
 
     @ManyToOne

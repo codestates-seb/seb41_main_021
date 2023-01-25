@@ -6,6 +6,7 @@ import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import com.yata.backend.domain.yata.entity.YataStatus;
 import com.yata.backend.domain.yata.repository.yataRequestRepo.JpaYataRequestRepository;
+import com.yata.backend.domain.yata.util.TimeCheckUtils;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
 
@@ -14,12 +15,9 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import static com.yata.backend.domain.yata.entity.YataRequest.RequestStatus.APPLY;
-import static com.yata.backend.domain.yata.entity.YataRequest.RequestStatus.INVITE;
 
 @Service
 @Transactional
@@ -36,16 +34,22 @@ public class YataRequestServiceImpl implements YataRequestService {
 
     // Yata 신청
     @Override
-    public YataRequest createRequest(YataRequest yataRequest, String userName, Long yataId, int maxPeople) {
+    public YataRequest createRequest(YataRequest yataRequest, String userName, Long yataId) {
         Member member = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
-        /// 여기부터
         verifyRequest(userName, yataId); // 신청을 이미 했었는지 확인하고
         Yata yata = yataService.findYata(yataId);
 
-        compareMember(member, yata.getMember()); // 게시글을 쓴 멤버는 신청 못하도록
+        compareMember(member.getEmail(), yata.getMember().getEmail()); // 게시글을 쓴 멤버는 신청 못하도록
 
-        // TODO 신청 시간과 게시글의 출발 시간 비교
-        Date departureTime = yata.getDepartureTime();
+        // 신청과 게시글의 출발 시간 비교 --> 게시물의 출발시간이 이미 지난 경우(마감인 경우) 익셉션
+        TimeCheckUtils.verifyTime(yata.getDepartureTime().getTime(), System.currentTimeMillis());
+
+        // 신청 폼에 적은 departureTime 이 현재시간 이전일 경우 익셉션
+        TimeCheckUtils.verifyTime(yataRequest.getDepartureTime().getTime(), System.currentTimeMillis());
+        // yataRequest.getDepartureTime().getTime() 이 런던 시간 / currentTimeMillis 는 한국 시간
+
+        // 신청하는 출발 시간이 게시글의 출발시간 이전이면 익셉션
+        TimeCheckUtils.verifyTime(yataRequest.getDepartureTime().getTime(), yata.getDepartureTime().getTime());
 
         YataStatus yataStatus = yata.getYataStatus();
         if (yataStatus == YataStatus.YATA_NEOTA) {
@@ -54,10 +58,12 @@ public class YataRequestServiceImpl implements YataRequestService {
             throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
         }
 
-        verifyMaxPeople(maxPeople, yata.getMaxPeople()); // 인원 수 검증
-        // 여기까지 밸리데이션 체크 따로 빼서 하는 거
+        verifyMaxPeople(yataRequest.getBoardingPersonCount(), yata.getMaxPeople()); // 인원 수 검증
 
-        // TODO 게시물의 가격과 비교하여 해당 멤버가 포인트가 충분한지 검증
+        // (게시물의 가격 * 타려는 인원) 만큼 해당 멤버가 포인트가 충분한지 검증
+        Long price = yata.getAmount() * yataRequest.getBoardingPersonCount();
+        Long point = member.getPoint();
+        verifyPoint(price, point);
 
         yataRequest.setYata(yata);
         yataRequest.setMember(member);
@@ -73,7 +79,8 @@ public class YataRequestServiceImpl implements YataRequestService {
         verifyInvitation(userName, yataId); // 초대를 이미 했었는지 확인하고
         Yata yata = yataService.findYata(yataId);
 
-        // TODO 초대 시간과 게시글의 출발 시간 비교
+        // 초대 시간과 게시글의 출발 시간 비교 --> 게시물의 출발시간이 이미 지난 경우(마감인 경우) 익셉션
+        TimeCheckUtils.verifyTime(yata.getDepartureTime().getTime(), System.currentTimeMillis());
 
         YataStatus yataStatus = yata.getYataStatus();
         if (yataStatus == YataStatus.YATA_NATA) {
@@ -88,9 +95,9 @@ public class YataRequestServiceImpl implements YataRequestService {
         }
     }
 
-    // Yata 신청 목록 조회
+    // Yata 신청 목록 조회 - by driver
     @Override
-    public Slice<YataRequest> findRequests(String userEmail, Long yataId, Pageable pageable) {
+    public Slice<YataRequest> findRequestsByDriver(String userEmail, Long yataId, Pageable pageable) {
         Yata yata = yataService.findYata(yataId);
         Member member = memberService.verifyMember(userEmail);
 
@@ -100,7 +107,14 @@ public class YataRequestServiceImpl implements YataRequestService {
         return jpaYataRequestRepository.findAllByYata(yata, pageable);
     }
 
-    // TODO Yata 신청 취소 / 초대 취소
+    // 자기가 한 신청 목록 조회 - by Passenger
+    @Override
+    public Slice<YataRequest> findRequestsByPassenger(String userEmail, Pageable pageable) {
+
+        return jpaYataRequestRepository.findAllByMember_Email(userEmail, pageable);
+    }
+
+    // Yata 신청 취소 / 초대 취소
     @Override
     public void deleteRequest(String userName, Long yataRequestId, Long yataId) {
         Member member = memberService.verifyMember(userName); // 해당 member 가 있는지
@@ -112,8 +126,9 @@ public class YataRequestServiceImpl implements YataRequestService {
 
         YataRequest.ApprovalStatus approvalStatus = yataRequest.getApprovalStatus();
 
-        switch (approvalStatus){
-            case ACCEPTED, REJECTED -> throw new CustomLogicException(ExceptionCode.CANNOT_DELETE); // 승인/거절 받았으면 삭제 불가 (운전자만 삭제 가능)
+        switch (approvalStatus) {
+            case ACCEPTED, REJECTED ->
+                    throw new CustomLogicException(ExceptionCode.CANNOT_DELETE); // 승인/거절 받았으면 삭제 불가 (운전자만 삭제 가능)
             default -> jpaYataRequestRepository.delete(yataRequest); // 아닌 경우 삭제 가능
         }
     }
@@ -159,17 +174,17 @@ public class YataRequestServiceImpl implements YataRequestService {
 
     // 게시글 쓴 멤버와 신청하려는 멤버가 같다면 익셉션을 던지는 로직
     @Override
-    public void compareMember(Member member, Member postMember) {
-        if (member.getEmail().equals(postMember.getEmail())) {
+    public void compareMember(String email, String postEmail) {
+        if (email.equals(postEmail)) {
             throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
         }
     }
 
-    // 현재 시간과 게시글의 출발시간을 비교하는 로직
-    // TODO util 클래스로 따로 빼기
-//    public void verifyTime(Date departureTime) {
-//        if (departureTime.getTime() <= System.currentTimeMillis()) { // 게시물의 출발시간 <= 현재시간 인 경우
-//            throw new CustomLogicException(ExceptionCode.)
-//        }
-//    }
+    // 게시물의 가격과 비교하여 해당 멤버가 포인트가 충분한지 검증
+    @Override
+    public void verifyPoint(Long price, Long point) {
+        if (price > point) {
+            throw new CustomLogicException(ExceptionCode.PAYMENT_NOT_ENOUGH_POINT);
+        }
+    }
 }

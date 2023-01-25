@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.Optional;
 
 
@@ -24,17 +25,14 @@ import java.util.Optional;
 public class YataServiceImpl implements YataService {
 
     private final MemberService memberService;
-
     private final JpaYataRepository jpaYataRepository;
-    private final JpaYataRequestRepository jpaYataRequestRepository;
     private final CustomBeanUtils<Yata> beanUtils;
 
 
-    public YataServiceImpl(JpaYataRepository jpaYataRepository, CustomBeanUtils<Yata> beanUtils, MemberService memberService, JpaYataRequestRepository jpaYataRequestRepository) {
+    public YataServiceImpl(JpaYataRepository jpaYataRepository, CustomBeanUtils<Yata> beanUtils, MemberService memberService) {
         this.jpaYataRepository = jpaYataRepository;
         this.beanUtils = beanUtils;
         this.memberService = memberService;
-        this.jpaYataRequestRepository = jpaYataRequestRepository;
     }
 
     @Override
@@ -78,7 +76,7 @@ public class YataServiceImpl implements YataService {
         equalMember(member.getEmail(), findYata.getMember().getEmail());
         modifiableYata(yataId);
         // TODO 시간 validate 추가 해야함
-        jpaYataRequestRepository.deleteAllByYata(findYata);
+
         jpaYataRepository.delete(findYata);
     }
 //public Slice<YataRequest> findRequests(boolean acceptable, String userEmail, Long yataId, Pageable pageable) {
@@ -122,4 +120,6 @@ public class YataServiceImpl implements YataService {
             throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
         }
     }
+
+    private void compareTime(Yata yata){}
 }

@@ -24,13 +24,13 @@ public class YataRepositoryImpl implements YataRepository {
     private final JPAQueryFactory queryFactory;
     private final QYata yata = QYata.yata;
 
-    public YataRepositoryImpl(EntityManager em) {
+    public YataRepositoryImpl(EntityManager em ) {
         this.em = em;
         this.queryFactory = new JPAQueryFactory(em);
     }
 
     @Override
-    public List<Yata> findYataByStartAndEndLocation(Location startLocation, Location endLocation, double distance, Pageable pageable) {
+    public Slice<Yata> findYataByStartAndEndLocation(Location startLocation, Location endLocation, double distance, Pageable pageable) {
         // MBR
         Geometry startMBR = GeometryUtils.getMBR(startLocation.getLocation(), distance / 100);
         Geometry endMBR = GeometryUtils.getMBR(endLocation.getLocation(), distance / 100);
@@ -44,16 +44,17 @@ public class YataRepositoryImpl implements YataRepository {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
-       /* boolean hasNext = false;
+        boolean hasNext = false;
         if (yatas.size() > pageable.getPageSize()) {
             yatas.remove(pageable.getPageSize());
             hasNext = true;
         }
-        return new SliceImpl<>(yatas, pageable, hasNext);*/
-        return yatas;
+        return new SliceImpl<>(yatas, pageable, hasNext);
+
     }
 
     @Override
+    @Transactional
     public void updateYataOverDepartureTime() {
         Date now = new Date();
         queryFactory.update(yata)

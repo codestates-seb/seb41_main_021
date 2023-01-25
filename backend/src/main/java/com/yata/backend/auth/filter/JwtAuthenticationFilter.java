@@ -6,7 +6,6 @@ import com.yata.backend.auth.service.RefreshService;
 import com.yata.backend.auth.token.AuthToken;
 import com.yata.backend.auth.token.AuthTokenProvider;
 import com.yata.backend.domain.member.entity.Member;
-import lombok.SneakyThrows;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,6 +15,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.stream.Collectors;
+
 // 로그인 요청시 실행되는 필터
 // 실제로 로그인 요청을 처리하는 필터는 UsernamePasswordAuthenticationFilter
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -48,7 +49,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, javax.servlet.FilterChain chain, Authentication authResult) throws IOException, ServletException {
         Member member = (Member) authResult.getPrincipal();
-        AuthToken accessToken = authTokenProvider.createAccessToken(member.getEmail() , member.getRoles());
+        AuthToken accessToken = authTokenProvider.createAccessToken(member.getEmail() , member.getRoles().stream().map(role -> role.getRole().name()).collect(Collectors.toList()));
         AuthToken refreshToken = authTokenProvider.createRefreshToken(member.getEmail());
         response.addHeader("Authorization", "Bearer " + accessToken.getToken());
         response.addHeader("RefreshToken", "Bearer " + refreshToken.getToken());
