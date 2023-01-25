@@ -65,11 +65,13 @@ public class ReviewServiceImpl implements ReviewService {
         review.setFromMember(fromMember);
         review.setYata(yata);
 
+
         //todo n+1 문제 어떻게 해결해야 할까?!?!? 생각해보자
         List<Checklist> checklists = checkListService.checklistIdsToChecklists(checkListIds);
-        List<ReviewChecklist> reviewChecklists = checkListService.checklistsToReviewChecklists(checklists);
+        List<ReviewChecklist> reviewChecklists = checkListService.checklistsToReviewChecklists(checklists, review);
 
         review.setReviewChecklists(reviewChecklists);
+
         calculateFuelTank(checklists, review.getToMember());
         return jpaReviewRepository.save(review);
     }
@@ -79,19 +81,21 @@ public class ReviewServiceImpl implements ReviewService {
         List<Review> myReviews = jpaReviewRepository.findAllByToMember(member);
 
         System.out.println("---------------리스트출력---------------------");
-        System.out.println(myReviews);
+        System.out.println(myReviews.size());
 
-        Map<Checklist, Long> checklistIntegerMap = myReviews.stream()
+        Map<Checklist, Long> checklistCount = myReviews.stream()
                 .flatMap(review -> review.getReviewChecklists().stream())
                 .collect(Collectors.groupingBy(ReviewChecklist::getChecklist,
                         Collectors.counting()));
 
         System.out.println("----------------Map값 출력 --------------------");
-        for (Map.Entry<Checklist, Long> entrySet : checklistIntegerMap.entrySet()) {
+        for (Map.Entry<Checklist, Long> entrySet : checklistCount.entrySet()) {
             System.out.println(entrySet.getKey() + " : " + entrySet.getValue());
         }
+        System.out.println("------------------리뷰.리뷰체크리스트 출력----------");
 
-        return checklistIntegerMap; //countioncollector의 반환 타입은 Long임
+
+        return checklistCount; //countioncollector의 반환 타입은 Long임
     }
 
     /*검증로직*/
