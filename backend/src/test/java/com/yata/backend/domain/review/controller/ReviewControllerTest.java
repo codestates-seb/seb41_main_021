@@ -2,6 +2,7 @@ package com.yata.backend.domain.review.controller;
 
 
 import com.google.gson.Gson;
+import com.yata.backend.common.token.GeneratedToken;
 import com.yata.backend.domain.AbstractControllerTest;
 import com.yata.backend.domain.member.dto.ChecklistDto;
 import com.yata.backend.domain.review.dto.FindReviewDto;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -33,6 +35,8 @@ import static com.yata.backend.utils.ApiDocumentUtils.getRequestPreProcessor;
 import static com.yata.backend.utils.ApiDocumentUtils.getResponsePreProcessor;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
@@ -70,6 +74,7 @@ public class ReviewControllerTest extends AbstractControllerTest {
                         post(BASE_URL + "/{yataId}?yataMemberId=1", expected.getYata().getYataId())
                         .contentType("application/json")
                         .with(csrf())
+                        .headers(GeneratedToken.getMockHeaderToken())
                         .content(json))
                 .andExpect(status().isCreated());
 
@@ -78,6 +83,9 @@ public class ReviewControllerTest extends AbstractControllerTest {
         actions.andDo(document("review-create",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
+                requestHeaders(
+                        headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 토큰")
+                ),
                 pathParameters(
                         parameterWithName("yataId").description("야타 ID")
                 ),

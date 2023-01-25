@@ -2,12 +2,14 @@ package com.yata.backend.domain.Yata.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.yata.backend.common.token.GeneratedToken;
 import com.yata.backend.domain.AbstractControllerTest;
 import com.yata.backend.domain.Yata.factory.YataFactory;
 import com.yata.backend.domain.Yata.factory.YataSnippet;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.yata.controller.YataController;
 import com.yata.backend.domain.yata.dto.YataDto;
+import com.yata.backend.domain.yata.dto.YataMemberDto;
 import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataMember;
@@ -20,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.*;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -38,6 +41,8 @@ import static com.yata.backend.utils.ApiDocumentUtils.getResponsePreProcessor;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 
@@ -75,6 +80,8 @@ public class YataControllerTest extends AbstractControllerTest {
 
         List<YataMember> yataMembers = new ArrayList<>();
         Member member = new Member();
+        yataMembers.add(new YataMember(1L, true, YataMember.GoingStatus.STARTED_YET, null, null));
+
         member.setNickname("채은");
 
         Yata expected = Yata.builder()
@@ -105,6 +112,7 @@ public class YataControllerTest extends AbstractControllerTest {
         ResultActions resultActions = mockMvc.perform(
                         post(BASE_URL)
                                 .contentType("application/json")
+                                .headers(GeneratedToken.getMockHeaderToken())
                                 .with(csrf()) //csrf토큰 생성
                                 .content(json))
                 .andExpect(status().isCreated());
@@ -114,6 +122,9 @@ public class YataControllerTest extends AbstractControllerTest {
         resultActions.andDo(document("yata-create",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
+                requestHeaders(
+                        headerWithName("Authorization").description("JWT 토큰")
+                ),
                 requestFields(
                         fieldWithPath("strPoint.longitude").type(JsonFieldType.NUMBER).description("출발지 경도"),
                         fieldWithPath("strPoint.latitude").type(JsonFieldType.NUMBER).description("출발지 위도"),
@@ -139,7 +150,6 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.specifics").type(JsonFieldType.STRING).description("야타 특이사항"),
                         fieldWithPath("data.maxWaitingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
                         fieldWithPath("data.maxPeople").type(JsonFieldType.NUMBER).description("최대 인원"),
-                        fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
                         fieldWithPath("data.amount").type(JsonFieldType.NUMBER).description("요금"),
                         fieldWithPath("data.carModel").type(JsonFieldType.STRING).description("차량 모델"),
                         fieldWithPath("data.strPoint").type(JsonFieldType.OBJECT).description("출발지"),
@@ -155,7 +165,11 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.yataStatus").type(JsonFieldType.STRING).description("야타 상태 , YATA_NATA , YATA_NEOTA"),
                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
-                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각")
+                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각"),
+                        fieldWithPath("data.feulTank").type(JsonFieldType.NUMBER).description("작성자 연료통 점수"),
+                        fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
+                        fieldWithPath("data.yataMembers").type(JsonFieldType.NULL).description("예약 인원 정보(null)")
+
                 )));
 
     }
@@ -184,6 +198,7 @@ public class YataControllerTest extends AbstractControllerTest {
         ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.
                 patch(BASE_URL + "/{yataId}", yataId)
                 .contentType(MediaType.APPLICATION_JSON)
+                .headers(GeneratedToken.getMockHeaderToken())
                 .with(csrf()) //csrf토큰 생성
                 .content(json));
 
@@ -199,6 +214,9 @@ public class YataControllerTest extends AbstractControllerTest {
         resultActions.andDo(document("yata-update",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
+                requestHeaders(
+                        headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 토큰")
+                ),
                 pathParameters(
                         parameterWithName("yataId").description("야타 ID")
                 ),
@@ -226,7 +244,6 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.specifics").type(JsonFieldType.STRING).description("야타 특이사항"),
                         fieldWithPath("data.maxWaitingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
                         fieldWithPath("data.maxPeople").type(JsonFieldType.NUMBER).description("최대 인원"),
-                        fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
                         fieldWithPath("data.amount").type(JsonFieldType.NUMBER).description("요금"),
                         fieldWithPath("data.carModel").type(JsonFieldType.STRING).description("차량 모델"),
                         fieldWithPath("data.strPoint").type(JsonFieldType.OBJECT).description("출발지"),
@@ -242,7 +259,16 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
                         fieldWithPath("data.nickName").type(JsonFieldType.STRING).description("작성자 닉네임"),
                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
-                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각")
+                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각"),
+                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각"),
+                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각"),
+                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각"),
+                        fieldWithPath("data.nickName").type(JsonFieldType.STRING).description("작성자 닉네임"),
+                        fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
+                        fieldWithPath("data.feulTank").type(JsonFieldType.NUMBER).description("작성자 연료통 점수"),
+                        fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
+                        fieldWithPath("data.yataMembers").type(JsonFieldType.NULL).description("예약 인원 정보(null)")
+
                 )));
     }
 
@@ -275,6 +301,7 @@ public class YataControllerTest extends AbstractControllerTest {
         ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.
                 delete(BASE_URL + "/{yataId}", expected.getYataId())
                 .contentType(MediaType.APPLICATION_JSON)
+                .headers(GeneratedToken.getMockHeaderToken())
                 .with(csrf()));//csrf토큰 생성
 
 
@@ -284,6 +311,9 @@ public class YataControllerTest extends AbstractControllerTest {
                 .andDo(document("yata-delete",
                                 getRequestPreProcessor(),
                                 getResponsePreProcessor(),
+                        requestHeaders(
+                                headerWithName("Authorization").description("JWT 토큰")
+                        ),
                                 pathParameters(
                                         parameterWithName("yataId").description("야타 ID")
                                 )
@@ -302,6 +332,12 @@ public class YataControllerTest extends AbstractControllerTest {
 
         YataDto.Response response = createYataResponseDto(yata);
 
+        YataMemberDto.Response yataMemberResponse = new YataMemberDto.Response(1L, 1L, true, YataMember.GoingStatus.STARTED_YET);
+        List<YataMemberDto.Response> yataMembers = new ArrayList<>();
+        yataMembers.add(yataMemberResponse);
+
+        response.setYataMembers(yataMembers);
+
         given(yataService.findYata(anyLong())).willReturn(yata);
         given(mapper.yataToYataResponse(any())).willReturn(response);
         //when
@@ -309,6 +345,7 @@ public class YataControllerTest extends AbstractControllerTest {
         ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.
                 get(BASE_URL + "/{yataId}", yata.getYataId())
                 .contentType(MediaType.APPLICATION_JSON)
+                .headers(GeneratedToken.getMockHeaderToken())
                 .accept(MediaType.APPLICATION_JSON)
                 .with(csrf()));
 
@@ -322,6 +359,9 @@ public class YataControllerTest extends AbstractControllerTest {
         resultActions.andDo(document("yata-get",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
+                requestHeaders(
+                        headerWithName("Authorization").description("JWT 토큰")
+                ),
                 pathParameters(
                         parameterWithName("yataId").description("야타 ID")
                 ),
@@ -334,7 +374,6 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.specifics").type(JsonFieldType.STRING).description("야타 특이사항"),
                         fieldWithPath("data.maxWaitingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
                         fieldWithPath("data.maxPeople").type(JsonFieldType.NUMBER).description("최대 인원"),
-                        fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
                         fieldWithPath("data.amount").type(JsonFieldType.NUMBER).description("요금"),
                         fieldWithPath("data.carModel").type(JsonFieldType.STRING).description("차량 모델"),
                         fieldWithPath("data.strPoint").type(JsonFieldType.OBJECT).description("출발지"),
@@ -350,7 +389,16 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
                         fieldWithPath("data.nickName").type(JsonFieldType.STRING).description("작성자 닉네임"),
                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
-                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각")
+                        fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각"),
+                        fieldWithPath("data.feulTank").type(JsonFieldType.NUMBER).description("작성자 연료통 점수"),
+                        fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
+                        fieldWithPath("data.yataMembers").type(JsonFieldType.ARRAY).description("예약 인원 정보"),
+                        fieldWithPath("data.yataMembers[].yataId").type(JsonFieldType.NUMBER).description("야타 아이디"),
+                        fieldWithPath("data.yataMembers[].yataMemberId").type(JsonFieldType.NUMBER).description("야타멤버(예약자)아이디"),
+                        fieldWithPath("data.yataMembers[].yataPaid").type(JsonFieldType.BOOLEAN).description("지불여부"),
+                        fieldWithPath("data.yataMembers[].goingStatus").type(JsonFieldType.STRING).description("가는 상태 'STARTED_YET,ARRIVED'")
+
+
                 )));
     }
 
@@ -362,8 +410,7 @@ public class YataControllerTest extends AbstractControllerTest {
         //given
         List<Yata> yatas = YataFactory.createYataList();
         List<YataDto.Response> responses = YataFactory.createYataResponseDtoList(yatas);
-        System.out.println(responses.size());
-        System.out.println(new SliceImpl<>(responses).getSize());
+
         Slice<Yata> yataSlice = new SliceImpl<>(yatas);
 
         given(yataService.findAllYata(anyString(), any())).willReturn(
