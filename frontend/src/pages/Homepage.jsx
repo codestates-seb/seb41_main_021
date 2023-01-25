@@ -3,7 +3,7 @@ import React from 'react';
 import SimpleSlider from '../components/Carousel';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useTayoCreate } from '../hooks/useTayo';
+// import { useTayoCreate } from '../hooks/useTayo';
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -12,27 +12,27 @@ export default function HomePage() {
   };
   const signup = () => {
     // navigate('/signup');
-    useTayoCreate('https://server.yata.kro.kr/api/v1/yata?yataStatus=nata', {
-      title: 'test부산까지 같이가실 분~',
-      specifics: '같이 노래들으면서 가요~',
-      departureTime: '2023-01-18T09:16:10',
-      timeOfArrival: '2023-01-18T09:16:10',
-      maxWaitingTime: 20,
-      maxPeople: 3,
-      yataStatus: 'YATA_NEOTA',
-      amount: 2000,
-      carModel: 'bmw',
-      strPoint: {
-        longitude: 5.0,
-        latitude: 4.0,
-        address: '인천',
-      },
-      destination: {
-        longitude: 3.0,
-        latitude: 2.0,
-        address: '부산',
-      },
-    });
+    // useTayoCreate('https://server.yata.kro.kr/api/v1/yata?yataStatus=nata', {
+    //   title: 'test부산까지 같이가실 분~',
+    //   specifics: '같이 노래들으면서 가요~',
+    //   departureTime: '2023-01-18T09:16:10',
+    //   timeOfArrival: '2023-01-18T09:16:10',
+    //   maxWaitingTime: 20,
+    //   maxPeople: 3,
+    //   yataStatus: 'YATA_NEOTA',
+    //   amount: 2000,
+    //   carModel: 'bmw',
+    //   strPoint: {
+    //     longitude: 5.0,
+    //     latitude: 4.0,
+    //     address: '인천',
+    //   },
+    //   destination: {
+    //     longitude: 3.0,
+    //     latitude: 2.0,
+    //     address: '부산',
+    //   },
+    // });
   };
   return (
     <>

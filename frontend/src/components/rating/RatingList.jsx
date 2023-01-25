@@ -10,7 +10,7 @@ const RatingList = props => {
       </TitleContainer>
       <ListContainer>
         {Items.map(el => {
-          return <RatingItem key={el.id} text={el.text} />;
+          return <RatingItem key={el.checklistId} text={el.checkContent} />;
         })}
       </ListContainer>
     </RatingContainer>
@@ -19,9 +19,7 @@ const RatingList = props => {
 
 const RatingContainer = styled.div`
   width: 100%;
-  height: 30%;
-  padding: 1rem 2rem 1rem 2rem;
-  margin-top: 1rem;
+  padding: 1rem;
   border-top: 5px solid #f6f6f6;
 `;
 const TitleContainer = styled.div`
@@ -29,6 +27,7 @@ const TitleContainer = styled.div`
   margin-top: 1rem;
   display: flex;
   justify-content: center;
+
   .title {
     font-size: 1.3rem;
     color: ${props => props.theme.colors.dark_blue};

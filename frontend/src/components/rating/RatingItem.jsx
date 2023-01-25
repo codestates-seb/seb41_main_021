@@ -15,11 +15,12 @@ const RatingItem = props => {
 
 const Item = styled.div`
   width: 100%;
-  height: 20%;
+  margin: 0.5rem;
+  font-size: 1.1rem;
   display: flex;
   align-items: center;
-  font-size: 1.1rem;
 `;
+
 const CheckCircle = styled.div`
   width: 1.5rem;
   height: 1.5rem;
@@ -31,6 +32,7 @@ const CheckCircle = styled.div`
   justify-content: center;
   margin-right: 1.5rem;
   cursor: pointer;
+
   ${props =>
     props.check &&
     css`

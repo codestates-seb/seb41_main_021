@@ -2,12 +2,13 @@ import useGetData from './useGetData';
 import usePostData from './usePostData';
 import usePatchData from './usePatchData';
 import useDeleteData from './useDeleteData';
-
 import { toast } from 'react-toastify';
+import axios from 'axios';
+
 const header = {
   headers: {
     'Content-Type': 'application/json;charset=UTF-8',
-    Accept: 'application/json',
+    Authorization: localStorage.ACCESS,
   },
 };
 
@@ -22,20 +23,22 @@ const useTayoGet = async (url, data) => {
 
 // 4.1
 const useTayoCreate = async (url, data) => {
-  await usePostData(url, data, header).then(res => {
-    if (res.response.status === 401) {
-      toast.warning('오류오류오류');
-    }
-  });
+  try {
+    const response = await axios.post(url, data, header);
+    return response;
+  } catch (error) {
+    toast.warning('게시물 생성에 실패했습니다.');
+  }
 };
 
 // 4.2
 const useTayoEdit = async (url, data) => {
-  await usePatchData(url, data, header).then(res => {
-    if (res.response.status === 401) {
-      toast.warning('오류오류오류');
-    }
-  });
+  try {
+    const response = await axios.patch(url, data);
+    return data;
+  } catch (error) {
+    toast.warning('게시물 수정에 실패했습니다.');
+  }
 };
 
 // 4.3, 5.4

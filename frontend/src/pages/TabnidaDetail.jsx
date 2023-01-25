@@ -8,6 +8,7 @@ import MemberContainer from '../components/Tayo/MemberContainer';
 import { useEffect, useState } from 'react';
 import useGetData from '../hooks/useGetData';
 
+
 export default function TabnidaDetail() {
   const [data, setData] = useState([]);
   useEffect(() => {
