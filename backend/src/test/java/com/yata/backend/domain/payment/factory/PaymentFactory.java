@@ -7,13 +7,15 @@ import com.yata.backend.domain.payment.entity.Payment;
 import java.util.UUID;
 
 public class PaymentFactory {
-   public static PaymentDto createPaymentDto() {
-       return PaymentDto.builder()
-               .payType(PayType.CARD)
-               .amount(15000L)
-               .orderName("포인트 충전")
-               .build();
-   }
+    public static PaymentDto createPaymentDto() {
+        return PaymentDto.builder()
+                .payType(PayType.CARD)
+                .amount(15000L)
+                .orderName("포인트 충전")
+                .yourSuccessUrl("http://localhost:3000/payment/success")
+                .yourFailUrl("http://localhost:3000/payment/fail")
+                .build();
+    }
 
     public static Payment createPayment(Member member) {
         return Payment.builder()

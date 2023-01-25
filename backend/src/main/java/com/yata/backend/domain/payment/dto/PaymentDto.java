@@ -18,6 +18,9 @@ public class PaymentDto {
     @NonNull
     private String orderName;
 
+    private String yourSuccessUrl;
+    private String yourFailUrl;
+
 
     public Payment toEntity() {
         return Payment.builder()
