@@ -147,6 +147,7 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.strPoint.latitude").type(JsonFieldType.NUMBER).description("출발지 위도"),
                         fieldWithPath("data.strPoint.address").type(JsonFieldType.STRING).description("출발지 주소"),
                         fieldWithPath("data.destination").type(JsonFieldType.OBJECT).description("도착지"),
+                        fieldWithPath("data.nickName").type(JsonFieldType.STRING).description("작성자 닉네임"),
                         fieldWithPath("data.destination.longitude").type(JsonFieldType.NUMBER).description("도착지 경도"),
                         fieldWithPath("data.destination.latitude").type(JsonFieldType.NUMBER).description("도착지 위도"),
                         fieldWithPath("data.destination.address").type(JsonFieldType.STRING).description("도착지 주소"),
