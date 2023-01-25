@@ -78,6 +78,18 @@ include::{snippets}/verify-email/http-request.adoc[]
 .response-body
 include::{snippets}/verify-email/response-body.adoc[]
 
+=== 운전자 인증
+PATCH /api/v1/validation/driver-license
+.http-request
+include::{snippets}/verify-driver-license/http-request.adoc[]
+.request-body
+include::{snippets}/verify-driver-license/request-body.adoc[]
+.request-fields
+include::{snippets}/verify-driver-license/request-fields.adoc[]
+.response-body
+include::{snippets}/verify-driver-license/response-body.adoc[]
+.request-headers
+include::{snippets}/verify-driver-license/request-headers.adoc[]
 
 == NotifyController
 

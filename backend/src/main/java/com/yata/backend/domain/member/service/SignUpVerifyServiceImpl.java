@@ -23,13 +23,11 @@ public class SignUpVerifyServiceImpl implements SignUpVerifyService {
     private final ApplicationEventPublisher eventPublisher;
     private final RedisUtils redisUtils;
     private final JpaEmailVerifyRepository jpaEmailVerifyRepository;
-    private final MemberService memberService;
 
-    public SignUpVerifyServiceImpl(ApplicationEventPublisher eventPublisher, RedisUtils redisUtils, JpaEmailVerifyRepository jpaEmailVerifyRepository, MemberService memberService) {
+    public SignUpVerifyServiceImpl(ApplicationEventPublisher eventPublisher, RedisUtils redisUtils, JpaEmailVerifyRepository jpaEmailVerifyRepository) {
         this.eventPublisher = eventPublisher;
         this.redisUtils = redisUtils;
         this.jpaEmailVerifyRepository = jpaEmailVerifyRepository;
-        this.memberService = memberService;
     }
 
 
