@@ -58,13 +58,6 @@ public class YataDto {
         @Valid
         private LocationDto.Post destination;
 
-       //todo 체크리스트 생성 후 채우기
-//        @Valid
-//        @NotNull(message = "체크리스트 입력은 필수입니다.")
-//        private List<YataChecklistDto> plusCheckList;
-//        private List<YataChecklistDto> minusCheckList;
-//
-
     }
 
 
@@ -92,9 +85,6 @@ public class YataDto {
         private Long amount;
 
         private String carModel;
-
-        //postStauts 따로 로직 빼서 수정하게 해야할 듯
-//        private Yata.PostStatus postStatus;
 
         @Valid
         private LocationDto.Post strPoint;

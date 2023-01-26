@@ -72,11 +72,6 @@ public class Yata extends Auditable {
     @JoinColumn(name = "EMAIL")
     private Member member;
 
-//    @OneToMany(mappedBy = "yata" , fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
-//    private List<YataRequest> yataRequests = new ArrayList<>();
-
-
-    // TODO lazy / eager 뭐 할지 생각 - 쿼리 어떻게 나오는지 확인하기
     @OneToMany(mappedBy = "yata", cascade = CascadeType.REMOVE , fetch = FetchType.LAZY)
     private List<YataMember> yataMembers = new ArrayList<>();
 

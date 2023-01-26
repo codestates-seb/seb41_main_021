@@ -71,6 +71,7 @@ public class YataController {
         return new ResponseEntity<>(
                 new SliceResponseDto<>(mapper.yatasToYataResponses(requests.getContent()), sliceInfo), HttpStatus.OK);
     }
+
     //상세보기
     @GetMapping("/{yata_id}")
     public ResponseEntity getYata(@PathVariable("yata_id") @Positive long yataId) {

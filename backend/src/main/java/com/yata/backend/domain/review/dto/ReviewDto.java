@@ -38,12 +38,5 @@ public class ReviewDto {
         private String toMemberNickName; //리뷰대상자 닉네임
         private List<ReviewChecklistDto.Response> responses; //들어간 내용
     }
-//    @Getter
-//    @Setter
-//    @NoArgsConstructor
-//    @AllArgsConstructor
-//    @Builder
-//    public static class FindResponse {
-//        private List<FindReviewDto> findReviewDtos;
-//    }
+
 }

@@ -55,15 +55,12 @@ public class YataServiceImpl implements YataService {
     @Override
     public Yata updateYata(long yataId, Yata yata, String userName) {
 
-        //존재하는 멤버인지 확인
         Member member = memberService.findMember(userName);
-        //존재하는 게시물인지 확인
+
         Yata findYata = findYata(yataId);
-        //게시글 작성자와 같은 멤버인지 확인
+
         equalMember(member.getEmail(), findYata.getMember().getEmail());
 
-        //예완 상태 아닌 게시물인지 확인
-        //예안 게시물이면 -> 예외
         modifiableYata(yataId);
 
         Yata updatingYata = beanUtils.copyNonNullProperties(yata, findYata);
@@ -76,10 +73,8 @@ public class YataServiceImpl implements YataService {
 
         Member member = memberService.findMember(username);
         Yata findYata = verifyYata(yataId);
-        //게시글 작성자와 같은 멤버인지 확인
         equalMember(member.getEmail(), findYata.getMember().getEmail());
         modifiableYata(yataId);
-        // TODO 시간 validate 추가 해야함
 
         jpaYataRepository.delete(findYata);
     }
@@ -106,9 +101,8 @@ public class YataServiceImpl implements YataService {
     /*검증로직*/
     private Yata verifyYata(long yataId) {
         Optional<Yata> optionalYata = jpaYataRepository.findById(yataId);
-        Yata findYata = optionalYata.orElseThrow(() ->
+        return optionalYata.orElseThrow(() ->
                 new CustomLogicException(ExceptionCode.YATA_NONE));
-        return findYata;
     }
 
     private void modifiableYata(long yataId) {
@@ -123,11 +117,5 @@ public class YataServiceImpl implements YataService {
         if (!email.equals(postEmail)) {
             throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
         }
-    }
-
-    private void compareTime(Yata yata) {
-        //출발시간이 도착시간보다 전이면 에러
-        if (yata.getTimeOfArrival().before(yata.getDepartureTime()))
-            throw new CustomLogicException(ExceptionCode.INVALID_TIME_OF_ARRIVAL);
     }
 }

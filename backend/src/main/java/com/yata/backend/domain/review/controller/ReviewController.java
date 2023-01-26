@@ -7,10 +7,6 @@ import com.yata.backend.domain.review.mapper.ReviewMapper;
 import com.yata.backend.domain.review.service.ReviewService;
 import com.yata.backend.global.response.ListResponse;
 import com.yata.backend.global.response.SingleResponse;
-import com.yata.backend.global.response.SliceInfo;
-import com.yata.backend.global.response.SliceResponseDto;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.util.List;
 import java.util.Map;
 
 @RestController
