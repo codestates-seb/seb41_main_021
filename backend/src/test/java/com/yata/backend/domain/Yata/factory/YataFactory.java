@@ -4,6 +4,7 @@ import com.yata.backend.common.utils.RandomUtils;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.yata.dto.LocationDto;
 import com.yata.backend.domain.yata.dto.YataDto;
+import com.yata.backend.domain.yata.dto.YataMemberDto;
 import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataMember;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.yata.backend.common.utils.RandomUtils.*;
 
@@ -56,8 +58,8 @@ public class YataFactory {
     }
 
     public static YataDto.Response createYataResponseDto(Yata yata) {
-        return YataDto.Response.builder()
-                .yataId(yata.getYataId())
+        YataDto.Response.ResponseBuilder response = YataDto.Response.builder();
+        response.yataId(yata.getYataId())
                 .title(yata.getTitle())
                 .specifics(yata.getSpecifics())
                 .timeOfArrival(yata.getTimeOfArrival())
@@ -67,9 +69,12 @@ public class YataFactory {
                 .amount(yata.getAmount())
                 .carModel(yata.getCarModel())
                 .maxPeople(yata.getMaxPeople())
+                .nickName(yata.getMember().getNickname())
                 .maxWaitingTime(yata.getMaxWaitingTime())
                 .yataStatus(yata.getYataStatus())
                 .postStatus(yata.getPostStatus())
+                .feulTank(70.0)
+                .yataMembers(null)
                 .reservedMemberNum(0)
                 .strPoint(new LocationDto.Response(
                         yata.getStrPoint().getLocation().getX(),
@@ -79,13 +84,19 @@ public class YataFactory {
                         yata.getDestination().getLocation().getX(),
                         yata.getDestination().getLocation().getY(),
                         yata.getDestination().getAddress()))
-                .email(RandomUtils.getRandomWord() + "@gmail.com")
-                .build();
+                .email(RandomUtils.getRandomWord() + "@gmail.com");
+
+        return response.build();
 
     }
 
     public static Yata createYata() throws org.locationtech.jts.io.ParseException {
         List<YataMember> yatamembers = new ArrayList<>();
+        yatamembers.add(new YataMember(1L, true, YataMember.GoingStatus.STARTED_YET, new Yata(1L), null));
+        System.out.println("_______________________야타멤버리스트 출력---------------");
+        System.out.println(yatamembers.toString());
+        Member member = new Member();
+        member.setNickname("채은");
         Yata yata = Yata.builder()
                 .yataId(getRandomLong())
                 .title(getRandomWord())
@@ -93,17 +104,18 @@ public class YataFactory {
                 .departureTime(getRandomDate())
                 .timeOfArrival(getRandomDate())
                 .amount(getRandomLong())
-                .carModel(getRandomWord(20))
+                .member(member)
                 .yataMembers(yatamembers)
+                .carModel(getRandomWord(20))
                 .maxPeople(3)
                 .maxWaitingTime(20)
                 .yataStatus(YataStatus.YATA_NEOTA)
                 .postStatus(Yata.PostStatus.POST_OPEN)
-                .strPoint(new Location(RandomUtils.getRandomLong() , GeometryUtils.getEmptyPoint() , getRandomWord() , null))
-                .destination(new Location(RandomUtils.getRandomLong() , GeometryUtils.getEmptyPoint() , getRandomWord() , null))
+                .strPoint(new Location(RandomUtils.getRandomLong(), GeometryUtils.getEmptyPoint(), getRandomWord(), null))
+                .destination(new Location(RandomUtils.getRandomLong(), GeometryUtils.getEmptyPoint(), getRandomWord(), null))
                 .build();
-        yata.setCreatedAt(LocalDateTime.of(LocalDate.now(),LocalDateTime.now().toLocalTime()));
-        yata.setModifiedAt(LocalDateTime.of(LocalDate.now(),LocalDateTime.now().toLocalTime()));
+        yata.setCreatedAt(LocalDateTime.of(LocalDate.now(), LocalDateTime.now().toLocalTime()));
+        yata.setModifiedAt(LocalDateTime.of(LocalDate.now(), LocalDateTime.now().toLocalTime()));
 
         return yata;
     }

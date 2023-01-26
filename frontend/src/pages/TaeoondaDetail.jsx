@@ -7,12 +7,46 @@ import { BsCalendar4, BsPeople } from 'react-icons/bs';
 import { BiWon, BiCommentDetail } from 'react-icons/bi';
 import { VscAccount } from 'react-icons/vsc';
 import { AiOutlineCar } from 'react-icons/ai';
+import { useTayoRequest } from '../hooks/useTayo';
+import { FiEdit, FiTrash } from 'react-icons/fi';
+import { useNavigate } from 'react-router';
 
 export default function TabnidaDetail() {
+  const navigate = useNavigate();
+
+  const requestHandler = () => {
+    const data = {
+      title: '태워주세욥',
+      specifics: '애완견을 동반하고싶어요',
+      departureTime: '2023-01-25T16:00:34',
+      timeOfArrival: '2023-01-25T16:00:34',
+      boardingPersonCount: 2,
+      maxWaitingTime: 10,
+      strPoint: {
+        longitude: 2.5,
+        latitude: 2.0,
+        address: '강원도 원주시',
+      },
+      destination: {
+        longitude: 2.5,
+        latitude: 2.0,
+        address: '강원도 원주시',
+      },
+    };
+
+    useTayoRequest(`https://server.yata.kro.kr/api/v1/yata/apply/${yataId}`, data).then(res => {
+      console.log(res);
+    });
+  };
+
   return (
     <>
       <Header title={'태웁니다'}></Header>
       <Container>
+        <CRUDContainer>
+          <FiEdit onClick={() => navigate('/taeoonda-edit')} />
+          <FiTrash />
+        </CRUDContainer>
         <ProfileContainer>
           <ProfileInfoContainer>
             <h2>작성자 정보</h2>
@@ -52,11 +86,11 @@ export default function TabnidaDetail() {
           </CarContainer>
           <MemoContainer>
             <BiCommentDetail />
-            <p className="memo-txt">흡여자여서 차에서 담배 냄새 날 수 있습니다.</p>
+            <p className="memo-txt">흡연자여서 차에서 담배 냄새 날 수 있습니다.</p>
           </MemoContainer>
         </InfoContainer>
 
-        <RequestButton>신청하기</RequestButton>
+        <RequestButton onClick={requestHandler}>신청하기</RequestButton>
       </Container>
       <NavBar />
     </>
@@ -155,4 +189,18 @@ const CarContainer = styled.div``;
 const RequestButton = styled(Button)`
   width: 40%;
   margin-top: 1rem;
+`;
+
+const CRUDContainer = styled.div`
+  width: 95%;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  svg {
+    font-size: 1.7rem;
+    margin: 0.5rem 0.8rem;
+    cursor: pointer;
+  }
 `;

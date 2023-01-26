@@ -9,5 +9,4 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface JpaYataRepository extends JpaRepository<Yata, Long>, YataRepository {
-    Slice<Yata> findAllByYataStatusIs(YataStatus yataStatus, Pageable pageable);
 }

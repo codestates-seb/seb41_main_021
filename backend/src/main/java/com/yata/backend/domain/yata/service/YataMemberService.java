@@ -11,7 +11,7 @@ public interface YataMemberService {
     void accept(String userName, Long yataRequestId, Long yataId);
     void reject(String userName, Long yataRequestId, Long yataId);
     Slice<YataMember> findAcceptedRequests(String userEmail, Long yataId, Pageable pageable);
-    void verifyAppliedRequest(Yata yata, Long yataRequestId);
+    void payPoint(String userName, Long yataId, Long yataMemberId);
     YataMember verifyYataMember(long yataMemeberId);
     YataMember verifyPossibleYataMember(Long yataMemberId, Yata yata);
     YataMember verifyPossibleYataMemberByuserName(Yata yata, Member member);

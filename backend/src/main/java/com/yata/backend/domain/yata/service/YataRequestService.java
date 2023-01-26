@@ -1,5 +1,6 @@
 package com.yata.backend.domain.yata.service;
 
+import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -16,4 +17,5 @@ public interface YataRequestService {
     void verifyMaxPeople(int requestPeople, int maxPeople);
     void compareMember(String email, String postEmail);
     void verifyPoint(Long price, Long point);
+    void verifyAppliedRequest(Yata yata, Long yataRequestId);
 }

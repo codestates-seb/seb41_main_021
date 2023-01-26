@@ -5,6 +5,7 @@ import com.yata.backend.global.audit.Auditable;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,10 +33,10 @@ public class Yata extends Auditable {
     @Column
     private Date timeOfArrival;
 
-    @Column(nullable = false,length = 50)
+    @Column(nullable = false, length = 50)
     private String title;
 
-    @Column(nullable = false,length = 100)
+    @Column(nullable = false, length = 100)
     private String specifics;
 
     @Column(nullable = false)
@@ -57,7 +58,7 @@ public class Yata extends Auditable {
     @Column(nullable = false)
     private Integer maxPeople;
 
-    @Column(length = 10,nullable = false)
+    @Column(length = 10, nullable = false)
     private Long amount;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -76,12 +77,12 @@ public class Yata extends Auditable {
 
 
     // TODO lazy / eager 뭐 할지 생각 - 쿼리 어떻게 나오는지 확인하기
-    @OneToMany(mappedBy = "yata" , cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "yata", cascade = CascadeType.REMOVE , fetch = FetchType.LAZY)
     private List<YataMember> yataMembers = new ArrayList<>();
 
     public enum PostStatus {
-        POST_OPEN(1,"신청가능"),
-        POST_CLOSED(2,"마감");
+        POST_OPEN(1, "신청가능"),
+        POST_CLOSED(2, "마감");
 
         @Getter
         private int statusNumber;
@@ -89,20 +90,28 @@ public class Yata extends Auditable {
         @Getter
         private String status;
 
-        PostStatus(int statusNumber, String status){this.status = status;
-        this.statusNumber=statusNumber;}
+        PostStatus(int statusNumber, String status) {
+            this.status = status;
+            this.statusNumber = statusNumber;
+        }
     }
 
     public void addStrPoint(Location strPoint) {
-        this.strPoint = strPoint;}
+        this.strPoint = strPoint;
+    }
 
     public void addDestination(Location destination) {
-        this.destination = destination;}
+        this.destination = destination;
+    }
 
     //테스트 위한 생성자
-    public Yata(long yataId,List<YataMember> yataMembers){
+    public Yata(long yataId, List<YataMember> yataMembers) {
         this.yataId = yataId;
         this.yataMembers = yataMembers;
+    }
+
+    public Yata(long yataId) {
+        this.yataId = yataId;
     }
 
 }

@@ -9,6 +9,7 @@ const initialState = {
   providerType: '',
   carImgUrl: '',
   memberStatus: '',
+  fuelTank: '',
   roles: '',
   isLogin: false,
 };
@@ -26,6 +27,7 @@ const userSlice = createSlice({
       state.providerType = action.payload.providerType;
       state.carImgUrl = action.payload.carImgUrl;
       state.memberStatus = action.payload.memberStatus;
+      state.fuelTank = action.payload.fuelTank;
       state.roles = action.payload.roles;
       state.isLogin = true;
     },
@@ -39,12 +41,12 @@ const userSlice = createSlice({
       state.providerType = '';
       state.carImgUrl = '';
       state.memberStatus = '';
+      state.fuelTank = '';
       state.roles = '';
       state.isLogin = false;
     },
   },
 });
-8;
 
 // 액션크리에이터는 컴포넌트에서 사용하기 위해 export 하고
 export const { loginUser, clearUser } = userSlice.actions;

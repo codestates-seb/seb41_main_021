@@ -187,4 +187,13 @@ public class YataRequestServiceImpl implements YataRequestService {
             throw new CustomLogicException(ExceptionCode.PAYMENT_NOT_ENOUGH_POINT);
         }
     }
+
+    // 승인하려는 yataRequest 가 해당 yata 게시물에 신청한 request 인지 검증
+    @Override
+    public void verifyAppliedRequest(Yata yata, Long yataRequestId) {
+        YataRequest request = findRequest(yataRequestId);
+        if (!request.getYata().equals(yata)) {
+            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
+        }
+    }
 }

@@ -24,7 +24,7 @@ export default function JourneyState() {
           isPay={false}
         />
         <JourneyItem
-          key={123123123}
+          key={151}
           date={'2023-01-21'}
           journeyStart={'안산'}
           journeyEnd={'의왕'}

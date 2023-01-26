@@ -11,12 +11,14 @@ const ListItemView = props => {
           return (
             <ListItem
               key={el.yataId}
+              yataId={el.yataId}
               date={el.departureTime}
               journeyStart={el.strPoint.address}
               journeyEnd={el.destination.address}
               transit={'1'}
               price={el.amount}
               people={`1/${el.maxPeople}`}
+              yataStatus={el.yataStatus}
             />
           );
         })}

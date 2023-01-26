@@ -1,56 +1,22 @@
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import NavBar from '../components/NavBar';
 import Header from '../components/Header';
 import { VscAccount } from 'react-icons/vsc';
 import Button from '../components/common/Button';
 import RatingList from '../components/rating/RatingList';
+import useGetData from '../hooks/useGetData';
 
 export default function RatingAdd(props) {
-  const goodRatingList = [
-    {
-      id: 0,
-      text: '운전을 잘해요',
-    },
-    {
-      id: 1,
-      text: '친절하고 매너가 좋아요',
-    },
-    {
-      id: 2,
-      text: '깔끔해요',
-    },
-    {
-      id: 3,
-      text: '시간약속을 잘 지켜요',
-    },
-    {
-      id: 4,
-      text: '응답이 빨라요',
-    },
-  ];
+  const [positiveList, setPositiveList] = useState([]);
+  const [negativeList, setNegativeList] = useState([]);
 
-  const badRatingList = [
-    {
-      id: 0,
-      text: '운전이 미숙해요',
-    },
-    {
-      id: 1,
-      text: '불친절해요',
-    },
-    {
-      id: 2,
-      text: '청결하지 않아요',
-    },
-    {
-      id: 3,
-      text: '약속을 안 지켜요',
-    },
-    {
-      id: 4,
-      text: '응답이 느려요',
-    },
-  ];
+  useEffect(() => {
+    useGetData('https://server.yata.kro.kr/api/v1/checklist').then(res => {
+      setPositiveList(res.data.data.positiveList);
+      setNegativeList(res.data.data.negativeList);
+    });
+  }, []);
 
   return (
     <>
@@ -65,9 +31,8 @@ export default function RatingAdd(props) {
             </Info>
           </Profile>
         </ProfileCotainer>
-        <RatingList title={'👍 좋았던 점을 선택해 주세요 !'} Items={goodRatingList} />
-        <RatingList title={' 👎 아쉬웠던 점을 선택해 주세요 !'} Items={badRatingList} />
-
+        <RatingList title={'👍 좋았던 점을 선택해 주세요 !'} Items={positiveList} />
+        <RatingList title={' 👎 아쉬웠던 점을 선택해 주세요 !'} Items={negativeList} />
         <FinishBtn>완료</FinishBtn>
       </Container>
       <NavBar />
@@ -84,30 +49,31 @@ const Container = styled.div`
 `;
 const ProfileCotainer = styled.div`
   width: 90%;
-  height: 10%;
   padding: 1rem;
   display: flex;
   align-items: center;
 `;
 const Profile = styled.div`
-  width: 50%;
+  width: 100%;
   height: 100%;
-  padding: 0.5rem;
+  padding: 1rem;
   display: flex;
   align-items: center;
 
   svg {
-    font-size: 4rem;
+    font-size: 3.5rem;
     color: #26264c;
   }
 `;
+
 const Info = styled.div`
-  width: 60%;
+  width: 100%;
   height: 100%;
   padding-left: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+
   .name {
     font-size: 1.4rem;
     font-weight: bold;
@@ -119,5 +85,5 @@ const Info = styled.div`
 
 const FinishBtn = styled(Button)`
   width: 40%;
-  margin-top: 2rem;
+  margin-top: 1rem;
 `;
