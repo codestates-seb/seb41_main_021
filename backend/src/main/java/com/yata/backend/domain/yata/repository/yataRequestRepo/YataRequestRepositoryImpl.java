@@ -54,6 +54,7 @@ public class YataRequestRepositoryImpl implements YataRequestRepository {
                 .where(yataRequest.member.email.eq(Email))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .orderBy(yataRequest.YataRequestId.desc())
                 .fetch();
         boolean hasNext = false;
         if (yataRequests.size() > pageable.getPageSize()) {

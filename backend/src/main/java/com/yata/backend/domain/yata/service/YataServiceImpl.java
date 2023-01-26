@@ -95,7 +95,7 @@ public class YataServiceImpl implements YataService {
             case "nata" -> nowStatus = YataStatus.YATA_NATA;
             default -> throw new CustomLogicException(ExceptionCode.YATA_STATUS_NONE);
         }
-        return jpaYataRepository.findAllByYataStatusIs(nowStatus, PageRequest.of(0, 20, Sort.by("yataId").descending()));
+        return jpaYataRepository.findAllByYataStatusIs(nowStatus, pageable);
     }
 
     @Override
