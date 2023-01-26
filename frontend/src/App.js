@@ -43,8 +43,9 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     if (localStorage.ACCESS) {
-      useGetUserInfo().then(res => dispatch(loginUser(res)));
-      setTimeout(() => setIsLoading(false), 100);
+      useGetUserInfo()
+        .then(res => dispatch(loginUser(res)))
+        .then(setTimeout(() => setIsLoading(false), 100));
     } else {
       setIsLoading(false);
     }
