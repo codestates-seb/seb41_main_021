@@ -1,7 +1,6 @@
 package com.yata.backend.domain.yata.entity;
 
 import com.yata.backend.domain.member.entity.Member;
-import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.global.audit.Auditable;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;

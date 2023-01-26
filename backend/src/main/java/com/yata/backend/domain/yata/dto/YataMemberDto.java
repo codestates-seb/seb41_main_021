@@ -18,8 +18,7 @@ public class YataMemberDto {
         private String email;
         private String nickname;
         private boolean yataPaid;
-        //삭제
-        // private Long point;
+        private int boardingPersonCount;
         private YataMember.GoingStatus goingStatus;
         // 추가
         private String imgUrl;

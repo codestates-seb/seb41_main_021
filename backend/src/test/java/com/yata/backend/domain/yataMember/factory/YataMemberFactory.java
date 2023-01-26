@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.yata.backend.common.utils.RandomUtils.getRandomLong;
-import static com.yata.backend.common.utils.RandomUtils.getRandomWord;
 
 public class YataMemberFactory {
     public static YataMember createYataMember() throws org.locationtech.jts.io.ParseException {
@@ -24,6 +23,7 @@ public class YataMemberFactory {
                 .yata(yata)
                 .member(member)
                 .yataPaid(false)
+                .boardingPersonCount(2)
                 .goingStatus(YataMember.GoingStatus.STARTED_YET)
                 .build();
     }
@@ -45,6 +45,7 @@ public class YataMemberFactory {
                 .nickname(yataMember.getMember().getNickname())
                 .yataPaid(yataMember.isYataPaid())
                 .imgUrl(yataMember.getMember().getImgUrl() != null ? yataMember.getMember().getImgUrl().getUrl() : null)
+                .boardingPersonCount(yataMember.getBoardingPersonCount())
                 .goingStatus(yataMember.getGoingStatus())
                 .build();
     }

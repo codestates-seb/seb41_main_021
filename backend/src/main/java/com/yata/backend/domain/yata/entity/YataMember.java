@@ -5,8 +5,6 @@ import com.yata.backend.global.audit.Auditable;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serial;
-import java.io.Serializable;
 
 @Entity
 @Getter
@@ -22,6 +20,9 @@ public class YataMember extends Auditable {
 
     @Column(nullable = false)
     private boolean yataPaid; // 지불 여부
+
+    @Column(length = 20, nullable = false)
+    private int boardingPersonCount;
 
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20, nullable = false)
