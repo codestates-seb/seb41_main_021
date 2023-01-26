@@ -100,7 +100,6 @@ export default function TabnidaAdd() {
       maxPeople,
       yataStatus: 'YATA_NATA',
       amount,
-      carModel: '차종',
       strPoint: {
         longitude: 5.0,
         latitude: 4.0,

@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { IoIosArrowRoundForward, IoIosArrowForward } from 'react-icons/io';
 import { BsCalendar4, BsPeople } from 'react-icons/bs';
 import { BiWon, BiCommentDetail } from 'react-icons/bi';
+import { AiOutlineCar } from 'react-icons/ai';
 
 export default function InfoContainer(props) {
   const { data } = props;
@@ -30,6 +31,14 @@ export default function InfoContainer(props) {
         <BsPeople />
         <p className="amount-txt">{data.reservedMemberNum} 명</p>
       </AmountContainer>
+      {data.yataStatus === 'YATA_NEOTA' ? (
+        <CarContainer>
+          <AiOutlineCar />
+          <p className="car-txt">XM3</p>
+        </CarContainer>
+      ) : (
+        <></>
+      )}
       <MemoContainer>
         <BiCommentDetail />
         <p className="memo-txt">{data.specifics}</p>
@@ -83,5 +92,7 @@ const DateContainer = styled.div``;
 const PriceContainer = styled.div``;
 
 const AmountContainer = styled.div``;
+
+const CarContainer = styled.div``;
 
 const MemoContainer = styled.div``;
