@@ -11,6 +11,7 @@ const initialState = {
   memberStatus: '',
   fuelTank: '',
   roles: '',
+  point: '',
   isLogin: false,
 };
 
@@ -29,6 +30,7 @@ const userSlice = createSlice({
       state.memberStatus = action.payload.memberStatus;
       state.fuelTank = action.payload.fuelTank;
       state.roles = action.payload.roles;
+      state.point = action.payload.point;
       state.isLogin = true;
     },
 
@@ -43,6 +45,7 @@ const userSlice = createSlice({
       state.memberStatus = '';
       state.fuelTank = '';
       state.roles = '';
+      state.point = '';
       state.isLogin = false;
     },
   },
