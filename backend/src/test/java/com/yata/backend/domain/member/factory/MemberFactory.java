@@ -73,7 +73,7 @@ public class MemberFactory {
                 .roles(member.getRoles().stream().map(role -> role.getRole().name()).toList())
                 .genders(member.getGenders())
                 .fuelTank(member.getFuelTank())
-                .yataCount(0L)
+                .yataCount(0)
                 .build();
     }
 
