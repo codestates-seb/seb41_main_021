@@ -22,7 +22,5 @@ public class YataMemberDto {
         private boolean yataPaid;
         private Long point;
         private YataMember.GoingStatus goingStatus;
-        private PayHistory.Type type;
-
     }
 }

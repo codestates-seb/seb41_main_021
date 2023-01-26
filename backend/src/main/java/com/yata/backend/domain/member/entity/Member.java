@@ -118,6 +118,8 @@ public class Member extends Auditable  {
                 .genders(genders)
                 .imgUrl(imgUrl != null ? imgUrl.getUrl() : null)
                 .carImgUrl(carImgUrl)
+                .point(point)
+                .fuelTank(fuelTank)
                 .memberStatus(memberStatus)
                 .nickname(nickname)
                 .providerType(providerType)

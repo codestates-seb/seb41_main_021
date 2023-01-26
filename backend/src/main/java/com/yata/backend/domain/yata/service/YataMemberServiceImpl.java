@@ -136,6 +136,8 @@ public class YataMemberServiceImpl implements YataMemberService {
             throw new CustomLogicException(ExceptionCode.AlREADY_PAID);
         }
 
+        // TODO 해당 auth 랑 yataMEmberId 랑 달라도 추가가 됨 --> 안되게
+
         Optional<YataRequest> yataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(userName, yataId);
         int boardingPeopleCount = yataRequest.get().getBoardingPersonCount();
 
