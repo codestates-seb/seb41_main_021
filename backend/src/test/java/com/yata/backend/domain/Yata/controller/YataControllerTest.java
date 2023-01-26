@@ -401,6 +401,7 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.yataMembers[].goingStatus").type(JsonFieldType.STRING).description("가는 상태 'STARTED_YET,ARRIVED'"),
                         fieldWithPath("data.yataMembers[].imgUrl").type(JsonFieldType.STRING).description("야타 멤버 프로필 이미지")
 
+                       
 
                 )));
     }
