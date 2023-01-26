@@ -25,4 +25,5 @@ public interface MemberService {
     void checkDriver(Member member);
     void verifyDriverLicense(String email, DriverAuthDto driverAuthDto);
 
+
 }

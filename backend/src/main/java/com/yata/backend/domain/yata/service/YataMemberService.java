@@ -14,4 +14,5 @@ public interface YataMemberService {
     YataMember verifyYataMember(long yataMemeberId);
     YataMember verifyPossibleYataMember(Long yataMemberId, Yata yata);
     YataMember verifyPossibleYataMemberByuserName(Yata yata, Member member);
+    Integer myYataCount(String email);
 }
