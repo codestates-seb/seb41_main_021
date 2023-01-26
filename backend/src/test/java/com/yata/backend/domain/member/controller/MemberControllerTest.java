@@ -8,6 +8,7 @@ import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.factory.MemberFactory;
 import com.yata.backend.domain.member.mapper.MemberMapper;
 import com.yata.backend.domain.member.service.MemberService;
+import com.yata.backend.domain.yata.service.YataMemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,8 @@ class MemberControllerTest extends AbstractControllerTest {
     private final String BASE_URL = "/api/v1/members";
     @MockBean
     private MemberService memberService;
+    @MockBean
+    private YataMemberService yataMemberService;
     @MockBean
     private MemberMapper mapper;
 
@@ -117,7 +120,8 @@ class MemberControllerTest extends AbstractControllerTest {
                                 fieldWithPath("data.roles[]").type(JsonFieldType.ARRAY).description("로그인 권한 정보 DRIVER,PASSANGER ,ADMIN"),
                                 fieldWithPath("data.point").type(JsonFieldType.NUMBER).description("포인트 잔액"),
                                 fieldWithPath("data.memberStatus").type(JsonFieldType.STRING).description("맴버 상태"),
-                                fieldWithPath("data.fuelTank").type(JsonFieldType.NUMBER).description("연료탱크 점수")
+                                fieldWithPath("data.fuelTank").type(JsonFieldType.NUMBER).description("연료탱크 점수"),
+                                fieldWithPath("data.yataCount").type(JsonFieldType.NUMBER).description("여정 횟수 20분 캐싱")
                         )
                 ));
     }
