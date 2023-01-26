@@ -3,6 +3,7 @@ package com.yata.backend.domain.yata.repository.yataRequestRepo;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.yata.backend.domain.yata.entity.QYata;
 import com.yata.backend.domain.yata.entity.QYataRequest;
+import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -51,6 +52,28 @@ public class YataRequestRepositoryImpl implements YataRequestRepository {
                 .join(yata.destination).fetchJoin()
                 .join(yata.strPoint).fetchJoin()
                 .where(yataRequest.member.email.eq(Email))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+        boolean hasNext = false;
+        if (yataRequests.size() > pageable.getPageSize()) {
+            yataRequests.remove(pageable.getPageSize());
+            hasNext = true;
+        }
+        return new SliceImpl<>(yataRequests, pageable, hasNext);
+    }
+
+    @Override
+    public Slice<YataRequest> findAllByYata(Yata yatas, Pageable pageable) {
+        List<YataRequest> yataRequests = queryFactory.selectFrom(yataRequest)
+                .join(yataRequest.yata, yata).fetchJoin()
+                .join(yataRequest.strPoint).fetchJoin()
+                .join(yataRequest.destination).fetchJoin()
+                .join(yataRequest.member).fetchJoin()
+                .join(yata.strPoint).fetchJoin()
+                .join(yata.destination).fetchJoin()
+                .join(yata.strPoint).fetchJoin()
+                .where(yataRequest.yata.eq(yata))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
