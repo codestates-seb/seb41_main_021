@@ -463,6 +463,16 @@ include::{snippets}/yataMember-getAll/response-fields.adoc[]
 .response-body
 include::{snippets}/yataMember-getAll/response-body.adoc[]
 
+=== 포인트 결제
+
+.http-request
+include::{snippets}/yataMember-payPoint/http-request.adoc[]
+.request-headers
+include::{snippets}/yataMember-payPoint/request-headers.adoc[]
+.path-parameters
+include::{snippets}/yataMember-payPoint/path-parameters.adoc[]
+.http-response
+include::{snippets}/yataMember-payPoint/http-response.adoc[]
 
 == ReviewController
 === 리뷰 생성

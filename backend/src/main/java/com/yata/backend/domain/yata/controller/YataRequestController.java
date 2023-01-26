@@ -54,7 +54,7 @@ public class YataRequestController {
     // Yata 신청 목록 조회 (by Driver) - 200
     // 어차피 해당 게시글 들어가서 조회하는 거니까 / neota 에는 신청목록 / nata 에는 초대목록 밖에 없음
     @GetMapping("/apply/{yataId}")
-    public ResponseEntity<SliceResponseDto<YataRequestDto.RequestResponse>> getRequests(@PathVariable("yataId") @Positive long yataId,
+    public ResponseEntity<SliceResponseDto<YataRequestDto.RequestResponse>> getRequestsByDriver(@PathVariable("yataId") @Positive long yataId,
                                                                                         @AuthenticationPrincipal User authMember,
                                                                                         Pageable pageable) {
         Slice<YataRequest> requests = yataRequestService.findRequestsByDriver(authMember.getUsername(), yataId ,pageable);
