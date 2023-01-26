@@ -185,7 +185,7 @@ public class YataMemberServiceImpl implements YataMemberService {
                 new CustomLogicException(ExceptionCode.CANNOT_CREATE_REVIEW));
     }
     @Cacheable(value = "myYataCount", key = "#email")
-    public Long myYataCount(String email) {
+    public Integer myYataCount(String email) {
         return jpaYataMemberRepository.countByMember_email(email);
     }
 }
