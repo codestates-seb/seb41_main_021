@@ -98,9 +98,9 @@ public class ReviewControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.toMemberNickName").type(JsonFieldType.STRING).description("리뷰 대상자 이메일"),
                         fieldWithPath("data.fromMemberNickName").type(JsonFieldType.STRING).description("리뷰 작성자 이메일"),
                         fieldWithPath("data.responses").type(JsonFieldType.ARRAY).description("체크한 항목들 정보"),
-                        fieldWithPath("data.responses[].checklistId").type(JsonFieldType.NUMBER).description("체크한 항목들 정보"),
-                        fieldWithPath("data.responses[].checkContent").type(JsonFieldType.STRING).description("체크한 항목들 정보"),
-                        fieldWithPath("data.responses[].checkpn").type(JsonFieldType.BOOLEAN).description("체크한 항목들 정보")
+                        fieldWithPath("data.responses[].checklistId").type(JsonFieldType.NUMBER).description("체크리스트 아이디"),
+                        fieldWithPath("data.responses[].checkContent").type(JsonFieldType.STRING).description("체크한 항목 내용"),
+                        fieldWithPath("data.responses[].checkpn").type(JsonFieldType.BOOLEAN).description("체크한 항목 긍정/부정 표시")
                 )));
     }
 
