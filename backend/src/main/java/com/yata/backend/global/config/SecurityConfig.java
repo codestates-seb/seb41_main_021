@@ -82,7 +82,8 @@ public class SecurityConfig {
                                 .antMatchers("/api/v1/yata/**").authenticated()
                                 // notify
                                 .antMatchers(HttpMethod.GET,"/api/v1/notify/**").authenticated()
-
+                                // payHistory
+                                .antMatchers(HttpMethod.GET,"/api/v1/payHistory/**").authenticated()
                                 // basic
                                 .antMatchers("/docs/index.html").permitAll()
                                 .antMatchers("/h2/**").permitAll()
