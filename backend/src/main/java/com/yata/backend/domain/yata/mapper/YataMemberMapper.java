@@ -5,7 +5,6 @@ import com.yata.backend.domain.yata.entity.YataMember;
 import org.mapstruct.Mapper;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
@@ -23,6 +22,7 @@ public interface YataMemberMapper {
                         .nickname(yataMember.getMember().getNickname())
                         .yataPaid(yataMember.isYataPaid())
                         .imgUrl(yataMember.getMember().getImgUrl() != null ? yataMember.getMember().getImgUrl().getUrl() : null)
+                        .boardingPersonCount(yataMember.getBoardingPersonCount())
                         .goingStatus(yataMember.getGoingStatus())
                         .build()).collect(Collectors.toList());
     }

@@ -121,8 +121,8 @@ public class YataRequestServiceImpl implements YataRequestService {
         Yata yata = yataService.findYata(yataId); // 해당 yataId 가 있는지 ( 게시물 )
         YataRequest yataRequest = findRequest(yataRequestId); // 해당 yataRequestId 로 한 신청/초대가 있는지 ( 신청/초대 )
 
-        // 게시글 작성자 == 삭제하려는 사람 인지 확인
-        yataService.equalMember(member.getEmail(), yata.getMember().getEmail());
+        // 삭제하려는 사람 == 신청했던 사람 인지 확인
+        yataService.equalMember(member.getEmail(), yataRequest.getMember().getEmail());
 
         YataRequest.ApprovalStatus approvalStatus = yataRequest.getApprovalStatus();
 
@@ -132,6 +132,8 @@ public class YataRequestServiceImpl implements YataRequestService {
             default -> jpaYataRequestRepository.delete(yataRequest); // 아닌 경우 삭제 가능
         }
     }
+
+    /*검증 로직*/
 
     // 이미 신청한 게시물인지 검증
     @Override
