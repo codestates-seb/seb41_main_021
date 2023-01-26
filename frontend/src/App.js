@@ -70,7 +70,7 @@ function App() {
               <Route path="/my-page" element={<MyPage />}></Route>
               <Route path="/other-user-page" element={<OtherUserPage />}></Route>
               <Route path="/rating-add" element={<RatingAdd />}></Route>
-              <Route path="/rating" element={<Rating />}></Route>
+              <Route path="/rating-list" element={<Rating />}></Route>
               <Route path="/signup" element={<SignUp />}></Route>
               <Route path="/tabnida-add" element={<TabnidaAdd />}></Route>
               <Route path="/tabnida-edit/:yataId" element={<TabnidaEdit />}></Route>
