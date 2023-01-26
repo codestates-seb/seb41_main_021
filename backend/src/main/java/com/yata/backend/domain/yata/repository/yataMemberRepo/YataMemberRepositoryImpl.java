@@ -28,7 +28,7 @@ public class YataMemberRepositoryImpl implements YataMemberRepository {
         return queryFactory
                 .select(qYata)
                 .from(qYata)
-                .join(qYata.yataMembers, qYataMember).fetchJoin()
+                .leftJoin(qYata.yataMembers, qYataMember)
                 .where(
                         (qYata.member.email.eq(email)
                                 .and(qYata.yataMembers.any().goingStatus.ne(YataMember.GoingStatus.STARTED_YET))
