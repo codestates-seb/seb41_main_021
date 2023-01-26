@@ -2,9 +2,7 @@ package com.yata.backend.domain.yata.repository.yataRepo;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.yata.backend.domain.yata.dto.LocationDto;
-import com.yata.backend.domain.yata.entity.Location;
-import com.yata.backend.domain.yata.entity.QYata;
-import com.yata.backend.domain.yata.entity.Yata;
+import com.yata.backend.domain.yata.entity.*;
 import com.yata.backend.global.utils.GeometryUtils;
 import org.locationtech.jts.geom.Geometry;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +21,7 @@ public class YataRepositoryImpl implements YataRepository {
     private final EntityManager em;
     private final JPAQueryFactory queryFactory;
     private final QYata yata = QYata.yata;
+    private final QYataMember yataMember = QYataMember.yataMember;
 
     public YataRepositoryImpl(EntityManager em ) {
         this.em = em;
@@ -39,6 +38,7 @@ public class YataRepositoryImpl implements YataRepository {
                 .join(yata.member).fetchJoin()
                 .join(yata.strPoint).fetchJoin()
                 .join(yata.destination).fetchJoin()
+                .leftJoin(yata.yataMembers , yataMember).fetchJoin()
                 .where(yata.strPoint.location.intersects(startMBR)
                         .and(yata.destination.location.intersects(endMBR)))
                 .offset(pageable.getOffset())
@@ -63,5 +63,25 @@ public class YataRepositoryImpl implements YataRepository {
                 .execute();
         em.flush();
         em.clear();
+    }
+
+    @Override
+    public Slice<Yata> findAllByYataStatusIs(YataStatus yataStatus, Pageable pageable) {
+        List<Yata> yatas=  queryFactory.selectFrom(yata)
+                .join(yata.member).fetchJoin()
+                .join(yata.strPoint).fetchJoin()
+                .join(yata.destination).fetchJoin()
+                .leftJoin(yata.yataMembers , yataMember).fetchJoin()
+                .where(yata.yataStatus.eq(yataStatus))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        boolean hasNext = false;
+        if (yatas.size() > pageable.getPageSize()) {
+            yatas.remove(pageable.getPageSize());
+            hasNext = true;
+        }
+        return new SliceImpl<>(yatas, pageable, hasNext);
     }
 }
