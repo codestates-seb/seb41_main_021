@@ -25,6 +25,7 @@ export default function TabnidaList() {
 
   return (
     <>
+      {console.log(list)}
       <Header title="탑니다" />
       <Container>
         <DestinationInput />
