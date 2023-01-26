@@ -42,7 +42,7 @@ function App() {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    if (localStorage.ACCESS) {
+    if (localStorage.getItem('ACCESS')) {
       useGetUserInfo()
         .then(res => dispatch(loginUser(res)))
         .then(setTimeout(() => setIsLoading(false), 100));
@@ -52,6 +52,7 @@ function App() {
     // if (localStorage.REFRESH) {
     //   console.log(localStorage);
     //   useTokenRefresh();
+    //   setIsLoading(false);
     // }
   }, []);
   return (

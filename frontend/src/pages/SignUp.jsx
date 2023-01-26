@@ -24,6 +24,7 @@ export default function SignUp() {
   const [pwCheckValidity, setPwCheckValidity] = useState(false);
   const [numberValidity, setNumberValidity] = useState(false);
   const [authValidity, setAuthValidity] = useState(false);
+  const [authCodeValidity, setAuthCodeValidity] = useState(false);
 
   //임시
   const isLogin = useSelector(state => state.user.isLogin);
@@ -36,41 +37,12 @@ export default function SignUp() {
   const handleSubmit = e => {
     e.preventDefault();
     if (nameValidity || nickname === '' || emailValidity || pwValidity || pwCheckValidity || numberValidity) {
-      return console.log('fail');
+      return toast.warning('제대로 입력바람');
     }
     if (!authValidity) {
       return toast.warning('이메일 인증을 해주세요.');
     }
 
-    console.log('success');
-    console.log([name, nickname, email, password, pwCheck, number]);
-  };
-
-  //인증 요청, 중복 확인
-  const emailAuth = () => {
-    useEmailExistingConfirm(email).then(res => {
-      if (res.data.data) {
-        useEmailAuth(email);
-      } else {
-        return toast.warning('이미 가입된 이메일입니다.');
-      }
-    });
-  };
-
-  //인증 확인
-  const emailAuthConfirm = () => {
-    const body = {
-      email,
-      authCode,
-    };
-    useEmailAuthConfirm(body).then(res => {
-      setAuthValidity(res.data.data);
-      return console.log(res.data.data);
-    });
-  };
-
-  // 회원가입
-  const signUp = () => {
     const body = {
       email,
       password,
@@ -81,6 +53,40 @@ export default function SignUp() {
     console.log(body);
     useSignup(body).then(res => {
       return console.log(res);
+    });
+  };
+
+  //인증 요청, 중복 확인
+  const emailAuth = () => {
+    if (!emailValidity && email !== '') {
+      useEmailExistingConfirm(email).then(res => {
+        if (res.data.data) {
+          useEmailAuth(email);
+          toast.success('이메일 인증 요청 성공 ');
+          setAuthCodeValidity(true);
+        } else {
+          return toast.warning('이미 가입된 이메일입니다.');
+        }
+      });
+    } else {
+      return toast.warning('이메일을 제대로 입력해주세요');
+    }
+  };
+
+  //인증 확인
+  const emailAuthConfirm = () => {
+    const body = {
+      email,
+      authCode,
+    };
+    useEmailAuthConfirm(body).then(res => {
+      setAuthValidity(res.data.data);
+      if (res.data.data) {
+        setAuthCodeValidity(false);
+        return toast.success('이메일 인증에 성공하였습니다.');
+      } else {
+        return toast.warning('인증 코드를 다시 확인해주세요');
+      }
     });
   };
 
@@ -106,19 +112,19 @@ export default function SignUp() {
   };
 
   //오토 하이픈, 유효성 검사
-  const autoHyphen = e => {
-    setNumber(
-      e.target.value
-        .replace(/[^0-9]/g, '')
-        .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
-        .replace(/(\-{1,2})$/g, ''),
-    );
-    if (e.target.value && e.target.value.length !== 13) {
-      setNumberValidity(true);
-    } else {
-      setNumberValidity(false);
-    }
-  };
+  // const autoHyphen = e => {
+  //   setNumber(
+  //     e.target.value
+  //       .replace(/[^0-9]/g, '')
+  //       .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
+  //       .replace(/(\-{1,2})$/g, ''),
+  //   );
+  //   if (e.target.value && e.target.value.length !== 13) {
+  //     setNumberValidity(true);
+  //   } else {
+  //     setNumberValidity(false);
+  //   }
+  // };
 
   // 비밀번호, 비밀번호 확인 유효성 검사
   useEffect(() => {
@@ -153,21 +159,34 @@ export default function SignUp() {
             </Wrapper>
             <Wrapper>
               <EmailWrapper>
-                <Input label="이메일" placeholder="이메일 입력" state={email} onChange={emailValidation} />
-                <Button type="button" onClick={emailAuth}>
-                  ㅎㅇ
+                <Input
+                  label="이메일"
+                  placeholder="이메일 입력"
+                  state={email}
+                  onChange={emailValidation}
+                  readOnly={authValidity ? true : false}
+                />
+                <Button type="button" onClick={emailAuth} disabled={authValidity ? true : false}>
+                  {!authValidity ? `인증하기` : '인증 완료'}
                 </Button>
               </EmailWrapper>
               {emailValidity && <ErrorMsg>올바른 이메일 형식이 아닙니다</ErrorMsg>}
             </Wrapper>
-            <Wrapper>
-              <EmailWrapper>
-                <Input label="인증 코드" placeholder="이메일 인증 코드" state={authCode} setState={setAuthCode}></Input>
-                <Button type="button" onClick={emailAuthConfirm}>
-                  인증
-                </Button>
-              </EmailWrapper>
-            </Wrapper>
+            {authCodeValidity && (
+              <Wrapper>
+                <EmailWrapper>
+                  <Input
+                    label="인증 코드"
+                    placeholder="이메일 인증 코드"
+                    state={authCode}
+                    setState={setAuthCode}
+                    readOnly={authValidity ? true : false}></Input>
+                  <Button type="button" onClick={emailAuthConfirm} disabled={authValidity ? true : false}>
+                    인증
+                  </Button>
+                </EmailWrapper>
+              </Wrapper>
+            )}
             <Wrapper>
               <Input
                 label="비밀번호"
@@ -188,11 +207,11 @@ export default function SignUp() {
               />
               {pwCheckValidity && <ErrorMsg>비밀번호가 일치하지 않습니다.</ErrorMsg>}
             </Wrapper>
-            <Wrapper>
+            {/* <Wrapper>
               <Input type="tel" placeholder="전화번호 입력" label="전화번호" state={number} onChange={autoHyphen} />
               {numberValidity && <ErrorMsg>올바른 전화번호 형식이 아닙니다.</ErrorMsg>}
-            </Wrapper>
-            <SubmitButton onClick={signUp}>회원가입</SubmitButton>
+            </Wrapper> */}
+            <SubmitButton>회원가입</SubmitButton>
           </SignupForm>
         </Contents>
         <LinkTo message="이미 회원이신가요?" link="/login" linkText="로그인" />
