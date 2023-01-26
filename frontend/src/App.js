@@ -43,8 +43,9 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     if (localStorage.ACCESS) {
-      useGetUserInfo().then(res => dispatch(loginUser(res)));
-      setTimeout(() => setIsLoading(false), 100);
+      useGetUserInfo()
+        .then(res => dispatch(loginUser(res)))
+        .then(setTimeout(() => setIsLoading(false), 100));
     } else {
       setIsLoading(false);
     }
@@ -71,11 +72,11 @@ function App() {
               <Route path="/rating" element={<Rating />}></Route>
               <Route path="/signup" element={<SignUp />}></Route>
               <Route path="/tabnida-add" element={<TabnidaAdd />}></Route>
-              <Route path="/tabnida-edit" element={<TabnidaEdit />}></Route>
+              <Route path="/tabnida-edit/:yataId" element={<TabnidaEdit />}></Route>
               <Route path="/tabnida-detail/:yataId" element={<TabnidaDetail />}></Route>
               <Route path="/tabnida-list" element={<TabnidaList />}></Route>
               <Route path="/taeoonda-add" element={<TaeoondaAdd />}></Route>
-              <Route path="/taeoonda-edit" element={<TaeoondaEdit />}></Route>
+              <Route path="/taeoonda-edit/:yataId" element={<TaeoondaEdit />}></Route>
               <Route path="/taeoonda-detail/:yataId" element={<TaeoondaDetail />}></Route>
               <Route path="/taeoonda-list" element={<TaeoondaList />}></Route>
               <Route path="/register-list" element={<RegisterList />}></Route>

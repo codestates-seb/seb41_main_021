@@ -4,6 +4,7 @@ import com.yata.backend.domain.member.dto.MemberDto;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.mapper.MemberMapper;
 import com.yata.backend.domain.member.service.MemberService;
+import com.yata.backend.domain.yata.service.YataMemberService;
 import com.yata.backend.global.response.SingleResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,10 +22,12 @@ public class MemberController {
    private final MemberService memberService;
    private final MemberMapper memberMapper;
    private static final String BASE_URL = "/api/v1/members";
+   private final YataMemberService yataMemberService;
 
-   public MemberController(MemberService memberService, MemberMapper memberMapper) {
+   public MemberController(MemberService memberService, MemberMapper memberMapper, YataMemberService yataMemberService) {
       this.memberService = memberService;
       this.memberMapper = memberMapper;
+      this.yataMemberService = yataMemberService;
    }
    @PostMapping("/signup")
    public ResponseEntity signup(@Valid @RequestBody MemberDto.Post memberPostDto) {
@@ -34,6 +37,7 @@ public class MemberController {
    @GetMapping
    public ResponseEntity getMember(@AuthenticationPrincipal User principal) {
       MemberDto.Response member = memberService.findMemberDto(principal.getUsername());
+      member.setYataCount(yataMemberService.myYataCount(principal.getUsername()));
       return ResponseEntity.ok(new SingleResponse<>(member));
    }
    @PatchMapping

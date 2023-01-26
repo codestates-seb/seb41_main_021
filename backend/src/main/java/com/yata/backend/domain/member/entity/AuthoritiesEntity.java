@@ -15,7 +15,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class AuthoritiesEntity extends Auditable  {
+public class AuthoritiesEntity extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,14 +24,15 @@ public class AuthoritiesEntity extends Auditable  {
     @JoinColumn(name = "member_email")
     @JsonSerialize
     private Member member;
-    @Column
+    @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Member.MemberRole role;
 
     public AuthoritiesEntity() {
 
     }
-    public AuthoritiesEntity(Member member , String role) {
+
+    public AuthoritiesEntity(Member member, String role) {
         this.member = member;
         this.role = Member.MemberRole.valueOf(role);
     }
