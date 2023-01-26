@@ -12,6 +12,7 @@ import com.yata.backend.domain.yata.repository.yataRequestRepo.JpaYataRequestRep
 import com.yata.backend.domain.yata.util.TimeCheckUtils;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -182,5 +183,9 @@ public class YataMemberServiceImpl implements YataMemberService {
 
         return optionalYataMember.orElseThrow(() ->
                 new CustomLogicException(ExceptionCode.CANNOT_CREATE_REVIEW));
+    }
+    @Cacheable(value = "myYataCount", key = "#email")
+    public Long myYataCount(String email) {
+        return jpaYataMemberRepository.countByMember_email(email);
     }
 }

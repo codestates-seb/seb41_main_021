@@ -61,6 +61,7 @@ public class MemberDto {
         private Member.MemberStatus memberStatus;
         private Double fuelTank;
         private List<String> roles;
+        private Long yataCount;
 
     }
 
