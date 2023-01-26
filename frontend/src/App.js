@@ -72,7 +72,7 @@ function App() {
               <Route path="/rating" element={<Rating />}></Route>
               <Route path="/signup" element={<SignUp />}></Route>
               <Route path="/tabnida-add" element={<TabnidaAdd />}></Route>
-              <Route path="/tabnida-edit" element={<TabnidaEdit />}></Route>
+              <Route path="/tabnida-edit/:yataId" element={<TabnidaEdit />}></Route>
               <Route path="/tabnida-detail/:yataId" element={<TabnidaDetail />}></Route>
               <Route path="/tabnida-list" element={<TabnidaList />}></Route>
               <Route path="/taeoonda-add" element={<TaeoondaAdd />}></Route>
