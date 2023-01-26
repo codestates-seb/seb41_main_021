@@ -108,8 +108,8 @@ public class YataRequestControllerTest extends AbstractControllerTest {
                                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("회원 정보"),
                                 fieldWithPath("data.yataId").type(JsonFieldType.NUMBER).description("야타 ID"),
                                 fieldWithPath("data.yataRequestId").type(JsonFieldType.NUMBER).description("야타 신청/초대 ID"),
-                                fieldWithPath("data.yataRequestStatus").type(JsonFieldType.STRING).description("야타 신청 상태"),
-                                fieldWithPath("data.approvalStatus").type(JsonFieldType.STRING).description("야타 승인 상태"),
+                                fieldWithPath("data.yataRequestStatus").type(JsonFieldType.STRING).description("야타 요청 종류 ( INVITE / APPLY )"),
+                                fieldWithPath("data.approvalStatus").type(JsonFieldType.STRING).description("야타 승인 상태 ( ACCEPTED / REJECTED / NOT_YET )"),
                                 fieldWithPath("data.title").type(JsonFieldType.STRING).description("야타 제목"),
                                 fieldWithPath("data.specifics").type(JsonFieldType.STRING).description("야타 특이사항"),
                                 fieldWithPath("data.departureTime").type(JsonFieldType.STRING).description("출발 시간"),
@@ -160,8 +160,8 @@ public class YataRequestControllerTest extends AbstractControllerTest {
                                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("회원 정보"),
                                 fieldWithPath("data.yataRequestId").type(JsonFieldType.NUMBER).description("야타 신청/초대 ID"),
                                 fieldWithPath("data.yataId").type(JsonFieldType.NUMBER).description("야타 ID"),
-                                fieldWithPath("data.yataRequestStatus").type(JsonFieldType.STRING).description("야타 신청 상태"),
-                                fieldWithPath("data.approvalStatus").type(JsonFieldType.STRING).description("야타 승인 상태"),
+                                fieldWithPath("data.yataRequestStatus").type(JsonFieldType.STRING).description("야타 요청 종류 ( INVITE / APPLY )"),
+                                fieldWithPath("data.approvalStatus").type(JsonFieldType.STRING).description("야타 승인 상태 ( ACCEPTED / REJECTED / NOT_YET )"),
                                 fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성 시간")
                         )));
     }
