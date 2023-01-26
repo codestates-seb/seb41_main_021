@@ -29,7 +29,7 @@ spring:
     allow-bean-definition-overriding: true
   redis:
     host: 127.0.0.1
-    port: 6380
+    port: 6381
     password: mock
   mail:
     host: smtp.gmail.com

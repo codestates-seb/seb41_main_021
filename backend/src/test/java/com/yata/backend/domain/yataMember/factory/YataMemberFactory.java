@@ -44,7 +44,7 @@ public class YataMemberFactory {
                 .email(yataMember.getMember().getEmail())
                 .nickname(yataMember.getMember().getNickname())
                 .yataPaid(yataMember.isYataPaid())
-                .point(yataMember.getMember().getPoint())
+                .imgUrl(yataMember.getMember().getImgUrl() != null ? yataMember.getMember().getImgUrl().getUrl() : null)
                 .goingStatus(yataMember.getGoingStatus())
                 .build();
     }
