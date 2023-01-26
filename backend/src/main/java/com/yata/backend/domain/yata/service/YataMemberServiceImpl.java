@@ -137,6 +137,7 @@ public class YataMemberServiceImpl implements YataMemberService {
         }
 
         // TODO 해당 auth 랑 yataMEmberId 랑 달라도 추가가 됨 --> 안되게
+        yataService.equalMember(userName, yataMember.getMember().getEmail()); // 조회하려는 사람 == 해당 yataMember 인지 확인
 
         Optional<YataRequest> yataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(userName, yataId);
         int boardingPeopleCount = yataRequest.get().getBoardingPersonCount();
