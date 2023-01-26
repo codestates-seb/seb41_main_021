@@ -6,7 +6,6 @@ import com.yata.backend.common.token.GeneratedToken;
 import com.yata.backend.domain.AbstractControllerTest;
 import com.yata.backend.domain.member.dto.ChecklistDto;
 import com.yata.backend.domain.review.dto.FindReviewDto;
-import com.yata.backend.domain.review.dto.ReviewChecklistDto;
 import com.yata.backend.domain.review.dto.ReviewDto;
 import com.yata.backend.domain.review.entity.Checklist;
 import com.yata.backend.domain.review.entity.Review;
@@ -64,7 +63,6 @@ public class ReviewControllerTest extends AbstractControllerTest {
         String json = gson.toJson(post);
 
         Review expected = ReviewFactoty.createReview();
-        long yataMemberId = 1L;
 
         given(reviewService.createReview(any(), anyString(), anyLong(), anyLong())).willReturn(new Review());
         given(mapper.reviewToReviewResponse(any())).willReturn(createReviewResponseDto(expected));
@@ -100,9 +98,9 @@ public class ReviewControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.toMemberNickName").type(JsonFieldType.STRING).description("리뷰 대상자 이메일"),
                         fieldWithPath("data.fromMemberNickName").type(JsonFieldType.STRING).description("리뷰 작성자 이메일"),
                         fieldWithPath("data.responses").type(JsonFieldType.ARRAY).description("체크한 항목들 정보"),
-                        fieldWithPath("data.responses[].checklistId").type(JsonFieldType.NUMBER).description("체크한 항목들 정보"),
-                        fieldWithPath("data.responses[].checkContent").type(JsonFieldType.STRING).description("체크한 항목들 정보"),
-                        fieldWithPath("data.responses[].checkpn").type(JsonFieldType.BOOLEAN).description("체크한 항목들 정보")
+                        fieldWithPath("data.responses[].checklistId").type(JsonFieldType.NUMBER).description("체크리스트 아이디"),
+                        fieldWithPath("data.responses[].checkContent").type(JsonFieldType.STRING).description("체크한 항목 내용"),
+                        fieldWithPath("data.responses[].checkpn").type(JsonFieldType.BOOLEAN).description("체크한 항목 긍정/부정 표시")
                 )));
     }
 
@@ -116,7 +114,6 @@ public class ReviewControllerTest extends AbstractControllerTest {
         findReviewDtos.add(new FindReviewDto(new ChecklistDto.Response(1L,"운전을 잘해요",true),3L));
         findReviewDtos.add(new FindReviewDto(new ChecklistDto.Response(9L,"약속을 안 지켜요",false),1L));
 
-        Review expected = ReviewFactoty.createReview();
         given(reviewService.findAllReview(anyString())).willReturn(givenMap);
         given(mapper.reviewsToFindReviewResponses(anyMap())).willReturn(findReviewDtos);
 

@@ -7,26 +7,23 @@ import com.yata.backend.domain.review.entity.Checklist;
 import com.yata.backend.domain.review.entity.Review;
 import com.yata.backend.domain.review.entity.ReviewChecklist;
 import com.yata.backend.domain.review.factory.ReviewFactoty;
-import com.yata.backend.domain.review.repository.Checklist.ChecklistRepository;
 import com.yata.backend.domain.review.repository.Checklist.JpaChecklistRepository;
 import com.yata.backend.domain.review.repository.Review.JpaReviewRepository;
-import com.yata.backend.domain.review.repository.Review.ReviewRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.yata.backend.common.utils.RandomUtils.*;
 import static com.yata.backend.domain.review.factory.CheckListFactory.createCheckListList;
 import static com.yata.backend.domain.review.factory.CheckListFactory.createCheckListListJpa;
 import static org.junit.jupiter.api.Assertions.*;
@@ -68,6 +65,36 @@ class ReviewServiceImplTest {
             System.out.println(entry.getKey().getChecklistId() + " : " + entry.getValue());
         }
         assertEquals(checklistCount.size() , checklists.size());
+    }
+
+    @Test
+    @DisplayName("리뷰 연료통 점수 계산 테스트")
+    void reviewCalculateFuelTankTest() {
+        //given
+        new Checklist(getRandomLong(),getRandomWord(),getRandomBoolean());
+        List<Checklist> checklists =new ArrayList<>();
+        for(int n =0; n<5; n++) {
+            checklists.add(new Checklist(getRandomLong(), getRandomWord(),true));
+        }
+        for(int n =0; n<3; n++) {
+            checklists.add(new Checklist(getRandomLong(), getRandomWord(),false));
+        }
+        Member toMember= new Member();
+        toMember.setFuelTank(30.0);
+
+        int positiveCount = (int) checklists.stream().filter(Checklist::isCheckpn).count();
+        int negativeCount = checklists.size() - positiveCount;
+
+        BigDecimal ChangeNum = new BigDecimal(String.valueOf(0.1));
+        BigDecimal FuelTankScore = new BigDecimal(String.valueOf(toMember.getFuelTank()));
+
+        if (positiveCount > negativeCount) toMember.setFuelTank(FuelTankScore.add(ChangeNum).doubleValue());
+        else toMember.setFuelTank(FuelTankScore.subtract(ChangeNum).doubleValue());
+
+        assertEquals(5, positiveCount );
+        assertEquals(3, negativeCount );
+        assertEquals(30.1, toMember.getFuelTank());
+
     }
 
 

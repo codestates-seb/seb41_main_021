@@ -94,7 +94,6 @@ public interface YataMapper {
         return response.build();
     }
 
-    //todo strPoint, destination mapping
     default List<YataDto.Response> yatasToYataResponses(List<Yata> yatas) {
         if (yatas == null) {
             return null;
