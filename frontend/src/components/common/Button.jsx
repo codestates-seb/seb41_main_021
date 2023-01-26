@@ -4,9 +4,10 @@ const Button = styled.button`
   font-size: ${props => (props.fontSize === 'small' ? 0.7 : 1.2)}rem;
   color: ${props => (props.backgroundColor === 'grey' ? 'black' : 'white')};
   background-color: ${props =>
-    props.backgroundColor === 'grey' ? props => props.theme.colors.buttonGrey : props => props.theme.colors.main_blue};
+    props.disabled === true ? props => props.theme.colors.gray : props => props.theme.colors.main_blue};
   border-radius: 5px;
   border: none;
+  white-space: nowrap;
   padding: ${props => props.padding || '7px 15px'};
   width: ${props => props.newLine && 3.1}rem;
   cursor: ${props => (props.backgroundColor === 'grey' ? 'default' : 'pointer')};

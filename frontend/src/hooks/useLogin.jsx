@@ -59,14 +59,14 @@ const useTokenRefresh = async () => {
     const response = await axios.post('https://server.yata.kro.kr/api/v1/auth/refresh', {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
-        Authorization: localStorage.ACCESS,
-        RefreshToken: localStorage.REFRESH,
+        Authorization: localStorage.getItem('ACCESS'),
+        RefreshToken: localStorage.getItem('REFRESH'),
       },
     });
     return response;
   } catch (error) {
     console.log(error);
-    toast.warning('유저 정보를 불러오지 못했습니다.');
+    // toast.warning('유저 정보를 불러오지 못했습니다.');
   }
 };
 
