@@ -74,7 +74,7 @@ public class YataRepositoryImpl implements YataRepository {
                 .leftJoin(yata.yataMembers , yataMember).fetchJoin()
                 .where(yata.yataStatus.eq(yataStatus))
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .limit(pageable.getPageSize() + 1L)
                 .fetch();
 
         boolean hasNext = false;

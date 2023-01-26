@@ -75,7 +75,7 @@ public class YataRequestRepositoryImpl implements YataRequestRepository {
                 .join(yata.strPoint).fetchJoin()
                 .where(yataRequest.yata.eq(yata))
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .limit(pageable.getPageSize() + 1L)
                 .fetch();
         boolean hasNext = false;
         if (yataRequests.size() > pageable.getPageSize()) {

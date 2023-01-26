@@ -60,6 +60,8 @@ public class YataRequestDto {
         private LocationDto.Response strPoint;
         private LocationDto.Response destination;
         private LocalDateTime createdAt;
+
+        private String imgUrl;
     }
 
     @AllArgsConstructor
