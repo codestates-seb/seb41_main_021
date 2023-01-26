@@ -77,7 +77,7 @@ public class Yata extends Auditable {
 
 
     // TODO lazy / eager 뭐 할지 생각 - 쿼리 어떻게 나오는지 확인하기
-    @OneToMany(mappedBy = "yata", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "yata", cascade = CascadeType.REMOVE , fetch = FetchType.LAZY)
     private List<YataMember> yataMembers = new ArrayList<>();
 
     public enum PostStatus {

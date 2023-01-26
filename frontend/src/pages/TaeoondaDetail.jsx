@@ -8,8 +8,12 @@ import { BiWon, BiCommentDetail } from 'react-icons/bi';
 import { VscAccount } from 'react-icons/vsc';
 import { AiOutlineCar } from 'react-icons/ai';
 import { useTayoRequest } from '../hooks/useTayo';
+import { FiEdit, FiTrash } from 'react-icons/fi';
+import { useNavigate } from 'react-router';
 
 export default function TabnidaDetail() {
+  const navigate = useNavigate();
+
   const requestHandler = () => {
     const data = {
       title: '태워주세욥',
@@ -30,7 +34,7 @@ export default function TabnidaDetail() {
       },
     };
 
-    useTayoRequest('https://server.yata.kro.kr/api/v1/yata/apply', data).then(res => {
+    useTayoRequest(`https://server.yata.kro.kr/api/v1/yata/apply/${yataId}`, data).then(res => {
       console.log(res);
     });
   };
@@ -39,6 +43,10 @@ export default function TabnidaDetail() {
     <>
       <Header title={'태웁니다'}></Header>
       <Container>
+        <CRUDContainer>
+          <FiEdit onClick={() => navigate('/taeoonda-edit')} />
+          <FiTrash />
+        </CRUDContainer>
         <ProfileContainer>
           <ProfileInfoContainer>
             <h2>작성자 정보</h2>
@@ -78,7 +86,7 @@ export default function TabnidaDetail() {
           </CarContainer>
           <MemoContainer>
             <BiCommentDetail />
-            <p className="memo-txt">흡여자여서 차에서 담배 냄새 날 수 있습니다.</p>
+            <p className="memo-txt">흡연자여서 차에서 담배 냄새 날 수 있습니다.</p>
           </MemoContainer>
         </InfoContainer>
 
@@ -181,4 +189,18 @@ const CarContainer = styled.div``;
 const RequestButton = styled(Button)`
   width: 40%;
   margin-top: 1rem;
+`;
+
+const CRUDContainer = styled.div`
+  width: 95%;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  svg {
+    font-size: 1.7rem;
+    margin: 0.5rem 0.8rem;
+    cursor: pointer;
+  }
 `;

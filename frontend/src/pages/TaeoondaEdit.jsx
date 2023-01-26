@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router';
 import styled, { css } from 'styled-components';
 import KakaoMap from '../components/KakaoMap';
 import Input from '../components/common/Input';
@@ -7,6 +8,7 @@ import DestinationList from '../components/Tayo/DestinationList';
 import Header from '../components/Header';
 import { BsPlusLg } from 'react-icons/bs';
 import { TiDeleteOutline } from 'react-icons/ti';
+import { useTayoEdit } from '../hooks/useTayo';
 
 export default function TaeoondaEdit() {
   const [isFilled, setIsFilled] = useState(false);
@@ -15,6 +17,36 @@ export default function TaeoondaEdit() {
   const [isDeparture, setIsDeparture] = useState(false);
   const [isDestination, setIsDestination] = useState(false);
   const [Places, setPlaces] = useState([]);
+
+  const params = useParams();
+  const yataId = params.yataId;
+
+  const editHandler = () => {
+    const data = {
+      title: '인천까지 같이가실 분~',
+      specifics: '같이 춤추면서 가요~',
+      departureTime: '2023-01-25T23:52:36',
+      timeOfArrival: '2023-01-25T23:52:36',
+      maxWaitingTime: 10,
+      maxPeople: 2,
+      amount: 1500,
+      carModel: 'porsche',
+      strPoint: {
+        longitude: 5.0,
+        latitude: 4.0,
+        address: '부산',
+      },
+      destination: {
+        longitude: 3.0,
+        latitude: 2.0,
+        address: '인천',
+      },
+    };
+
+    useTayoEdit(`https://server.yata.kro.kr/api/v1/yata/apply/${yataId}`, data).then(res => {
+      console.log(res);
+    });
+  };
 
   const [inputFields, setInputFields] = useState([
     {

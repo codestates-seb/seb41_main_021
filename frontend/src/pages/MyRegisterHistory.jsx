@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Header from '../components/Header';
 import ListItem from '../components/ListItem';
 
-export default function JourneyList() {
+export default function MyRegisterHistory() {
   return (
     <>
       <Header title="여정 내역" />

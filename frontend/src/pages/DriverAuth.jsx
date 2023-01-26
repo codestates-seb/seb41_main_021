@@ -9,9 +9,9 @@ export default function DriverAuth() {
       <Header title="운전자 인증하기" />
       <Container>
         <Contents>
-          <Input label="이름"></Input>
-          <Input label="운전면허 번호"></Input>
-          <Input label="발급일자"></Input>
+          <Input label="이름" placeholder="이름 입력"></Input>
+          <Input label="운전면허 번호" placeholder="운전면허 번호 입력"></Input>
+          <Input label="발급일자" placeholder="발급일자 입력"></Input>
           <AuthBtn>인증하기</AuthBtn>
         </Contents>
       </Container>
