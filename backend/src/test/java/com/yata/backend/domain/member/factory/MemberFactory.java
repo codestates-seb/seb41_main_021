@@ -67,6 +67,7 @@ public class MemberFactory {
                 .nickname(member.getNickname())
                 .memberStatus(member.getMemberStatus())
                 .imgUrl(member.getImgUrl().getUrl())
+                .point(member.getPoint())
                 .providerType(member.getProviderType())
                 .carImgUrl(member.getCarImgUrl())
                 .roles(member.getRoles().stream().map(role -> role.getRole().name()).toList())
