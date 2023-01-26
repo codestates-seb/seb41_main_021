@@ -2,10 +2,13 @@ package com.yata.backend.domain.yata.service;
 
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.service.MemberService;
+import com.yata.backend.domain.payHistory.entity.PayHistory;
+import com.yata.backend.domain.payHistory.repository.JpaPayHistoryRepository;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataMember;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import com.yata.backend.domain.yata.repository.yataMemberRepo.JpaYataMemberRepository;
+import com.yata.backend.domain.yata.repository.yataRequestRepo.JpaYataRequestRepository;
 import com.yata.backend.domain.yata.util.TimeCheckUtils;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
@@ -14,19 +17,24 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional
 public class YataMemberServiceImpl implements YataMemberService {
     private final JpaYataMemberRepository jpaYataMemberRepository;
+    private final JpaYataRequestRepository jpaYataRequestRepository;
+    private final JpaPayHistoryRepository jpaPayHistoryRepository;
     private final YataRequestService yataRequestService;
     private final YataService yataService;
     private final MemberService memberService;
     private final long LEFT_TIME = 2 * 24 * 60 * 60 * 1000;
 
-    public YataMemberServiceImpl(JpaYataMemberRepository jpaYataMemberRepository, YataRequestService yataRequestService, YataService yataService, MemberService memberService) {
+    public YataMemberServiceImpl(JpaYataMemberRepository jpaYataMemberRepository, JpaYataRequestRepository jpaYataRequestRepository, JpaPayHistoryRepository jpaPayHistoryRepository, YataRequestService yataRequestService, YataService yataService, MemberService memberService) {
         this.jpaYataMemberRepository = jpaYataMemberRepository;
+        this.jpaYataRequestRepository = jpaYataRequestRepository;
+        this.jpaPayHistoryRepository = jpaPayHistoryRepository;
         this.yataRequestService = yataRequestService;
         this.yataService = yataService;
         this.memberService = memberService;
@@ -43,7 +51,7 @@ public class YataMemberServiceImpl implements YataMemberService {
         // 인원 수 검증은 신청 시에 이미 했기 때문에 갠잔 / 초대는 자기가 알아서 판단해서 하겠지 모 자기 차니까
 
         // 승인하려는 yataRequest 가 해당 yata 게시물에 신청한 request 인지 검증
-        verifyAppliedRequest(yata, yataRequestId);
+        yataRequestService.verifyAppliedRequest(yata, yataRequestId);
 
         // 게시물의 출발 시간이 현재 시간을 지났으면 승인 불가
         TimeCheckUtils.verifyTime(yata.getDepartureTime().getTime(), System.currentTimeMillis());
@@ -102,9 +110,9 @@ public class YataMemberServiceImpl implements YataMemberService {
 
     // yataMember 전체 조회 ( 승인된 애들 조회 )
     @Override
-    public Slice<YataMember> findAcceptedRequests(String userEmail, Long yataId, Pageable pageable) {
+    public Slice<YataMember> findAcceptedRequests(String userName, Long yataId, Pageable pageable) {
         Yata yata = yataService.findYata(yataId);
-        Member member = memberService.verifyMember(userEmail);
+        Member member = memberService.verifyMember(userName);
 
         yataService.equalMember(member.getEmail(), yata.getMember().getEmail()); // 게시글 작성자 == 조회하려는 사람 인지 확인
 
@@ -113,37 +121,56 @@ public class YataMemberServiceImpl implements YataMemberService {
         return jpaYataMemberRepository.findAllByYata(yata, pageable);
     }
 
-    // 승인하려는 yataRequest 가 해당 yata 게시물에 신청한 request 인지 검증
+    // TODO 포인트 지불
+    //  도착(결제)버튼 누르면
+    //  --> 승인 이후에만 가능하도록 ( 근데 사실 yataMemberId 로 하는 거라 이미 승인이 된 애들만 있음 )
     @Override
-    public void verifyAppliedRequest(Yata yata, Long yataRequestId) {
-        YataRequest request = yataRequestService.findRequest(yataRequestId);
-        if (!request.getYata().equals(yata)) {
-            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
-        }
+    public void payPoint(String userName, Long yataId, Long yataMemberId) {
+        Member member = memberService.findMember(userName); // 해당 member 가 있는지 확인 ( 결제하려는 주체 )
+        Yata yata = yataService.findYata(yataId); // 해당 yata 가 있는지 확인 ( 결제할 게시물 )
+        YataMember yataMember = verifyYataMember(yataMemberId);
+
+        // 해당 yataMember 가 해당 yata 에 있는 yataMember 인지 검증
+        verifyPossibleYataMember(yataMemberId, yata);
+
+        Optional<YataRequest> yataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(userName, yataId);
+        int boardingPeopleCount = yataRequest.get().getBoardingPersonCount();
+        // 포인트 잔액 = member 에서 가져온 point - ( yata 게시물의 가격 * yataRequest 에 신청한 인원 )
+        Long balance = member.getPoint() - ( yata.getAmount() * boardingPeopleCount );
+        member.setPoint(balance);
+
+        yataMember.setYataPaid(true); // 지불 여부 true 로
+        yataMember.setGoingStatus(YataMember.GoingStatus.ARRIVED); // goingStatus 도착으로
+//        member.setYataMembers(List.of(yataMember));
+
+        PayHistory payHistory = new PayHistory();
+        payHistory.setMember(member);
+
+        jpaPayHistoryRepository.save(payHistory);
     }
+
+    /*검증 로직*/
 
     @Override
     public YataMember verifyYataMember(long yataMemberId) {
         Optional<YataMember> optionalYataMember = jpaYataMemberRepository.findById(yataMemberId);
-        YataMember findYataMember = optionalYataMember.orElseThrow(() ->
-            new CustomLogicException(ExceptionCode.YATA_MEMBER_NONE));
 
-        return findYataMember;
+        return optionalYataMember.orElseThrow(() ->
+                new CustomLogicException(ExceptionCode.YATA_MEMBER_NONE));
     }
 
     //해당 게시글에 해당 yataMemberId가 있는지를 검증하는 로직
     public YataMember verifyPossibleYataMember(Long yataMemberId, Yata yata) {
         Optional<YataMember> optionalYataMember = jpaYataMemberRepository.findByYataMemberIdAndYata(yataMemberId, yata);
-        YataMember findYataMember = optionalYataMember.orElseThrow(() ->
-                new CustomLogicException(ExceptionCode.CANNOT_CREATE_REVIEW));
-        return findYataMember;
+
+        return optionalYataMember.orElseThrow(() ->
+                new CustomLogicException(ExceptionCode.UNAUTHORIZED));
     }
 
     public YataMember verifyPossibleYataMemberByuserName(Yata yata, Member member) {
         Optional<YataMember> optionalYataMember = jpaYataMemberRepository.findByYataAndMember(yata, member);
-        YataMember findYataMember = optionalYataMember.orElseThrow(() ->
-                new CustomLogicException(ExceptionCode.CANNOT_CREATE_REVIEW));
-        return findYataMember;
-    }
 
+        return optionalYataMember.orElseThrow(() ->
+                new CustomLogicException(ExceptionCode.CANNOT_CREATE_REVIEW));
+    }
 }
