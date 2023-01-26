@@ -12,11 +12,13 @@ import com.yata.backend.domain.yata.repository.yataRequestRepo.JpaYataRequestRep
 import com.yata.backend.domain.yata.util.TimeCheckUtils;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -59,6 +61,15 @@ public class YataMemberServiceImpl implements YataMemberService {
         if (yataRequest.getApprovalStatus().equals(YataRequest.ApprovalStatus.ACCEPTED))
             throw new CustomLogicException(ExceptionCode.ALREADY_APPROVED);
 
+        List<YataMember> savedYataMember = jpaYataMemberRepository.findAllByYata_YataId(yataId);
+        int sum = savedYataMember.stream()
+                .mapToInt(YataMember::getBoardingPersonCount)
+                .sum();
+
+        if (yata.getMaxPeople() < sum + yataRequest.getBoardingPersonCount()) {
+            throw new CustomLogicException(ExceptionCode.CANNOT_APPROVE);
+        }
+
         yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.ACCEPTED);
 
         YataMember yataMember = new YataMember();
@@ -66,6 +77,7 @@ public class YataMemberServiceImpl implements YataMemberService {
         yataMember.setMember(yataRequest.getMember());
         yataMember.setYataPaid(false); //지불 상태 set
         yataMember.setGoingStatus(YataMember.GoingStatus.STARTED_YET); //카풀 현황 set
+        yataMember.setBoardingPersonCount(yataRequest.getBoardingPersonCount());
 
         jpaYataMemberRepository.save(yataMember);
     }
@@ -182,5 +194,9 @@ public class YataMemberServiceImpl implements YataMemberService {
 
         return optionalYataMember.orElseThrow(() ->
                 new CustomLogicException(ExceptionCode.CANNOT_CREATE_REVIEW));
+    }
+    @Cacheable(value = "myYataCount", key = "#email")
+    public Integer myYataCount(String email) {
+        return jpaYataMemberRepository.countByMember_email(email);
     }
 }

@@ -54,7 +54,7 @@ export default function TabnidaAdd() {
       title: '제목',
       specifics,
       departureTime,
-      timeOfArrival: '2023-01-23T22:38:28',
+      timeOfArrival: '2100-12-23T22:38:28',
       maxWaitingTime: 0,
       maxPeople,
       yataStatus: 'YATA_NATA',
@@ -72,9 +72,8 @@ export default function TabnidaAdd() {
       },
     };
 
-    useTayoCreate('https://server.yata.kro.kr/api/v1/yata?yataStatus=nata', data).then(res => {
+    useTayoCreate('https://server.yata.kro.kr/api/v1/yata', data).then(res => {
       console.log(res);
-      navigate('/tabnida-list');
     });
   };
 

@@ -92,7 +92,7 @@ public class YataFactory {
 
     public static Yata createYata() throws org.locationtech.jts.io.ParseException {
         List<YataMember> yatamembers = new ArrayList<>();
-        yatamembers.add(new YataMember(1L, true, YataMember.GoingStatus.STARTED_YET, new Yata(1L), null));
+        yatamembers.add(new YataMember(1L, true,2,YataMember.GoingStatus.STARTED_YET, new Yata(1L), null));
         Member member = new Member();
         member.setNickname("채은");
         Yata yata = Yata.builder()

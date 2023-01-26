@@ -80,7 +80,7 @@ public class YataControllerTest extends AbstractControllerTest {
 
         List<YataMember> yataMembers = new ArrayList<>();
         Member member = new Member();
-        yataMembers.add(new YataMember(1L, true, YataMember.GoingStatus.STARTED_YET, null, null));
+        yataMembers.add(new YataMember(1L, true, 2,YataMember.GoingStatus.STARTED_YET, null, null));
 
         member.setNickname("채은");
 
@@ -332,7 +332,8 @@ public class YataControllerTest extends AbstractControllerTest {
 
         YataDto.Response response = createYataResponseDto(yata);
 
-        YataMemberDto.Response yataMemberResponse = new YataMemberDto.Response(1L, 1L, "test1@gmail.com", "nickname", true, YataMember.GoingStatus.STARTED_YET, "https://avatars.githubusercontent.com/u/48292190?v=4");
+        YataMemberDto.Response yataMemberResponse = new YataMemberDto.Response(1L, 1L, "test1@gmail.com", "nickname",
+                true, 2,YataMember.GoingStatus.STARTED_YET, "https://avatars.githubusercontent.com/u/48292190?v=4");
         List<YataMemberDto.Response> yataMembers = new ArrayList<>();
         yataMembers.add(yataMemberResponse);
 
@@ -391,13 +392,14 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
                         fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각"),
                         fieldWithPath("data.feulTank").type(JsonFieldType.NUMBER).description("작성자 연료통 점수"),
-                        fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
+                        fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약 인원"),
                         fieldWithPath("data.yataMembers").type(JsonFieldType.ARRAY).description("예약 인원 정보"),
                         fieldWithPath("data.yataMembers[].yataId").type(JsonFieldType.NUMBER).description("야타 아이디"),
-                        fieldWithPath("data.yataMembers[].yataMemberId").type(JsonFieldType.NUMBER).description("야타멤버(예약자)아이디"),
+                        fieldWithPath("data.yataMembers[].yataMemberId").type(JsonFieldType.NUMBER).description("야타멤버(예약자) 아이디"),
                         fieldWithPath("data.yataMembers[].email").type(JsonFieldType.STRING).description("야타멤버(예약자) 이메일"),
                         fieldWithPath("data.yataMembers[].nickname").type(JsonFieldType.STRING).description("야타멤버(예약자) 닉네임"),
-                        fieldWithPath("data.yataMembers[].yataPaid").type(JsonFieldType.BOOLEAN).description("지불여부"),
+                        fieldWithPath("data.yataMembers[].yataPaid").type(JsonFieldType.BOOLEAN).description("지불 여부"),
+                        fieldWithPath("data.yataMembers[].boardingPersonCount").type(JsonFieldType.NUMBER).description("탑승 인원"),
                         fieldWithPath("data.yataMembers[].goingStatus").type(JsonFieldType.STRING).description("가는 상태 'STARTED_YET,ARRIVED'"),
                         fieldWithPath("data.yataMembers[].imgUrl").type(JsonFieldType.STRING).description("야타 멤버 프로필 이미지")
 

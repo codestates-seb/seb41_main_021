@@ -4,7 +4,6 @@ import Button from '../components/common/Button';
 import Input from '../components/common/Input';
 import LinkTo from '../components/common/LinkTo';
 import Header from '../components/Header';
-
 import { useSignup } from '../hooks/useSignup';
 import { toast } from 'react-toastify';
 import { useEmailAuth, useEmailAuthConfirm, useEmailExistingConfirm } from '../hooks/useEmail';
@@ -26,6 +25,7 @@ export default function SignUp() {
   const [numberValidity, setNumberValidity] = useState(false);
   const [authValidity, setAuthValidity] = useState(false);
 
+  //임시
   const isLogin = useSelector(state => state.user.isLogin);
   const navigate = useNavigate();
 
@@ -41,6 +41,7 @@ export default function SignUp() {
     if (!authValidity) {
       return toast.warning('이메일 인증을 해주세요.');
     }
+
     console.log('success');
     console.log([name, nickname, email, password, pwCheck, number]);
   };
@@ -67,6 +68,7 @@ export default function SignUp() {
       return console.log(res.data.data);
     });
   };
+
   // 회원가입
   const signUp = () => {
     const body = {
@@ -81,6 +83,7 @@ export default function SignUp() {
       return console.log(res);
     });
   };
+
   // 이름 유효성 검사
   const nameValidation = e => {
     setName(e.target.value.replace(/[a-z0-9]|[ \[\]{}()<>?|`~!@#$%^&*-_+=,.;:\"'\\]/g, ''));
@@ -90,6 +93,7 @@ export default function SignUp() {
       setNameValidity(false);
     }
   };
+
   // 이메일 유효성 검사
   const emailValidation = e => {
     setEmail(e.target.value);
@@ -100,6 +104,7 @@ export default function SignUp() {
       setEmailValidity(false);
     }
   };
+
   //오토 하이픈, 유효성 검사
   const autoHyphen = e => {
     setNumber(
@@ -114,6 +119,7 @@ export default function SignUp() {
       setNumberValidity(false);
     }
   };
+
   // 비밀번호, 비밀번호 확인 유효성 검사
   useEffect(() => {
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
@@ -122,7 +128,6 @@ export default function SignUp() {
     } else {
       setPwValidity(false);
     }
-
     if (password !== pwCheck) {
       setPwCheckValidity(true);
     } else {
@@ -249,6 +254,7 @@ const Wrapper = styled.div`
   position: relative;
   flex-direction: column;
 `;
+
 const EmailWrapper = styled.div`
   display: flex;
   align-items: flex-end;

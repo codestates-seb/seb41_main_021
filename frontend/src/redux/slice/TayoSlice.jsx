@@ -23,11 +23,6 @@ const initialState = {
 };
 
 const tayoSlice = createSlice({
-  //     createSlice 안에 인자로 다음 세가지는 필수로 작성해야 한다.
-  // name: "counter"
-  // initialState
-  // reducers: {}
-
   name: 'tayoController',
   initialState,
   reducers: {
@@ -47,7 +42,18 @@ const tayoSlice = createSlice({
     },
 
     editTayo: (state, action) => {
-      state.number = state.number - action.payload;
+      state.title = action.payload.title;
+      state.specifics = action.payload.specifics;
+      state.departureTime = action.payload.departureTime;
+      state.timeOfArrival = action.payload.timeOfArrival;
+      state.maxWaitingTime = action.payload.maxWaitingTime;
+      state.maxPeople = action.payload.maxPeople;
+      state.yataStatus = action.payload.yataStatus;
+      state.memberStatus = action.payload.memberStatus;
+      state.amount = action.payload.amount;
+      state.carModel = action.payload.carModel;
+      state.strPoint = action.payload.strPoint;
+      state.destination = action.payload.destination;
     },
 
     deleteTayo: (state, action) => {
