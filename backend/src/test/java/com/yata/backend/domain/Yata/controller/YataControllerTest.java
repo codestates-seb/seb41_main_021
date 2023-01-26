@@ -7,7 +7,6 @@ import com.yata.backend.domain.AbstractControllerTest;
 import com.yata.backend.domain.Yata.factory.YataFactory;
 import com.yata.backend.domain.Yata.factory.YataSnippet;
 import com.yata.backend.domain.member.entity.Member;
-import com.yata.backend.domain.payHistory.entity.PayHistory;
 import com.yata.backend.domain.yata.controller.YataController;
 import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.dto.YataMemberDto;

@@ -1,8 +1,6 @@
 package com.yata.backend.domain.yata.dto;
 
-import com.yata.backend.domain.payHistory.entity.PayHistory;
 import com.yata.backend.domain.yata.entity.YataMember;
-import com.yata.backend.domain.yata.entity.YataRequest;
 import lombok.*;
 
 @Getter
