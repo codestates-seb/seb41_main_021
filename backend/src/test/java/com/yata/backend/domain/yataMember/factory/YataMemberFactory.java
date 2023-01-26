@@ -1,18 +1,11 @@
 package com.yata.backend.domain.yataMember.factory;
 
-import com.yata.backend.common.utils.RandomUtils;
 import com.yata.backend.domain.Yata.factory.YataFactory;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.factory.MemberFactory;
 import com.yata.backend.domain.yata.dto.YataMemberDto;
-import com.yata.backend.domain.yata.dto.YataRequestDto;
-import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataMember;
-import com.yata.backend.domain.yata.entity.YataRequest;
-import com.yata.backend.domain.yataRequest.factory.YataRequestFactory;
-import com.yata.backend.global.utils.GeometryUtils;
-import org.locationtech.jts.io.ParseException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;

@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "yataRequests")
+@ToString
 @Table(indexes = {
         @Index(name = "idx_member_email", columnList = "email", unique = true),
         @Index(name = "idx_member_nickname", columnList = "nickname")
@@ -118,6 +118,8 @@ public class Member extends Auditable  {
                 .genders(genders)
                 .imgUrl(imgUrl != null ? imgUrl.getUrl() : null)
                 .carImgUrl(carImgUrl)
+                .point(point)
+                .fuelTank(fuelTank)
                 .memberStatus(memberStatus)
                 .nickname(nickname)
                 .providerType(providerType)

@@ -34,6 +34,7 @@ public interface MemberMapper {
                 .memberStatus(member.getMemberStatus())
                 .genders(member.getGenders())
                 .imgUrl(member.getImgUrl() == null ? null : member.getImgUrl().getUrl())
+                .point(member.getPoint())
                 .providerType(member.getProviderType())
                 .carImgUrl(member.getCarImgUrl())
                 .fuelTank(member.getFuelTank())

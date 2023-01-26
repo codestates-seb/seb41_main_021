@@ -1,10 +1,7 @@
 package com.yata.backend.domain.yata.mapper;
 
 import com.yata.backend.domain.yata.dto.YataMemberDto;
-import com.yata.backend.domain.yata.dto.YataRequestDto;
-import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataMember;
-import com.yata.backend.domain.yata.entity.YataRequest;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -29,21 +26,4 @@ public interface YataMemberMapper {
                         .goingStatus(yataMember.getGoingStatus())
                         .build()).collect(Collectors.toList());
     }
-
-//    default YataMemberDto.pointPaymentResponse yataMemberToYataMemberResponse(YataMember yataMember) {
-//        if (yataMember == null) {
-//            return null;
-//        }
-//
-//        long yataMemberId = yataMember.getYataMemberId();
-//        long yataId = yataMember.getYata().getYataId();
-//        boolean yataPaid = yataMember.isYataPaid();
-//        long point = yataMember.getMember().getPoint();
-//        YataMember.GoingStatus goingStatus = yataMember.getGoingStatus();
-//
-//        YataMemberDto.pointPaymentResponse response = new YataMemberDto.pointPaymentResponse(
-//                yataMemberId, yataId, yataPaid, point, goingStatus);
-//
-//        return response;
-//    }
 }

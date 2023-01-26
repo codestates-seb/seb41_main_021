@@ -474,6 +474,19 @@ include::{snippets}/yataMember-payPoint/path-parameters.adoc[]
 .http-response
 include::{snippets}/yataMember-payPoint/http-response.adoc[]
 
+== PayHistoryContorller
+=== 포인트 결제 내역 조회
+.http-request
+include::{snippets}/payHistory-getAll/http-request.adoc[]
+.request-headers
+include::{snippets}/payHistory-getAll/request-headers.adoc[]
+.http-response
+include::{snippets}/payHistory-getAll/http-response.adoc[]
+.response-fields
+include::{snippets}/payHistory-getAll/response-fields.adoc[]
+.response-body
+include::{snippets}/payHistory-getAll/response-body.adoc[]
+
 == ReviewController
 === 리뷰 생성
 운전자의 경우 yataMemberId 값을 queryParam으로 넣어주고,

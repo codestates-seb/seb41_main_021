@@ -57,6 +57,7 @@ public class MemberDto {
         private ProviderType providerType;
         private String carImgUrl;
 
+        private Long point;
         private Member.MemberStatus memberStatus;
         private Double fuelTank;
         private List<String> roles;
