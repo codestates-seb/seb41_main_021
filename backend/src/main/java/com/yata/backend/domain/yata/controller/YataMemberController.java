@@ -60,7 +60,7 @@ public class YataMemberController {
                 new SliceResponseDto<>(mapper.yataMembersToYataMembersResponses(acceptedRequests.getContent()), sliceInfo), HttpStatus.OK);
     }
 
-    // TODO 포인트 지불 - 200 / response 없이
+    // 포인트 지불 - 200
     @PostMapping("/{yataMemberId}/payPoint")
     public ResponseEntity payPoint(@PathVariable("yataId") @Positive long yataId,
                                    @PathVariable("yataMemberId") @Positive long yataMemberId,

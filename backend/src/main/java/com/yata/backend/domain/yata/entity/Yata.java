@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = "yataMembers")
 @Table(indexes = {
         @Index(name = "idx_yata_yataId", columnList = "yataId", unique = true),
         @Index(name = "idx_yata_member", columnList = "EMAIL"),

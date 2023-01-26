@@ -17,7 +17,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -121,9 +120,7 @@ public class YataMemberServiceImpl implements YataMemberService {
         return jpaYataMemberRepository.findAllByYata(yata, pageable);
     }
 
-    // TODO 포인트 지불
-    //  도착(결제)버튼 누르면
-    //  --> 승인 이후에만 가능하도록 ( 근데 사실 yataMemberId 로 하는 거라 이미 승인이 된 애들만 있음 )
+    // 포인트 지불 --> 승인된 이후에 (어차피 yataMemberId 로 되어 있음 )
     @Override
     public void payPoint(String userName, Long yataId, Long yataMemberId) {
         Member member = memberService.findMember(userName); // 해당 member 가 있는지 확인 ( 결제하려는 주체 )
@@ -133,18 +130,31 @@ public class YataMemberServiceImpl implements YataMemberService {
         // 해당 yataMember 가 해당 yata 에 있는 yataMember 인지 검증
         verifyPossibleYataMember(yataMemberId, yata);
 
+        // 해당 yata 에 한 번 지불했으면 다시 지불 못하도록
+        if (yataMember.isYataPaid()) {
+            throw new CustomLogicException(ExceptionCode.AlREADY_PAID);
+        }
+
+        // TODO 해당 auth 랑 yataMEmberId 랑 달라도 추가가 됨 --> 안되게
+        yataService.equalMember(userName, yataMember.getMember().getEmail()); // 조회하려는 사람 == 해당 yataMember 인지 확인
+
         Optional<YataRequest> yataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(userName, yataId);
         int boardingPeopleCount = yataRequest.get().getBoardingPersonCount();
-        // 포인트 잔액 = member 에서 가져온 point - ( yata 게시물의 가격 * yataRequest 에 신청한 인원 )
-        Long balance = member.getPoint() - ( yata.getAmount() * boardingPeopleCount );
+
+        // 지불한 금액 = yata 게시물의 가격 * yataRequest 에 신청한 인원
+        Long paidPrice = yata.getAmount() * boardingPeopleCount;
+
+        // 포인트 잔액 = member 에서 가져온 point - 지불한 금액
+        Long balance = member.getPoint() - paidPrice;
         member.setPoint(balance);
 
         yataMember.setYataPaid(true); // 지불 여부 true 로
         yataMember.setGoingStatus(YataMember.GoingStatus.ARRIVED); // goingStatus 도착으로
-//        member.setYataMembers(List.of(yataMember));
 
         PayHistory payHistory = new PayHistory();
         payHistory.setMember(member);
+        payHistory.setType(PayHistory.Type.YATA);
+        payHistory.setPaidPrice(paidPrice);
 
         jpaPayHistoryRepository.save(payHistory);
     }
