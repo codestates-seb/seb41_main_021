@@ -1,4 +1,4 @@
-![header](https://capsule-render.vercel.app/api?type=waving&color=auto&customColorList=4&height=300&section=header&text=YATA&fontSize=90&animation=fadeIn&fontAlignY=38)
+![dg](https://user-images.githubusercontent.com/110887604/214875212-f4280b42-1149-46db-a58b-f9371c9c5f6a.PNG)
 
 
 <h3 align='center'>🚖 언제 어디서나 안심하고 사용할 수 있는 카 쉐어링 서비스, 야 타! 🚖 </h3>
