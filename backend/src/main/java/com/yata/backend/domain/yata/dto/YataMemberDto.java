@@ -20,7 +20,6 @@ public class YataMemberDto {
         private boolean yataPaid;
         private int boardingPersonCount;
         private YataMember.GoingStatus goingStatus;
-        // 추가
         private String imgUrl;
 
     }
