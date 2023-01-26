@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const header = {
   headers: {
@@ -7,16 +8,18 @@ const header = {
   },
 };
 
-const useDeleteData = async (url, data) => {
+const useDeleteData = async url => {
   try {
-    if (data) {
-      const response = await axios.delete(url, data, header);
-      return response;
-    }
-    const response = await axios.delete(url, header);
+    const response = await axios.delete(url, {
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        Authorization: localStorage.getItem('ACCESS'),
+      },
+    });
     return response;
   } catch (error) {
-    return console.log(error);
+    console.log(error);
+    // toast.warning('삭제에 실패했습니다.');
   }
 };
 

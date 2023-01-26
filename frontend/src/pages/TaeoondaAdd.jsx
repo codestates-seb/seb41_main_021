@@ -9,9 +9,13 @@ import Header from '../components/Header';
 import { BsPlusLg } from 'react-icons/bs';
 import { TiDeleteOutline } from 'react-icons/ti';
 import { useTayoCreate } from '../hooks/useTayo';
+import { useParams } from 'react-router';
 
 export default function TaeoondaAdd() {
   const navigate = useNavigate();
+  const params = useParams();
+  const yataId = params.yataId;
+
   const [isFilled, setIsFilled] = useState(false);
   const [departure, setDeparture] = useState('');
   const [destination, setDestination] = useState('');
@@ -35,7 +39,7 @@ export default function TaeoondaAdd() {
       title: '제목',
       specifics,
       departureTime,
-      timeOfArrival: '2023-01-23T22:38:28',
+      timeOfArrival: '2100-12-31T22:38:28',
       maxWaitingTime: 0,
       maxPeople,
       yataStatus: 'YATA_NEOTA',
@@ -53,9 +57,9 @@ export default function TaeoondaAdd() {
       },
     };
 
-    useTayoCreate('https://server.yata.kro.kr/api/v1/yata?yataStatus=neota', data).then(res => {
+    useTayoCreate('https://server.yata.kro.kr/api/v1/yata?yataStatus=nata', data).then(res => {
       console.log(res);
-      // navigate('/taeoonda-list');
+      navigate(`/taeoonda-detail/${yataId}`);
     });
   };
 
