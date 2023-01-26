@@ -3,10 +3,9 @@ import NavBar from '../components/NavBar';
 import { NavLink } from 'react-router-dom';
 import { VscAccount } from 'react-icons/vsc';
 import { BiTrip, BiLike } from 'react-icons/bi';
-import { RiOilLine } from 'react-icons/ri';
+import { RiArrowLeftSFill, RiOilLine } from 'react-icons/ri';
 import { IoIosArrowForward } from 'react-icons/io';
 import { RiCoinsFill } from 'react-icons/ri';
-
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { checkIfLogined } from '../hooks/useLogin';
@@ -45,6 +44,11 @@ export default function MyPage() {
                 <div className="text">{info.nickname}</div>
                 <div className="text">{info.email}</div>
               </Info>
+              {info.roles[1] === 'DRIVER' ? (
+                <CompleteAuth>운전자 인증</CompleteAuth>
+              ) : (
+                <UncompleteAuth>운전자 미인증</UncompleteAuth>
+              )}
             </Profile>
           </ProfileContainer>
           <SummaryContainer>
@@ -159,7 +163,7 @@ const ProfileContainer = styled.div`
 `;
 
 const Profile = styled.div`
-  width: 80%;
+  width: 100%;
   display: flex;
   align-items: center;
 
@@ -172,10 +176,25 @@ const Profile = styled.div`
 const Info = styled.div`
   display: flex;
   flex-direction: column;
+  margin-right: 2rem;
 
   .text {
     font-size: 1.1rem;
   }
+`;
+const CompleteAuth = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem;
+  height: 1.8rem;
+  color: #ffffff;
+  border-radius: 0.2rem;
+  font-size: 1rem;
+  background-color: ${props => props.theme.colors.main_blue};
+`;
+const UncompleteAuth = styled(CompleteAuth)`
+  background-color: ${props => props.theme.colors.gray};
 `;
 
 const PointContainer = styled.div`
