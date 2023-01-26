@@ -31,6 +31,7 @@ export default function MyPage() {
     if (!isLogin) {
       navigate('/');
     }
+    console.log(info);
   }, []);
   return (
     <>
@@ -150,7 +151,6 @@ const MyPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: scroll;
 `;
 const ProfileContainer = styled.div`
   width: 80%;
