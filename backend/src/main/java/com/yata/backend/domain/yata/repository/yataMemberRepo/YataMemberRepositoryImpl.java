@@ -31,6 +31,7 @@ public class YataMemberRepositoryImpl implements YataMemberRepository {
                 .leftJoin(qYata.yataMembers, qYataMember)
                 .where(
                         (qYata.member.email.eq(email)
+                                .and(qYataMember.isNotNull())
                                 .and(qYata.yataMembers.any().goingStatus.ne(YataMember.GoingStatus.STARTED_YET))
                                 .and(qYata.yataStatus.eq(YataStatus.YATA_NEOTA))
                                 .and(qYata.postStatus.eq(Yata.PostStatus.POST_CLOSED))
