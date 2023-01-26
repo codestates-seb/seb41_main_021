@@ -8,6 +8,7 @@ import com.yata.backend.domain.payHistory.entity.PayHistory;
 import com.yata.backend.domain.yata.entity.Yata;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class PayHistoryFactory {
 
         return PayHistory.builder()
                 .payHistoryId(getRandomLong())
+                .paidPrice(getRandomLong())
                 .member(member)
                 .type(PayHistory.Type.YATA)
                 .build();
@@ -40,7 +42,7 @@ public class PayHistoryFactory {
                 .nickname(payHistory.getMember().getNickname())
                 .paidPrice(payHistory.getPaidPrice())
                 .point(payHistory.getMember().getPoint())
-                .createdAt(payHistory.getCreatedAt())
+                .createdAt(LocalDateTime.now())
                 .type(payHistory.getType())
                 .build();
     }

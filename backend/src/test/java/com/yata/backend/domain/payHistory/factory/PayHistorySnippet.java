@@ -16,7 +16,7 @@ public class PayHistorySnippet {
                 fieldWithPath("data[].paidPrice").type(JsonFieldType.NUMBER).description("지불한 포인트"),
                 fieldWithPath("data[].point").type(JsonFieldType.NUMBER).description("포인트 잔액"),
                 fieldWithPath("data[].type").type(JsonFieldType.STRING).description("지불한 도메인"),
-                fieldWithPath("data[].createdAt").type(JsonFieldType.OBJECT).description("지불한 일시"),
+                fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("지불한 일시"),
                 fieldWithPath("sliceInfo").type(JsonFieldType.OBJECT).description("슬라이스 정보"),
                 fieldWithPath("sliceInfo.getNumber").type(JsonFieldType.NUMBER).description("현재 슬라이스 번호"),
                 fieldWithPath("sliceInfo.getSize").type(JsonFieldType.NUMBER).description("현재 슬라이스 크기"),
