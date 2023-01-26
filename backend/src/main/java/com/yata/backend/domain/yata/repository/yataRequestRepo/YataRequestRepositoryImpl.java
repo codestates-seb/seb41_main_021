@@ -4,10 +4,14 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.yata.backend.domain.yata.entity.QYata;
 import com.yata.backend.domain.yata.entity.QYataRequest;
 import com.yata.backend.domain.yata.entity.YataRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.Date;
+import java.util.List;
 
 
 public class YataRequestRepositoryImpl implements YataRequestRepository {
@@ -34,5 +38,27 @@ public class YataRequestRepositoryImpl implements YataRequestRepository {
                 .execute();
         entityManager.flush();
         entityManager.clear(); // update 쿼리를 날리고 난 후에는 clear를 해줘야 한다. (영속성 컨텍스트를 비워줘야 한다.)
+    }
+
+    @Override
+    public Slice<YataRequest> findAllByMember_Email(String Email, Pageable pageable) {
+        List<YataRequest> yataRequests = queryFactory.selectFrom(yataRequest)
+                .join(yataRequest.yata, yata).fetchJoin()
+                .join(yataRequest.strPoint).fetchJoin()
+                .join(yataRequest.destination).fetchJoin()
+                .join(yataRequest.member).fetchJoin()
+                .join(yata.strPoint).fetchJoin()
+                .join(yata.destination).fetchJoin()
+                .join(yata.strPoint).fetchJoin()
+                .where(yataRequest.member.email.eq(Email))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+        boolean hasNext = false;
+        if (yataRequests.size() > pageable.getPageSize()) {
+            yataRequests.remove(pageable.getPageSize());
+            hasNext = true;
+        }
+        return new SliceImpl<>(yataRequests, pageable, hasNext);
     }
 }
