@@ -397,7 +397,6 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.yataMembers[].yataMemberId").type(JsonFieldType.NUMBER).description("야타멤버(예약자)아이디"),
                         fieldWithPath("data.yataMembers[].email").type(JsonFieldType.STRING).description("야타멤버(예약자) 이메일"),
                         fieldWithPath("data.yataMembers[].nickname").type(JsonFieldType.STRING).description("야타멤버(예약자) 닉네임"),
-                        fieldWithPath("data.yataMembers[].point").type(JsonFieldType.NUMBER).description("야타멤버(예약자) 포인트 잔액"),
                         fieldWithPath("data.yataMembers[].yataPaid").type(JsonFieldType.BOOLEAN).description("지불여부"),
                         fieldWithPath("data.yataMembers[].goingStatus").type(JsonFieldType.STRING).description("가는 상태 'STARTED_YET,ARRIVED'"),
                         fieldWithPath("data.yataMembers[].imgUrl").type(JsonFieldType.STRING).description("야타 멤버 프로필 이미지")
