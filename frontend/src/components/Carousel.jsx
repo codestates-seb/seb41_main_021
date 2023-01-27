@@ -15,8 +15,8 @@ export default function SimpleSlider() {
     speed: 500, // 다음 컨텐츠 까지의 속도
     slidesToShow: 1, // 화면에 보이는 컨텐츠 수
     slidesToScroll: 1, // 스크롤 시 넘어가는 컨텐츠 수
-    autoplay: false, // 자동 캐러셀
-    autoplaySpeed: 2000, // 자동 캐러셀 속도
+    autoplay: true, // 자동 캐러셀
+    autoplaySpeed: 3000, // 자동 캐러셀 속도
     draggable: true, // 드래그
     fade: false, // 사라졌다 나타나는 효과
     arrows: true, // 좌,우 버튼
