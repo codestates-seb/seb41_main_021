@@ -8,8 +8,9 @@ export default function EditDeleteContainer(props) {
   const navigate = useNavigate();
 
   const deleteHandler = () => {
-    useDeleteData(`https://server.yata.kro.kr/api/v1/yata/${yataId}`);
-    navigate(`/${state}-list`);
+    useDeleteData(`https://server.yata.kro.kr/api/v1/yata/${yataId}`).then(() => {
+      navigate(`/${state}-list`);
+    });
   };
 
   return (
