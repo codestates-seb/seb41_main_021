@@ -32,7 +32,7 @@ public class YataBatchConfig {
     @Bean
     public Job yataJob() {
         return jobBuilderFactory.get("yataJob")
-                .start(yataStep())
+                .start(yataStep()).next(yataRequestStep())
                 .build();
     }
 
@@ -43,6 +43,12 @@ public class YataBatchConfig {
                     yataRepository.updateYataOverDepartureTime();
                     return RepeatStatus.FINISHED;
                 })
+                .build();
+
+    }
+
+    public Step yataRequestStep() {
+        return stepBuilderFactory.get("yataRequestStep")
                 .tasklet((contribution, chunkContext) -> {
                     yataRequestRepository.updateExpiredYataRequest();
                     return RepeatStatus.FINISHED;
