@@ -45,7 +45,7 @@ function App() {
     if (localStorage.getItem('ACCESS')) {
       useGetUserInfo()
         .then(res => dispatch(loginUser(res)))
-        .then(setTimeout(() => setIsLoading(false), 100));
+        .then(setTimeout(() => setIsLoading(false), 500));
     } else {
       setIsLoading(false);
     }
