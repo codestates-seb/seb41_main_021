@@ -38,7 +38,7 @@ export default function TabnidaDetail() {
       },
     };
 
-    useTayoRequest(`https://server.yata.kro.kr/api/v1/yata/invite/${yataId}`, data).then(res => {
+    useTayoRequest(`https://server.yata.kro.kr/api/v1/yata/apply/${yataId}`, data).then(res => {
       console.log(res);
     });
   };

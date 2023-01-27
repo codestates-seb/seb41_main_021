@@ -9,7 +9,7 @@ const header = {
 const useEmailAuth = async email => {
   try {
     const response = await axios.post(`https://server.yata.kro.kr/api/v1/validation/email/${email}`, header);
-    return console.log(response);
+    return response;
   } catch (error) {
     return console.log(error);
   }

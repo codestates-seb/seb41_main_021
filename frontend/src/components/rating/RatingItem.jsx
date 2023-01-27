@@ -15,7 +15,7 @@ const RatingItem = props => {
 
 const Item = styled.div`
   width: 100%;
-  margin: 0.5rem;
+  margin: 1.2rem;
   font-size: 1.1rem;
   display: flex;
   align-items: center;

@@ -94,7 +94,6 @@ public interface YataMapper {
         return response.build();
     }
 
-    //todo strPoint, destination mapping
     default List<YataDto.Response> yatasToYataResponses(List<Yata> yatas) {
         if (yatas == null) {
             return null;
@@ -123,6 +122,7 @@ public interface YataMapper {
                             .strPoint(locationToResponse(yata.getStrPoint()))
                             .destination(locationToResponse(yata.getDestination()))
                             .nickName(yata.getMember().getNickname())
+                            .feulTank(yata.getMember().getFuelTank())
                             .yataMembers(null)
                             .build();
                 }).collect(Collectors.toList());

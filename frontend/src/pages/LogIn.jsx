@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../components/common/Button';
 import Input from '../components/common/Input';
@@ -10,7 +11,6 @@ import Header from '.././components/Header';
 import { useLogin, useGetUserInfo } from '../hooks/useLogin';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../redux/slice/UserSlice';
-import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -33,13 +33,11 @@ export default function Login() {
       email,
       password,
     };
-
     if (email === '') setIsValidEmail(false);
     else setIsValidEmail(true);
     if (password === '') setIsValidPW(false);
     else setIsValidPW(true);
     if (email === '' || password === '') return;
-
     useLogin('https://server.yata.kro.kr/api/v1/auth/login', data).then(res => {
       if (res === 200) {
         useGetUserInfo()
@@ -164,7 +162,6 @@ const LineText = styled.div`
   align-items: center;
   color: gray;
   margin: 8px;
-
   &::before {
     content: '';
     flex-grow: 1;

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const Input = props => {
-  const { label, state, setState, type, placeholder, maxLength, onChange, onFocus, onBlur, min, max } = props;
+  const { label, state, setState, type, placeholder, maxLength, onChange, onFocus, onBlur, min, max, readOnly } = props;
 
   const handleChange = e => {
     setState?.(e.target.value);
@@ -21,6 +21,7 @@ const Input = props => {
           onBlur={onBlur}
           placeholder={placeholder}
           maxLength={maxLength}
+          readOnly={readOnly}
         />
       ) : (
         <StyledInput
@@ -34,6 +35,7 @@ const Input = props => {
           onBlur={onBlur}
           placeholder={placeholder}
           maxLength={maxLength}
+          readOnly={readOnly}
         />
       )}
     </StyledDiv>
@@ -69,6 +71,7 @@ const StyledInput = styled.input`
     outline: none;
     border-color: ${props => props.theme.colors.darker_blue};
   }
+  background-color: ${props => props.readOnly && '#dddddd'};
   @media screen and (min-width: 470px) {
     width: 80%;
   }
