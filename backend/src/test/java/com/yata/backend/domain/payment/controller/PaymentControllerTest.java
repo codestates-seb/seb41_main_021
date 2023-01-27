@@ -5,22 +5,27 @@ import com.yata.backend.common.request.ResultActionsUtils;
 import com.yata.backend.domain.AbstractControllerTest;
 import com.yata.backend.domain.member.factory.MemberFactory;
 import com.yata.backend.domain.payment.config.TossPaymentConfig;
+import com.yata.backend.domain.payment.dto.ChargingHistoryDto;
 import com.yata.backend.domain.payment.dto.PayType;
 import com.yata.backend.domain.payment.dto.PaymentDto;
 import com.yata.backend.domain.payment.dto.PaymentSuccessDto;
 import com.yata.backend.domain.payment.entity.Payment;
 import com.yata.backend.domain.payment.factory.PaymentFactory;
+import com.yata.backend.domain.payment.mapper.PaymentMapper;
 import com.yata.backend.domain.payment.service.PaymentServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.SliceImpl;
+import org.springframework.http.HttpHeaders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -47,6 +52,9 @@ class PaymentControllerTest extends AbstractControllerTest {
     private PaymentServiceImpl paymentService;
     @MockBean
     private TossPaymentConfig tossPaymentConfig;
+
+    @MockBean
+    private PaymentMapper mapper;
 
     @Test
     @DisplayName("토스 결제 요청 전 상품 등록 후 결제 요청할 DATA 받기")
@@ -191,8 +199,44 @@ class PaymentControllerTest extends AbstractControllerTest {
                         parameterWithName("_csrf").description("무시")
                 )
         ));
-
-
-
     }
+
+    @Test
+    @DisplayName("토스 포인트 충전 내역 조회")
+    @WithMockUser(username = "test1@gmail.com", roles = "USER")
+    void findChargingHistoriesTest() throws Exception {
+        // given
+        List<Payment> payments = PaymentFactory.createPaymentList();
+        List<ChargingHistoryDto> responses = PaymentFactory.createChargingHistoryDtoList(payments);
+
+        given(paymentService.findAllChargingHistories(any(), any())).willReturn(new SliceImpl<>(payments));
+        given(mapper.chargingHistoryToChargingHistoryResponses(any())).willReturn(responses);
+
+        // when
+        ResultActions resultActions = ResultActionsUtils.getRequest(mockMvc, BASE_URL + "/history");
+        resultActions.andExpect(status().isOk());
+
+        // then
+        resultActions.andDo(document("payment-findChargingHistories",
+                getRequestPreProcessor(),
+                getResponsePreProcessor(),
+                requestHeaders(
+                        headerWithName(HttpHeaders.AUTHORIZATION).description("JWT 토큰")
+                ),
+                responseFields(
+                        fieldWithPath("data").type(JsonFieldType.ARRAY).description("충전 내역 정보"),
+                        fieldWithPath("data[].paymentHistoryId").type(JsonFieldType.NUMBER).description("충전 내역 아이디"),
+                        fieldWithPath("data[].amount").type(JsonFieldType.NUMBER).description("충전한 가격"),
+                        fieldWithPath("data[].orderName").type(JsonFieldType.STRING).description("충전한 유형 ( ex. 포인트 충전인지 다른 거 인지 <- 이후 다른 충전 생기면 확장성 고려하여 )"),
+                        fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("충전된 시각"),
+                        fieldWithPath("sliceInfo").type(JsonFieldType.OBJECT).description("슬라이스 정보"),
+                        fieldWithPath("sliceInfo.getNumber").type(JsonFieldType.NUMBER).description("현재 슬라이스 번호"),
+                        fieldWithPath("sliceInfo.getSize").type(JsonFieldType.NUMBER).description("현재 슬라이스 크기"),
+                        fieldWithPath("sliceInfo.getNumberOfElements").type(JsonFieldType.NUMBER).description("현재 슬라이스가 가지고 있는 엔티티 수"),
+                        fieldWithPath("sliceInfo.hasNext").type(JsonFieldType.BOOLEAN).description("다음 슬라이스의 존재 유무"),
+                        fieldWithPath("sliceInfo.hasPrevious").type(JsonFieldType.BOOLEAN).description("이전 슬라이스의 존재 유무")
+                )
+        ));
+    }
+
 }
