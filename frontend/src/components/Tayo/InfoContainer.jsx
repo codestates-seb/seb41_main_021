@@ -3,6 +3,7 @@ import { IoIosArrowRoundForward, IoIosArrowForward } from 'react-icons/io';
 import { BsCalendar4, BsPeople } from 'react-icons/bs';
 import { BiWon, BiCommentDetail } from 'react-icons/bi';
 import { AiOutlineCar } from 'react-icons/ai';
+import { dateFormat } from '../common/DateFormat';
 
 export default function InfoContainer(props) {
   const { data } = props;
@@ -11,8 +12,8 @@ export default function InfoContainer(props) {
     <ContentContainer>
       <JourneyContainer>
         <h2>{data.strPoint.address}</h2>
-        <IoIosArrowRoundForward />
-        <h2>경유지</h2>
+        {/* <IoIosArrowRoundForward />
+        <h2>경유지</h2> */}
         <IoIosArrowRoundForward />
         <h2>{data.destination.address}</h2>
         <TagContainer state={data.postStatus}>
@@ -21,7 +22,7 @@ export default function InfoContainer(props) {
       </JourneyContainer>
       <DateContainer>
         <BsCalendar4 />
-        <p className="date-txt">{data.departureTime}</p>
+        <p className="date-txt"> {dateFormat(data.departureTime)}</p>
       </DateContainer>
       <PriceContainer>
         <BiWon />
