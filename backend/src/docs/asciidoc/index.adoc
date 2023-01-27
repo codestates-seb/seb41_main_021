@@ -184,6 +184,19 @@ include::{snippets}/image-profile/response-body.adoc[]
 .response-fields
 include::{snippets}/image-profile/response-fields.adoc[]
 
+=== 타 유저 정보 조회
+.http-request
+include::{snippets}/member-get-others/http-request.adoc[]
+.http-response
+include::{snippets}/member-get-others/http-response.adoc[]
+.response-body
+include::{snippets}/member-get-others/response-body.adoc[]
+.request-parameters
+include::{snippets}/member-get-others/request-parameters.adoc[]
+.request-parameters
+include::{snippets}/member-get-others/request-parameters.adoc[]
+
+
 
 
 == PaymentController

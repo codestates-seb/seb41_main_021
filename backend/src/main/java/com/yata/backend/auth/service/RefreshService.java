@@ -14,8 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.util.List;
 
-import static com.yata.backend.auth.utils.HeaderUtil.getAccessToken;
-import static com.yata.backend.auth.utils.HeaderUtil.getHeaderRefreshToken;
+import static com.yata.backend.auth.utils.HeaderUtil.*;
 
 @Component
 @Transactional
