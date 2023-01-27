@@ -3,7 +3,7 @@ import NavBar from '../components/NavBar';
 import { NavLink } from 'react-router-dom';
 import { VscAccount } from 'react-icons/vsc';
 import { BiTrip, BiLike } from 'react-icons/bi';
-import { RiOilLine } from 'react-icons/ri';
+import { RiArrowLeftSFill, RiOilLine } from 'react-icons/ri';
 import { IoIosArrowForward } from 'react-icons/io';
 import { RiCoinsFill } from 'react-icons/ri';
 
@@ -55,6 +55,11 @@ export default function MyPage() {
                 <div className="text">{info.nickname}</div>
                 <div className="text">{info.email}</div>
               </Info>
+              {info.roles[1] === 'DRIVER' ? (
+                <CompleteAuth>운전자 인증</CompleteAuth>
+              ) : (
+                <UncompleteAuth>운전자 미인증</UncompleteAuth>
+              )}
             </Profile>
           </ProfileContainer>
           <SummaryContainer>
@@ -124,12 +129,14 @@ export default function MyPage() {
             </List>
             <List>
               <ListTitle>일반</ListTitle>
-              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/driver-auth">
-                <JourneyRecord>
-                  <div className="title">운전자 인증하기</div>
-                  <IoIosArrowForward />
-                </JourneyRecord>
-              </NavLink>
+              {info.roles.indexOf('DRIVER') === -1 && (
+                <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/driver-auth">
+                  <JourneyRecord>
+                    <div className="title">운전자 인증하기</div>
+                    <IoIosArrowForward />
+                  </JourneyRecord>
+                </NavLink>
+              )}
               <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/rating-list">
                 <JourneyRecord>
                   <div className="title">받은 매너 평가</div>
@@ -161,7 +168,6 @@ const MyPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: scroll;
 `;
 const ProfileContainer = styled.div`
   width: 80%;
@@ -170,7 +176,7 @@ const ProfileContainer = styled.div`
 `;
 
 const Profile = styled.div`
-  width: 80%;
+  width: 100%;
   display: flex;
   align-items: center;
 
@@ -183,10 +189,25 @@ const Profile = styled.div`
 const Info = styled.div`
   display: flex;
   flex-direction: column;
+  margin-right: 2rem;
 
   .text {
     font-size: 1.1rem;
   }
+`;
+const CompleteAuth = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem;
+  height: 1.8rem;
+  color: #ffffff;
+  border-radius: 0.2rem;
+  font-size: 1rem;
+  background-color: ${props => props.theme.colors.main_blue};
+`;
+const UncompleteAuth = styled(CompleteAuth)`
+  background-color: ${props => props.theme.colors.gray};
 `;
 
 const PointContainer = styled.div`

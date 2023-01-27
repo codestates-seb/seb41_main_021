@@ -20,7 +20,7 @@ public class MemberDto {
     @Setter
     @ToString
     @Builder
-    public static class Post{
+    public static class Post {
         @NotNull
         @Pattern(regexp = "^[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]+$")
         private String email;
@@ -35,13 +35,15 @@ public class MemberDto {
         private Member.Gender genders;
 
     }
+
     @Getter
     @ToString
     @Builder
-    public static class Patch{
+    public static class Patch {
         private Member.Gender genders;
         private String nickname;
     }
+
     @Getter
     @Setter
     @NoArgsConstructor
@@ -62,6 +64,10 @@ public class MemberDto {
         private Double fuelTank;
         private List<String> roles;
         private int yataCount;
+
+        public void privateReponse() {
+            this.point = null;
+        }
 
     }
 
