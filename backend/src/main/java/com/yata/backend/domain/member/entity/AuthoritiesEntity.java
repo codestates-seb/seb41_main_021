@@ -7,8 +7,6 @@ import lombok.Getter;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import java.io.Serial;
-import java.io.Serializable;
 
 @Entity
 @Getter
