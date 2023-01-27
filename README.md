@@ -50,7 +50,9 @@
 ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
 
 <br><br>
+## BE ARCHITECTURE
 
+![Untitled-2023-01-27-0035.excalidraw.svg](readME_Images%2FUntitled-2023-01-27-0035.excalidraw.svg)
 ## 📌 서비스 소개
 ( 간단 소개 및 주요 기능 짤과 설명 )
 

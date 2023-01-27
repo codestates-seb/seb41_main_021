@@ -78,8 +78,11 @@ public class SecurityConfig {
                                 // yata
                                 .antMatchers("/api/v1/yata/apply/**").authenticated()
                                 .antMatchers("/api/v1/yata/invite/**").hasRole(Member.MemberRole.DRIVER.name())
-                                .antMatchers("/api/v1/yata/**").authenticated()
                                 .antMatchers(HttpMethod.GET,"/api/v1/yata/**").permitAll()
+                                .antMatchers("/api/v1/yata/**").authenticated()
+
+
+
                                 // notify
                                 .antMatchers(HttpMethod.GET,"/api/v1/notify/**").authenticated()
                                 // payHistory
