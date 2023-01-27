@@ -7,22 +7,44 @@ import { RiOilLine } from 'react-icons/ri';
 import { IoIosArrowForward } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/common/Button.jsx';
+import Header from '../components/Header';
+import { useState, useEffect } from 'react';
+import useGetData from '../hooks/useGetData';
+import { useParams } from 'react-router-dom';
 
 export default function OtherUserPage() {
   const navigate = useNavigate();
+  const params = useParams();
+  const email = params.email;
+
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
+  const [review, setReview] = useState([]);
+
+  useEffect(() => {
+    useGetData(`https://server.yata.kro.kr/api/v1/members/${email}`).then(res =>
+      setData(res.data.data, setLoading(false)),
+    );
+  }, []);
+
+  useEffect(() => {
+    useGetData(`https://server.yata.kro.kr/api/v1/review/${email}`).then(res =>
+      setReview(res.data.data, setLoading(false)),
+    );
+  }, []);
 
   return (
     <>
+      <Header title={data.nickname} />
       <Container>
         <MyPageContainer>
           <ProfileContainer>
             <Profile>
               <VscAccount />
               <Info>
-                <div className="text">문재웅</div>
-                <div className="text">mjwoong</div>
-                <div className="text">010-xxxx-xxxx</div>
-                <div className="text">abcde@gmail.com</div>
+                <div className="text">{data.name}</div>
+                <div className="text">{data.nickname}</div>
+                <div className="text">{data.email}</div>
               </Info>
             </Profile>
           </ProfileContainer>
@@ -30,25 +52,19 @@ export default function OtherUserPage() {
             <OilLevel>
               <RiOilLine />
               <div className="title">기름통 레벨</div>
-              <div className="bottom"> 70L </div>
+              <div className="bottom"> {data.fuelTank}L </div>
             </OilLevel>
             <TripNumber>
               <BiTrip />
               <div className="title">여정 횟수</div>
-              <div className="bottom">30</div>
+              <div className="bottom">{data.yataCount}</div>
             </TripNumber>
             <Compliment>
               <BiLike />
               <div className="title">많이 받은 칭찬</div>
-              <div className="bottom">친절해요</div>
+              <div className="bottom">{review.length === 0 && '리뷰가 없음'}</div>
             </Compliment>
           </SummaryContainer>
-          <Button
-            onClick={() => {
-              navigate('/rating-add');
-            }}>
-            매너 평가하기
-          </Button>
           <ListContainer>
             <List>
               <ListTitle>탑니다/태웁니다 관리</ListTitle>
@@ -61,7 +77,7 @@ export default function OtherUserPage() {
             </List>
             <List>
               <ListTitle>일반</ListTitle>
-              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/rating-list">
+              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to={`/rating-list/${email}`}>
                 <JourneyRecord>
                   <div className="title">받은 매너 평가</div>
                   <IoIosArrowForward />

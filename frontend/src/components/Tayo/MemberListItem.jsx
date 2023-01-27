@@ -1,15 +1,27 @@
 import styled from 'styled-components';
 import { VscAccount } from 'react-icons/vsc';
+import { useState } from 'react';
+import Button from '../common/Button';
+import { useNavigate, useParams } from 'react-router';
 
 export default function MemberListItem(props) {
-  const { state, nickname } = props;
+  const { state, nickname, yataMemberId } = props;
+  const navigate = useNavigate();
+  const params = useParams();
+  const yataId = params.yataId;
+
+  const [isPay, setisPay] = useState(true);
 
   return (
     <Container>
       <ProfileContainer>
         <VscAccount />
         <Username>{nickname}</Username>
-        <TagContainer state={state}>{state === true ? '결제 완료' : '결제 대기'}</TagContainer>
+        {isPay ? (
+          <ReviewBtn onClick={() => navigate(`/rating-add-passenger/${yataId}`)}>리뷰 남기기</ReviewBtn>
+        ) : (
+          <TagContainer state={state}>{state === true ? '결제 완료' : '결제 대기'}</TagContainer>
+        )}
       </ProfileContainer>
     </Container>
   );
@@ -46,4 +58,9 @@ const TagContainer = styled.div`
   font-size: 0.9rem;
 
   background-color: ${props => (props.state === true ? props.theme.colors.main_blue : props.theme.colors.light_gray)};
+`;
+
+const ReviewBtn = styled(Button)`
+  padding: 5px 10px;
+  font-size: 0.9rem;
 `;
