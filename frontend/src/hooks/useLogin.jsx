@@ -1,21 +1,12 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const header = {
-  headers: {
-    'Content-Type': 'application/json;charset=UTF-8',
-    Authorization: localStorage.getItem('ACCESS'),
-  },
-};
+import instance from '../api/instance';
 
 const useLogin = async (url, data) => {
   try {
     const response = await axios.post(url, data);
     if (response.headers.authorization) {
-      //   setToken({
-      //     ACCESS: `Bearer ${response.headers.authorization}`,
-      //     REFRESH: response.headers.refreshtoken,
-      //   });
       localStorage.setItem('ACCESS', response.headers.authorization);
       localStorage.setItem('REFRESH', response.headers.refreshtoken);
 
@@ -32,12 +23,7 @@ const useLogin = async (url, data) => {
 
 const useGetUserInfo = async () => {
   try {
-    const response = await axios.get('https://server.yata.kro.kr/api/v1/members', {
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-        Authorization: localStorage.getItem('ACCESS'),
-      },
-    });
+    const response = await instance.get('/api/v1/members');
     return response.data.data;
   } catch (error) {
     toast.warning('유저 정보를 불러오지 못했습니다.');
@@ -56,14 +42,21 @@ const useLogout = async () => {
 
 const useTokenRefresh = async () => {
   try {
-    const response = await axios.post('https://server.yata.kro.kr/api/v1/auth/refresh', {
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-        Authorization: localStorage.getItem('ACCESS'),
-        RefreshToken: localStorage.getItem('REFRESH'),
+    const response = await axios.post(
+      'https://server.yata.kro.kr/api/v1/auth/refresh',
+      {},
+      {
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          Authorization: localStorage.getItem('ACCESS'),
+          RefreshToken: localStorage.getItem('REFRESH'),
+        },
       },
-    });
+    );
     return response;
+    if (response) {
+      // localStorage.setItem('ACCESS', response.headers.authorization);
+    }
   } catch (error) {
     console.log(error);
     // toast.warning('유저 정보를 불러오지 못했습니다.');
