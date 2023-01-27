@@ -63,7 +63,7 @@ public class YataRequestController {
     }
 
     // 자기가 한 신청/초대 목록 조회 - 200
-    @GetMapping("/myYataRequests")
+    @GetMapping("/requests/myYataRequests")
     public ResponseEntity<SliceResponseDto<YataRequestDto.RequestResponse>> getRequestsByPassenger(@AuthenticationPrincipal User authMember,
                                                                                                    Pageable pageable) {
         Slice<YataRequest> requests = yataRequestService.findRequestsByPassenger(authMember.getUsername(), pageable);
