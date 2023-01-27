@@ -28,7 +28,6 @@ import java.util.Map;
 public class PaymentServiceImpl implements PaymentService {
     private final JpaPaymentRepository paymentRepository;
     private final MemberService memberService;
-
     private final TossPaymentConfig tossPaymentConfig;
 
 

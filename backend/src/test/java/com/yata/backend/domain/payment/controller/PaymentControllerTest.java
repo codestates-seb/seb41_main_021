@@ -12,7 +12,6 @@ import com.yata.backend.domain.payment.dto.PaymentSuccessDto;
 import com.yata.backend.domain.payment.entity.Payment;
 import com.yata.backend.domain.payment.factory.PaymentFactory;
 import com.yata.backend.domain.payment.mapper.PaymentMapper;
-import com.yata.backend.domain.payment.service.PaymentService;
 import com.yata.backend.domain.payment.service.PaymentServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
