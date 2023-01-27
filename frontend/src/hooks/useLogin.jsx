@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
-
 import instance from '../api/instance';
 
 const useLogin = async (url, data) => {
@@ -12,9 +11,6 @@ const useLogin = async (url, data) => {
 
       return response.status;
     }
-    // setUserMbti(response.data.mbti);
-    // setIsLogIn(true);
-    // invalidate();
   } catch (error) {
     toast.warning('로그인에 실패했습니다.');
   }

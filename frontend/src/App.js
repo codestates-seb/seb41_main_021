@@ -83,7 +83,7 @@ function App() {
               <Route path="/taeoonda-detail/:yataId" element={<TaeoondaDetail />}></Route>
               <Route path="/taeoonda-list" element={<TaeoondaList />}></Route>
               <Route path="/register-list" element={<RegisterList />}></Route>
-              <Route path="/register-checklist" element={<RegisterCheckList />}></Route>
+              <Route path="/register-checklist/:yataId" element={<RegisterCheckList />}></Route>
               <Route path="/destination-list" element={<DestinationList />}></Route>
               <Route path="/destination-detail" element={<DestinationDetail />}></Route>
               <Route path="/exchange-page" element={<ExchagePage />}></Route>
