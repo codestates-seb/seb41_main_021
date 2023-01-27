@@ -137,7 +137,7 @@ class SignUpVerifyControllerTest extends AbstractControllerTest {
                 requestFields(
                         fieldWithPath("name").type("String").description("이름"),
                         fieldWithPath("driverLicenseNumber").type("String").description("면허번호 12자리 A-Z, 0-9"),
-                        fieldWithPath("dateOfIssue").type("Date").description("면허만료일")
+                        fieldWithPath("dateOfIssue").type("Date").description("면허발급일")
                 )
         ));
     }

@@ -29,6 +29,7 @@ public class YataRequestSnippet {
                 fieldWithPath("data[].destination.latitude").type(JsonFieldType.NUMBER).description("도착지 위도"),
                 fieldWithPath("data[].destination.address").type(JsonFieldType.STRING).description("도착지 주소"),
                 fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("생성 시간"),
+                fieldWithPath("data[].imgUrl").type(JsonFieldType.STRING).description("신청자 프로필 이미지 url"),
                 fieldWithPath("sliceInfo").type(JsonFieldType.OBJECT).description("슬라이스 정보"),
                 fieldWithPath("sliceInfo.getNumber").type(JsonFieldType.NUMBER).description("현재 슬라이스 번호"),
                 fieldWithPath("sliceInfo.getSize").type(JsonFieldType.NUMBER).description("현재 슬라이스 크기"),

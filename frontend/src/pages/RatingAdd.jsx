@@ -86,4 +86,5 @@ const Info = styled.div`
 const FinishBtn = styled(Button)`
   width: 40%;
   margin-top: 1rem;
+  margin-bottom: 3rem;
 `;

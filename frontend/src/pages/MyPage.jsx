@@ -6,13 +6,16 @@ import { BiTrip, BiLike } from 'react-icons/bi';
 import { RiArrowLeftSFill, RiOilLine } from 'react-icons/ri';
 import { IoIosArrowForward } from 'react-icons/io';
 import { RiCoinsFill } from 'react-icons/ri';
-import { useEffect } from 'react';
+
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { checkIfLogined } from '../hooks/useLogin';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearUser } from '../redux/slice/UserSlice';
+import useGetData from '../hooks/useGetData';
 
 export default function MyPage() {
+  const [review, setReview] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -28,9 +31,15 @@ export default function MyPage() {
 
   useEffect(() => {
     if (!isLogin) {
-      navigate('/');
+      return navigate('/');
     }
-    console.log(info);
+    useGetData(`https://server.yata.kro.kr/api/v1/review/${info.email}`).then(res => {
+      if (res.status === 200) {
+        setReview(res.data.data);
+      } else {
+        console.log('리뷰 정보를 가져오는데 실패하였습니다.');
+      }
+    });
   }, []);
   return (
     <>
@@ -65,7 +74,7 @@ export default function MyPage() {
             <Compliment>
               <BiLike />
               <div className="title">많이 받은 칭찬</div>
-              <div className="bottom">친절해요</div>
+              <div className="bottom">{review.length === 0 && '리뷰가 없음'}</div>
             </Compliment>
           </SummaryContainer>
           <PointContainer>
@@ -74,7 +83,7 @@ export default function MyPage() {
                 <RiCoinsFill />
                 포인트
               </div>
-              <div className="point-amount">5,000원</div>
+              <div className="point-amount">{info.point}원</div>
             </div>
             <div
               className="buy-point"

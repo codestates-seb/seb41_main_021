@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "yataRequests")
+@ToString
 @Table(indexes = {
         @Index(name = "idx_member_email", columnList = "email", unique = true),
         @Index(name = "idx_member_nickname", columnList = "nickname")
@@ -55,7 +55,7 @@ public class Member extends Auditable  {
     @Column(length = 20, nullable = false)
     private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
     @org.hibernate.annotations.Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_WRITE)
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL , fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<AuthoritiesEntity> roles;
 
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
@@ -118,6 +118,8 @@ public class Member extends Auditable  {
                 .genders(genders)
                 .imgUrl(imgUrl != null ? imgUrl.getUrl() : null)
                 .carImgUrl(carImgUrl)
+                .point(point)
+                .fuelTank(fuelTank)
                 .memberStatus(memberStatus)
                 .nickname(nickname)
                 .providerType(providerType)

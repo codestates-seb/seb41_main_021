@@ -62,6 +62,7 @@ public interface YataRequestMapper {
                             .strPoint(locationToResponse(yataRequest.getStrPoint()))
                             .destination(locationToResponse(yataRequest.getDestination()))
                             .createdAt(yataRequest.getCreatedAt())
+                            .imgUrl(yataRequest.getMember().getImgUrl() != null ? yataRequest.getMember().getImgUrl().getUrl() : null)
                             .build();
                 }).collect(Collectors.toList());
     }

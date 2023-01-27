@@ -1,7 +1,6 @@
 package com.yata.backend.domain.yata.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yata.backend.domain.yata.entity.YataMember;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -60,6 +59,8 @@ public class YataRequestDto {
         private LocationDto.Response strPoint;
         private LocationDto.Response destination;
         private LocalDateTime createdAt;
+
+        private String imgUrl;
     }
 
     @AllArgsConstructor

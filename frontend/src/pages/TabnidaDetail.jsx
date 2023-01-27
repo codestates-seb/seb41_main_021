@@ -7,9 +7,9 @@ import Header from '../components/Header';
 import ProfileContainer from '../components/Tayo/ProfileContainer';
 import InfoContainer from '../components/Tayo/InfoContainer';
 import MemberContainer from '../components/Tayo/MemberContainer';
+import EditDeleteContainer from '../components/Tayo/EditDeleteContainer';
 import useGetData from '../hooks/useGetData';
 import { useTayoInvite } from '../hooks/useTayo';
-import { FiEdit, FiTrash } from 'react-icons/fi';
 
 export default function TabnidaDetail() {
   const params = useParams();
@@ -55,10 +55,7 @@ export default function TabnidaDetail() {
         <>
           <Header title={'탑니다'}></Header>
           <Container>
-            <CRUDContainer>
-              <FiEdit />
-              <FiTrash />
-            </CRUDContainer>
+            <EditDeleteContainer state={'tabnida'} yataId={yataId} />
             <ProfileContainer data={data} />
             <InfoContainer data={data} />
             <MemberContainer data={data} />
@@ -82,17 +79,4 @@ const Container = styled.div`
 const InviteButton = styled(Button)`
   width: 40%;
   margin-top: 2.5rem;
-`;
-
-const CRUDContainer = styled.div`
-  width: 95%;
-  margin-top: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-
-  svg {
-    font-size: 1.7rem;
-    margin: 0.5rem 0.8rem;
-  }
 `;

@@ -7,11 +7,25 @@ import DestinationList from '../components/Tayo/DestinationList';
 import Header from '../components/Header';
 import { BsPlusLg } from 'react-icons/bs';
 import { TiDeleteOutline } from 'react-icons/ti';
+import { useTayoEdit } from '../hooks/useTayo';
+
+import { tayoDataFetch } from '../redux/slice/DataSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 
 export default function TabnidaAdd() {
+  const dispatch = useDispatch();
+  const params = useParams();
+  const yataId = params.yataId;
+
   const [isFilled, setIsFilled] = useState(false);
   const [departure, setDeparture] = useState('');
   const [destination, setDestination] = useState('');
+  const [departureTime, setDepartureTime] = useState('');
+  const [amount, setAmount] = useState('');
+  const [maxPeople, setMaxPeople] = useState('');
+  const [specifics, setSpecifics] = useState('');
+
   const [isDeparture, setIsDeparture] = useState(false);
   const [isDestination, setIsDestination] = useState(false);
   const [Places, setPlaces] = useState([]);
@@ -22,6 +36,17 @@ export default function TabnidaAdd() {
     },
   ]);
 
+  useEffect(() => {
+    dispatch(tayoDataFetch(`https://server.yata.kro.kr/api/v1/yata/${yataId}`)).then(res => {
+      setDeparture(res.payload.strPoint.address);
+      setDestination(res.payload.destination.address);
+      setDepartureTime(res.payload.departureTime);
+      setAmount(res.payload.amount);
+      setMaxPeople(res.payload.maxPeople);
+      setSpecifics(res.payload.specifics);
+    });
+  }, []);
+
   const addInputField = () => {
     setInputFields([
       ...inputFields,
@@ -30,11 +55,13 @@ export default function TabnidaAdd() {
       },
     ]);
   };
+
   const removeInputFields = index => {
     const rows = [...inputFields];
     rows.splice(index, 1);
     setInputFields(rows);
   };
+
   const handleChange = (index, evnt) => {
     const { name, value } = evnt.target;
     const list = [...inputFields];
@@ -62,6 +89,33 @@ export default function TabnidaAdd() {
       setIsFilled(false);
     }
   }, [departure, destination]);
+
+  const editTabnida = () => {
+    const data = {
+      title: '제목',
+      specifics,
+      departureTime,
+      timeOfArrival: '2023-01-23T22:38:28',
+      maxWaitingTime: 0,
+      maxPeople,
+      yataStatus: 'YATA_NATA',
+      amount,
+      strPoint: {
+        longitude: 5.0,
+        latitude: 4.0,
+        address: '인천',
+      },
+      destination: {
+        longitude: 3.0,
+        latitude: 2.0,
+        address: '부산',
+      },
+    };
+
+    useTayoEdit(`https://server.yata.kro.kr/api/v1/yata/${yataId}`, data).then(res => {
+      console.log(res);
+    });
+  };
 
   return (
     <>
@@ -111,12 +165,33 @@ export default function TabnidaAdd() {
           {isFilled &&
             (isDeparture && isDestination ? (
               <>
-                <Input label="출발 일시" type="datetime-local" />
-                <Input label="인당 금액" type="number" placeholder="인당 금액 입력" />
-                <Input label="탑승 인원" type="number" min="1" max="10" placeholder="1" />
-                <Input label="특이사항" placeholder="아이가 있어요, 흡연자입니다, 짐이 많아요, 등" />
+                <Input label="출발 일시" type="datetime-local" state={departureTime} setState={setDepartureTime} />
+                <Input
+                  label="인당 금액"
+                  type="number"
+                  placeholder="인당 금액 입력"
+                  state={amount}
+                  setState={setAmount}
+                />
+                <Input
+                  label="탑승 인원"
+                  type="number"
+                  min="1"
+                  max="10"
+                  placeholder="1"
+                  state={maxPeople}
+                  setState={setMaxPeople}
+                />
+                <Input
+                  label="특이사항"
+                  placeholder="아이가 있어요, 흡연자입니다, 짐이 많아요, 등"
+                  state={specifics}
+                  setState={setSpecifics}
+                />
                 <ButtonContainer>
-                  <Button className="register-btn">수정하기</Button>
+                  <Button className="register-btn" onClick={editTabnida}>
+                    수정하기
+                  </Button>
                 </ButtonContainer>
               </>
             ) : (

@@ -2,6 +2,8 @@ package com.yata.backend.domain.yataRequest.factory;
 
 import com.yata.backend.common.utils.RandomUtils;
 import com.yata.backend.domain.Yata.factory.YataFactory;
+import com.yata.backend.domain.member.entity.Member;
+import com.yata.backend.domain.member.factory.MemberFactory;
 import com.yata.backend.domain.yata.dto.LocationDto;
 import com.yata.backend.domain.yata.dto.YataRequestDto;
 import com.yata.backend.domain.yata.entity.Location;
@@ -55,6 +57,8 @@ public class YataRequestFactory {
     }
 
     public static YataRequestDto.RequestResponse createYataRequestResponseDto(YataRequest yataRequest) {
+        Member member = MemberFactory.createMember(RandomUtils.getRandomWord(10)+"@gmail.com");
+        yataRequest.setMember(member);
         return YataRequestDto.RequestResponse.builder()
                 .yataId(yataRequest.getYata().getYataId())
                 .yataRequestId(yataRequest.getYataRequestId())
@@ -75,6 +79,7 @@ public class YataRequestFactory {
                         yataRequest.getDestination().getLocation().getY(),
                         yataRequest.getDestination().getAddress()))
                 .createdAt(LocalDateTime.now())
+                .imgUrl(yataRequest.getMember().getImgUrl() != null ? yataRequest.getMember().getImgUrl().getUrl() : null)
                 .build();
     }
 

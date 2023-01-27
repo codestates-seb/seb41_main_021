@@ -40,10 +40,13 @@ export default function Login() {
     if (email === '' || password === '') return;
     useLogin('https://server.yata.kro.kr/api/v1/auth/login', data).then(res => {
       if (res === 200) {
-        useGetUserInfo().then(res => dispatch(loginUser(res)));
-        setTimeout(() => {
-          navigate('/my-page');
-        }, 100);
+        useGetUserInfo()
+          .then(res => dispatch(loginUser(res)))
+          .then(
+            setTimeout(() => {
+              navigate('/my-page');
+            }, 100),
+          );
       }
     });
   };
