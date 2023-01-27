@@ -59,7 +59,7 @@ export default function TaeoondaAdd() {
 
     useTayoCreate('https://server.yata.kro.kr/api/v1/yata?yataStatus=nata', data).then(res => {
       console.log(res);
-      navigate(`/taeoonda-detail/${yataId}`);
+      navigate(`/taeoonda-list`);
     });
   };
 

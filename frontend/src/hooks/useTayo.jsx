@@ -38,7 +38,12 @@ const useTayoCreate = async (url, data) => {
 // 4.2
 const useTayoEdit = async (url, data) => {
   try {
-    const response = await axios.patch(url, data);
+    const response = await axios.patch(url, data, {
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        Authorization: localStorage.getItem('ACCESS'),
+      },
+    });
     return data;
   } catch (error) {
     toast.warning('게시물 수정에 실패했습니다.');
@@ -68,7 +73,7 @@ const useTayoInvite = async (url, data) => {
     if (error.response.status === 403) {
       toast.warning('본인 게시물에 초대 수 없습니다.');
     } else {
-      toast.warning('신청에 실패했습니다.');
+      toast.warning('초대에 실패했습니다.');
     }
   }
 };
