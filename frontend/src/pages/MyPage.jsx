@@ -129,12 +129,14 @@ export default function MyPage() {
             </List>
             <List>
               <ListTitle>일반</ListTitle>
-              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/driver-auth">
-                <JourneyRecord>
-                  <div className="title">운전자 인증하기</div>
-                  <IoIosArrowForward />
-                </JourneyRecord>
-              </NavLink>
+              {info.roles.indexOf('DRIVER') === -1 && (
+                <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/driver-auth">
+                  <JourneyRecord>
+                    <div className="title">운전자 인증하기</div>
+                    <IoIosArrowForward />
+                  </JourneyRecord>
+                </NavLink>
+              )}
               <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/rating-list">
                 <JourneyRecord>
                   <div className="title">받은 매너 평가</div>
