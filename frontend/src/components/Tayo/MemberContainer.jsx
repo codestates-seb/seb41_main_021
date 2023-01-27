@@ -5,6 +5,7 @@ import { useState } from 'react';
 import useGetData from '../../hooks/useGetData';
 
 export default function MemberContainer(props) {
+
   const { data } = props;
 
   return (
@@ -30,6 +31,7 @@ export default function MemberContainer(props) {
           })
         )}
       </ContentContainer>
+
     </>
   );
 }

@@ -16,6 +16,11 @@ public interface YataService {
 
     Yata findYata(long yataId);
 
+    Slice<Yata> findMyRequestedYatas(String userName, Pageable pageable);
+
+    Slice<Yata> findMyYatas(String userName, Pageable pageable);
+
     void equalMember(String email, String postEmail);
+
 
 }

@@ -24,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Configuration
 public class SecurityConfig {
@@ -78,15 +79,17 @@ public class SecurityConfig {
                                 // yata
                                 .antMatchers("/api/v1/yata/apply/**").authenticated()
                                 .antMatchers("/api/v1/yata/invite/**").hasRole(Member.MemberRole.DRIVER.name())
-                                .antMatchers(HttpMethod.GET,"/api/v1/yata/**").permitAll()
+                                .antMatchers(HttpMethod.GET, "/api/v1/yata/*/accept/yataRequests").authenticated()
+                                .antMatchers(HttpMethod.GET, "/api/v1/yata/requests/*").authenticated()
+                                .antMatchers(HttpMethod.GET, "/api/v1/yata/myYatas/*").authenticated()
+                                .antMatchers(HttpMethod.GET, "/api/v1/yata/**").permitAll()
                                 .antMatchers("/api/v1/yata/**").authenticated()
 
 
-
                                 // notify
-                                .antMatchers(HttpMethod.GET,"/api/v1/notify/**").authenticated()
+                                .antMatchers(HttpMethod.GET, "/api/v1/notify/**").authenticated()
                                 // payHistory
-                                .antMatchers(HttpMethod.GET,"/api/v1/payHistory/**").authenticated()
+                                .antMatchers(HttpMethod.GET, "/api/v1/payHistory/**").authenticated()
                                 // basic
                                 .antMatchers("/docs/index.html").permitAll()
                                 .antMatchers("/h2/**").permitAll()

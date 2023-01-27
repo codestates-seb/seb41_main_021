@@ -5,21 +5,16 @@ import com.yata.backend.domain.member.service.MemberService;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataStatus;
 import com.yata.backend.domain.yata.repository.yataRepo.JpaYataRepository;
-import com.yata.backend.domain.yata.repository.yataRequestRepo.JpaYataRequestRepository;
 import com.yata.backend.domain.yata.util.TimeCheckUtils;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
 import com.yata.backend.global.utils.CustomBeanUtils;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Date;
 import java.util.Optional;
-
 
 @Service
 @Transactional
@@ -78,10 +73,7 @@ public class YataServiceImpl implements YataService {
 
         jpaYataRepository.delete(findYata);
     }
-//public Slice<YataRequest> findRequests(boolean acceptable, String userEmail, Long yataId, Pageable pageable) {
 
-    //     return jpaYataRequestRepository.findAllByYata(yata, pageable);
-//    }
     @Override
     public Slice<Yata> findAllYata(String yataStatus, Pageable pageable) {
         YataStatus nowStatus;
@@ -91,6 +83,20 @@ public class YataServiceImpl implements YataService {
             default -> throw new CustomLogicException(ExceptionCode.YATA_STATUS_NONE);
         }
         return jpaYataRepository.findAllByYataStatusIs(nowStatus, pageable);
+    }
+
+    @Override
+    public Slice<Yata> findMyRequestedYatas(String userName, Pageable pageable){
+
+        Member member = memberService.findMember(userName);
+        return jpaYataRepository.findAllByMemberAndYata_YataMembersIsNotNull(pageable, member);
+    }
+
+    @Override
+    public Slice<Yata> findMyYatas(String userName, Pageable pageable) {
+
+        memberService.findMember(userName);
+        return jpaYataRepository.findAllByMember_Email(userName, pageable);
     }
 
     @Override

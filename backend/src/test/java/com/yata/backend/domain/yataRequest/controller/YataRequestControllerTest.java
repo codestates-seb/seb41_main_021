@@ -174,11 +174,11 @@ public class YataRequestControllerTest extends AbstractControllerTest {
         List<YataRequest> yataRequests = YataRequestFactory.createYataRequestList();
         List<YataRequestDto.RequestResponse> responses = YataRequestFactory.createYataRquestResponseDtoList(yataRequests);
 
-        given(yataRequestService.findRequestsByDriver(any(), anyLong(), any())).willReturn(new SliceImpl<>(yataRequests));
+        given(yataRequestService.findRequestsByYataOwner(any(), anyLong(), any())).willReturn(new SliceImpl<>(yataRequests));
         given(mapper.yataRequestsToYataRequestResponses(any())).willReturn(responses);
 
         //when
-        ResultActions actions = mockMvc.perform(get(BASE_URL + "/apply/{yataId}", responses.get(1).getYataId())
+        ResultActions actions = mockMvc.perform(get(BASE_URL + "/requests/{yataId}", responses.get(1).getYataId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(GeneratedToken.getMockHeaderToken())
                 .accept(MediaType.APPLICATION_JSON)
@@ -207,11 +207,11 @@ public class YataRequestControllerTest extends AbstractControllerTest {
         List<YataRequest> yataRequests = YataRequestFactory.createYataRequestList();
         List<YataRequestDto.RequestResponse> responses = YataRequestFactory.createYataRquestResponseDtoList(yataRequests);
 
-        given(yataRequestService.findRequestsByPassenger(any(), any())).willReturn(new SliceImpl<>(yataRequests));
+        given(yataRequestService.findRequestsByRequester(any(), any())).willReturn(new SliceImpl<>(yataRequests));
         given(mapper.yataRequestsToYataRequestResponses(any())).willReturn(responses);
 
         //when
-        ResultActions actions = mockMvc.perform(get(BASE_URL + "/apply/yataRequests")
+        ResultActions actions = mockMvc.perform(get(BASE_URL + "/requests/myYataRequests")
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(GeneratedToken.getMockHeaderToken())
                 .accept(MediaType.APPLICATION_JSON)
@@ -241,7 +241,7 @@ public class YataRequestControllerTest extends AbstractControllerTest {
         doNothing().when(yataRequestService).deleteRequest(yataRequest.getMember().getName(), yataRequest.getYataRequestId(), yataRequest.getYata().getYataId());
 
         //when
-        ResultActions actions = mockMvc.perform(delete(BASE_URL + "/apply/{yataId}/{yataRequestId}", yataRequest.getYata().getYataId(), yataRequest.getYataRequestId())
+        ResultActions actions = mockMvc.perform(delete(BASE_URL + "/requests/{yataId}/{yataRequestId}", yataRequest.getYata().getYataId(), yataRequest.getYataRequestId())
                 .headers(GeneratedToken.getMockHeaderToken())
                 .with(csrf()));
 

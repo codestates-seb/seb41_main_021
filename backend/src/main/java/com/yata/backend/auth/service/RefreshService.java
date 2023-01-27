@@ -14,8 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.util.List;
 
-import static com.yata.backend.auth.utils.HeaderUtil.getAccessToken;
-import static com.yata.backend.auth.utils.HeaderUtil.getHeaderRefreshToken;
+import static com.yata.backend.auth.utils.HeaderUtil.*;
 
 @Component
 @Transactional
@@ -60,7 +59,7 @@ public class RefreshService {
         //AuthToken requestRefreshToken = authTokenProvider.convertAuthToken(getHeaderRefreshToken(request));
         validateRefreshTokenCheck(refreshToken, authTokenProvider.convertAuthToken(getHeaderRefreshToken(request)));
         AuthToken newAccessToken = authTokenProvider
-                .createAccessToken(userEmail, (List<String>) accessToken.getExpiredTokenClaims().get("roles"));
+                .createAccessToken(userEmail, (List<String>) accessToken.getExpiredTokenClaims().get("role"));
         response.addHeader("Authorization", "Bearer " + newAccessToken.getToken());
     }
 
