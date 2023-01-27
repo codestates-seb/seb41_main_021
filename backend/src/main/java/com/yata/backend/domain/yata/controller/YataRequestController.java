@@ -77,7 +77,6 @@ public class YataRequestController {
     public ResponseEntity deleteRequest(@PathVariable("yataId") @Positive long yataId,
                                         @PathVariable("yataRequestId") @Positive long yataRequestId,
                                       @AuthenticationPrincipal User authMember) {
-
         yataRequestService.deleteRequest(authMember.getUsername(), yataRequestId, yataId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
