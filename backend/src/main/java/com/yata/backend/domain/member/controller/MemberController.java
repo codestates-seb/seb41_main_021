@@ -54,6 +54,7 @@ public class MemberController {
     public ResponseEntity getMember(@PathVariable String email) {
         MemberDto.Response member = memberService.findMemberDto(email);
         member.setYataCount(yataMemberService.yataCount(email));
+        member.privateReponse();
         return ResponseEntity.ok(new SingleResponse<>(member));
     }
 
