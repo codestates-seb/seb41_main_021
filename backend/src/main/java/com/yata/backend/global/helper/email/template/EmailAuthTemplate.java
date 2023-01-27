@@ -1,7 +1,5 @@
 package com.yata.backend.global.helper.email.template;
 
-import com.yata.backend.global.utils.RedisUtils;
-import org.springframework.stereotype.Component;
 
 public class EmailAuthTemplate {
 

@@ -42,11 +42,14 @@ public class SignUpVerifyServiceImpl implements SignUpVerifyService {
 
     @Override
     public boolean verifyAuthCode(EmailAuthDto emailAuthDto) {
-        String requestEmail = (String) redisUtils.get(emailAuthDto.getEmail());
-        if (requestEmail != null) {
-            redisUtils.delete(emailAuthDto.getEmail());
-            boolean isVerified = requestEmail.equals(emailAuthDto.getAuthCode());
-            jpaEmailVerifyRepository.save(emailAuthDto.toEntity(isVerified));
+        String authCode = (String) redisUtils.get(emailAuthDto.getEmail());
+        if (authCode != null) {
+            boolean isVerified = false;
+            if(authCode.equals(emailAuthDto.getAuthCode())){
+                redisUtils.delete(emailAuthDto.getEmail());
+                isVerified = true;
+                jpaEmailVerifyRepository.save(emailAuthDto.toEntity(isVerified));
+            }
             return isVerified;
         }
         return false;
