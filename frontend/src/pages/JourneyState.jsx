@@ -1,11 +1,22 @@
 import styled from 'styled-components';
 import Header from '../components/Header';
 import Navbar from '../components/NavBar';
-import JourneyItemList from '../components/Journey/JourneyItemList';
 import JourneyItem from '../components/Journey/JourneyItem';
 import HelpContainer from '../components/Journey/HelpContainer';
+import { useState, useEffect } from 'react';
+import useGetData from '../hooks/useGetData';
 
 export default function JourneyState() {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // useEffect(() => {
+  //   useGetData(`https://server.yata.kro.kr/api/v1/yata/${yataId}/accept/yataRequests`).then(res => {
+  //     console.log(res.data.data[0]);
+  //     setData(res.data.data, setLoading(false));
+  //   });
+  // }, []);
+
   return (
     <>
       <Header title="여정 현황" />

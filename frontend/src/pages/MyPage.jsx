@@ -121,6 +121,12 @@ export default function MyPage() {
                   <IoIosArrowForward />
                 </JourneyRecord>
               </NavLink>
+              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journey-history">
+                <JourneyRecord>
+                  <div className="title">내가 작성한 글</div>
+                  <IoIosArrowForward />
+                </JourneyRecord>
+              </NavLink>
             </List>
             <List>
               <ListTitle>일반</ListTitle>
@@ -241,6 +247,7 @@ const PointContainer = styled.div`
     border-top: 0.9px solid white;
 
     div {
+      cursor: pointer;
       font-size: 1.2rem;
     }
   }
