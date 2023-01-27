@@ -9,6 +9,8 @@ import com.yata.backend.domain.payment.repository.JpaPaymentRepository;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
 import net.minidev.json.JSONObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -113,6 +115,13 @@ public class PaymentServiceImpl implements PaymentService {
         return restTemplate.postForObject(TossPaymentConfig.URL + paymentKey + "/cancel",
                 new HttpEntity<>(params, headers),
                 Map.class);
+    }
+
+    @Override
+    public Slice<Payment> findAllChargingHistories(String username, Pageable pageable) {
+        memberService.verifyMember(username);
+
+        return paymentRepository.findAllByCustomer_Email(username, pageable);
     }
 
     private HttpHeaders getHeaders() {
