@@ -131,10 +131,6 @@ class MemberControllerTest extends AbstractControllerTest {
                 document("member-get-others",
                         getRequestPreProcessor(),
                         getResponsePreProcessor(),
-                        requestParameters(
-                                parameterWithName("email").description("조회할 회원의 이메일"),
-                                parameterWithName("_csrf").description("무시!")
-                        ),
                         getMemberResponseFieldsSnippet()
                 ));
     }
