@@ -59,7 +59,7 @@ public class RefreshService {
         //AuthToken requestRefreshToken = authTokenProvider.convertAuthToken(getHeaderRefreshToken(request));
         validateRefreshTokenCheck(refreshToken, authTokenProvider.convertAuthToken(getHeaderRefreshToken(request)));
         AuthToken newAccessToken = authTokenProvider
-                .createAccessToken(userEmail, (List<String>) accessToken.getExpiredTokenClaims().get("roles"));
+                .createAccessToken(userEmail, (List<String>) accessToken.getExpiredTokenClaims().get("role"));
         response.addHeader("Authorization", "Bearer " + newAccessToken.getToken());
     }
 
