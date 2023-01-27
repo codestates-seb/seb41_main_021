@@ -48,27 +48,27 @@ export default function TabnidaAdd() {
     });
   }, []);
 
-  const addInputField = () => {
-    setInputFields([
-      ...inputFields,
-      {
-        fullName: '',
-      },
-    ]);
-  };
+  // const addInputField = () => {
+  //   setInputFields([
+  //     ...inputFields,
+  //     {
+  //       fullName: '',
+  //     },
+  //   ]);
+  // };
 
-  const removeInputFields = index => {
-    const rows = [...inputFields];
-    rows.splice(index, 1);
-    setInputFields(rows);
-  };
+  // const removeInputFields = index => {
+  //   const rows = [...inputFields];
+  //   rows.splice(index, 1);
+  //   setInputFields(rows);
+  // };
 
-  const handleChange = (index, evnt) => {
-    const { name, value } = evnt.target;
-    const list = [...inputFields];
-    list[index][name] = value;
-    setInputFields(list);
-  };
+  // const handleChange = (index, evnt) => {
+  //   const { name, value } = evnt.target;
+  //   const list = [...inputFields];
+  //   list[index][name] = value;
+  //   setInputFields(list);
+  // };
 
   useEffect(() => {
     if (departure === '') {
@@ -113,7 +113,7 @@ export default function TabnidaAdd() {
       },
     };
 
-    useTayoEdit(`https://server.yata.kro.kr/api/v1/yata/${yataId}`, data).then(res => {
+    useTayoEdit(`/api/v1/yata/${yataId}`, data).then(res => {
       console.log(res);
       navigate(`/tabnida-detail/${yataId}`);
     });

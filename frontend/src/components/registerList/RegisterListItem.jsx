@@ -1,27 +1,42 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { MdDone, MdDelete } from 'react-icons/md';
+import Button from '../common/Button';
+import usePostData from '../../hooks/usePostData';
 
 const RegisterListItem = props => {
   // api 응답 어떻게 올지 몰라서 대충 넣어놓음
-  const { date, userInfo, transit, onClick } = props;
+  const { date, userInfo, yataId, yataRequestId, onClick } = props;
   const [check, setCheck] = useState(false);
+
+  const approveHandler = () => {
+    const data = {};
+    usePostData(`https://server.yata.kro.kr/api/v1/yata/${yataId}/${yataRequestId}/accept`, data).then(res => {
+      console.log(res);
+    });
+  };
+
+  const rejectHandler = () => {
+    const data = {};
+    usePostData(`https://server.yata.kro.kr/api/v1/yata/${yataId}/${yataRequestId}/reject`, data).then(res => {
+      console.log(res);
+    });
+  };
 
   return (
     <>
       {/* 컨테이너 클릭 시 해당 유저 페이지로 이동 */}
-      <Container onClick={onClick}>
+      <Container>
         <TextContainer>
-          {/* 요청받은 날짜 */}
           <DateContainer>{date}</DateContainer>
           <UserInfoContainer>
             <UserInfoText check={check}>{userInfo}</UserInfoText>
-            <CheckCircle onClick={() => setCheck(!check)} check={check}>
-              {check && <MdDone />}
-            </CheckCircle>
           </UserInfoContainer>
-          <TransitContainer>경유 {transit}회</TransitContainer>
         </TextContainer>
+        <ButtonContainer>
+          <RejectButton onClick={rejectHandler}>거절하기</RejectButton>
+          <Button onClick={approveHandler}>수락하기</Button>
+        </ButtonContainer>
       </Container>
     </>
   );
@@ -29,20 +44,16 @@ const RegisterListItem = props => {
 
 const Container = styled.div`
   width: 100%;
-  height: 9rem;
-
+  padding: 1rem;
   border-bottom: 1px solid #f6f6f6;
-
-  @media only screen and (min-width: 800px) {
-  }
+  display: flex;
 `;
 
 const TextContainer = styled.div`
-  width: 100%;
+  flex: 1;
   height: 100%;
   padding: 1rem;
   display: flex;
-  justify-content: center;
   flex-direction: column;
 `;
 
@@ -58,7 +69,6 @@ const UserInfoContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
 `;
 
 const UserInfoText = styled.span`
@@ -73,27 +83,26 @@ const UserInfoText = styled.span`
     `}
 `;
 
-const CheckCircle = styled.div`
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 2.5rem;
-  border: 1px solid #ced4da;
-  font-size: 1.7rem;
+const ButtonContainer = styled.div`
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 1.5rem;
-  cursor: pointer;
-  ${props =>
-    props.check &&
-    css`
-      border: 1px solid ${props => props.theme.colors.darker_blue};
-      color: ${props => props.theme.colors.darker_blue};
-    `}
+
+  button {
+    margin-top: 0;
+  }
 `;
-const TransitContainer = styled.div`
-  display: flex;
-  align-items: center;
+
+const RejectButton = styled(Button)`
+  margin-right: 1rem;
+  background: ${props => props.theme.colors.gray};
+  &:hover {
+    background: ${props => props.theme.colors.light_gray};
+  }
+  &:active {
+    background: ${props => props.theme.colors.dark_gray};
+  }
 `;
 
 export default RegisterListItem;
