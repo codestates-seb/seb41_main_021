@@ -6,10 +6,16 @@ import { VscAccount } from 'react-icons/vsc';
 import Button from '../components/common/Button';
 import RatingList from '../components/rating/RatingList';
 import useGetData from '../hooks/useGetData';
+import usePostData from '../hooks/usePostData';
+import { useParams } from 'react-router';
 
-export default function RatingAdd(props) {
+export default function PassengerRatingAdd(props) {
   const [positiveList, setPositiveList] = useState([]);
   const [negativeList, setNegativeList] = useState([]);
+  const [isChecked, setIsChecked] = useState([]);
+
+  const params = useParams();
+  const yataId = params.yataId;
 
   useEffect(() => {
     useGetData('https://server.yata.kro.kr/api/v1/checklist').then(res => {
@@ -18,9 +24,19 @@ export default function RatingAdd(props) {
     });
   }, []);
 
+  const ratingHandler = () => {
+    const data = {
+      checklistIds: isChecked,
+    };
+    usePostData(`https://server.yata.kro.kr/api/v1/review/${yataId}`, data).then(res => {
+      console.log(data);
+      console.log(res);
+    });
+  };
+
   return (
     <>
-      <Header title={'매너 평가'}></Header>
+      <Header title={'탑승자 매너 평가'}></Header>
       <Container>
         <ProfileCotainer>
           <Profile>
@@ -31,9 +47,19 @@ export default function RatingAdd(props) {
             </Info>
           </Profile>
         </ProfileCotainer>
-        <RatingList title={'👍 좋았던 점을 선택해 주세요 !'} Items={positiveList} />
-        <RatingList title={' 👎 아쉬웠던 점을 선택해 주세요 !'} Items={negativeList} />
-        <FinishBtn>완료</FinishBtn>
+        <RatingList
+          isChecked={isChecked}
+          setIsChecked={setIsChecked}
+          title={'👍 좋았던 점을 선택해 주세요 !'}
+          Items={positiveList}
+        />
+        <RatingList
+          isChecked={isChecked}
+          setIsChecked={setIsChecked}
+          title={' 👎 아쉬웠던 점을 선택해 주세요 !'}
+          Items={negativeList}
+        />
+        <FinishBtn onClick={ratingHandler}>완료</FinishBtn>
       </Container>
       <NavBar />
     </>

@@ -35,7 +35,7 @@ const ListItem = props => {
               {journeyStart}
               <IoIosArrowRoundForward />
               {journeyEnd}
-              <TransitContainer>경유 {transit}회</TransitContainer>
+              {/* <TransitContainer>경유 {transit}회</TransitContainer> */}
             </JourneyText>
             <IoIosArrowForward />
           </JourneyContainer>

@@ -67,10 +67,15 @@ const useTayoRequest = async (url, data) => {
 // 5.2
 const useTayoInvite = async (url, data) => {
   try {
-    const response = await axios.post(url, data, header);
+    const response = await axios.post(url, data, {
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        Authorization: localStorage.getItem('ACCESS'),
+      },
+    });
     return response;
   } catch (error) {
-    if (error.response.status === 403) {
+    if (error.response.status === 403 || error.response.status === 409) {
       toast.warning('본인 게시물에 초대 수 없습니다.');
     } else {
       toast.warning('초대에 실패했습니다.');

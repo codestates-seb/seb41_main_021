@@ -45,8 +45,7 @@ export default function TabnidaDetail() {
 
   useEffect(() => {
     useGetData(`https://server.yata.kro.kr/api/v1/yata/${yataId}`).then(res => {
-      setData(res.data.data);
-      setLoading(false);
+      setData(res.data.data, setLoading(false));
     });
   }, []);
 
