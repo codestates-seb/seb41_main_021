@@ -14,7 +14,7 @@ export default function RegisterList() {
   const [list, setList] = useState([]);
 
   useEffect(() => {
-    useGetData(`https://server.yata.kro.kr/api/v1/yata/apply/${yataId}`).then(res => setList(res.data.data));
+    useGetData(`https://server.yata.kro.kr/api/v1/yata/apply/yataRequests`).then(res => setList(res.data.data));
   }, []);
 
   return (
@@ -27,11 +27,15 @@ export default function RegisterList() {
               onClick={() => {
                 navigate('/register-checklist');
               }}
-              date={'1월 3일 (화) 7:00PM'}
+              key={'123'}
+              yataId={'123'}
+              date={'2023-01-26T14:31:37'}
               journeyStart={'서울'}
               journeyEnd={'부산'}
-              transit="1"
-              state="대기"
+              transit={'1'}
+              price={'12,000'}
+              people={`1/4`}
+              yataStatus={'INVITE'}
             />
           );
         })}

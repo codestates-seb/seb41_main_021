@@ -24,9 +24,11 @@ export default function MyPage() {
     dispatch(clearUser());
     navigate('/');
   };
+
   const info = useSelector(state => {
     return state.user;
   });
+
   const isLogin = checkIfLogined();
 
   useEffect(() => {
