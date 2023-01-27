@@ -81,9 +81,7 @@ public class SecurityConfig {
                                 .antMatchers("/api/v1/yata/invite/**").hasRole(Member.MemberRole.DRIVER.name())
                                 .antMatchers(HttpMethod.GET, "/api/v1/yata/*/accept/yataRequests").authenticated()
                                 .antMatchers(HttpMethod.GET, "/api/v1/yata/requests/*").authenticated()
-                                .antMatchers(HttpMethod.GET, "/api/v1/yata/myYataRequests").authenticated()
-                                .antMatchers(HttpMethod.GET, "/api/v1/yata/myRequested").authenticated()
-                                .antMatchers(HttpMethod.GET, "/api/v1/yata/my").authenticated()
+                                .antMatchers(HttpMethod.GET, "/api/v1/yata/myYatas/*").authenticated()
                                 .antMatchers(HttpMethod.GET, "/api/v1/yata/**").permitAll()
                                 .antMatchers("/api/v1/yata/**").authenticated()
 
