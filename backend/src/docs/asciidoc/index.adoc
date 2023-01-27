@@ -245,9 +245,20 @@ include::{snippets}/payment-toss-cancel-point/request-parameters.adoc[]
 데이터 반환이 되기는 하는데 너무 길어서 제외 했습니다. 필요 없긴 해보여서!
 include::{snippets}/payment-toss-cancel-point/http-response.adoc[]
 
+=== 토스 포인트 충전 내역 조회
+.http-request
+include::{snippets}/payment-findChargingHistories/http-request.adoc[]
+.request-headers
+include::{snippets}/payment-findChargingHistories/request-headers.adoc[]
+.http-response
+include::{snippets}/payment-findChargingHistories/http-response.adoc[]
+.response-body
+include::{snippets}/payment-findChargingHistories/response-body.adoc
+.response-fields
+include::{snippets}/payment-findChargingHistories/response-fields.adoc[]
+
 
 == YataController
-
 
 === 게시글 생성
 
@@ -330,6 +341,20 @@ include::{snippets}/yata-getAll/http-response.adoc[]
 include::{snippets}/yata-getAll/response-body.adoc
 .response-fields
 include::{snippets}/yata-getAll/response-fields.adoc[]
+
+=== 내가 쓴 야타목록(신청 O)
+신청이 들어온게 있는 야타 목록들 조회
+GET /api/v1/yata/my
+
+.http-request
+include::{snippets}/yata-getMy/http-request.adoc[]
+.request-headers
+include::{snippets}/yata-getMy/request-headers.adoc[]
+.response-body
+include::{snippets}/yata-getMy/response-body.adoc[]
+.http-response
+include::{snippets}/yata-getMy/http-response.adoc[]
+
 
 === YATA 위치 검색
 ==== 페이징 처리 예정 (현재는 해당 검색 사항 전체 반환)

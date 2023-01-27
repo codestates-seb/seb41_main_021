@@ -1,17 +1,22 @@
 import styled from 'styled-components';
 import { FiEdit, FiTrash } from 'react-icons/fi';
 import { useNavigate } from 'react-router';
-import { useTayoDelete } from '../../hooks/useTayo';
 import useDeleteData from '../../hooks/useDeleteData';
 
 export default function EditDeleteContainer(props) {
   const { state, yataId } = props;
   const navigate = useNavigate();
 
+  const deleteHandler = () => {
+    useDeleteData(`https://server.yata.kro.kr/api/v1/yata/${yataId}`).then(() => {
+      navigate(`/${state}-list`);
+    });
+  };
+
   return (
     <CRUDContainer>
       <FiEdit onClick={() => navigate(`/${state}-edit/${yataId}`)} />
-      <FiTrash onClick={() => useDeleteData(`https://server.yata.kro.kr/api/v1/yata/${yataId}`)} />
+      <FiTrash onClick={deleteHandler} />
     </CRUDContainer>
   );
 }

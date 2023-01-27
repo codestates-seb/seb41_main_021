@@ -94,6 +94,13 @@ public class YataServiceImpl implements YataService {
     }
 
     @Override
+    public Slice<Yata> findMyYata(String userName, Pageable pageable){
+
+        Member member = memberService.findMember(userName);
+        return jpaYataRepository.findAllByMemberAndYata_YataMembersIsNotNull(pageable, member);
+    }
+
+    @Override
     public Yata findYata(long yataId) {
         return verifyYata(yataId);
     }

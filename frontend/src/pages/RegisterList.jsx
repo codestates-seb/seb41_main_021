@@ -14,28 +14,31 @@ export default function RegisterList() {
   const [list, setList] = useState([]);
 
   useEffect(() => {
-    useGetData(`https://server.yata.kro.kr/api/v1/yata/apply/yataRequests`).then(res => setList(res.data.data));
+    useGetData(`https://server.yata.kro.kr/api/v1/yata/apply/yataRequests`).then(
+      res => console.log(res),
+      // setList(res.data.data)
+    );
   }, []);
 
   return (
     <>
       <Header title="요청 내역" />
       <Container>
-        {list.map(e => {
+        {list.map(el => {
           return (
             <ListItemView
               onClick={() => {
                 navigate('/register-checklist');
               }}
-              key={'123'}
-              yataId={'123'}
-              date={'2023-01-26T14:31:37'}
-              journeyStart={'서울'}
-              journeyEnd={'부산'}
+              key={el.yataId}
+              yataId={el.yataId}
+              date={el.departureTime}
+              journeyStart={el.strPoint.address}
+              journeyEnd={el.destination.address}
               transit={'1'}
-              price={'12,000'}
-              people={`1/4`}
-              yataStatus={'INVITE'}
+              price={el.amount}
+              people={`1/${el.maxPeople}`}
+              yataStatus={el.yataStatus}
             />
           );
         })}

@@ -1,9 +1,14 @@
 package com.yata.backend.domain.payment.factory;
 
 import com.yata.backend.domain.member.entity.Member;
+import com.yata.backend.domain.member.factory.MemberFactory;
 import com.yata.backend.domain.payment.dto.*;
 import com.yata.backend.domain.payment.entity.Payment;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class PaymentFactory {
@@ -67,5 +72,33 @@ public class PaymentFactory {
 
         return paymentSuccessDto;
 
+    }
+
+    public static List<Payment> createPaymentList() throws java.text.ParseException, org.locationtech.jts.io.ParseException {
+        Member member = MemberFactory.createMember(new BCryptPasswordEncoder());
+
+        List<Payment> paymentList = new ArrayList<>();
+        for(int i=0; i<10; i++){
+            paymentList.add(createPayment(member));
+        }
+        return paymentList;
+    }
+
+    public static ChargingHistoryDto createYataMemberResponseDto(Payment payment) {
+
+        return ChargingHistoryDto.builder()
+                .paymentHistoryId(payment.getPaymentId())
+                .amount(payment.getAmount())
+                .orderName(payment.getOrderName())
+                .createdAt(LocalDateTime.now())
+                .build();
+    }
+
+    public static List <ChargingHistoryDto> createChargingHistoryDtoList(List<Payment> yataMembersList){
+        List <ChargingHistoryDto> chargingHistoryDtoList = new ArrayList<>();
+        for(Payment yataMember : yataMembersList){
+            chargingHistoryDtoList.add(createYataMemberResponseDto(yataMember));
+        }
+        return chargingHistoryDtoList;
     }
 }

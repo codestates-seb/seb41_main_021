@@ -11,12 +11,13 @@ import { useTayoEdit } from '../hooks/useTayo';
 
 import { tayoDataFetch } from '../redux/slice/DataSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 
 export default function TabnidaAdd() {
   const dispatch = useDispatch();
   const params = useParams();
   const yataId = params.yataId;
+  const navigate = useNavigate();
 
   const [isFilled, setIsFilled] = useState(false);
   const [departure, setDeparture] = useState('');
@@ -117,6 +118,7 @@ export default function TabnidaAdd() {
 
     useTayoEdit(`https://server.yata.kro.kr/api/v1/yata/${yataId}`, data).then(res => {
       console.log(res);
+      navigate(`/taeoonda-detail/${yataId}`);
     });
   };
 
@@ -136,7 +138,7 @@ export default function TabnidaAdd() {
             onFocus={() => setIsFilled(true)}
           />
 
-          {inputFields.map((data, index) => {
+          {/* {inputFields.map((data, index) => {
             return (
               <TransitField key={index}>
                 <TransitInput onChange={event => handleChange(index, event)} label="경유지" placeholder="경유지 입력" />
@@ -154,7 +156,7 @@ export default function TabnidaAdd() {
           <TransitContainer onClick={addInputField}>
             <BsPlusLg />
             <p>경유지 추가</p>
-          </TransitContainer>
+          </TransitContainer> */}
 
           <div className="destinationInput">
             <Input
