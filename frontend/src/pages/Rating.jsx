@@ -3,15 +3,27 @@ import styled from 'styled-components';
 import Navbar from '../components/NavBar';
 import Header from '../components/Header';
 import useGetData from '../hooks/useGetData';
+import { useSelector } from 'react-redux';
 
 export default function Rating() {
   const [positiveList, setPositiveList] = useState([]);
   const [negativeList, setNegativeList] = useState([]);
 
+  const info = useSelector(state => {
+    return state.user;
+  });
+
   useEffect(() => {
-    useGetData('https://server.yata.kro.kr/api/v1/checklist').then(res => {
-      setPositiveList(res.data.data.positiveList);
-      setNegativeList(res.data.data.negativeList);
+    useGetData(`https://server.yata.kro.kr/api/v1/review/${info.email}`).then(res => {
+      if (res.data.data) {
+        if (res.data.checklistResponse.checkpn === true) {
+          setPositiveList(res.data);
+        } else {
+          setNegativeList(res.data);
+        }
+      } else {
+        return;
+      }
     });
   }, []);
 
@@ -64,10 +76,12 @@ const Container = styled.div`
   align-items: center;
 `;
 const GoodContainer = styled.div`
+  margin-top: 2rem;
   width: 90%;
   height: auto;
 `;
 const BadContainer = styled.div`
+  margin-top: 2rem;
   width: 90%;
   height: auto;
 `;

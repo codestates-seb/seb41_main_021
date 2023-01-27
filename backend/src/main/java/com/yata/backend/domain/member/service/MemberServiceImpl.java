@@ -108,7 +108,11 @@ public class MemberServiceImpl implements MemberService {
     public void verifyDriverLicense(String email, DriverAuthDto driverAuthDto) {
         // TODO Auto-generated method stub 추후 비지니스화 하면 구현 할 로직 OPEN API 활용
         Member member = findMember(email);
-        member.getRoles().add(new AuthoritiesEntity(member, "DRIVER"));
+        if (member.getRoles().stream().anyMatch(role -> role.getRole().name().equals(Member.MemberRole.DRIVER.name()))) {
+            return;
+        }
+        member.getRoles().add(new AuthoritiesEntity(member, Member.MemberRole.DRIVER.name()));
+        updateMemberCache(member);
     }
 
 }

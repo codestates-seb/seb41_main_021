@@ -1,7 +1,6 @@
 import useGetData from './useGetData';
 import usePostData from './usePostData';
 import usePatchData from './usePatchData';
-import useDeleteData from './useDeleteData';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
@@ -24,7 +23,12 @@ const useTayoGet = async (url, data) => {
 // 4.1
 const useTayoCreate = async (url, data) => {
   try {
-    const response = await axios.post(url, data, header);
+    const response = await axios.post(url, data, {
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        Authorization: localStorage.getItem('ACCESS'),
+      },
+    });
     return response;
   } catch (error) {
     toast.warning('게시물 생성에 실패했습니다.');
@@ -39,15 +43,6 @@ const useTayoEdit = async (url, data) => {
   } catch (error) {
     toast.warning('게시물 수정에 실패했습니다.');
   }
-};
-
-// 4.3, 5.4
-const useTayoDelete = async (url, data) => {
-  await useDeleteData(url, data, header).then(res => {
-    if (res.response.status === 401) {
-      toast.warning('오류오류오류');
-    }
-  });
 };
 
 // 5.1
@@ -87,4 +82,4 @@ const useTayoAccept = async (url, data) => {
   });
 };
 
-export { useTayoGet, useTayoCreate, useTayoEdit, useTayoDelete, useTayoRequest, useTayoInvite, useTayoAccept };
+export { useTayoGet, useTayoCreate, useTayoEdit, useTayoRequest, useTayoInvite, useTayoAccept };

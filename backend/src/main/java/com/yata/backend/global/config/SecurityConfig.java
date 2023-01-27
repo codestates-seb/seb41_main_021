@@ -76,13 +76,17 @@ public class SecurityConfig {
                                 .antMatchers(HttpMethod.POST, "/api/v1/payments/**").authenticated()
                                 .antMatchers("/api/v1/payments/**").permitAll()
                                 // yata
-                                .antMatchers(HttpMethod.GET,"/api/v1/yata/**").permitAll()
                                 .antMatchers("/api/v1/yata/apply/**").authenticated()
                                 .antMatchers("/api/v1/yata/invite/**").hasRole(Member.MemberRole.DRIVER.name())
+                                .antMatchers(HttpMethod.GET,"/api/v1/yata/**").permitAll()
                                 .antMatchers("/api/v1/yata/**").authenticated()
+
+
+
                                 // notify
                                 .antMatchers(HttpMethod.GET,"/api/v1/notify/**").authenticated()
-
+                                // payHistory
+                                .antMatchers(HttpMethod.GET,"/api/v1/payHistory/**").authenticated()
                                 // basic
                                 .antMatchers("/docs/index.html").permitAll()
                                 .antMatchers("/h2/**").permitAll()

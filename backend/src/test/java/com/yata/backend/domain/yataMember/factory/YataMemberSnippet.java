@@ -16,11 +16,12 @@ public class YataMemberSnippet {
                 fieldWithPath("data[].nickname").type(JsonFieldType.STRING).description("승인된 회원 닉네임"),
                 fieldWithPath("data[].yataPaid").type(JsonFieldType.BOOLEAN).description("포인트 지불 상태"),
                 fieldWithPath("data[].imgUrl").type(JsonFieldType.STRING).description("야타 멤버의 사진 URL"),
-                fieldWithPath("data[].goingStatus").type(JsonFieldType.STRING).description("카풀 현황 상태"),
+                fieldWithPath("data[].boardingPersonCount").type(JsonFieldType.NUMBER).description("탑승 인원"),
+                fieldWithPath("data[].goingStatus").type(JsonFieldType.STRING).description("카풀 현황 상태 ( STARTED_YET / ARRIVED )"),
                 fieldWithPath("sliceInfo").type(JsonFieldType.OBJECT).description("슬라이스 정보"),
                 fieldWithPath("sliceInfo.getNumber").type(JsonFieldType.NUMBER).description("현재 슬라이스 번호"),
                 fieldWithPath("sliceInfo.getSize").type(JsonFieldType.NUMBER).description("현재 슬라이스 크기"),
-                fieldWithPath("sliceInfo.getNumberOfElements").type(JsonFieldType.NUMBER).description("현재 스라이스가 가지고 있는 엔티티 수"),
+                fieldWithPath("sliceInfo.getNumberOfElements").type(JsonFieldType.NUMBER).description("현재 슬라이스가 가지고 있는 엔티티 수"),
                 fieldWithPath("sliceInfo.hasNext").type(JsonFieldType.BOOLEAN).description("다음 슬라이스의 존재 유무"),
                 fieldWithPath("sliceInfo.hasPrevious").type(JsonFieldType.BOOLEAN).description("이전 슬라이스의 존재 유무")
         );

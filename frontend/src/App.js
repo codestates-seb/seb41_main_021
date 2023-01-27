@@ -42,7 +42,7 @@ function App() {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    if (localStorage.ACCESS) {
+    if (localStorage.getItem('ACCESS')) {
       useGetUserInfo()
         .then(res => dispatch(loginUser(res)))
         .then(setTimeout(() => setIsLoading(false), 100));
@@ -52,6 +52,7 @@ function App() {
     // if (localStorage.REFRESH) {
     //   console.log(localStorage);
     //   useTokenRefresh();
+    //   setIsLoading(false);
     // }
   }, []);
   return (
@@ -69,7 +70,7 @@ function App() {
               <Route path="/my-page" element={<MyPage />}></Route>
               <Route path="/other-user-page" element={<OtherUserPage />}></Route>
               <Route path="/rating-add" element={<RatingAdd />}></Route>
-              <Route path="/rating" element={<Rating />}></Route>
+              <Route path="/rating-list" element={<Rating />}></Route>
               <Route path="/signup" element={<SignUp />}></Route>
               <Route path="/tabnida-add" element={<TabnidaAdd />}></Route>
               <Route path="/tabnida-edit/:yataId" element={<TabnidaEdit />}></Route>
