@@ -22,16 +22,16 @@ public class YataRequest extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long YataRequestId;
 
-    @Column(length = 100)
+    @Column(length = 100, nullable = false)
     private String title;
 
     @Column(length = 100)
     private String specifics;
 
-    @Column
+    @Column(nullable = false)
     private Date departureTime;
 
-    @Column
+    @Column(nullable = false)
     private Date timeOfArrival;
 
     @Column(length = 20, nullable = false)

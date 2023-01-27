@@ -52,7 +52,6 @@ public class YataRequestController {
     }
 
     // Yata 신청 목록 조회 (by Driver) - 200
-    // 어차피 해당 게시글 들어가서 조회하는 거니까 / neota 에는 신청목록 / nata 에는 초대목록 밖에 없음
     @GetMapping("/apply/{yataId}")
     public ResponseEntity<SliceResponseDto<YataRequestDto.RequestResponse>> getRequestsByDriver(@PathVariable("yataId") @Positive long yataId,
                                                                                         @AuthenticationPrincipal User authMember,
@@ -73,7 +72,7 @@ public class YataRequestController {
                 new SliceResponseDto<>(mapper.yataRequestsToYataRequestResponses(requests.getContent()), sliceInfo), HttpStatus.OK);
     }
 
-    //Yata 신청 or 초대 전 or 승인 후 삭제 - 204
+    //Yata 신청/초대 했다가 삭제 - 204
     @DeleteMapping("/apply/{yataId}/{yataRequestId}")
     public ResponseEntity deleteRequest(@PathVariable("yataId") @Positive long yataId,
                                         @PathVariable("yataRequestId") @Positive long yataRequestId,

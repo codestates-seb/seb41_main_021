@@ -1,19 +1,22 @@
 import axios from 'axios';
 
-const header = {
-  headers: {
-    'Content-Type': 'application/json;charset=UTF-8',
-    Accept: 'application/json',
-  },
-};
-
 const useGetData = async (url, data) => {
   try {
     if (data) {
-      const response = await axios.get(url, data, header);
+      const response = await axios.get(url, data, {
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          Authorization: localStorage.getItem('ACCESS'),
+        },
+      });
       return response;
     }
-    const response = await axios.get(url, header);
+    const response = await axios.get(url, {
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        Authorization: localStorage.getItem('ACCESS'),
+      },
+    });
     return response;
   } catch (error) {
     return console.log(error);

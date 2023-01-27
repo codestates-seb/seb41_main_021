@@ -122,6 +122,7 @@ public interface YataMapper {
                             .strPoint(locationToResponse(yata.getStrPoint()))
                             .destination(locationToResponse(yata.getDestination()))
                             .nickName(yata.getMember().getNickname())
+                            .feulTank(yata.getMember().getFuelTank())
                             .yataMembers(null)
                             .build();
                 }).collect(Collectors.toList());

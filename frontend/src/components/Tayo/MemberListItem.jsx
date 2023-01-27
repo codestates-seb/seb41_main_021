@@ -2,14 +2,14 @@ import styled from 'styled-components';
 import { VscAccount } from 'react-icons/vsc';
 
 export default function MemberListItem(props) {
-  const { state } = props;
+  const { state, nickname } = props;
 
   return (
     <Container>
       <ProfileContainer>
         <VscAccount />
-        <Username>스푼0911</Username>
-        <TagContainer state={state}>{state === '완료' ? '결제 완료' : '결제 대기'}</TagContainer>
+        <Username>{nickname}</Username>
+        <TagContainer state={state}>{state === true ? '결제 완료' : '결제 대기'}</TagContainer>
       </ProfileContainer>
     </Container>
   );
@@ -45,5 +45,5 @@ const TagContainer = styled.div`
   border-radius: 0.2rem;
   font-size: 0.9rem;
 
-  background-color: ${props => (props.state === '완료' ? props.theme.colors.main_blue : props.theme.colors.light_gray)};
+  background-color: ${props => (props.state === true ? props.theme.colors.main_blue : props.theme.colors.light_gray)};
 `;

@@ -15,12 +15,12 @@ public class PayHistorySnippet {
                 fieldWithPath("data[].nickname").type(JsonFieldType.STRING).description("결제한 회원 닉네임"),
                 fieldWithPath("data[].paidPrice").type(JsonFieldType.NUMBER).description("지불한 포인트"),
                 fieldWithPath("data[].point").type(JsonFieldType.NUMBER).description("포인트 잔액"),
-                fieldWithPath("data[].type").type(JsonFieldType.STRING).description("지불한 도메인"),
+                fieldWithPath("data[].type").type(JsonFieldType.STRING).description("지불한 유형 ex. 야타 / 이모티콘(추후 추가한다면 확장성을 위해)"),
                 fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("지불한 일시"),
                 fieldWithPath("sliceInfo").type(JsonFieldType.OBJECT).description("슬라이스 정보"),
                 fieldWithPath("sliceInfo.getNumber").type(JsonFieldType.NUMBER).description("현재 슬라이스 번호"),
                 fieldWithPath("sliceInfo.getSize").type(JsonFieldType.NUMBER).description("현재 슬라이스 크기"),
-                fieldWithPath("sliceInfo.getNumberOfElements").type(JsonFieldType.NUMBER).description("현재 스라이스가 가지고 있는 엔티티 수"),
+                fieldWithPath("sliceInfo.getNumberOfElements").type(JsonFieldType.NUMBER).description("현재 슬라이스가 가지고 있는 엔티티 수"),
                 fieldWithPath("sliceInfo.hasNext").type(JsonFieldType.BOOLEAN).description("다음 슬라이스의 존재 유무"),
                 fieldWithPath("sliceInfo.hasPrevious").type(JsonFieldType.BOOLEAN).description("이전 슬라이스의 존재 유무")
         );

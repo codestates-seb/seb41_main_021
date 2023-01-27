@@ -38,7 +38,7 @@ export default function TabnidaDetail() {
       },
     };
 
-    useTayoRequest(`https://server.yata.kro.kr/api/v1/yata/invite/${yataId}`, data).then(res => {
+    useTayoRequest(`https://server.yata.kro.kr/api/v1/yata/apply/${yataId}`, data).then(res => {
       console.log(res);
     });
   };
@@ -58,7 +58,7 @@ export default function TabnidaDetail() {
             <EditDeleteContainer state={'taeoonda'} yataId={yataId} />
             <ProfileContainer data={data} />
             <InfoContainer data={data} />
-            <MemberContainer data={data} />
+            <MemberContainer yataId={yataId} />
             <InviteButton onClick={requestHandler}>신청하기</InviteButton>
           </Container>
           <NavBar />

@@ -17,13 +17,6 @@ public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pointId;
-
-    /*@Column(nullable = false)
-    private double longitude;
-
-    @Column(nullable = false)
-    private double latitude;
-*/
     @Column(nullable = false, name = "LOCATION" , columnDefinition = "GEOMETRY")
     private Point location;
     @Column(length = 100, nullable = false)
