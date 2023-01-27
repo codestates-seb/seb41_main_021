@@ -81,5 +81,13 @@ public class YataController {
 
     }
 
+    //내가 쓴 글 조회(신청 온 것만, 마감상태여도 보이게)
+    @GetMapping("/my")
+    public ResponseEntity getMyYata(@AuthenticationPrincipal User authMember, Pageable pageable) {
+        Slice<Yata> requests = yataService.findAllMyYata(authMember.getUsername(), pageable);
+        SliceInfo sliceInfo = new SliceInfo(pageable, requests.getNumberOfElements(), requests.hasNext());
+        return new ResponseEntity<>(
+                new SliceResponseDto<>(mapper.yatasToYataResponses(requests.getContent()), sliceInfo), HttpStatus.OK);
+    }
 
 }

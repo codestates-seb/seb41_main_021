@@ -27,16 +27,16 @@ public class Yata extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long yataId;
 
-    @Column
+    @Column(nullable = false, length = 50)
     private Date departureTime;
 
-    @Column
+    @Column(nullable = false, length = 50)
     private Date timeOfArrival;
 
     @Column(nullable = false, length = 50)
     private String title;
 
-    @Column(nullable = false, length = 100)
+    @Column
     private String specifics;
 
     @Column(nullable = false)
