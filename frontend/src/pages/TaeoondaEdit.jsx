@@ -138,7 +138,7 @@ export default function TabnidaAdd() {
             onFocus={() => setIsFilled(true)}
           />
 
-          {inputFields.map((data, index) => {
+          {/* {inputFields.map((data, index) => {
             return (
               <TransitField key={index}>
                 <TransitInput onChange={event => handleChange(index, event)} label="경유지" placeholder="경유지 입력" />
@@ -156,7 +156,7 @@ export default function TabnidaAdd() {
           <TransitContainer onClick={addInputField}>
             <BsPlusLg />
             <p>경유지 추가</p>
-          </TransitContainer>
+          </TransitContainer> */}
 
           <div className="destinationInput">
             <Input

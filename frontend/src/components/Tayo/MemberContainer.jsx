@@ -12,7 +12,6 @@ export default function MemberContainer(props) {
 
   useEffect(() => {
     useGetData(`https://server.yata.kro.kr/api/v1/yata/${yataId}/accept/yataRequests`).then(res => {
-      console.log(res.data.data[0]);
       setData(res.data.data, setLoading(false));
     });
   }, []);
@@ -23,7 +22,7 @@ export default function MemberContainer(props) {
         <ContentContainer>
           <h2>확정된 탑승자</h2>
           {data.map(el => {
-            return <MemberListItem nickname={el.nickname} state={el.yataPaid} />;
+            return <MemberListItem key={el.yataId} nickname={el.nickname} state={el.yataPaid} />;
           })}
         </ContentContainer>
       )}
