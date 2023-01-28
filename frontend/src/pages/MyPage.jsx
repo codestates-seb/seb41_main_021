@@ -43,6 +43,7 @@ export default function MyPage() {
       }
     });
   }, []);
+
   return (
     <>
       <Container>
@@ -72,12 +73,12 @@ export default function MyPage() {
             <OilLevel>
               <RiOilLine />
               <div className="title">기름통 레벨</div>
-              <div className="bottom"> {info.fuelTank}L </div>
+              <div className="bottom">{info.fuelTank}L </div>
             </OilLevel>
             <TripNumber>
               <BiTrip />
               <div className="title">여정 횟수</div>
-              <div className="bottom">30</div>
+              <div className="bottom">{info.yataCount}</div>
             </TripNumber>
             <Compliment>
               <BiLike />

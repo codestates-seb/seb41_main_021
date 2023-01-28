@@ -22,8 +22,8 @@ export default function TabnidaDetail() {
     const data = {
       title: '태워주세욥',
       specifics: '애완견을 동반하고싶어요',
-      departureTime: '2023-01-25T16:00:34',
-      timeOfArrival: '2023-01-25T16:00:34',
+      departureTime: '2100-01-25T16:00:34',
+      timeOfArrival: '2100-01-25T16:00:34',
       boardingPersonCount: 2,
       maxWaitingTime: 10,
       strPoint: {
@@ -45,8 +45,7 @@ export default function TabnidaDetail() {
 
   useEffect(() => {
     useGetData(`https://server.yata.kro.kr/api/v1/yata/${yataId}`).then(res => {
-      setData(res.data.data);
-      setLoading(false);
+      setData(res.data.data, setLoading(false));
     });
   }, []);
 
@@ -58,7 +57,7 @@ export default function TabnidaDetail() {
           <Container>
             <EditDeleteContainer state={'tabnida'} yataId={yataId} />
             <ProfileContainer data={data} />
-            <InfoContainer data={data} />
+            <InfoContainer data={data} ableTag={'초대 가능'} disableTag={'초대 마감'} />
             <MemberContainer data={data} />
             <InviteButton onClick={requestHandler}>초대하기</InviteButton>
           </Container>

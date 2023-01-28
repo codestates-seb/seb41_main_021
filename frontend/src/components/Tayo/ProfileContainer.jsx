@@ -1,23 +1,32 @@
 import styled from 'styled-components';
 import { IoIosArrowRoundForward, IoIosArrowForward } from 'react-icons/io';
 import { VscAccount } from 'react-icons/vsc';
+import { useNavigate } from 'react-router';
 
 export default function ProfileContainer(props) {
   const { data } = props;
+
+  const navigate = useNavigate();
+
   return (
-    <ContentContainer>
-      <ProfileInfoContainer>
-        <h2>작성자 정보</h2>
-        <ProfileInfo>
-          <VscAccount />
-          <ProfileText>
-            <div className="username">{data.nickName}</div>
-            <div>기름통 레벨 {70}L</div>
-          </ProfileText>
-        </ProfileInfo>
-      </ProfileInfoContainer>
-      <IoIosArrowForward />
-    </ContentContainer>
+    <>
+      <ContentContainer
+        onClick={() => {
+          navigate(`/other-user-page/${data.email}`);
+        }}>
+        <ProfileInfoContainer>
+          <h2>작성자 정보</h2>
+          <ProfileInfo>
+            <VscAccount />
+            <ProfileText>
+              <div className="username">{data.nickName}</div>
+              <div>기름통 레벨 {70}L</div>
+            </ProfileText>
+          </ProfileInfo>
+        </ProfileInfoContainer>
+        <IoIosArrowForward />
+      </ContentContainer>
+    </>
   );
 }
 
@@ -31,6 +40,7 @@ const ContentContainer = styled.div`
   border-radius: 0.3rem;
   background-color: #f6f6f6;
   color: #202020;
+  cursor: pointer;
 
   svg {
     font-size: 1.2rem;

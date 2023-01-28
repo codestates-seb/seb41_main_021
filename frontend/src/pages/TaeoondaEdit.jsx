@@ -5,8 +5,6 @@ import Input from '../components/common/Input';
 import Button from '../components/common/Button';
 import DestinationList from '../components/Tayo/DestinationList';
 import Header from '../components/Header';
-import { BsPlusLg } from 'react-icons/bs';
-import { TiDeleteOutline } from 'react-icons/ti';
 import { useTayoEdit } from '../hooks/useTayo';
 
 import { tayoDataFetch } from '../redux/slice/DataSlice';
@@ -50,27 +48,27 @@ export default function TabnidaAdd() {
     });
   }, []);
 
-  const addInputField = () => {
-    setInputFields([
-      ...inputFields,
-      {
-        fullName: '',
-      },
-    ]);
-  };
+  // const addInputField = () => {
+  //   setInputFields([
+  //     ...inputFields,
+  //     {
+  //       fullName: '',
+  //     },
+  //   ]);
+  // };
 
-  const removeInputFields = index => {
-    const rows = [...inputFields];
-    rows.splice(index, 1);
-    setInputFields(rows);
-  };
+  // const removeInputFields = index => {
+  //   const rows = [...inputFields];
+  //   rows.splice(index, 1);
+  //   setInputFields(rows);
+  // };
 
-  const handleChange = (index, evnt) => {
-    const { name, value } = evnt.target;
-    const list = [...inputFields];
-    list[index][name] = value;
-    setInputFields(list);
-  };
+  // const handleChange = (index, evnt) => {
+  //   const { name, value } = evnt.target;
+  //   const list = [...inputFields];
+  //   list[index][name] = value;
+  //   setInputFields(list);
+  // };
 
   useEffect(() => {
     if (departure === '') {
@@ -101,9 +99,9 @@ export default function TabnidaAdd() {
       timeOfArrival: '2023-01-23T22:38:28',
       maxWaitingTime: 0,
       maxPeople,
-      yataStatus: 'YATA_NATA',
+      yataStatus: 'YATA_NEOTA',
       amount,
-      carModel: '차종',
+      carModel,
       strPoint: {
         longitude: 5.0,
         latitude: 4.0,
@@ -137,8 +135,8 @@ export default function TabnidaAdd() {
             setState={setDeparture}
             onFocus={() => setIsFilled(true)}
           />
-
-          {/* {inputFields.map((data, index) => {
+          {/* 
+          {inputFields.map((data, index) => {
             return (
               <TransitField key={index}>
                 <TransitInput onChange={event => handleChange(index, event)} label="경유지" placeholder="경유지 입력" />

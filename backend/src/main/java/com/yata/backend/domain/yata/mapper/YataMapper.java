@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface YataMapper {
-//    Yata yataPostDtoToYata(YataDto.YataPost requestBody);
+
 
     default Yata yataPostDtoToYata(YataDto.YataPost requestBody) throws ParseException {
         if (requestBody == null) {
@@ -63,7 +63,8 @@ public interface YataMapper {
             response.yataId(yata.getYataId());
         }
         if (yata.getYataMembers() == null) response.reservedMemberNum(0);
-        else response.reservedMemberNum(yata.getYataMembers().size());
+        else response.reservedMemberNum(yata.getYataMembers().stream().mapToInt(yataMember ->
+                yataMember.getBoardingPersonCount()).sum());
         response.departureTime(yata.getDepartureTime());
         response.timeOfArrival(yata.getTimeOfArrival());
         response.title(yata.getTitle());
@@ -103,8 +104,8 @@ public interface YataMapper {
 
                     YataDto.Response.ResponseBuilder response = YataDto.Response.builder();
                     if (yata.getYataMembers() == null) response.reservedMemberNum(0);
-                    else response.reservedMemberNum(yata.getYataMembers().size());
-
+                    else response.reservedMemberNum(yata.getYataMembers().stream().mapToInt(yataMember ->
+                            yataMember.getBoardingPersonCount()).sum());
                     return response.yataId(yata.getYataId())
                             .postStatus(yata.getPostStatus())
                             .yataStatus(yata.getYataStatus())

@@ -8,7 +8,8 @@ import Loading from './pages/Loading';
 import LogIn from './pages/LogIn';
 import MyPage from './pages/MyPage';
 import OtherUserPage from './pages/OtherUserPage';
-import RatingAdd from './pages/RatingAdd';
+import PassengerRatingAdd from './pages/PassengerRatingAdd';
+import DriverRatingAdd from './pages/DriverRatingAdd';
 import Rating from './pages/Rating';
 import SignUp from './pages/SignUp';
 import TabnidaList from './pages/TabnidaList';
@@ -45,7 +46,7 @@ function App() {
     if (localStorage.getItem('ACCESS')) {
       useGetUserInfo()
         .then(res => dispatch(loginUser(res)))
-        .then(setTimeout(() => setIsLoading(false), 100));
+        .then(setTimeout(() => setIsLoading(false), 500));
     } else {
       setIsLoading(false);
     }
@@ -68,9 +69,10 @@ function App() {
               <Route path="/loading" element={<Loading />}></Route>
               <Route path="/login" element={<LogIn />}></Route>
               <Route path="/my-page" element={<MyPage />}></Route>
-              <Route path="/other-user-page" element={<OtherUserPage />}></Route>
-              <Route path="/rating-add" element={<RatingAdd />}></Route>
-              <Route path="/rating-list" element={<Rating />}></Route>
+              <Route path="/other-user-page/:email" element={<OtherUserPage />}></Route>
+              <Route path="/rating-add-driver/:yataId" element={<DriverRatingAdd />}></Route>
+              <Route path="/rating-add-passenger/:yataId" element={<PassengerRatingAdd />}></Route>
+              <Route path="/rating-list/:email" element={<Rating />}></Route>
               <Route path="/signup" element={<SignUp />}></Route>
               <Route path="/tabnida-add" element={<TabnidaAdd />}></Route>
               <Route path="/tabnida-edit/:yataId" element={<TabnidaEdit />}></Route>
@@ -81,7 +83,7 @@ function App() {
               <Route path="/taeoonda-detail/:yataId" element={<TaeoondaDetail />}></Route>
               <Route path="/taeoonda-list" element={<TaeoondaList />}></Route>
               <Route path="/register-list" element={<RegisterList />}></Route>
-              <Route path="/register-checklist" element={<RegisterCheckList />}></Route>
+              <Route path="/register-checklist/:yataId" element={<RegisterCheckList />}></Route>
               <Route path="/destination-list" element={<DestinationList />}></Route>
               <Route path="/destination-detail" element={<DestinationDetail />}></Route>
               <Route path="/exchange-page" element={<ExchagePage />}></Route>

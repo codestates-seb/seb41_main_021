@@ -48,5 +48,5 @@ const dataSlice = createSlice({
   },
 });
 export default dataSlice;
-export const { up, set } = dataSlice.actions;
+export const { set } = dataSlice.actions;
 export { tayoDataFetch };
