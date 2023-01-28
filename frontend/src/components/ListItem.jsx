@@ -52,6 +52,7 @@ const ListItem = props => {
 const Container = styled.div`
   width: 100%;
   height: 8rem;
+  cursor: pointer;
 
   border-bottom: 1px solid #f6f6f6;
   @media only screen and (min-width: 800px) {

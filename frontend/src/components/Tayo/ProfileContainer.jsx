@@ -20,7 +20,7 @@ export default function ProfileContainer(props) {
             <VscAccount />
             <ProfileText>
               <div className="username">{data.nickName}</div>
-              <div>기름통 레벨 {70}L</div>
+              <div>기름통 레벨 {data.fuelTank}L</div>
             </ProfileText>
           </ProfileInfo>
         </ProfileInfoContainer>
