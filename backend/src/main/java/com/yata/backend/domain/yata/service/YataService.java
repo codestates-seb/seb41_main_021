@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 public interface YataService {
     Yata createYata(Yata yata, String userName);
 
@@ -24,4 +26,5 @@ public interface YataService {
     void equalMember(String email, String postEmail);
 
 
+    List<Yata> findMyYatasNotClosed(String username);
 }
