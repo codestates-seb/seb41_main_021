@@ -15,15 +15,15 @@ export default function DestinationDetail() {
   const [SearchParams, setSearchParams] = useSearchParams();
   const addressName = SearchParams.get('address'),
     placeName = SearchParams.get('place'),
-    x = SearchParams.get('x'),
-    y = SearchParams.get('y');
+    longitude = SearchParams.get('longitude'),
+    latitude = SearchParams.get('latitude');
 
   const add = () => {
     dispatch(
       addDestination({
         destinationPoint: {
-          longitude: x,
-          latitude: y,
+          longitude: longitude,
+          latitude: latitude,
           address: placeName,
         },
         isDestination: true,
@@ -32,7 +32,7 @@ export default function DestinationDetail() {
 
     dispatch(setDestination({ destination: placeName }));
     dispatch(setIsFilled({ setIsFilled: false }));
-    navigate('/tabnida-add');
+    navigate(-1);
   };
 
   return (
@@ -43,8 +43,8 @@ export default function DestinationDetail() {
           <Map // 지도를 표시할 Container
             center={{
               // 지도의 중심좌표
-              lat: y,
-              lng: x,
+              lat: latitude,
+              lng: longitude,
             }}
             style={{
               // 지도의 크기
@@ -56,8 +56,8 @@ export default function DestinationDetail() {
             <MapMarker // 마커를 생성합니다
               position={{
                 // 마커가 표시될 위치입니다
-                lat: y,
-                lng: x,
+                lat: latitude,
+                lng: longitude,
               }}
             />
           </Map>
