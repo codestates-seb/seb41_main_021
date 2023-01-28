@@ -38,8 +38,10 @@ public interface YataRequestMapper {
         response.timeOfArrival(yataRequest.getTimeOfArrival());
         response.boardingPersonCount(yataRequest.getBoardingPersonCount());
         response.maxWaitingTime(yataRequest.getMaxWaitingTime());
-        response.strPoint(locationToResponse(yataRequest.getStrPoint()));
-        response.destination(locationToResponse(yataRequest.getDestination()));
+        response.strPoint(yataRequest.getStrPoint() == null ?
+                locationToResponse(yataRequest.getYata().getStrPoint()) : locationToResponse(yataRequest.getStrPoint()));
+        response.destination(yataRequest.getDestination() == null ?
+                locationToResponse(yataRequest.getYata().getDestination()) : locationToResponse(yataRequest.getDestination()));
         response.createdAt(yataRequest.getCreatedAt());
 
         return response.build();

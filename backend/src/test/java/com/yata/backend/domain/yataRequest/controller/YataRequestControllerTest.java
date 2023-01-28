@@ -133,44 +133,6 @@ public class YataRequestControllerTest extends AbstractControllerTest {
                         )));
     }
 
-    @Test
-    @DisplayName("Yata 초대")
-    @WithMockUser(username = "test2@gmail.com", roles = "USER")
-    void postYataInvitationTest() throws Exception {
-        //given
-        YataRequest expected = YataRequestFactory.createYataRequest();
-        YataRequestDto.InvitationResponse response = YataRequestFactory.createYataInvitationResponseDto(expected);
-
-        given(yataRequestService.createInvitation(any(),any(), anyLong())).willReturn(new YataRequest());
-        given(mapper.yataInvitationToYataInvitationResponse(any(YataRequest.class))).willReturn(response);
-
-        //when
-        ResultActions actions = mockMvc.perform(post(BASE_URL + "/invite/{yataId}", response.getYataId())
-                .headers(GeneratedToken.getMockHeaderToken())
-                .with(csrf()));
-
-        //then
-        actions.andExpect(status().isCreated())
-                .andDo(document("yataRequest-postInvitation",
-                        getRequestPreProcessor(),
-                        getResponsePreProcessor(),
-                        requestHeaders(
-                                headerWithName("Authorization").description("JWT 토큰")
-                        ),
-                        pathParameters(
-                                parameterWithName("yataId").description("야타 ID")
-                        ),
-                        responseFields(
-                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("회원 정보"),
-                                fieldWithPath("data.yataRequestId").type(JsonFieldType.NUMBER).description("야타 신청/초대 ID"),
-                                fieldWithPath("data.yataId").type(JsonFieldType.NUMBER).description("야타 ID"),
-                                fieldWithPath("data.email").type(JsonFieldType.STRING).description("신청/초대한 회원 이메일"),
-                                fieldWithPath("data.nickname").type(JsonFieldType.STRING).description("신청/초대한 회원 닉네임"),
-                                fieldWithPath("data.yataRequestStatus").type(JsonFieldType.STRING).description("야타 요청 종류 ( INVITE / APPLY )"),
-                                fieldWithPath("data.approvalStatus").type(JsonFieldType.STRING).description("야타 승인 상태 ( ACCEPTED / REJECTED / NOT_YET )"),
-                                fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성 시간")
-                        )));
-    }
 
     @Test
     @DisplayName("Yata 신청/초대 목록 조회")

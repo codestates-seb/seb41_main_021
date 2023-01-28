@@ -369,7 +369,7 @@ include::{snippets}/yata-getMyYatas/http-response.adoc[]
 include::{snippets}/yata-getMyYatas/response-fields.adoc[]
 
 === 내가 신청한 야타 게시글 중 신청 수락된 게시글
-GET api/ve/yata/accept/yatas
+GET api/v1/yata/accept/yatas
 
 .http-request
 include::{snippets}/yata-getMyAccepted/http-request.adoc[]
@@ -434,20 +434,24 @@ include::{snippets}/yataRequest-postRequest/response-body.adoc[]
 === 게시물에 초대
 
 .http-request
-include::{snippets}/yataRequest-postInvitation/http-request.adoc[]
+include::{snippets}/yata-invite/http-request.adoc[]
 .request-headers
-include::{snippets}/yataRequest-postInvitation/request-headers.adoc[]
-.path-parameters
-include::{snippets}/yataRequest-postInvitation/path-parameters.adoc[]
+include::{snippets}/yata-invite/request-headers.adoc[]
+.request-fields
+include::{snippets}/yata-invite/request-fields.adoc[]
+.request-body
+include::{snippets}/yata-invite/request-body.adoc[]
 .http-response
-include::{snippets}/yataRequest-postInvitation/http-response.adoc[]
+include::{snippets}/yata-invite/http-response.adoc[]
 .response-fields
-include::{snippets}/yataRequest-postInvitation/response-fields.adoc[]
+include::{snippets}/yata-invite/response-fields.adoc[]
 .response-body
-include::{snippets}/yataRequest-postInvitation/response-body.adoc[]
+include::{snippets}/yata-invite/response-body.adoc[]
+
 
 === 게시물의 신청/초대 목록 조회
 -> 게시물 주인이 자신의 게시물에 신청/초대한 사람들 목록을 조회하는 것
+-> 게시물 주인은 자기가 초대한 사람들 목록 까지 볼 수 있음
 
 .http-request
 include::{snippets}/yataRequest-getAllByDriver/http-request.adoc[]
@@ -462,8 +466,8 @@ include::{snippets}/yataRequest-getAllByDriver/response-fields.adoc[]
 .response-body
 include::{snippets}/yataRequest-getAllByDriver/response-body.adoc[]
 
-=== 자신의 신청/초대 목록 조회
--> 자신이 했던 신청/초대 목록을 조회하는 것
+=== 자신의 신청 목록 조회
+-> 자신이 했던 신청 목록을 조회하는 것
 
 .http-request
 include::{snippets}/yataRequest-getAllByPassenger/http-request.adoc[]
@@ -490,7 +494,7 @@ include::{snippets}/yataRequest-delete/http-response.adoc[]
 include::{snippets}/yataRequest-delete/response-body.adoc
 
 == yataMemberController
-=== 신청/초대 수락
+=== 신청 수락
 
 .http-request
 include::{snippets}/yataMember-accept/http-request.adoc[]
@@ -501,7 +505,7 @@ include::{snippets}/yataMember-accept/path-parameters.adoc[]
 .http-response
 include::{snippets}/yataMember-accept/http-response.adoc[]
 
-=== 신청/초대 거절 + 승인된 신청/초대 거절
+=== 신청 거절 + 승인된 신청 거절
 
 .http-request
 include::{snippets}/yataMember-reject/http-request.adoc[]
@@ -512,7 +516,43 @@ include::{snippets}/yataMember-reject/path-parameters.adoc[]
 .http-response
 include::{snippets}/yataMember-reject/http-response.adoc[]
 
-=== 승인된 신청/초대 목록 조회
+=== 초대 수락
+경로는 yataRequestId 를 필요로 함 (초대를 수락하는 것이기 때문에)
+
+.http-request
+include::{snippets}/yata-invite-accept/http-request.adoc[]
+.request-headers
+include::{snippets}/yata-invite-accept/request-headers.adoc[]
+.path-parameters
+include::{snippets}/yata-invite-accept/path-parameters.adoc[]
+.http-response
+include::{snippets}/yata-invite-accept/http-response.adoc[]
+.response-body
+include::{snippets}/yata-invite-accept/response-body.adoc[]
+=== 초대 거절
+경로는 yataRequestId 를 필요로 함 (초대를 거절하는 것이기 때문에)
+.http-request
+include::{snippets}/yata-invite-reject/http-request.adoc[]
+.request-headers
+include::{snippets}/yata-invite-reject/request-headers.adoc[]
+
+.http-response
+include::{snippets}/yata-invite-reject/http-response.adoc[]
+.response-body
+include::{snippets}/yata-invite-reject/response-body.adoc[]
+
+== 나에게 온 초대 목록 조회
+-> 자신에게 온 초대 목록을 조회하는 것
+.http-request
+include::{snippets}/yata-invite-get-request-invite/http-request.adoc[]
+.request-headers
+include::{snippets}/yata-invite-get-request-invite/request-headers.adoc[]
+.http-response
+include::{snippets}/yata-invite-get-request-invite/http-response.adoc[]
+.response-fields
+include::{snippets}/yata-invite-get-request-invite/response-fields.adoc[]
+
+=== 승인된 야타 멤버 조회 (게시물 주인이 조회)
 
 .http-request
 include::{snippets}/yataMember-getAll/http-request.adoc[]

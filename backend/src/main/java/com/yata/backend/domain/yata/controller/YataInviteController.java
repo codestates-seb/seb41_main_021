@@ -42,14 +42,20 @@ public class YataInviteController {
                 requestBody.getYataId()
         );
         return new ResponseEntity<>(
-                new SingleResponse<>(mapper.yataInvitationToYataInvitationResponse(yataRequest)), HttpStatus.CREATED);
+                new SingleResponse<>(mapper.yataRequestToYataRequestResponse(yataRequest)), HttpStatus.CREATED);
     }
 
     @PostMapping("/accept/{yataRequestId}")
     public ResponseEntity acceptInvitation(@AuthenticationPrincipal User authMember,
                                              @PathVariable Long yataRequestId) throws Exception {
         yataInviteService.acceptInvitation(authMember.getUsername(), yataRequestId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    @PatchMapping("/reject/{yataRequestId}")
+    public ResponseEntity rejectInvitation(@AuthenticationPrincipal User authMember,
+                                           @PathVariable Long yataRequestId) throws Exception {
+        yataInviteService.rejectInvitation(authMember.getUsername(), yataRequestId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/requests/myYataRequests")

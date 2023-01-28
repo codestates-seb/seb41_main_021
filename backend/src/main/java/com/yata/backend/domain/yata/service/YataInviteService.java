@@ -25,15 +25,26 @@ public class YataInviteService {
     public void acceptInvitation(String username, Long yataRequestId) {
         Member member = memberService.findMember(username);
         YataRequest yataRequest = yataRequestService.findRequest(yataRequestId);
+        validateInviteRequest(member, yataRequest);
+        yataMemberService.validateRequest(yataRequestId, yataRequest.getYata().getYataId(), yataRequest.getYata(), yataRequest);
+        yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.ACCEPTED);
+        yataMemberService.saveYataMember(yataRequest);
+
+    }
+
+    public void rejectInvitation(String username, Long yataRequestId) {
+        Member member = memberService.findMember(username);
+        YataRequest yataRequest = yataRequestService.findRequest(yataRequestId);
+        validateInviteRequest(member, yataRequest);
+        yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.REJECTED);
+    }
+
+    private static void validateInviteRequest(Member member, YataRequest yataRequest) {
         if(!yataRequest.getMember().equals(member)) {
             throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
         }
         if(yataRequest.getRequestStatus().equals(YataRequest.RequestStatus.APPLY)) {
             throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
         }
-        yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.ACCEPTED);
-        yataMemberService.validateRequest(yataRequestId, yataRequest.getYata().getYataId(), yataRequest.getYata(), yataRequest);
-        yataMemberService.saveYataMember(yataRequest);
-
     }
 }
