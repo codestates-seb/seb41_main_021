@@ -45,6 +45,8 @@ public class YataRequestDto {
     @Builder
     public static class RequestResponse {
         private Long yataId;
+        private Long amount;
+        private int maxPeople;
         private Long yataRequestId;
         private String email;
         private String nickname;
@@ -61,7 +63,6 @@ public class YataRequestDto {
         private LocationDto.Response strPoint;
         private LocationDto.Response destination;
         private LocalDateTime createdAt;
-
         private String imgUrl;
     }
 

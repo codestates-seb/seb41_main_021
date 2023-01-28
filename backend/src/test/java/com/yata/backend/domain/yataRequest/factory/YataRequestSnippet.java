@@ -11,6 +11,8 @@ public class YataRequestSnippet {
         return responseFields(
                 fieldWithPath("data").type(JsonFieldType.ARRAY).description("신청 정보"),
                 fieldWithPath("data[].yataId").type(JsonFieldType.NUMBER).description("야타 ID"),
+                fieldWithPath("data[].amount").type(JsonFieldType.NUMBER).description("신청하려는 게시물의 인당 가격"),
+                fieldWithPath("data[].maxPeople").type(JsonFieldType.NUMBER).description("신청하려는 게시물의 최대 탑승 인원"),
                 fieldWithPath("data[].yataRequestId").type(JsonFieldType.NUMBER).description("야타 신청/초대 ID"),
                 fieldWithPath("data[].email").type(JsonFieldType.STRING).description("신청/초대한 회원 이메일"),
                 fieldWithPath("data[].nickname").type(JsonFieldType.STRING).description("신청/초대한 회원 닉네임"),
@@ -20,7 +22,7 @@ public class YataRequestSnippet {
                 fieldWithPath("data[].specifics").type(JsonFieldType.STRING).description("야타 특이사항"),
                 fieldWithPath("data[].departureTime").type(JsonFieldType.STRING).description("출발 시간"),
                 fieldWithPath("data[].timeOfArrival").type(JsonFieldType.STRING).description("도착 시간"),
-                fieldWithPath("data[].boardingPersonCount").type(JsonFieldType.NUMBER).description("탑승 인원"),
+                fieldWithPath("data[].boardingPersonCount").type(JsonFieldType.NUMBER).description("신청하려는 탑승 인원"),
                 fieldWithPath("data[].maxWaitingTime").type(JsonFieldType.NUMBER).description("최대 대기 시간"),
                 fieldWithPath("data[].strPoint").type(JsonFieldType.OBJECT).description("출발지"),
                 fieldWithPath("data[].strPoint.longitude").type(JsonFieldType.NUMBER).description("출발지 경도"),

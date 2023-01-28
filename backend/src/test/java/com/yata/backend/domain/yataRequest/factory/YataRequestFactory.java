@@ -56,11 +56,17 @@ public class YataRequestFactory {
                 .build();
     }
 
-    public static YataRequestDto.RequestResponse createYataRequestResponseDto(YataRequest yataRequest) {
+    public static YataRequestDto.RequestResponse createYataRequestResponseDto(YataRequest yataRequest) throws org.locationtech.jts.io.ParseException {
         Member member = MemberFactory.createMember(RandomUtils.getRandomWord(10)+"@gmail.com");
         yataRequest.setMember(member);
+
+        Yata yata = YataFactory.createYata();
+        yataRequest.setYata(yata);
+
         return YataRequestDto.RequestResponse.builder()
                 .yataId(yataRequest.getYata().getYataId())
+                .amount(yataRequest.getYata().getAmount())
+                .maxPeople(yataRequest.getYata().getMaxPeople())
                 .yataRequestId(yataRequest.getYataRequestId())
                 .email(yataRequest.getMember().getEmail())
                 .nickname(yataRequest.getMember().getNickname())
@@ -107,7 +113,7 @@ public class YataRequestFactory {
         return yataRequestList;
     }
 
-    public static List<YataRequestDto.RequestResponse> createYataRquestResponseDtoList(List<YataRequest> yataRquestsList){
+    public static List<YataRequestDto.RequestResponse> createYataRquestResponseDtoList(List<YataRequest> yataRquestsList) throws org.locationtech.jts.io.ParseException {
         List<YataRequestDto.RequestResponse> yataRequestResponseDtoList = new ArrayList<>();
         for(YataRequest yataRequest : yataRquestsList){
             yataRequestResponseDtoList.add(createYataRequestResponseDto(yataRequest));
