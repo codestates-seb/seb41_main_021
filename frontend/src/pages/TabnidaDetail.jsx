@@ -39,9 +39,15 @@ export default function TabnidaDetail() {
         <>
           <Header title={'탑니다'}></Header>
           <Container>
-            <EditDeleteContainer state={'tabnida'} yataId={yataId} />
+            <EditDeleteContainer
+              state={'tabnida'}
+              yataId={yataId}
+              data={data}
+              ableTag={'초대 가능'}
+              disableTag={'초대 마감'}
+            />
             <ProfileContainer data={data} />
-            <InfoContainer data={data} ableTag={'초대 가능'} disableTag={'초대 마감'} />
+            <InfoContainer data={data} />
             <MemberContainer data={data} />
             <InviteButton
               onClick={() => {

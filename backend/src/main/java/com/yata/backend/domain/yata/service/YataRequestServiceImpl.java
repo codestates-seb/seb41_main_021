@@ -97,6 +97,7 @@ public class YataRequestServiceImpl implements YataRequestService {
                 .yata(yata)
                 .member(invitedMember) // 초대 받는 사람
                 .timeOfArrival(yata.getTimeOfArrival())
+
                 .departureTime(yata.getDepartureTime())
                 .boardingPersonCount(1)
                 .maxWaitingTime(0)

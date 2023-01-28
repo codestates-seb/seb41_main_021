@@ -12,6 +12,16 @@ const ListItem = props => {
     yataStatus === 'YATA_NEOTA' ? navigate(`/taeoonda-detail/${yataId}`) : navigate(`/tabnida-detail/${yataId}`);
   };
 
+  const shortWords = (str, length = 10) => {
+    let result = '';
+    if (str.length > length) {
+      result = str.substr(0, length) + '...';
+    } else {
+      result = str;
+    }
+    return result;
+  };
+
   // api 응답 어떻게 올지 몰라서 대충 넣어놓음
   return (
     <>
@@ -28,10 +38,9 @@ const ListItem = props => {
           </DateContainer>
           <JourneyContainer>
             <JourneyText>
-              {journeyStart}
+              {shortWords(journeyStart)}
               <IoIosArrowRoundForward />
-              {journeyEnd}
-              {/* <TransitContainer>경유 {transit}회</TransitContainer> */}
+              {shortWords(journeyEnd)}
             </JourneyText>
             <IoIosArrowForward />
           </JourneyContainer>

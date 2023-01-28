@@ -30,6 +30,7 @@ const useTayoCreate = async (url, data) => {
         Authorization: localStorage.getItem('ACCESS'),
       },
     });
+    toast.success('게시물 생성에 성공했습니다.');
     return response;
   } catch (error) {
     toast.warning('게시물 생성에 실패했습니다.');
@@ -49,6 +50,7 @@ const useTayoEdit = async (url, data) => {
 const useTayoRequest = async (url, data) => {
   try {
     const response = await instance.post(url, data);
+    toast.success('신청 완료');
     return response;
   } catch (error) {
     if (error.response.status === 403) {
@@ -65,6 +67,7 @@ const useTayoRequest = async (url, data) => {
 const useTayoInvite = async (url, data) => {
   try {
     const response = await instance.post(url, data);
+    toast.success('초대 완료');
     return response;
   } catch (error) {
     if (error.response.status === 403) {

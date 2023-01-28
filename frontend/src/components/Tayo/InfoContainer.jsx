@@ -6,17 +6,20 @@ import { AiOutlineCar } from 'react-icons/ai';
 import { dateFormat } from '../common/DateFormat';
 
 export default function InfoContainer(props) {
-  const { data, ableTag, disableTag } = props;
+  const { data } = props;
 
   return (
     <ContentContainer>
       <JourneyContainer>
-        <h2>{data.strPoint.address}</h2>
+        <DepartureContainer>
+          <h2>출발지: {data.strPoint.address}</h2>
+        </DepartureContainer>
         {/* <IoIosArrowRoundForward />
         <h2>경유지</h2> */}
-        <IoIosArrowRoundForward />
-        <h2>{data.destination.address}</h2>
-        <TagContainer state={data.postStatus}>{data.postStatus === 'POST_OPEN' ? ableTag : disableTag}</TagContainer>
+        {/* <IoIosArrowRoundForward /> */}
+        <DepartureContainer>
+          <h2>도착지: {data.destination.address}</h2>
+        </DepartureContainer>
       </JourneyContainer>
       <DateContainer title="출발일 및 시간">
         <BsCalendar4 />
@@ -65,12 +68,20 @@ const ContentContainer = styled.div`
 
   & > div {
     display: flex;
-    align-items: center;
     margin: 1.2rem 0;
   }
 `;
 
-const JourneyContainer = styled.div``;
+const JourneyContainer = styled.div`
+  display: flex;
+  width: 90%;
+  flex-direction: column;
+`;
+const DepartureContainer = styled.div`
+  display: flex;
+  width: 80%;
+  margin-bottom: 0.5rem;
+`;
 
 const TagContainer = styled.div`
   display: flex;
@@ -78,6 +89,7 @@ const TagContainer = styled.div`
   justify-content: center;
   margin-left: 0.5rem;
   padding: 0.5rem;
+  width: 5rem;
   height: 1.8rem;
   color: white;
   border-radius: 0.2rem;
