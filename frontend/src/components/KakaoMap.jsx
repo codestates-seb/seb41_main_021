@@ -1,34 +1,66 @@
 import React, { useEffect, useState } from 'react';
 import { MapMarker, Map } from 'react-kakao-maps-sdk';
 
+import { addDeparture, setDeparture } from '../redux/slice/DestinationSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setPlaces } from '../redux/slice/DestinationSlice';
+import { f } from '../util/f';
+
 const { kakao } = window;
-// *** 전역 상태 관리 되면 해야 할 것 ***
-// - 카카오 맵 -
-// 탑니다인지 태웁니다인지 구분
-// 출발지인지 도착지인지 구분
-// 출발지를 어떻게 정하는지에 대한 구분 ( 드래그, 직접 입력 후 선택)
-// onCenterChanged에 setIsDeparture넣기
 
-// - 디테일 페이지 -
-// addressName, placeName, x, y 상태 얻어오기, 적용
-// 등록하기 버튼 클릭 시 setIsDeparture, setIsDestination 구분
-// setIsDeparture, setIsDestination 상태 변경
-
-const KakaoMap = props => {
+const KakaoMap = () => {
+  const dispatch = useDispatch();
+  const des = useSelector(state => {
+    return state.destination;
+  });
   const startImage = {
     src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.png',
-    size: [50, 45],
+    size: {
+      width: 50,
+      height: 45,
+    },
     options: {
-      offset: [15, 43],
+      offset: {
+        x: 15,
+        y: 45,
+      },
     },
   };
-  const { searchPlace, setPlaces, setDeparture } = props;
+  const startDragImage = {
+    src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_drag.png',
+    size: {
+      width: 50,
+      height: 64,
+    },
+    options: {
+      offset: {
+        x: 15,
+        y: 54,
+      },
+    },
+  };
+  const endImage = {
+    src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/blue_b.png',
+    size: {
+      width: 50,
+      height: 45,
+    },
+    options: {
+      offset: {
+        x: 15,
+        y: 45,
+      },
+    },
+  };
 
   const [info, setInfo] = useState();
   const [markers, setMarkers] = useState([]);
   const [map, setMap] = useState();
 
+  const [draggable, setDraggable] = useState(true);
+  const [start, setStart] = useState(startImage);
   const [state, setState] = useState({
+    level: 5,
     center: {
       lat: 33.450701,
       lng: 126.570667,
@@ -39,18 +71,42 @@ const KakaoMap = props => {
   });
 
   useEffect(() => {
-    if (navigator.geolocation) {
+    if (des.isDeparture && des.isDestination) {
+      const lat = (parseFloat(des.destinationPoint.latitude) + parseFloat(des.departurePoint.latitude)) / 2;
+      const lng = (parseFloat(des.destinationPoint.longitude) + parseFloat(des.departurePoint.longitude)) / 2;
+      const latDiff = Math.abs(parseFloat(des.destinationPoint.latitude) - parseFloat(des.departurePoint.latitude));
+      const lngDiff = Math.abs(parseFloat(des.destinationPoint.longitude) - parseFloat(des.departurePoint.longitude));
+      const diff = latDiff + lngDiff;
+
+      setState(prev => ({
+        ...prev,
+        level: f(diff, 0.005, 4),
+      }));
+
+      setDraggable(false);
+      setState(prev => ({
+        ...prev,
+        center: {
+          lat: lat, // 위도
+          lng: lng, // 경도
+        },
+        isLoading: false,
+      }));
+    } else if (navigator.geolocation) {
       // GeoLocation을 이용해서 접속 위치를 얻어옵니다
       navigator.geolocation.getCurrentPosition(
         position => {
-          setState(prev => ({
-            ...prev,
-            center: {
-              lat: position.coords.latitude, // 위도
-              lng: position.coords.longitude, // 경도
-            },
-            isLoading: false,
-          }));
+          setState(
+            prev => ({
+              ...prev,
+              center: {
+                lat: position.coords.latitude, // 위도
+                lng: position.coords.longitude, // 경도
+              },
+              isLoading: false,
+            }),
+            getAddr(position.coords.latitude, position.coords.longitude),
+          );
         },
         err => {
           setState(prev => ({
@@ -75,7 +131,7 @@ const KakaoMap = props => {
     const ps = new kakao.maps.services.Places();
 
     //장소 검색 객체를 통해 키워드로 장소검색을 요청
-    ps.keywordSearch(searchPlace, placesSearchCB);
+    ps.keywordSearch(des.destination, placesSearchCB);
 
     //장소 검색이 완료됐을 때 호출되는 콜백함수
     function placesSearchCB(data, status) {
@@ -88,18 +144,18 @@ const KakaoMap = props => {
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
         // map.setBounds(bounds);
 
-        setPlaces(data);
+        dispatch(setPlaces({ places: data }));
       } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-        setPlaces([]);
+        dispatch(setPlaces({ places: [] }));
         console.log('검색 결과가 존재하지 않습니다.');
         return;
       } else if (status === kakao.maps.services.Status.ERROR) {
-        setPlaces([]);
+        dispatch(setPlaces({ places: [] }));
         console.log('검색 결과 중 오류가 발생했습니다.');
         return;
       }
     }
-  }, [searchPlace]);
+  }, [des.destination]);
 
   function getAddr(lat, lng) {
     // 주소-좌표 변환 객체를 생성합니다
@@ -109,7 +165,17 @@ const KakaoMap = props => {
     let callback = function (result, status) {
       if (status === kakao.maps.services.Status.OK) {
         console.log(result[0].address.address_name);
-        setDeparture(result[0].address.address_name);
+        dispatch(
+          addDeparture({
+            departurePoint: {
+              longitude: lng,
+              latitude: lat,
+              address: result[0].address.address_name,
+            },
+            isDeparture: true,
+          }),
+        );
+        dispatch(setDeparture({ departure: result[0].address.address_name }));
       }
     };
     geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
@@ -118,9 +184,21 @@ const KakaoMap = props => {
     <Map
       center={state.center}
       style={{ width: '100%', height: '100%' }}
-      level={5}
+      level={state.level}
       isPanto={state.isPanto}
-      onCenterChanged={map => {
+      onCenterChanged={map =>
+        draggable &&
+        setState({
+          level: map.getLevel(),
+          center: {
+            lat: map.getCenter().getLat(),
+            lng: map.getCenter().getLng(),
+          },
+        })
+      }
+      onDragStart={() => draggable && setStart(startDragImage)}
+      onDragEnd={map =>
+        draggable &&
         setState(
           {
             level: map.getLevel(),
@@ -130,9 +208,22 @@ const KakaoMap = props => {
             },
           },
           getAddr(state.center.lat, state.center.lng),
-        );
-      }}>
-      <MapMarker position={state.center} image={startImage}></MapMarker>
+          setStart(startImage),
+        )
+      }>
+      {draggable ? (
+        <MapMarker position={state.center} image={start}></MapMarker>
+      ) : (
+        <MapMarker
+          position={{ lat: des.departurePoint.latitude, lng: des.departurePoint.longitude }}
+          image={start}></MapMarker>
+      )}
+
+      {des.isDestination && (
+        <MapMarker
+          position={{ lat: des.destinationPoint.latitude, lng: des.destinationPoint.longitude }}
+          image={endImage}></MapMarker>
+      )}
     </Map>
   );
 };

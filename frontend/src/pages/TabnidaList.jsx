@@ -8,21 +8,23 @@ import { useNavigate } from 'react-router-dom';
 import { MdAdd } from 'react-icons/md';
 import ListItemView from '../components/ListItemView';
 import { useGetData } from '../hooks/useGetData';
+import { useDispatch } from 'react-redux';
+import { clearAll } from '../redux/slice/DestinationSlice';
 
 export default function TabnidaList() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [list, setList] = useState([]);
 
   const add = () => {
     setOpen(!open);
+    dispatch(clearAll());
     navigate('/tabnida-add');
   };
 
   useEffect(() => {
-    useGetData('https://server.yata.kro.kr/api/v1/yata?yataStatus=nata').then(res => {
-      setList(res.data.data);
-    });
+    useGetData('https://server.yata.kro.kr/api/v1/yata?yataStatus=nata').then(res => setList(res.data.data));
   }, []);
 
   return (

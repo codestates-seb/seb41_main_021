@@ -71,7 +71,7 @@ const StyledInput = styled.input`
     outline: none;
     border-color: ${props => props.theme.colors.darker_blue};
   }
-  background-color: ${props => props.readOnly && '#dddddd'};
+  /* background-color: ${props => props.readOnly && '#dddddd'}; */
   @media screen and (min-width: 470px) {
     width: 80%;
   }

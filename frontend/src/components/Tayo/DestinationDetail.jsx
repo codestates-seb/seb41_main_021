@@ -1,21 +1,44 @@
 import styled from 'styled-components';
 import KakaoMap from '../KakaoMap';
 import Button from '../common/Button';
-import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Header from '../Header';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { MapMarker, Map } from 'react-kakao-maps-sdk';
+import { useDispatch } from 'react-redux';
+import { addDestination, setDestination, setIsFilled } from '../../redux/slice/DestinationSlice';
 
 export default function DestinationDetail() {
-  const addressName = '서울 서초구 서초대로 지하 294',
-    placeName = '교대역 3호선',
-    x = 127.013867969161,
-    y = 37.4927431676548;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [SearchParams, setSearchParams] = useSearchParams();
+  const addressName = SearchParams.get('address'),
+    placeName = SearchParams.get('place'),
+    x = SearchParams.get('x'),
+    y = SearchParams.get('y');
+
+  const add = () => {
+    dispatch(
+      addDestination({
+        destinationPoint: {
+          longitude: x,
+          latitude: y,
+          address: placeName,
+        },
+        isDestination: true,
+      }),
+    );
+
+    dispatch(setDestination({ destination: placeName }));
+    dispatch(setIsFilled({ setIsFilled: false }));
+    navigate('/tabnida-add');
+  };
+
   return (
     <>
       <Container>
-        <Header title="맵 디테일" />
+        <Header title={placeName} />
         <MapContainer>
           <Map // 지도를 표시할 Container
             center={{
@@ -45,7 +68,7 @@ export default function DestinationDetail() {
             <PlaceName>{addressName}</PlaceName>
           </TextContainer>
           <ButtonContainer>
-            <Button>등록하기</Button>
+            <Button onClick={add}>등록하기</Button>
           </ButtonContainer>
         </DestinationForm>
       </Container>
