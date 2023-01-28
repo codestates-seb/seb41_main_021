@@ -17,7 +17,7 @@ const ListItem = props => {
     <>
       <Container onClick={handleClick}>
         <TextContainer>
-          <DateContainer>
+          <DateContainer title="출발일 및 시간">
             <BsCalendar4 />
             {date}
             {state && (
@@ -36,10 +36,10 @@ const ListItem = props => {
             <IoIosArrowForward />
           </JourneyContainer>
           <BottomContainer>
-            <PriceContainer>
-              <BiWon /> {price}원
+            <PriceContainer title="인당 금액">
+              <BiWon /> {price.toLocaleString('ko-KR')}원
             </PriceContainer>
-            <PeopleContainer>
+            <PeopleContainer title="현재인원 / 최대인원">
               <BsPeople /> {people}명
             </PeopleContainer>
           </BottomContainer>

@@ -18,27 +18,27 @@ export default function InfoContainer(props) {
         <h2>{data.destination.address}</h2>
         <TagContainer state={data.postStatus}>{data.postStatus === 'POST_OPEN' ? ableTag : disableTag}</TagContainer>
       </JourneyContainer>
-      <DateContainer>
+      <DateContainer title="출발일 및 시간">
         <BsCalendar4 />
         <p className="date-txt"> {dateFormat(data.departureTime)}</p>
       </DateContainer>
-      <PriceContainer>
+      <PriceContainer title="인당 금액">
         <BiWon />
-        <p className="price-txt">{data.amount}원</p>
+        <p className="price-txt">{data.amount.toLocaleString('ko-KR')}원</p>
       </PriceContainer>
       <AmountContainer>
         <BsPeople />
         <p className="amount-txt">{data.maxPeople} 명</p>
       </AmountContainer>
       {data.yataStatus === 'YATA_NEOTA' ? (
-        <CarContainer>
+        <CarContainer title="차종">
           <AiOutlineCar />
           <p className="car-txt">{data.carModel}</p>
         </CarContainer>
       ) : (
         <></>
       )}
-      <MemoContainer>
+      <MemoContainer title="기타 사항">
         <BiCommentDetail />
         <p className="memo-txt">{data.specifics}</p>
       </MemoContainer>
