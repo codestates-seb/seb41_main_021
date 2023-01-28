@@ -145,8 +145,8 @@ public interface YataMapper {
 
         LocationDto.Response.ResponseBuilder response = LocationDto.Response.builder();
 
-        response.longitude(location.getLocation().getX());
-        response.latitude(location.getLocation().getY());
+        response.longitude(location.getLocation().getY());
+        response.latitude(location.getLocation().getX());
         response.address(location.getAddress());
 
         return response.build();

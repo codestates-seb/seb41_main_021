@@ -9,7 +9,8 @@ import InfoContainer from '../components/Tayo/InfoContainer';
 import MemberContainer from '../components/Tayo/MemberContainer';
 import EditDeleteContainer from '../components/Tayo/EditDeleteContainer';
 import { useGetData } from '../hooks/useGetData';
-import { useTayoInvite } from '../hooks/useTayo';
+
+import Modal from '../components/Modal';
 
 export default function TabnidaDetail() {
   const params = useParams();
@@ -17,37 +18,18 @@ export default function TabnidaDetail() {
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const requestHandler = () => {
-    const newData = {
-      inviteEmail: data.email,
-      yataId: data.yataId,
-      // title: data.title,
-      // specifics: data.specifics,
-      // departureTime: data.departureTime,
-      // timeOfArrival: data.timeOfArrival,
-      // boardingPersonCount: 1,
-      // maxWaitingTime: data.maxWaitingTime,
-      // strPoint: {
-      //   longitude: data.strPoint.longitude,
-      //   latitude: data.strPoint.latitude,
-      //   address: data.strPoint.address,
-      // },
-      // destination: {
-      //   longitude: data.destination.longitude,
-      //   latitude: data.destination.latitude,
-      //   address: data.destination.address,
-      // },
-    };
-
-    useTayoInvite(`https://server.yata.kro.kr/api/v1/yata/invite`, newData).then(res => {
-      console.log(res);
-    });
-  };
+  const [show, setShow] = useState(false);
+  const [modalData, setModalData] = useState([]);
 
   useEffect(() => {
     useGetData(`https://server.yata.kro.kr/api/v1/yata/${yataId}`).then(res => {
       setData(res.data.data, setLoading(false));
+    });
+  }, []);
+
+  useEffect(() => {
+    useGetData(`https://server.yata.kro.kr/api/v1/yata/myYatas/neota/notClosed`).then(res => {
+      setModalData(res.data.data);
     });
   }, []);
 
@@ -67,7 +49,13 @@ export default function TabnidaDetail() {
             <ProfileContainer data={data} />
             <InfoContainer data={data} />
             <MemberContainer data={data} />
-            <InviteButton onClick={requestHandler}>초대하기</InviteButton>
+            <InviteButton
+              onClick={() => {
+                setShow(true);
+              }}>
+              초대하기
+            </InviteButton>
+            <Modal show={show} onClose={() => setShow(false)} data={data} modalData={modalData} />
           </Container>
           <NavBar />
         </>
