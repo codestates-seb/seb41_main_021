@@ -9,4 +9,6 @@ public interface YataRequestRepository {
     void updateExpiredYataRequest();
     Slice<YataRequest> findAllByMember_Email(String Email, Pageable pageable);
     Slice<YataRequest> findAllByYata(Yata yata, Pageable pageable);
+
+    Slice<YataRequest> findByMember_EmailAndRequestStatus(String username, YataRequest.RequestStatus invite, Pageable pageable);
 }

@@ -91,19 +91,7 @@ public class YataRequestFactory {
                 .build();
     }
 
-    public static YataRequestDto.InvitationResponse createYataInvitationResponseDto(YataRequest yataRequest) {
-        Member member = MemberFactory.createMember(RandomUtils.getRandomWord(10)+"@gmail.com");
-        yataRequest.setMember(member);
-        return YataRequestDto.InvitationResponse.builder()
-                .yataRequestId(yataRequest.getYataRequestId())
-                .yataId(yataRequest.getYata().getYataId())
-                .email(yataRequest.getMember().getEmail())
-                .nickname(yataRequest.getMember().getNickname())
-                .yataRequestStatus(yataRequest.getRequestStatus())
-                .approvalStatus(yataRequest.getApprovalStatus())
-                .createdAt(LocalDateTime.now())
-                .build();
-    }
+
 
     public static List<YataRequest> createYataRequestList() throws ParseException, org.locationtech.jts.io.ParseException {
         List<YataRequest> yataRequestList = new ArrayList<>();

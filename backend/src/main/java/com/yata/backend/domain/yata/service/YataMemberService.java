@@ -3,6 +3,7 @@ package com.yata.backend.domain.yata.service;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataMember;
+import com.yata.backend.domain.yata.entity.YataRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
@@ -15,4 +16,6 @@ public interface YataMemberService {
     YataMember verifyPossibleYataMember(Long yataMemberId, Yata yata);
     YataMember verifyPossibleYataMemberByuserName(Yata yata, Member member);
     Integer yataCount(String email);
+    void validateRequest(Long yataRequestId, Long yataId, Yata yata, YataRequest yataRequest);
+    void saveYataMember(YataRequest yataRequest);
 }

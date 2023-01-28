@@ -6,14 +6,21 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.multipart.MultipartFile;
 
 import static com.yata.backend.common.token.GeneratedToken.getMockHeaderToken;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 public class ResultActionsUtils {
     public static ResultActions postRequest(MockMvc mockMvc, String url, String json) throws Exception {
         return mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+                        .headers(getMockHeaderToken())
+                        .with(csrf()))
+                .andDo(print());
+    }
+    public static ResultActions patchRequest(MockMvc mockMvc, String url, String json) throws Exception {
+        return mockMvc.perform(patch(url)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                         .headers(getMockHeaderToken())

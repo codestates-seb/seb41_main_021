@@ -68,13 +68,36 @@ public class YataRequestRepositoryImpl implements YataRequestRepository {
     public Slice<YataRequest> findAllByYata(Yata yatas, Pageable pageable) {
         List<YataRequest> yataRequests = queryFactory.selectFrom(yataRequest)
                 .join(yataRequest.yata, yata).fetchJoin()
-                .join(yataRequest.strPoint).fetchJoin()
-                .join(yataRequest.destination).fetchJoin()
+                .leftJoin(yataRequest.strPoint).fetchJoin()
+                .leftJoin(yataRequest.destination).fetchJoin()
                 .join(yataRequest.member).fetchJoin()
                 .join(yata.strPoint).fetchJoin()
                 .join(yata.destination).fetchJoin()
                 .join(yata.strPoint).fetchJoin()
                 .where(yataRequest.yata.eq(yata))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize() + 1L)
+                .fetch();
+        boolean hasNext = false;
+        if (yataRequests.size() > pageable.getPageSize()) {
+            yataRequests.remove(pageable.getPageSize());
+            hasNext = true;
+        }
+        return new SliceImpl<>(yataRequests, pageable, hasNext);
+    }
+
+    @Override
+    public Slice<YataRequest> findByMember_EmailAndRequestStatus(String username, YataRequest.RequestStatus invite, Pageable pageable) {
+        List<YataRequest> yataRequests = queryFactory.selectFrom(yataRequest)
+                .join(yataRequest.yata, yata).fetchJoin()
+                .leftJoin(yataRequest.strPoint).fetchJoin()
+                .leftJoin(yataRequest.destination).fetchJoin()
+                .join(yataRequest.member).fetchJoin()
+                .join(yata.strPoint).fetchJoin()
+                .join(yata.destination).fetchJoin()
+                .join(yata.strPoint).fetchJoin()
+                .where(yataRequest.member.email.eq(username))
+                .where(yataRequest.requestStatus.eq(invite))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1L)
                 .fetch();
