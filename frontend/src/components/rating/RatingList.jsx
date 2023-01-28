@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import RatingItem from './RatingItem';
 import { useParams } from 'react-router';
 import { useState, useEffect } from 'react';
-import useGetData from '../../hooks/useGetData';
+import { useGetData } from '../../hooks/useGetData';
 
 const RatingList = props => {
   const { title, Items, isChecked, setIsChecked } = props;
@@ -13,10 +13,14 @@ const RatingList = props => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    useGetData(`https://server.yata.kro.kr/api/v1/review/${email}`).then(res => {
-      console.log(res.data.data);
-      setData(res.data.data, setLoading(false));
-    });
+    if (email) {
+      useGetData(`https://server.yata.kro.kr/api/v1/review/${email}`).then(res => {
+        console.log(res.data.data);
+        setData(res.data.data, setLoading(false));
+      });
+    } else {
+      return;
+    }
   }, []);
 
   return (

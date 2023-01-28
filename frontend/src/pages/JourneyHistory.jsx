@@ -1,13 +1,22 @@
 import styled from 'styled-components';
 import Header from '../components/Header';
-import ListItem from '../components/ListItem';
+import ListItemView from '../components/ListItemView';
+import { useState, useEffect } from 'react';
+import { useGetData } from '../hooks/useGetData';
 
 export default function JourneyHistory() {
+  const [list, setList] = useState([]);
+  useEffect(() => {
+    useGetData('https://server.yata.kro.kr/api/v1/yata/myYatas').then(res => {
+      setList(res.data.data);
+    });
+  }, []);
+
   return (
     <>
-      <Header title="여정 내역" />
+      <Header title="내가 작성한 글" />
       <Container>
-        <ListItem date="오늘" journeyStart="내마음속" journeyEnd="너마음속" />
+        <ListItemView list={list} />
       </Container>
     </>
   );

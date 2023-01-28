@@ -7,7 +7,7 @@ import CircleButton from '../components/common/CircleButton';
 import DestinationInput from '../components/DestinationInput';
 import { useNavigate } from 'react-router-dom';
 import { MdAdd } from 'react-icons/md';
-import useGetData from '../hooks/useGetData';
+import { useGetData } from '../hooks/useGetData';
 
 export default function TaeoondaList() {
   const [open, setOpen] = useState(false);

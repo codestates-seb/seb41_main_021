@@ -6,8 +6,8 @@ import CircleButton from '../components/common/CircleButton';
 import DestinationInput from '../components/DestinationInput';
 import { useNavigate } from 'react-router-dom';
 import { MdAdd } from 'react-icons/md';
-import useGetData from '../hooks/useGetData';
 import ListItemView from '../components/ListItemView';
+import { useGetData } from '../hooks/useGetData';
 
 export default function TabnidaList() {
   const navigate = useNavigate();
@@ -20,7 +20,9 @@ export default function TabnidaList() {
   };
 
   useEffect(() => {
-    useGetData('https://server.yata.kro.kr/api/v1/yata?yataStatus=nata').then(res => setList(res.data.data));
+    useGetData('https://server.yata.kro.kr/api/v1/yata?yataStatus=nata').then(res => {
+      setList(res.data.data);
+    });
   }, []);
 
   return (

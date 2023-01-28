@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Navbar from '../components/NavBar';
 import Header from '../components/Header';
-import useGetData from '../hooks/useGetData';
+import { useGetData } from '../hooks/useGetData';
 import { useSelector } from 'react-redux';
 
 export default function Rating() {

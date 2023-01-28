@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { checkIfLogined } from '../hooks/useLogin';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearUser } from '../redux/slice/UserSlice';
-import useGetData from '../hooks/useGetData';
+import { useGetData } from '../hooks/useGetData';
 
 export default function MyPage() {
   const [review, setReview] = useState([]);
@@ -117,19 +117,19 @@ export default function MyPage() {
               <ListTitle>탑니다/태웁니다 관리</ListTitle>
               <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journey-history">
                 <JourneyRecord>
-                  <div className="title">나의 지난 여정 내역</div>
+                  <div className="title">내가 작성한 글</div>
                   <IoIosArrowForward />
                 </JourneyRecord>
               </NavLink>
               <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/my-register-history">
                 <JourneyRecord>
-                  <div className="title">나의 신청 내역</div>
+                  <div className="title">나의 신청/초대 내역</div>
                   <IoIosArrowForward />
                 </JourneyRecord>
               </NavLink>
               <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journey-history">
                 <JourneyRecord>
-                  <div className="title">내가 작성한 글</div>
+                  <div className="title">나의 모든 여정 내역</div>
                   <IoIosArrowForward />
                 </JourneyRecord>
               </NavLink>

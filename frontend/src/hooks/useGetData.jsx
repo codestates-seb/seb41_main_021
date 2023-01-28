@@ -11,4 +11,4 @@ const useGetData = async url => {
   }
 };
 
-export default useGetData;
+export { useGetData };
