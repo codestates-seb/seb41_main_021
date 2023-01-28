@@ -43,6 +43,7 @@ export default function MyPage() {
       }
     });
   }, []);
+
   return (
     <>
       <Container>
@@ -51,9 +52,15 @@ export default function MyPage() {
             <Profile>
               <VscAccount />
               <Info>
-                <div className="text">{info.name}</div>
-                <div className="text">{info.nickname}</div>
-                <div className="text">{info.email}</div>
+                <div className="text" title="이름">
+                  {info.name}
+                </div>
+                <div className="text" title="닉네임">
+                  {info.nickname}
+                </div>
+                <div className="text" title="이메일">
+                  {info.email}
+                </div>
               </Info>
               {info.roles[1] === 'DRIVER' ? (
                 <CompleteAuth>운전자 인증</CompleteAuth>
@@ -66,12 +73,12 @@ export default function MyPage() {
             <OilLevel>
               <RiOilLine />
               <div className="title">기름통 레벨</div>
-              <div className="bottom"> {info.fuelTank}L </div>
+              <div className="bottom">{info.fuelTank}L </div>
             </OilLevel>
             <TripNumber>
               <BiTrip />
               <div className="title">여정 횟수</div>
-              <div className="bottom">30</div>
+              <div className="bottom">{info.yataCount}</div>
             </TripNumber>
             <Compliment>
               <BiLike />
@@ -85,7 +92,7 @@ export default function MyPage() {
                 <RiCoinsFill />
                 포인트
               </div>
-              <div className="point-amount">{info.point}원</div>
+              <div className="point-amount">{info.point.toLocaleString('ko-KR')}원</div>
             </div>
             <div
               className="buy-point"

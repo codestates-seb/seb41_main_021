@@ -3,10 +3,16 @@ import styled, { css } from 'styled-components';
 import { MdDone } from 'react-icons/md';
 
 const RatingItem = props => {
-  const { text } = props;
+  const { text, id, isChecked, setIsChecked } = props;
   const [check, setCheck] = useState(false);
+
+  const eventHandler = () => {
+    !check ? setIsChecked([...isChecked, id]) : setIsChecked([...isChecked].filter(el => id !== el));
+    setCheck(!check);
+  };
+
   return (
-    <Item onClick={() => setCheck(!check)}>
+    <Item onClick={eventHandler}>
       <CheckCircle check={check}>{check && <MdDone />}</CheckCircle>
       {text}
     </Item>

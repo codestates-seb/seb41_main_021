@@ -61,9 +61,9 @@ public class YataRequestServiceImpl implements YataRequestService {
         verifyMaxPeople(yataRequest.getBoardingPersonCount(), yata.getMaxPeople()); // 인원 수 검증
 
         // (게시물의 가격 * 타려는 인원) 만큼 해당 멤버가 포인트가 충분한지 검증
-        Long price = yata.getAmount() * yataRequest.getBoardingPersonCount();
-        Long point = member.getPoint();
-        verifyPoint(price, point);
+//        Long price = yata.getAmount() * yataRequest.getBoardingPersonCount();
+//        Long point = member.getPoint();
+//        verifyPoint(price, point);
 
         yataRequest.setYata(yata);
         yataRequest.setMember(member);
@@ -97,7 +97,7 @@ public class YataRequestServiceImpl implements YataRequestService {
 
     // Yata 신청 목록 조회 - by driver
     @Override
-    public Slice<YataRequest> findRequestsByDriver(String userEmail, Long yataId, Pageable pageable) {
+    public Slice<YataRequest> findRequestsByYataOwner(String userEmail, Long yataId, Pageable pageable) {
         Yata yata = yataService.findYata(yataId);
         Member member = memberService.verifyMember(userEmail);
 
@@ -109,7 +109,7 @@ public class YataRequestServiceImpl implements YataRequestService {
 
     // 자기가 한 신청 목록 조회 - by Passenger
     @Override
-    public Slice<YataRequest> findRequestsByPassenger(String userEmail, Pageable pageable) {
+    public Slice<YataRequest> findRequestsByRequester(String userEmail, Pageable pageable) {
 
         return jpaYataRequestRepository.findAllByMember_Email(userEmail, pageable);
     }

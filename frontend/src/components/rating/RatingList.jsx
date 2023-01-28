@@ -1,8 +1,24 @@
 import styled from 'styled-components';
 import RatingItem from './RatingItem';
+import { useParams } from 'react-router';
+import { useState, useEffect } from 'react';
+import useGetData from '../../hooks/useGetData';
 
 const RatingList = props => {
-  const { title, Items } = props;
+  const { title, Items, isChecked, setIsChecked } = props;
+  const params = useParams();
+  const email = params.email;
+
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    useGetData(`https://server.yata.kro.kr/api/v1/review/${email}`).then(res => {
+      console.log(res.data.data);
+      setData(res.data.data, setLoading(false));
+    });
+  }, []);
+
   return (
     <RatingContainer>
       <TitleContainer>
@@ -10,7 +26,15 @@ const RatingList = props => {
       </TitleContainer>
       <ListContainer>
         {Items.map(el => {
-          return <RatingItem key={el.checklistId} text={el.checkContent} />;
+          return (
+            <RatingItem
+              key={el.checklistId}
+              id={el.checklistId}
+              text={el.checkContent}
+              isChecked={isChecked}
+              setIsChecked={setIsChecked}
+            />
+          );
         })}
       </ListContainer>
     </RatingContainer>

@@ -5,27 +5,33 @@ import { useState } from 'react';
 import useGetData from '../../hooks/useGetData';
 
 export default function MemberContainer(props) {
-  const { yataId } = props;
 
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    useGetData(`https://server.yata.kro.kr/api/v1/yata/${yataId}/accept/yataRequests`).then(res => {
-      setData(res.data.data, setLoading(false));
-    });
-  }, []);
+  const { data } = props;
 
   return (
     <>
-      {data.length !== 0 && !loading && (
-        <ContentContainer>
-          <h2>확정된 탑승자</h2>
-          {data.map(el => {
-            return <MemberListItem key={el.yataId} nickname={el.nickname} state={el.yataPaid} />;
-          })}
-        </ContentContainer>
-      )}
+      <ContentContainer>
+        <h2>
+          확정된 탑승자 {data.reservedMemberNum}/{data.maxPeople}
+        </h2>
+        {data.reservedMemberNum === 0 ? (
+          <div className="current-member">현재 확정된 탑승자가 없습니다.</div>
+        ) : (
+          data.yataMembers.map(el => {
+            return (
+              <MemberListItem
+                key={el.yataId}
+                yataId={el.yataId}
+                yataMemberId={el.yataMemberId}
+                email={el.email}
+                nickname={el.nickname}
+                state={el.yataPaid}
+              />
+            );
+          })
+        )}
+      </ContentContainer>
+
     </>
   );
 }
@@ -37,5 +43,11 @@ const ContentContainer = styled.div`
   h2 {
     font-size: 1.2rem;
     margin-bottom: 0.2rem;
+  }
+
+  .current-member {
+    display: flex;
+    height: 100%;
+    align-items: center;
   }
 `;

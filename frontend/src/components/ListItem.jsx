@@ -5,15 +5,11 @@ import { BsCalendar4, BsPeople } from 'react-icons/bs';
 import { BiWon } from 'react-icons/bi';
 
 const ListItem = props => {
-  const { date, journeyStart, journeyEnd, transit, price, people, state, yataId, yataStatus } = props;
+  const { date, journeyStart, journeyEnd, price, people, state, yataId, yataStatus } = props;
   const navigate = useNavigate();
 
   const handleClick = () => {
-    yataStatus === 'YATA_NEOTA'
-      ? navigate(`/taeoonda-detail/${yataId}`)
-      : yataStatus === 'YATA_NATA'
-      ? navigate(`/tabnida-detail/${yataId}`)
-      : navigate(`/register-checklist`);
+    yataStatus === 'YATA_NEOTA' ? navigate(`/taeoonda-detail/${yataId}`) : navigate(`/tabnida-detail/${yataId}`);
   };
 
   // api 응답 어떻게 올지 몰라서 대충 넣어놓음
@@ -21,7 +17,7 @@ const ListItem = props => {
     <>
       <Container onClick={handleClick}>
         <TextContainer>
-          <DateContainer>
+          <DateContainer title="출발일 및 시간">
             <BsCalendar4 />
             {date}
             {state && (
@@ -35,15 +31,15 @@ const ListItem = props => {
               {journeyStart}
               <IoIosArrowRoundForward />
               {journeyEnd}
-              <TransitContainer>경유 {transit}회</TransitContainer>
+              {/* <TransitContainer>경유 {transit}회</TransitContainer> */}
             </JourneyText>
             <IoIosArrowForward />
           </JourneyContainer>
           <BottomContainer>
-            <PriceContainer>
-              <BiWon /> {price}원
+            <PriceContainer title="인당 금액">
+              <BiWon /> {price.toLocaleString('ko-KR')}원
             </PriceContainer>
-            <PeopleContainer>
+            <PeopleContainer title="현재인원 / 최대인원">
               <BsPeople /> {people}명
             </PeopleContainer>
           </BottomContainer>

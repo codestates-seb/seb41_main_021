@@ -1,11 +1,37 @@
 import styled from 'styled-components';
 import RegisterListItem from './RegisterListItem';
+import { useState, useEffect } from 'react';
+import { dateFormat } from '../common/DateFormat';
+import useGetData from '../../hooks/useGetData';
+
+import { useParams } from 'react-router';
 
 const RegisterListView = () => {
+  const params = useParams();
+  const yataId = params.yataId;
+
+  const [list, setList] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    useGetData(`https://server.yata.kro.kr/api/v1/yata/requests/${yataId}`).then(res => {
+      setList(res.data.data);
+      setLoading(false);
+    });
+  }, []);
+
   return (
     <RegisterBlock>
-      <RegisterListItem date={'1월 3일 (화) 7:00PM'} userInfo="이이잉" transit="1"></RegisterListItem>
-      <RegisterListItem date={'1월 4일 (수) 7:00PM'} userInfo="하잉" transit="1"></RegisterListItem>
+      {list.map(el => {
+        return (
+          <RegisterListItem
+            key={el.yataId}
+            date={dateFormat(el.createdAt)}
+            userInfo="이이잉"
+            yataId={el.yataId}
+            yataRequestId={el.yataRequestId}></RegisterListItem>
+        );
+      })}
     </RegisterBlock>
   );
 };

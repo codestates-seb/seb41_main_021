@@ -3,6 +3,7 @@ import usePostData from './usePostData';
 import usePatchData from './usePatchData';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import instance from '../api/instance';
 
 const header = {
   headers: {
@@ -35,46 +36,45 @@ const useTayoCreate = async (url, data) => {
   }
 };
 
-// 4.2
 const useTayoEdit = async (url, data) => {
   try {
-    const response = await axios.patch(url, data, {
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-        Authorization: localStorage.getItem('ACCESS'),
-      },
-    });
-    return data;
+    const response = await instance.patch(url, data);
+    return response.data.data;
   } catch (error) {
     toast.warning('게시물 수정에 실패했습니다.');
+    // console.log(error);
   }
 };
 
-// 5.1
 const useTayoRequest = async (url, data) => {
   try {
-    const response = await axios.post(url, data, header);
+    const response = await instance.post(url, data);
     return response;
   } catch (error) {
     if (error.response.status === 403) {
       toast.warning('본인 게시물에 신청할 수 없습니다.');
+    } else if (error.response.status === 409) {
+      toast.warning('이미 신청된 게시물입니다.');
     } else {
       toast.warning('신청에 실패했습니다.');
     }
+    console.log(error);
   }
 };
 
-// 5.2
 const useTayoInvite = async (url, data) => {
   try {
-    const response = await axios.post(url, data, header);
+    const response = await instance.post(url, data);
     return response;
   } catch (error) {
     if (error.response.status === 403) {
-      toast.warning('본인 게시물에 초대 수 없습니다.');
+      toast.warning('본인 게시물에 초대할 수 없습니다.');
+    } else if (error.response.status === 409) {
+      toast.warning('이미 초대된 게시물입니다.');
     } else {
       toast.warning('초대에 실패했습니다.');
     }
+    console.log(error);
   }
 };
 

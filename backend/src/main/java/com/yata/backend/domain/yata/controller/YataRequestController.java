@@ -56,17 +56,17 @@ public class YataRequestController {
     public ResponseEntity<SliceResponseDto<YataRequestDto.RequestResponse>> getRequestsByDriver(@PathVariable("yataId") @Positive long yataId,
                                                                                         @AuthenticationPrincipal User authMember,
                                                                                         Pageable pageable) {
-        Slice<YataRequest> requests = yataRequestService.findRequestsByDriver(authMember.getUsername(), yataId ,pageable);
+        Slice<YataRequest> requests = yataRequestService.findRequestsByYataOwner(authMember.getUsername(), yataId ,pageable);
         SliceInfo sliceInfo = new SliceInfo(pageable, requests.getNumberOfElements(), requests.hasNext());
         return new ResponseEntity<>(
                 new SliceResponseDto<>(mapper.yataRequestsToYataRequestResponses(requests.getContent()), sliceInfo), HttpStatus.OK);
     }
 
     // 자기가 한 신청/초대 목록 조회 - 200
-    @GetMapping("/myYataRequests")
+    @GetMapping("/requests/myYataRequests")
     public ResponseEntity<SliceResponseDto<YataRequestDto.RequestResponse>> getRequestsByPassenger(@AuthenticationPrincipal User authMember,
                                                                                                    Pageable pageable) {
-        Slice<YataRequest> requests = yataRequestService.findRequestsByPassenger(authMember.getUsername(), pageable);
+        Slice<YataRequest> requests = yataRequestService.findRequestsByRequester(authMember.getUsername(), pageable);
         SliceInfo sliceInfo = new SliceInfo(pageable, requests.getNumberOfElements(), requests.hasNext());
         return new ResponseEntity<>(
                 new SliceResponseDto<>(mapper.yataRequestsToYataRequestResponses(requests.getContent()), sliceInfo), HttpStatus.OK);

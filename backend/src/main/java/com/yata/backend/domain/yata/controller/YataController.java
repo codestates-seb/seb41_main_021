@@ -81,13 +81,31 @@ public class YataController {
 
     }
 
-    //내가 쓴 글 조회(신청 온 것만, 마감상태여도 보이게)
-    @GetMapping("/my")
-    public ResponseEntity getMyYata(@AuthenticationPrincipal User authMember, Pageable pageable) {
-        Slice<Yata> requests = yataService.findMyYata(authMember.getUsername(), pageable);
+    //내가 쓴 게시물 중 조회(신청 온 것만, 마감상태여도 보이게)
+    @GetMapping("/myYatas/myRequested")
+    public ResponseEntity getMyRequestedYatas(@AuthenticationPrincipal User authMember, Pageable pageable) {
+        Slice<Yata> requests = yataService.findMyRequestedYatas(authMember.getUsername(), pageable);
         SliceInfo sliceInfo = new SliceInfo(pageable, requests.getNumberOfElements(), requests.hasNext());
         return new ResponseEntity<>(
                 new SliceResponseDto<>(mapper.yatasToYataResponses(requests.getContent()), sliceInfo), HttpStatus.OK);
+    }
+
+    // 내가 쓴 게시물 전체 조회
+    @GetMapping("/myYatas")
+    public ResponseEntity getMyYatas(@AuthenticationPrincipal User authMember, Pageable pageable) {
+        Slice<Yata> requests = yataService.findMyYatas(authMember.getUsername(), pageable);
+        SliceInfo sliceInfo = new SliceInfo(pageable, requests.getNumberOfElements(), requests.hasNext());
+        return new ResponseEntity<>(
+                new SliceResponseDto<>(mapper.yatasToYataResponses(requests.getContent()), sliceInfo), HttpStatus.OK);
+    }
+
+    //내가 한 신청중 승인된 yata만 불러오기 //todo 메서드명도 머라하지
+    @GetMapping("/accept/yatas")
+    public ResponseEntity getMyAcceptedYata(@AuthenticationPrincipal User authMember, Pageable pageable) {
+        Slice<Yata> requests = yataService.findMyAcceptedYata(authMember.getUsername(), pageable);
+        SliceInfo sliceInfo = new SliceInfo(pageable, requests.getNumberOfElements(), requests.hasNext());
+        return new ResponseEntity<>(
+                new SliceResponseDto<>(mapper.yataToMyYatas(requests.getContent(),authMember.getUsername()), sliceInfo), HttpStatus.OK);
     }
 
 }

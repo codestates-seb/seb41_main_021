@@ -15,8 +15,8 @@ export default function EditDeleteContainer(props) {
 
   return (
     <CRUDContainer>
-      <FiEdit onClick={() => navigate(`/${state}-edit/${yataId}`)} />
-      <FiTrash onClick={deleteHandler} />
+      <FiEdit onClick={() => navigate(`/${state}-edit/${yataId}`)} title="수정하기" />
+      <FiTrash onClick={deleteHandler} title="삭제하기" />
     </CRUDContainer>
   );
 }
