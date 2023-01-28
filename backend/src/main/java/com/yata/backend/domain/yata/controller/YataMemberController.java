@@ -49,7 +49,7 @@ public class YataMemberController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // 승인된 yata 전체 조회 - 200
+    // 승인된 yataReq 전체 조회 - 200
     @GetMapping("/accept/yataRequests")
     public ResponseEntity getApprovedRequests(@PathVariable("yataId") @Positive long yataId,
                                               @AuthenticationPrincipal User authMember,

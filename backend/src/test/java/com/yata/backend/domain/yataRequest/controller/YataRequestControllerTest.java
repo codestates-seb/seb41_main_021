@@ -141,7 +141,7 @@ public class YataRequestControllerTest extends AbstractControllerTest {
         YataRequest expected = YataRequestFactory.createYataRequest();
         YataRequestDto.InvitationResponse response = YataRequestFactory.createYataInvitationResponseDto(expected);
 
-        given(yataRequestService.createInvitation(any(), anyLong())).willReturn(new YataRequest());
+        given(yataRequestService.createInvitation(any(),any(), anyLong())).willReturn(new YataRequest());
         given(mapper.yataInvitationToYataInvitationResponse(any(YataRequest.class))).willReturn(response);
 
         //when

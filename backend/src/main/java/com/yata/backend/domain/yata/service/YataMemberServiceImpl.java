@@ -47,11 +47,19 @@ public class YataMemberServiceImpl implements YataMemberService {
         Member member = memberService.findMember(userName); // 해당 member 가 있는지 확인 ( 승인하려는 주체 )
         Yata yata = yataService.findYata(yataId); // 해당 yata 가 있는지 확인 ( 승인하려는 게시물Id )
         YataRequest yataRequest = yataRequestService.findRequest(yataRequestId); // 해당 yataRequest 가 있는지 확인 ( 승인하려는 신청Id )
-
+        // 초대 한 애들은 승인 하기 X
+        if(yataRequest.getRequestStatus().equals(YataRequest.RequestStatus.INVITE)){
+            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
+        }
         yataService.equalMember(member.getEmail(), yata.getMember().getEmail()); // 승인하려는 member = 게시글 작성한 member 인지 확인
         // 인원 수 검증은 신청 시에 이미 했기 때문에 갠잔 / 초대는 자기가 알아서 판단해서 하겠지 모 자기 차니까
-
         // 승인하려는 yataRequest 가 해당 yata 게시물에 신청한 request 인지 검증
+        validateRequest(yataRequestId, yataId, yata, yataRequest);
+        yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.ACCEPTED);
+        saveYataMember(yataRequest);
+    }
+
+    public void validateRequest(Long yataRequestId, Long yataId, Yata yata, YataRequest yataRequest) {
         yataRequestService.verifyAppliedRequest(yata, yataRequestId);
 
         // 게시물의 출발 시간이 현재 시간을 지났으면 승인 불가
@@ -69,16 +77,15 @@ public class YataMemberServiceImpl implements YataMemberService {
         if (yata.getMaxPeople() < sum + yataRequest.getBoardingPersonCount()) {
             throw new CustomLogicException(ExceptionCode.CANNOT_APPROVE);
         }
+    }
 
-        yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.ACCEPTED);
-
+    public void saveYataMember(YataRequest yataRequest) {
         YataMember yataMember = new YataMember();
-        yataMember.setYata(yata);
+        yataMember.setYata(yataRequest.getYata());
         yataMember.setMember(yataRequest.getMember());
         yataMember.setYataPaid(false); //지불 상태 set
         yataMember.setGoingStatus(YataMember.GoingStatus.STARTED_YET); //카풀 현황 set
         yataMember.setBoardingPersonCount(yataRequest.getBoardingPersonCount());
-
         jpaYataMemberRepository.save(yataMember);
     }
 
@@ -127,8 +134,8 @@ public class YataMemberServiceImpl implements YataMemberService {
 
         yataService.equalMember(member.getEmail(), yata.getMember().getEmail()); // 게시글 작성자 == 조회하려는 사람 인지 확인
 
-        memberService.checkDriver(member); // 조회하려는 사람이 운전자인지 확인
-
+        //memberService.checkDriver(member); // 조회하려는 사람이 운전자인지 확인
+        // 게시글 주인이면 보게 하면되지...
         return jpaYataMemberRepository.findAllByYata(yata, pageable);
     }
 
