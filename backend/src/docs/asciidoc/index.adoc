@@ -398,6 +398,21 @@ include::{snippets}/yata/get-location/response-body.adoc[]
 .response-fields
 include::{snippets}/yata/get-location/response-fields.adoc[]
 
+=== 초대를 위한 나의 야타(너타) 목록 조회 ( 마감 전 친구 )
+
+.http-request
+include::{snippets}/yata-getNeotaYatasForInvite/http-request.adoc[]
+.request-headers
+include::{snippets}/yata-getNeotaYatasForInvite/request-headers.adoc[]
+.http-response
+include::{snippets}/yata-getNeotaYatasForInvite/http-response.adoc[]
+.response-body
+include::{snippets}/yata-getNeotaYatasForInvite/response-body.adoc[]
+.response-fields
+include::{snippets}/yata-getNeotaYatasForInvite/response-fields.adoc[]
+
+
+
 == CheckListController
 === 체크리스트 목록 조회
 GET /api/v1/checklist
