@@ -150,7 +150,7 @@ export default function MyPage() {
                   </JourneyRecord>
                 </NavLink>
               )}
-              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/rating-list">
+              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/rating-list/">
                 <JourneyRecord>
                   <div className="title">받은 매너 평가</div>
                   <IoIosArrowForward />
