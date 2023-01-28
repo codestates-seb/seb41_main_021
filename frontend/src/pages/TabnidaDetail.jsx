@@ -20,25 +20,27 @@ export default function TabnidaDetail() {
 
   const requestHandler = () => {
     const newData = {
-      title: data.title,
-      specifics: data.specifics,
-      departureTime: data.departureTime,
-      timeOfArrival: data.timeOfArrival,
-      boardingPersonCount: 1,
-      maxWaitingTime: data.maxWaitingTime,
-      strPoint: {
-        longitude: data.strPoint.longitude,
-        latitude: data.strPoint.latitude,
-        address: data.strPoint.address,
-      },
-      destination: {
-        longitude: data.destination.longitude,
-        latitude: data.destination.latitude,
-        address: data.destination.address,
-      },
+      inviteEmail: data.email,
+      yataId: data.yataId,
+      // title: data.title,
+      // specifics: data.specifics,
+      // departureTime: data.departureTime,
+      // timeOfArrival: data.timeOfArrival,
+      // boardingPersonCount: 1,
+      // maxWaitingTime: data.maxWaitingTime,
+      // strPoint: {
+      //   longitude: data.strPoint.longitude,
+      //   latitude: data.strPoint.latitude,
+      //   address: data.strPoint.address,
+      // },
+      // destination: {
+      //   longitude: data.destination.longitude,
+      //   latitude: data.destination.latitude,
+      //   address: data.destination.address,
+      // },
     };
 
-    useTayoInvite(`https://server.yata.kro.kr/api/v1/yata/invite/${yataId}`, newData).then(res => {
+    useTayoInvite(`https://server.yata.kro.kr/api/v1/yata/invite`, newData).then(res => {
       console.log(res);
     });
   };
@@ -55,9 +57,15 @@ export default function TabnidaDetail() {
         <>
           <Header title={'탑니다'}></Header>
           <Container>
-            <EditDeleteContainer state={'tabnida'} yataId={yataId} />
+            <EditDeleteContainer
+              state={'tabnida'}
+              yataId={yataId}
+              data={data}
+              ableTag={'초대 가능'}
+              disableTag={'초대 마감'}
+            />
             <ProfileContainer data={data} />
-            <InfoContainer data={data} ableTag={'초대 가능'} disableTag={'초대 마감'} />
+            <InfoContainer data={data} />
             <MemberContainer data={data} />
             <InviteButton onClick={requestHandler}>초대하기</InviteButton>
           </Container>
