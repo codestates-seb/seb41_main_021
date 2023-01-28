@@ -1,17 +1,32 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsFilled } from '../redux/slice/DestinationSlice';
 
 const Header = props => {
   const { title } = props;
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  const des = useSelector(state => {
+    return state.destination;
+  });
+
+  const prev = () => {
+    if (des.isFilled) {
+      dispatch(setIsFilled({ isFilled: false }));
+    } else {
+      navigate(-1);
+    }
+  };
 
   return (
     <>
       <Container>
         <div className="content-container">
           <div className="back-btn-container">
-            <AiOutlineArrowLeft onClick={() => navigate(-1)} />
+            <AiOutlineArrowLeft onClick={prev} />
           </div>
           <div className="title-container">
             <h1>{title}</h1>

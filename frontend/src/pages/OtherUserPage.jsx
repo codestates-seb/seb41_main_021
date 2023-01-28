@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../components/common/Button.jsx';
 import Header from '../components/Header';
 import { useState, useEffect } from 'react';
-import useGetData from '../hooks/useGetData';
+import { useGetData } from '../hooks/useGetData';
 import { useParams } from 'react-router-dom';
 
 export default function OtherUserPage() {
@@ -66,7 +66,7 @@ export default function OtherUserPage() {
             </Compliment>
           </SummaryContainer>
           <ListContainer>
-            <List>
+            {/* <List>
               <ListTitle>탑니다/태웁니다 관리</ListTitle>
               <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journey-list">
                 <JourneyRecord>
@@ -74,7 +74,7 @@ export default function OtherUserPage() {
                   <IoIosArrowForward />
                 </JourneyRecord>
               </NavLink>
-            </List>
+            </List> */}
             <List>
               <ListTitle>일반</ListTitle>
               <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to={`/rating-list/${email}`}>

@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -37,6 +38,18 @@ public class YataRequestDto {
         @Valid
         private LocationDto.Post destination;
     }
+    @AllArgsConstructor
+    @Getter
+    @ToString
+    @Builder
+    @NoArgsConstructor
+    public static class InvitePost{
+        // email pattern
+        @Pattern(regexp = "^[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]+$", message = "이메일 형식이 아닙니다.")
+        private String inviteEmail;
+        @NotNull(message = "초대할 야타 게시물을 입력 해주세요")
+        private Long yataId;
+    }
 
     @AllArgsConstructor
     @Getter
@@ -45,6 +58,8 @@ public class YataRequestDto {
     @Builder
     public static class RequestResponse {
         private Long yataId;
+        private Long amount;
+        private int maxPeople;
         private Long yataRequestId;
         private String email;
         private String nickname;
@@ -61,21 +76,7 @@ public class YataRequestDto {
         private LocationDto.Response strPoint;
         private LocationDto.Response destination;
         private LocalDateTime createdAt;
-
         private String imgUrl;
     }
 
-    @AllArgsConstructor
-    @Getter
-    @ToString
-    @Builder
-    public static class InvitationResponse {
-        private Long yataRequestId;
-        private Long yataId;
-        private String email;
-        private String nickname;
-        private YataRequest.RequestStatus yataRequestStatus;
-        private YataRequest.ApprovalStatus approvalStatus;
-        private LocalDateTime createdAt;
-    }
 }

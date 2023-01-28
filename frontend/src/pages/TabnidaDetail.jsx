@@ -8,7 +8,7 @@ import ProfileContainer from '../components/Tayo/ProfileContainer';
 import InfoContainer from '../components/Tayo/InfoContainer';
 import MemberContainer from '../components/Tayo/MemberContainer';
 import EditDeleteContainer from '../components/Tayo/EditDeleteContainer';
-import useGetData from '../hooks/useGetData';
+import { useGetData } from '../hooks/useGetData';
 import { useTayoInvite } from '../hooks/useTayo';
 
 export default function TabnidaDetail() {
@@ -19,26 +19,26 @@ export default function TabnidaDetail() {
   const [loading, setLoading] = useState(true);
 
   const requestHandler = () => {
-    const data = {
-      title: '태워주세욥',
-      specifics: '애완견을 동반하고싶어요',
-      departureTime: '2100-01-25T16:00:34',
-      timeOfArrival: '2100-01-25T16:00:34',
-      boardingPersonCount: 2,
-      maxWaitingTime: 10,
+    const newData = {
+      title: data.title,
+      specifics: data.specifics,
+      departureTime: data.departureTime,
+      timeOfArrival: data.timeOfArrival,
+      boardingPersonCount: 1,
+      maxWaitingTime: data.maxWaitingTime,
       strPoint: {
-        longitude: 2.5,
-        latitude: 2.0,
-        address: '강원도 원주시',
+        longitude: data.strPoint.longitude,
+        latitude: data.strPoint.latitude,
+        address: data.strPoint.address,
       },
       destination: {
-        longitude: 2.5,
-        latitude: 2.0,
-        address: '강원도 원주시',
+        longitude: data.destination.longitude,
+        latitude: data.destination.latitude,
+        address: data.destination.address,
       },
     };
 
-    useTayoInvite(`https://server.yata.kro.kr/api/v1/yata/invite/${yataId}`, data).then(res => {
+    useTayoInvite(`https://server.yata.kro.kr/api/v1/yata/invite/${yataId}`, newData).then(res => {
       console.log(res);
     });
   };

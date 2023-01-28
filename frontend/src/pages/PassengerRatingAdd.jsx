@@ -5,17 +5,20 @@ import Header from '../components/Header';
 import { VscAccount } from 'react-icons/vsc';
 import Button from '../components/common/Button';
 import RatingList from '../components/rating/RatingList';
-import useGetData from '../hooks/useGetData';
+import { useGetData } from '../hooks/useGetData';
 import usePostData from '../hooks/usePostData';
 import { useParams } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 
 export default function PassengerRatingAdd(props) {
   const [positiveList, setPositiveList] = useState([]);
   const [negativeList, setNegativeList] = useState([]);
   const [isChecked, setIsChecked] = useState([]);
 
+  const [searchParams, setSearchParams] = useSearchParams();
   const params = useParams();
   const yataId = params.yataId;
+  const yataMemberId = searchParams.get('yataMemberId');
 
   useEffect(() => {
     useGetData('https://server.yata.kro.kr/api/v1/checklist').then(res => {
@@ -28,7 +31,7 @@ export default function PassengerRatingAdd(props) {
     const data = {
       checklistIds: isChecked,
     };
-    usePostData(`https://server.yata.kro.kr/api/v1/review/${yataId}`, data).then(res => {
+    usePostData(`https://server.yata.kro.kr/api/v1/review/${yataId}?yataMemberId=${yataMemberId}`, data).then(res => {
       console.log(data);
       console.log(res);
     });

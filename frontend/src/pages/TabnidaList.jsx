@@ -6,16 +6,20 @@ import CircleButton from '../components/common/CircleButton';
 import DestinationInput from '../components/DestinationInput';
 import { useNavigate } from 'react-router-dom';
 import { MdAdd } from 'react-icons/md';
-import useGetData from '../hooks/useGetData';
 import ListItemView from '../components/ListItemView';
+import { useGetData } from '../hooks/useGetData';
+import { useDispatch } from 'react-redux';
+import { clearAll } from '../redux/slice/DestinationSlice';
 
 export default function TabnidaList() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [list, setList] = useState([]);
 
   const add = () => {
     setOpen(!open);
+    dispatch(clearAll());
     navigate('/tabnida-add');
   };
 

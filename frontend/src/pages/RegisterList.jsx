@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Navbar from '../components/NavBar';
 import Header from '../components/Header';
-import useGetData from '../hooks/useGetData';
+import { useGetData } from '../hooks/useGetData';
 import { IoIosArrowForward, IoIosArrowRoundForward } from 'react-icons/io';
 import { BsCalendar4, BsPeople } from 'react-icons/bs';
 import { BiWon } from 'react-icons/bi';
@@ -19,7 +19,7 @@ export default function RegisterList() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    useGetData(`https://server.yata.kro.kr/api/v1/yata/my`).then(res => {
+    useGetData(`https://server.yata.kro.kr/api/v1/yata/myYatas/myRequested`).then(res => {
       setList(res.data.data);
       setLoading(false);
     });
@@ -27,7 +27,7 @@ export default function RegisterList() {
 
   return (
     <>
-      <Header title="요청 내역" />
+      <Header title="내가 받은 요청" />
       {list.length !== 0 && !loading ? (
         <Container>
           {list.map(el => {

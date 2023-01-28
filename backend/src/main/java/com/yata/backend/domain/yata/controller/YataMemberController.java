@@ -38,7 +38,7 @@ public class YataMemberController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
+    // 신청 거절
     // yata 거절 / 승인된 yata 거절 - 204
     @PostMapping("/{yataRequestId}/reject")
     public ResponseEntity rejectRequest(@PathVariable("yataId") @Positive long yataId,
@@ -49,7 +49,7 @@ public class YataMemberController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // 승인된 yata 전체 조회 - 200
+    // 승인된 yataReq 전체 조회 - 200
     @GetMapping("/accept/yataRequests")
     public ResponseEntity getApprovedRequests(@PathVariable("yataId") @Positive long yataId,
                                               @AuthenticationPrincipal User authMember,

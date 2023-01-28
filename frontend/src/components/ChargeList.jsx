@@ -1,14 +1,19 @@
 import styled from 'styled-components';
+import { dateFormat } from './common/DateFormat';
 
 const ChargeList = props => {
-  const { date, price, onClick } = props;
+  const { onClick, list } = props;
   return (
     <>
       <Container onClick={onClick}>
-        <TextContainer>
-          <DateContainer>{date}</DateContainer>
-          <PriceContainer>{price}</PriceContainer>
-        </TextContainer>
+        {list.map(el => {
+          return (
+            <TextContainer>
+              <DateContainer>{dateFormat(el.createdAt)}</DateContainer>
+              <PriceContainer>{el.amount}원</PriceContainer>
+            </TextContainer>
+          );
+        })}
       </Container>
     </>
   );

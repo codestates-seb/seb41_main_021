@@ -5,7 +5,7 @@ import Header from '../components/Header';
 import { VscAccount } from 'react-icons/vsc';
 import Button from '../components/common/Button';
 import RatingList from '../components/rating/RatingList';
-import useGetData from '../hooks/useGetData';
+import { useGetData } from '../hooks/useGetData';
 import usePostData from '../hooks/usePostData';
 import { useParams } from 'react-router';
 

@@ -2,6 +2,7 @@ package com.yata.backend.domain.yata.service;
 
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.service.MemberService;
+import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import com.yata.backend.domain.yata.entity.YataStatus;
@@ -18,6 +19,7 @@ import javax.transaction.Transactional;
 import java.util.Optional;
 
 import static com.yata.backend.domain.yata.entity.YataRequest.RequestStatus.APPLY;
+import static com.yata.backend.domain.yata.entity.YataRequest.RequestStatus.INVITE;
 
 @Service
 @Transactional
@@ -74,25 +76,36 @@ public class YataRequestServiceImpl implements YataRequestService {
 
     // Yata 초대
     @Override
-    public YataRequest createInvitation(String userName, Long yataId) {
-        Member member = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
-        verifyInvitation(userName, yataId); // 초대를 이미 했었는지 확인하고
+    public YataRequest createInvitation(String userName, String invitedUser, Long yataId) {
+        Member yataOwner = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
+        Member invitedMember = memberService.findMember(invitedUser); // 초대할 멤버가 있는지 확인하고
+        // TODO verify 조작
+        verifyInvitation(userName, yataId); // 신청 목록에 있는 애인지 확인하고 (초대한 애가 아닌지 확인하고)
+        // 초대 할려는 게시물이 있는지 확인
         Yata yata = yataService.findYata(yataId);
+        yataService.equalMember(yataOwner.getEmail(), yata.getMember().getEmail()); // 게시글을 쓴 멤버만 초대 가능하도록
 
         // 초대 시간과 게시글의 출발 시간 비교 --> 게시물의 출발시간이 이미 지난 경우(마감인 경우) 익셉션
         TimeCheckUtils.verifyTime(yata.getDepartureTime().getTime(), System.currentTimeMillis());
-
         YataStatus yataStatus = yata.getYataStatus();
         if (yataStatus == YataStatus.YATA_NATA) {
-            YataRequest yataRequest = new YataRequest();
-            yataRequest.setRequestStatus(YataRequest.RequestStatus.INVITE);
-            yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.NOT_YET);
-            yataRequest.setYata(yata);
-            yataRequest.setMember(member);
-            return jpaYataRequestRepository.save(yataRequest);
-        } else {
             throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
         }
+        YataRequest yataRequest = YataRequest.builder()
+                .requestStatus(INVITE)
+                .approvalStatus(YataRequest.ApprovalStatus.NOT_YET)
+                .yata(yata)
+                .member(invitedMember) // 초대 받는 사람
+                .timeOfArrival(yata.getTimeOfArrival())
+                .departureTime(yata.getDepartureTime())
+                .boardingPersonCount(1)
+                .maxWaitingTime(0)
+                .specifics("")
+                .title("")
+                .build();
+
+        return jpaYataRequestRepository.save(yataRequest);
+
     }
 
     // Yata 신청 목록 조회 - by driver
@@ -122,10 +135,15 @@ public class YataRequestServiceImpl implements YataRequestService {
         YataRequest yataRequest = findRequest(yataRequestId); // 해당 yataRequestId 로 한 신청/초대가 있는지 ( 신청/초대 )
 
         // 삭제하려는 사람 == 신청했던 사람 인지 확인
-        yataService.equalMember(member.getEmail(), yataRequest.getMember().getEmail());
+        if (yataRequest.getRequestStatus().equals(APPLY)) {
+            // 신청은 신청자의 이메일과 삭제하려는 사람의 이메일이 같아야 함
+            yataService.equalMember(member.getEmail(), yataRequest.getMember().getEmail());
+        } else {
+            // 초대는 게시물 주인과 삭제하려는 사람의 이메일이 같아야 함
+            yataService.equalMember(member.getEmail(), yata.getMember().getEmail());
+        }
 
         YataRequest.ApprovalStatus approvalStatus = yataRequest.getApprovalStatus();
-
         switch (approvalStatus) {
             case ACCEPTED, REJECTED ->
                     throw new CustomLogicException(ExceptionCode.CANNOT_DELETE); // 승인/거절 받았으면 삭제 불가 (운전자만 삭제 가능)
@@ -197,5 +215,10 @@ public class YataRequestServiceImpl implements YataRequestService {
         if (!request.getYata().equals(yata)) {
             throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
         }
+    }
+
+    @Override
+    public Slice<YataRequest> findRequestsInvite(String username, Pageable pageable) {
+        return jpaYataRequestRepository.findByMember_EmailAndRequestStatus(username, INVITE, pageable);
     }
 }

@@ -26,6 +26,10 @@ public interface YataRequestMapper {
             response.yataRequestId(yataRequest.getYataRequestId());
         }
         response.yataId(yataRequest.getYata().getYataId());
+        response.amount(yataRequest.getYata().getAmount());
+        response.maxPeople(yataRequest.getYata().getMaxPeople());
+        response.email(yataRequest.getMember().getEmail());
+        response.nickname(yataRequest.getMember().getNickname());
         response.yataRequestStatus(yataRequest.getRequestStatus());
         response.approvalStatus(yataRequest.getApprovalStatus());
         response.title(yataRequest.getTitle());
@@ -34,8 +38,10 @@ public interface YataRequestMapper {
         response.timeOfArrival(yataRequest.getTimeOfArrival());
         response.boardingPersonCount(yataRequest.getBoardingPersonCount());
         response.maxWaitingTime(yataRequest.getMaxWaitingTime());
-        response.strPoint(locationToResponse(yataRequest.getStrPoint()));
-        response.destination(locationToResponse(yataRequest.getDestination()));
+        response.strPoint(yataRequest.getStrPoint() == null ?
+                locationToResponse(yataRequest.getYata().getStrPoint()) : locationToResponse(yataRequest.getStrPoint()));
+        response.destination(yataRequest.getDestination() == null ?
+                locationToResponse(yataRequest.getYata().getDestination()) : locationToResponse(yataRequest.getDestination()));
         response.createdAt(yataRequest.getCreatedAt());
 
         return response.build();
@@ -50,6 +56,8 @@ public interface YataRequestMapper {
                 .map(yataRequest -> {
                     return YataRequestDto.RequestResponse.builder()
                             .yataId(yataRequest.getYata().getYataId())
+                            .amount(yataRequest.getYata().getAmount())
+                            .maxPeople(yataRequest.getYata().getMaxPeople())
                             .yataRequestId(yataRequest.getYataRequestId())
                             .email(yataRequest.getMember().getEmail())
                             .nickname(yataRequest.getMember().getNickname())
@@ -69,25 +77,7 @@ public interface YataRequestMapper {
                 }).collect(Collectors.toList());
     }
 
-    default YataRequestDto.InvitationResponse yataInvitationToYataInvitationResponse(YataRequest yataRequest) {
-        if (yataRequest == null) {
-            return null;
-        }
 
-        YataRequestDto.InvitationResponse.InvitationResponseBuilder response = YataRequestDto.InvitationResponse.builder();
-
-        if (yataRequest.getYataRequestId() != null) {
-            response.yataRequestId(yataRequest.getYataRequestId());
-        }
-        response.yataId(yataRequest.getYata().getYataId());
-        response.email(yataRequest.getMember().getEmail());
-        response.nickname(yataRequest.getMember().getNickname());
-        response.yataRequestStatus(yataRequest.getRequestStatus());
-        response.approvalStatus(yataRequest.getApprovalStatus());
-        response.createdAt(yataRequest.getCreatedAt());
-
-        return response.build();
-    }
 
     default Location postToLocation(LocationDto.Post post) throws ParseException {
         if (post == null) {

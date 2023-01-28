@@ -9,7 +9,8 @@ export default function DestinationItem(props) {
 
   return (
     <>
-      <Container onClick={() => navigate('/destination-detail')}>
+      <Container
+        onClick={() => navigate(`/destination-detail?address=${addressName}&place=${placeName}&x=${x}&y=${y}`)}>
         <div className="place-container">
           <h2 className="place-name">{placeName}</h2>
           <div className="place-address">{addressName}</div>
