@@ -7,6 +7,8 @@ import com.yata.backend.domain.yata.entity.YataStatus;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
+import java.util.List;
+
 
 public interface YataRepository {
     Slice<Yata> findYataByStartAndEndLocation(Location startLocation, Location endLocation, double distance , Pageable pageable);
@@ -15,4 +17,6 @@ public interface YataRepository {
     Slice<Yata> findAllByMemberAndYata_YataMembersIsNotNull(Pageable pageable, Member member);
     Slice<Yata> findAllByMember_Email(String userName, Pageable pageable);
     Slice<Yata> findAllByYata_YataMember_Member(Pageable pageable, Member member);
+
+    List<Yata> findAllByMember_EmailAndYataStatusIsNot(String username, Yata.PostStatus postOpen);
 }

@@ -14,6 +14,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -129,5 +130,10 @@ public class YataServiceImpl implements YataService {
         if (!email.equals(postEmail)) {
             throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
         }
+    }
+
+    @Override
+    public List<Yata> findMyYatasNotClosed(String username) {
+        return jpaYataRepository.findAllByMember_EmailAndYataStatusIsNot(username, Yata.PostStatus.POST_OPEN);
     }
 }

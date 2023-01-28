@@ -131,6 +131,18 @@ public class YataRepositoryImpl implements YataRepository {
     }
 
     @Override
+    public List<Yata> findAllByMember_EmailAndYataStatusIsNot(String username, Yata.PostStatus postOpen) {
+        return queryFactory.selectFrom(yata)
+                .join(yata.member).fetchJoin()
+                .join(yata.strPoint).fetchJoin()
+                .join(yata.destination).fetchJoin()
+                .leftJoin(yata.yataMembers, yataMember).fetchJoin()
+                .where(yata.member.email.eq(username).and(yata.postStatus.eq(postOpen).and(yata.yataStatus.eq(YataStatus.YATA_NEOTA))))
+                .orderBy(yata.yataId.desc())
+                .fetch();
+    }
+
+    @Override
     public Slice<Yata> findAllByMember_Email(String userName, Pageable pageable) {
         List<Yata> yatas = queryFactory.selectFrom(yata)
                 .join(yata.member).fetchJoin()

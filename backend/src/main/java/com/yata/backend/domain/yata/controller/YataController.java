@@ -4,10 +4,7 @@ import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.mapper.YataMapper;
 import com.yata.backend.domain.yata.service.YataService;
-import com.yata.backend.global.response.PageInfo;
-import com.yata.backend.global.response.SingleResponse;
-import com.yata.backend.global.response.SliceInfo;
-import com.yata.backend.global.response.SliceResponseDto;
+import com.yata.backend.global.response.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.locationtech.jts.io.ParseException;
@@ -20,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 @RestController
 @Validated
@@ -97,6 +95,12 @@ public class YataController {
         SliceInfo sliceInfo = new SliceInfo(pageable, requests.getNumberOfElements(), requests.hasNext());
         return new ResponseEntity<>(
                 new SliceResponseDto<>(mapper.yatasToYataResponses(requests.getContent()), sliceInfo), HttpStatus.OK);
+    }
+    @GetMapping("/myYatas/neota/notClosed")
+    public ResponseEntity getMyYatasNotClosed(@AuthenticationPrincipal User authMember) {
+        List<Yata> requests = yataService.findMyYatasNotClosed(authMember.getUsername());
+        return new ResponseEntity(
+                new ListResponse<>(mapper.yatasToYataResponses(requests)), HttpStatus.OK);
     }
 
     //내가 한 신청중 승인된 yata만 불러오기 //todo 메서드명도 머라하지
