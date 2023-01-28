@@ -4,7 +4,7 @@ import Navbar from '../components/NavBar';
 import JourneyItem from '../components/Journey/JourneyItem';
 import HelpContainer from '../components/Journey/HelpContainer';
 import { useState, useEffect } from 'react';
-import useGetData from '../hooks/useGetData';
+import { useGetData } from '../hooks/useGetData';
 import { dateFormat } from '../components/common/DateFormat';
 
 export default function JourneyState() {
@@ -30,6 +30,7 @@ export default function JourneyState() {
           return (
             <JourneyItem
               key={el.yataId}
+              yataId={el.yataId}
               date={dateFormat(el.departureTime)}
               journeyStart={el.strPoint.address}
               journeyEnd={el.destination.address}

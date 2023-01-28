@@ -1,27 +1,25 @@
 import styled from 'styled-components';
 import Header from '../components/Header';
-import ListItem from '../components/ListItem';
-import useGetData from '../hooks/useGetData';
+import ListItemView from '../components/ListItemView';
+import { useGetData } from '../hooks/useGetData';
 import { useState, useEffect } from 'react';
 
 export default function MyRegisterHistory() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [list, setList] = useState([]);
 
   useEffect(() => {
-    useGetData(`https://server.yata.kro.kr/api/v1/yata/myYataRequests`).then(res => {
-      setData(res.data.data, setLoading(false));
+    useGetData('https://server.yata.kro.kr/api/v1/yata/requests/myYataRequests').then(res => {
+      setList(res.data.data);
     });
   }, []);
 
   return (
     <>
-      <Header title="나의 신청 내역" />
-      {data.length !== 0 && !loading ? (
+      <Header title="나의 신청/초대 내역" />
+      {console.log(list)}
+      {list.length !== 0 ? (
         <Container>
-          {data.map(el => (
-            <ListItem date={el.departureTime} journeyStart={el.strPoint.address} journeyEnd={el.destination.address} />
-          ))}
+          <ListItemView list={list} />
         </Container>
       ) : (
         <Container>
