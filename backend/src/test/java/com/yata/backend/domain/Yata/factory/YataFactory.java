@@ -141,4 +141,46 @@ public class YataFactory {
         yata.setMember(member);
         return yata;
     }
+    public static YataDto.AcceptedResponse createYataAcceptedResponseDto(Yata yata){
+        YataDto.Response response = new YataDto.Response();
+        response.setYataId(yata.getYataId());
+        response.setTitle(yata.getTitle());
+        response.setSpecifics(yata.getSpecifics());
+        response.setTimeOfArrival(yata.getTimeOfArrival());
+        response.setDepartureTime(yata.getDepartureTime());
+        response.setCreatedAt(yata.getCreatedAt());
+        response.setModifiedAt(yata.getModifiedAt());
+        response.setAmount(yata.getAmount());
+        response.setCarModel(yata.getCarModel());
+        response.setMaxPeople(yata.getMaxPeople());
+        response.setNickName(yata.getMember().getNickname());
+        response.setMaxWaitingTime(yata.getMaxWaitingTime());
+        response.setYataStatus(yata.getYataStatus());
+        response.setPostStatus(yata.getPostStatus());
+        response.setFeulTank(70.0);
+        response.setYataMembers(null);
+        response.setReservedMemberNum(0);
+        response.setStrPoint(new LocationDto.Response(
+                        yata.getStrPoint().getLocation().getX(),
+                        yata.getStrPoint().getLocation().getY(),
+                        yata.getStrPoint().getAddress()));
+        response.setDestination(new LocationDto.Response(
+                        yata.getDestination().getLocation().getX(),
+                        yata.getDestination().getLocation().getY(),
+                        yata.getDestination().getAddress()));
+        response.setEmail(RandomUtils.getRandomWord() + "@gmail.com");
+
+        return YataDto.AcceptedResponse.builder()
+                .yataResponse(response)
+                .yataPaid(true)
+                .goingStatus(YataMember.GoingStatus.STARTED_YET).build();
+    }
+
+    public static List<YataDto.AcceptedResponse> createYataAcceptedResponseDtoList(List<Yata> yataList){
+        List<YataDto.AcceptedResponse> yataAcceptedResponseDtoList = new ArrayList<>();
+        for (Yata yata : yataList) {
+            yataAcceptedResponseDtoList.add(createYataAcceptedResponseDto(yata));
+        }
+        return yataAcceptedResponseDtoList;
+    }
 }

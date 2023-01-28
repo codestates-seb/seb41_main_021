@@ -5,6 +5,7 @@ import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.dto.YataMemberDto;
 import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.Yata;
+import com.yata.backend.domain.yata.entity.YataMember;
 import com.yata.backend.global.utils.GeometryUtils;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.ParseException;
@@ -94,50 +95,34 @@ public interface YataMapper {
         }
         return response.build();
     }
-
+    default List<YataDto.AcceptedResponse> yataToMyYatas(List<Yata> yatas , String email){
+        if (yatas == null) {
+            return null;
+        }
+        return yatas.stream().map(yata -> {
+            YataDto.AcceptedResponse response = new YataDto.AcceptedResponse();
+            response.setYataResponse(yataToYataResponse(yata));
+            YataMember yataMember = yata.getYataMembers()
+                    .stream()
+                    .filter(yataMember1 ->
+                            yataMember1.getMember().getEmail().equals(email)).findFirst().orElse(null);
+            response.setYataPaid(yataMember != null && yataMember.isYataPaid());
+            response.setGoingStatus(yataMember != null ? yataMember.getGoingStatus() : null);
+            return response;
+        }).collect(Collectors.toList());
+    }
     default List<YataDto.Response> yatasToYataResponses(List<Yata> yatas) {
         if (yatas == null) {
             return null;
         }
         return yatas.stream()
                 .map(yata -> {
-
-                    YataDto.Response.ResponseBuilder response = YataDto.Response.builder();
-                    if (yata.getYataMembers() == null) response.reservedMemberNum(0);
-                    else response.reservedMemberNum(yata.getYataMembers().stream().mapToInt(yataMember ->
-                            yataMember.getBoardingPersonCount()).sum());
-                    return response.yataId(yata.getYataId())
-                            .postStatus(yata.getPostStatus())
-                            .yataStatus(yata.getYataStatus())
-                            .departureTime(yata.getDepartureTime())
-                            .timeOfArrival(yata.getTimeOfArrival())
-                            .title(yata.getTitle())
-                            .specifics(yata.getSpecifics())
-                            .createdAt(yata.getCreatedAt())
-                            .modifiedAt(yata.getModifiedAt())
-                            .maxWaitingTime(yata.getMaxWaitingTime())
-                            .maxPeople(yata.getMaxPeople())
-                            .amount(yata.getAmount())
-                            .carModel(yata.getCarModel())
-                            .email(yata.getMember().getEmail())
-                            .strPoint(locationToResponse(yata.getStrPoint()))
-                            .destination(locationToResponse(yata.getDestination()))
-                            .nickName(yata.getMember().getNickname())
-                            .feulTank(yata.getMember().getFuelTank())
-                            .yataMembers(null)
-                            .build();
+                    YataDto.Response res = yataToYataResponse(yata);
+                    res.setYataMembers(null);
+                    return res;
                 }).collect(Collectors.toList());
     }
 
-    default Slice<YataDto.Response> yatasToYataSliceResponses(Slice<Yata> yatas) {
-        if (yatas == null) {
-            return null;
-        }
-
-        List<YataDto.Response> responses = yatasToYataResponses(yatas.getContent());
-
-        return new SliceImpl<>(responses, yatas.getPageable(), yatas.hasNext());
-    }
 
     default Location postToLocation(LocationDto.Post post) throws ParseException {
         if (post == null) {
@@ -171,5 +156,3 @@ public interface YataMapper {
         return response.build();
     }
 }
-
-
