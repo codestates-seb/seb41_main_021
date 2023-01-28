@@ -86,6 +86,8 @@ public class YataRequestFactory {
     }
 
     public static YataRequestDto.InvitationResponse createYataInvitationResponseDto(YataRequest yataRequest) {
+        Member member = MemberFactory.createMember(RandomUtils.getRandomWord(10)+"@gmail.com");
+        yataRequest.setMember(member);
         return YataRequestDto.InvitationResponse.builder()
                 .yataRequestId(yataRequest.getYataRequestId())
                 .yataId(yataRequest.getYata().getYataId())
