@@ -191,10 +191,6 @@ include::{snippets}/member-get-others/http-request.adoc[]
 include::{snippets}/member-get-others/http-response.adoc[]
 .response-body
 include::{snippets}/member-get-others/response-body.adoc[]
-.request-parameters
-include::{snippets}/member-get-others/request-parameters.adoc[]
-.request-parameters
-include::{snippets}/member-get-others/request-parameters.adoc[]
 
 
 
@@ -342,18 +338,35 @@ include::{snippets}/yata-getAll/response-body.adoc
 .response-fields
 include::{snippets}/yata-getAll/response-fields.adoc[]
 
-=== 내가 쓴 야타목록(신청 O)
+=== 내가 쓴 야타 중 신청이 온 야타 목록 조회
 신청이 들어온게 있는 야타 목록들 조회
-GET /api/v1/yata/my
+GET /api/v1/yata/myYatas/requested
 
 .http-request
-include::{snippets}/yata-getMy/http-request.adoc[]
+include::{snippets}/yata-getMyRequestedYatas/http-request.adoc[]
 .request-headers
-include::{snippets}/yata-getMy/request-headers.adoc[]
-.response-body
-include::{snippets}/yata-getMy/response-body.adoc[]
+include::{snippets}/yata-getMyRequestedYatas/request-headers.adoc[]
 .http-response
-include::{snippets}/yata-getMy/http-response.adoc[]
+include::{snippets}/yata-getMyRequestedYatas/http-response.adoc[]
+.response-body
+include::{snippets}/yata-getMyRequestedYatas/response-body.adoc[]
+.response-fields
+include::{snippets}/yata-getMyRequestedYatas/response-fields.adoc[]
+
+=== 내가 쓴 야타 전체 조회
+내가 쓴 게시물 전체 조회
+GET /api/v1/yata/myYatas
+
+.http-request
+include::{snippets}/yata-getMyYatas/http-request.adoc[]
+.request-headers
+include::{snippets}/yata-getMyYatas/request-headers.adoc[]
+.response-body
+include::{snippets}/yata-getMyYatas/response-body.adoc[]
+.http-response
+include::{snippets}/yata-getMyYatas/http-response.adoc[]
+.response-fields
+include::{snippets}/yata-getMyYatas/response-fields.adoc[]
 
 === 내가 신청한 야타 게시글 중 신청 수락된 게시글
 GET api/ve/yata/accept/yatas

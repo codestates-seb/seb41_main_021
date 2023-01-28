@@ -6,7 +6,7 @@ import { AiOutlineCar } from 'react-icons/ai';
 import { dateFormat } from '../common/DateFormat';
 
 export default function InfoContainer(props) {
-  const { data } = props;
+  const { data, ableTag, disableTag } = props;
 
   return (
     <ContentContainer>
@@ -16,31 +16,29 @@ export default function InfoContainer(props) {
         <h2>경유지</h2> */}
         <IoIosArrowRoundForward />
         <h2>{data.destination.address}</h2>
-        <TagContainer state={data.postStatus}>
-          {data.postStatus === 'YATA_OPEN' ? '신청 가능' : '신청 마감'}
-        </TagContainer>
+        <TagContainer state={data.postStatus}>{data.postStatus === 'POST_OPEN' ? ableTag : disableTag}</TagContainer>
       </JourneyContainer>
-      <DateContainer>
+      <DateContainer title="출발일 및 시간">
         <BsCalendar4 />
         <p className="date-txt"> {dateFormat(data.departureTime)}</p>
       </DateContainer>
-      <PriceContainer>
+      <PriceContainer title="인당 금액">
         <BiWon />
-        <p className="price-txt">{data.amount}원</p>
+        <p className="price-txt">{data.amount.toLocaleString('ko-KR')}원</p>
       </PriceContainer>
       <AmountContainer>
         <BsPeople />
-        <p className="amount-txt">{data.reservedMemberNum} 명</p>
+        <p className="amount-txt">{data.maxPeople} 명</p>
       </AmountContainer>
       {data.yataStatus === 'YATA_NEOTA' ? (
-        <CarContainer>
+        <CarContainer title="차종">
           <AiOutlineCar />
-          <p className="car-txt">XM3</p>
+          <p className="car-txt">{data.carModel}</p>
         </CarContainer>
       ) : (
         <></>
       )}
-      <MemoContainer>
+      <MemoContainer title="기타 사항">
         <BiCommentDetail />
         <p className="memo-txt">{data.specifics}</p>
       </MemoContainer>
@@ -85,7 +83,7 @@ const TagContainer = styled.div`
   border-radius: 0.2rem;
 
   background-color: ${props =>
-    props.state === 'YATA_OPEN' ? props.theme.colors.main_blue : props.theme.colors.light_gray};
+    props.state === 'POST_OPEN' ? props.theme.colors.main_blue : props.theme.colors.light_gray};
 `;
 
 const DateContainer = styled.div``;

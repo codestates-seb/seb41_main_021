@@ -13,5 +13,6 @@ public interface YataRepository {
     void updateYataOverDepartureTime();
     Slice<Yata> findAllByYataStatusIs(YataStatus yataStatus, Pageable pageable);
     Slice<Yata> findAllByMemberAndYata_YataMembersIsNotNull(Pageable pageable, Member member);
+    Slice<Yata> findAllByMember_Email(String userName, Pageable pageable);
     Slice<Yata> findAllByYata_YataMember_Member(Pageable pageable, Member member);
 }

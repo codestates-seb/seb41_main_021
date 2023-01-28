@@ -9,7 +9,7 @@ export default function MyRegisterHistory() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    useGetData(`https://server.yata.kro.kr/api/v1/yata/apply/yataRequests`).then(res => {
+    useGetData(`https://server.yata.kro.kr/api/v1/yata/myYataRequests`).then(res => {
       setData(res.data.data, setLoading(false));
     });
   }, []);

@@ -22,8 +22,8 @@ export default function TabnidaDetail() {
     const data = {
       title: '태워주세욥',
       specifics: '애완견을 동반하고싶어요',
-      departureTime: '2023-01-25T16:00:34',
-      timeOfArrival: '2023-01-25T16:00:34',
+      departureTime: '2123-01-25T16:00:34',
+      timeOfArrival: '2123-01-25T16:00:34',
       boardingPersonCount: 2,
       maxWaitingTime: 10,
       strPoint: {
@@ -57,8 +57,8 @@ export default function TabnidaDetail() {
           <Container>
             <EditDeleteContainer state={'taeoonda'} yataId={yataId} />
             <ProfileContainer data={data} />
-            <InfoContainer data={data} />
-            <MemberContainer yataId={yataId} />
+            <InfoContainer data={data} ableTag={'신청 가능'} disableTag={'신청 마감'} />
+            <MemberContainer data={data} />
             <InviteButton onClick={requestHandler}>신청하기</InviteButton>
           </Container>
           <NavBar />

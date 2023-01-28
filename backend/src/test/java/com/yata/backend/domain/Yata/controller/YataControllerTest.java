@@ -34,7 +34,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 import static com.yata.backend.domain.Yata.factory.YataFactory.*;
 import static com.yata.backend.utils.ApiDocumentUtils.getRequestPreProcessor;
@@ -442,17 +441,17 @@ public class YataControllerTest extends AbstractControllerTest {
 
     @Test
     @WithMockUser(username = "test@gmail.com", roles = "USER")
-    @DisplayName("내가 쓴 야타목록(신청 o)")
-    void getMyYata() throws Exception {
+    @DisplayName("내가 쓴 야타 중 신청이 온 야타 목록 조회")
+    void getMyRequestedYatasTest() throws Exception {
         List<Yata> yatas = YataFactory.createYataList();
         List<YataDto.Response> responses = YataFactory.createYataResponseDtoList(yatas);
         Slice<Yata> yataSlice = new SliceImpl<>(yatas);
 
-        given(yataService.findMyYata(anyString(), any())).willReturn(yataSlice);
+        given(yataService.findMyRequestedYatas(anyString(), any())).willReturn(yataSlice);
         given(mapper.yatasToYataResponses(yataSlice.getContent())).willReturn(responses);
         ResultActions actions =
                 mockMvc.perform(RestDocumentationRequestBuilders.
-                        get(BASE_URL + "/my")
+                        get(BASE_URL + "/myYatas/myRequested")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .headers(GeneratedToken.getMockHeaderToken())
@@ -461,7 +460,37 @@ public class YataControllerTest extends AbstractControllerTest {
         actions.andExpect(status().isOk())
                 .andDo(print());
 
-        actions.andDo(document("yata-getMy",
+        actions.andDo(document("yata-getMyRequestedYatas",
+                getRequestPreProcessor(),
+                getResponsePreProcessor(),
+                requestHeaders(
+                        headerWithName("Authorization").description("JWT 토큰")
+                ),YataSnippet.getSliceResponses()));
+
+    }
+
+    @Test
+    @WithMockUser(username = "test@gmail.com", roles = "USER")
+    @DisplayName("내가 쓴 야타 전체 조회")
+    void getMyYatas() throws Exception {
+        List<Yata> yatas = YataFactory.createYataList();
+        List<YataDto.Response> responses = YataFactory.createYataResponseDtoList(yatas);
+        Slice<Yata> yataSlice = new SliceImpl<>(yatas);
+
+        given(yataService.findMyYatas(anyString(), any())).willReturn(yataSlice);
+        given(mapper.yatasToYataResponses(yataSlice.getContent())).willReturn(responses);
+        ResultActions actions =
+                mockMvc.perform(RestDocumentationRequestBuilders.
+                        get(BASE_URL + "/myYatas")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .headers(GeneratedToken.getMockHeaderToken())
+                        .with(csrf()));
+
+        actions.andExpect(status().isOk())
+                .andDo(print());
+
+        actions.andDo(document("yata-getMyYatas",
                 getRequestPreProcessor(),
                 getResponsePreProcessor(),
                 requestHeaders(

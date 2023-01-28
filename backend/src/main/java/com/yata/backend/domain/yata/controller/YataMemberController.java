@@ -29,7 +29,7 @@ public class YataMemberController {
         this.mapper = mapper;
     }
 
-    // TODO yata 승인 - 204
+    // yata 승인 - 204
     @PostMapping("/{yataRequestId}/accept")
     public ResponseEntity acceptRequest(@PathVariable("yataId") @Positive long yataId,
                                         @PathVariable("yataRequestId") @Positive long yataRequestId,

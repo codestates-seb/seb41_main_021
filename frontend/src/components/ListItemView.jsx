@@ -3,8 +3,8 @@ import ListItem from './ListItem';
 import { dateFormat } from './common/DateFormat';
 
 const ListItemView = props => {
-  // api 응답 어떻게 올지 몰라서 대충 넣어놓음
   const { list } = props;
+
   return (
     <>
       <Container>
@@ -16,7 +16,6 @@ const ListItemView = props => {
               date={dateFormat(el.departureTime)}
               journeyStart={el.strPoint.address}
               journeyEnd={el.destination.address}
-              transit={'1'}
               price={el.amount}
               people={`1/${el.maxPeople}`}
               yataStatus={el.yataStatus}

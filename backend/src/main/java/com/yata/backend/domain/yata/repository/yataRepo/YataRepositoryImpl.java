@@ -129,5 +129,26 @@ public class YataRepositoryImpl implements YataRepository {
         }
         return new SliceImpl<>(yatas, pageable, hasNext);
     }
+
+    @Override
+    public Slice<Yata> findAllByMember_Email(String userName, Pageable pageable) {
+        List<Yata> yatas = queryFactory.selectFrom(yata)
+                .join(yata.member).fetchJoin()
+                .join(yata.strPoint).fetchJoin()
+                .join(yata.destination).fetchJoin()
+                .leftJoin(yata.yataMembers , yataMember).fetchJoin()
+                .where(yata.member.email.eq(userName)) // 해당 게시물의 멤버가 userName 과 같은 애들 중에
+                .orderBy(yata.yataId.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize() + 1L)
+                .fetch();
+
+        boolean hasNext = false;
+        if (yatas.size() > pageable.getPageSize()) {
+            yatas.remove(pageable.getPageSize());
+            hasNext = true;
+        }
+        return new SliceImpl<>(yatas, pageable, hasNext);
+    }
 }
 

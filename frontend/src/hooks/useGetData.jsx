@@ -1,25 +1,13 @@
 import axios from 'axios';
+import instance from '../api/instance';
+import { toast } from 'react-toastify';
 
-const useGetData = async (url, data) => {
+const useGetData = async url => {
   try {
-    if (data) {
-      const response = await axios.get(url, data, {
-        headers: {
-          'Content-Type': 'application/json;charset=UTF-8',
-          Authorization: localStorage.getItem('ACCESS'),
-        },
-      });
-      return response;
-    }
-    const response = await axios.get(url, {
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-        Authorization: localStorage.getItem('ACCESS'),
-      },
-    });
+    const response = await instance.get(url);
     return response;
   } catch (error) {
-    return console.log(error);
+    toast.warning('유저 정보를 불러오지 못했습니다.');
   }
 };
 
