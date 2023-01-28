@@ -465,7 +465,7 @@ public class YataControllerTest extends AbstractControllerTest {
                 getResponsePreProcessor(),
                 requestHeaders(
                         headerWithName("Authorization").description("JWT 토큰")
-                ),YataSnippet.getSliceResponses()));
+                ), YataSnippet.getSliceResponses()));
 
     }
 
@@ -507,7 +507,7 @@ public class YataControllerTest extends AbstractControllerTest {
         Slice<Yata> yataSlice = new SliceImpl<>(yatas);
 
         given(yataService.findMyAcceptedYata(anyString(), any())).willReturn(yataSlice);
-        given(mapper.yataToMyYatas(yataSlice.getContent(),"test@gmail.com")).willReturn(responses);
+        given(mapper.yataToMyYatas(yataSlice.getContent(), "test@gmail.com")).willReturn(responses);
         ResultActions actions =
                 mockMvc.perform(RestDocumentationRequestBuilders.
                         get(BASE_URL + "/accept/yatas")
@@ -526,6 +526,34 @@ public class YataControllerTest extends AbstractControllerTest {
                         headerWithName("Authorization").description("JWT 토큰")
                 ), YataSnippet.getAcceptedSliceResponse()));
 
+    }
+
+    @Test
+    @DisplayName("초대하기 위한 야타 목록 조회 // 너타 목록 마감 전")
+    @WithMockUser
+    void getNeotaYatasForInvite() throws Exception {
+        List<Yata> yatas = YataFactory.createYataList();
+        List<YataDto.Response> responses = YataFactory.createYataResponseDtoList(yatas);
+
+        given(yataService.findMyYatasNotClosed(anyString())).willReturn(yatas);
+        given(mapper.yatasToYataResponses(anyList())).willReturn(responses);
+        ResultActions actions =
+                mockMvc.perform(
+                        get(BASE_URL + "/myYatas/neota/notClosed")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .headers(GeneratedToken.getMockHeaderToken())
+                                .with(csrf()));
+
+        actions.andExpect(status().isOk())
+                .andDo(print());
+
+        actions.andDo(document("yata-getNeotaYatasForInvite",
+                getRequestPreProcessor(),
+                getResponsePreProcessor(),
+                requestHeaders(
+                        headerWithName("Authorization").description("JWT 토큰")
+                ), YataSnippet.getListResponse()));
     }
 
 }
