@@ -26,6 +26,10 @@ public interface YataRequestMapper {
             response.yataRequestId(yataRequest.getYataRequestId());
         }
         response.yataId(yataRequest.getYata().getYataId());
+        response.amount(yataRequest.getYata().getAmount());
+        response.maxPeople(yataRequest.getYata().getMaxPeople());
+        response.email(yataRequest.getMember().getEmail());
+        response.nickname(yataRequest.getMember().getNickname());
         response.yataRequestStatus(yataRequest.getRequestStatus());
         response.approvalStatus(yataRequest.getApprovalStatus());
         response.title(yataRequest.getTitle());
@@ -50,6 +54,8 @@ public interface YataRequestMapper {
                 .map(yataRequest -> {
                     return YataRequestDto.RequestResponse.builder()
                             .yataId(yataRequest.getYata().getYataId())
+                            .amount(yataRequest.getYata().getAmount())
+                            .maxPeople(yataRequest.getYata().getMaxPeople())
                             .yataRequestId(yataRequest.getYataRequestId())
                             .email(yataRequest.getMember().getEmail())
                             .nickname(yataRequest.getMember().getNickname())

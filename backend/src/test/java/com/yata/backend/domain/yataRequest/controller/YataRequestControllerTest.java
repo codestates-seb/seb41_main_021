@@ -107,6 +107,8 @@ public class YataRequestControllerTest extends AbstractControllerTest {
                         responseFields(
                                 fieldWithPath("data").type(JsonFieldType.OBJECT).description("회원 정보"),
                                 fieldWithPath("data.yataId").type(JsonFieldType.NUMBER).description("야타 ID"),
+                                fieldWithPath("data.amount").type(JsonFieldType.NUMBER).description("신청하려는 게시물의 가격"),
+                                fieldWithPath("data.maxPeople").type(JsonFieldType.NUMBER).description("신청하려는 게시물의 최대 탑승 인원"),
                                 fieldWithPath("data.yataRequestId").type(JsonFieldType.NUMBER).description("야타 신청/초대 ID"),
                                 fieldWithPath("data.email").type(JsonFieldType.STRING).description("신청/초대한 회원 이메일"),
                                 fieldWithPath("data.nickname").type(JsonFieldType.STRING).description("신청/초대한 회원 닉네임"),
