@@ -79,17 +79,4 @@ public class YataRequestDto {
         private String imgUrl;
     }
 
-    @AllArgsConstructor
-    @Getter
-    @ToString
-    @Builder
-    public static class InvitationResponse {
-        private Long yataRequestId;
-        private Long yataId;
-        private String email;
-        private String nickname;
-        private YataRequest.RequestStatus yataRequestStatus;
-        private YataRequest.ApprovalStatus approvalStatus;
-        private LocalDateTime createdAt;
-    }
 }
