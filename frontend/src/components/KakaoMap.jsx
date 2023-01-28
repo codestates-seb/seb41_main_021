@@ -77,12 +77,6 @@ const KakaoMap = () => {
       const latDiff = Math.abs(parseFloat(des.destinationPoint.latitude) - parseFloat(des.departurePoint.latitude));
       const lngDiff = Math.abs(parseFloat(des.destinationPoint.longitude) - parseFloat(des.departurePoint.longitude));
       const diff = latDiff + lngDiff;
-
-      setState(prev => ({
-        ...prev,
-        level: f(diff, 0.005, 4),
-      }));
-
       setDraggable(false);
       setState(prev => ({
         ...prev,
@@ -90,6 +84,7 @@ const KakaoMap = () => {
           lat: lat, // 위도
           lng: lng, // 경도
         },
+        level: f(diff, 0.005, 4),
         isLoading: false,
       }));
     } else if (navigator.geolocation) {

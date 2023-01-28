@@ -10,7 +10,13 @@ export default function DestinationList(props) {
       <Container>
         {places.map(el => {
           return (
-            <DestinationItem key={el.id} addressName={el.address_name} placeName={el.place_name} x={el.x} y={el.y} />
+            <DestinationItem
+              key={el.id}
+              addressName={el.address_name}
+              placeName={el.place_name}
+              longitude={el.x}
+              latitude={el.y}
+            />
           );
         })}
       </Container>

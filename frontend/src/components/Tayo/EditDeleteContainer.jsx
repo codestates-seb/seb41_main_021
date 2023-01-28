@@ -3,14 +3,57 @@ import { FiEdit, FiTrash } from 'react-icons/fi';
 import { useNavigate } from 'react-router';
 import useDeleteData from '../../hooks/useDeleteData';
 
+import { useDispatch } from 'react-redux';
+
+import { tayoDataFetch } from '../../redux/slice/DataSlice';
+
+import { setAll } from '../../redux/slice/DestinationSlice';
 export default function EditDeleteContainer(props) {
   const { state, yataId, data, ableTag, disableTag } = props;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const deleteHandler = () => {
     useDeleteData(`https://server.yata.kro.kr/api/v1/yata/${yataId}`).then(() => {
       navigate(`/${state}-list`);
     });
+  };
+
+  const editHandler = () => {
+    dispatch(tayoDataFetch(`https://server.yata.kro.kr/api/v1/yata/${yataId}`))
+      .then(res => {
+        console.log(res.payload.destination);
+        dispatch(
+          setAll(
+            {
+              departure: res.payload.strPoint.address,
+              destination: res.payload.destination.address,
+              departurePoint: {
+                longitude: res.payload.strPoint.longitude,
+                latitude: res.payload.strPoint.latitude,
+                address: res.payload.strPoint.address,
+              },
+              destinationPoint: {
+                longitude: res.payload.destination.longitude,
+                latitude: res.payload.destination.latitude,
+                address: res.payload.destination.address,
+              },
+              isDeparture: true,
+              isDestination: true,
+              departureTime: res.payload.departureTime,
+              amount: res.payload.amount,
+              maxPeople: res.payload.maxPeople,
+              specifics: res.payload.specifics,
+            },
+            navigate(`/${state}-edit/${yataId}`),
+          ),
+        );
+      })
+      .then
+      // setTimeout(() => {
+
+      // }, 500),
+      ();
   };
 
   return (
@@ -19,7 +62,7 @@ export default function EditDeleteContainer(props) {
         <Tag state={data.postStatus}>{data.postStatus === 'POST_OPEN' ? ableTag : disableTag}</Tag>
       </TagContainer>
       <CRUDContainer>
-        <FiEdit onClick={() => navigate(`/${state}-edit/${yataId}`)} title="수정하기" />
+        <FiEdit onClick={editHandler} title="수정하기" />
         <FiTrash onClick={deleteHandler} title="삭제하기" />
       </CRUDContainer>
     </Container>

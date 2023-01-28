@@ -25,6 +25,7 @@ export default function TabnidaList() {
 
   useEffect(() => {
     useGetData('https://server.yata.kro.kr/api/v1/yata?yataStatus=nata').then(res => setList(res.data.data));
+    dispatch(clearAll());
   }, []);
 
   return (
