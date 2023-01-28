@@ -166,7 +166,7 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
                         fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각"),
-                        fieldWithPath("data.feulTank").type(JsonFieldType.NUMBER).description("작성자 연료통 점수"),
+                        fieldWithPath("data.fuelTank").type(JsonFieldType.NUMBER).description("작성자 연료통 점수"),
                         fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
                         fieldWithPath("data.yataMembers").type(JsonFieldType.NULL).description("예약 인원 정보(null)")
 
@@ -265,7 +265,7 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각"),
                         fieldWithPath("data.nickName").type(JsonFieldType.STRING).description("작성자 닉네임"),
                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
-                        fieldWithPath("data.feulTank").type(JsonFieldType.NUMBER).description("작성자 연료통 점수"),
+                        fieldWithPath("data.fuelTank").type(JsonFieldType.NUMBER).description("작성자 연료통 점수"),
                         fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
                         fieldWithPath("data.yataMembers").type(JsonFieldType.NULL).description("예약 인원 정보(null)")
 
@@ -391,7 +391,7 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.nickName").type(JsonFieldType.STRING).description("작성자 닉네임"),
                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
                         fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각"),
-                        fieldWithPath("data.feulTank").type(JsonFieldType.NUMBER).description("작성자 연료통 점수"),
+                        fieldWithPath("data.fuelTank").type(JsonFieldType.NUMBER).description("작성자 연료통 점수"),
                         fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약 인원"),
                         fieldWithPath("data.yataMembers").type(JsonFieldType.ARRAY).description("예약 인원 정보"),
                         fieldWithPath("data.yataMembers[].yataId").type(JsonFieldType.NUMBER).description("야타 아이디"),

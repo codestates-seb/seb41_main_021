@@ -4,7 +4,6 @@ import com.yata.backend.common.utils.RandomUtils;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.yata.dto.LocationDto;
 import com.yata.backend.domain.yata.dto.YataDto;
-import com.yata.backend.domain.yata.dto.YataMemberDto;
 import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataMember;
@@ -17,7 +16,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.yata.backend.common.utils.RandomUtils.*;
 
@@ -73,7 +71,7 @@ public class YataFactory {
                 .maxWaitingTime(yata.getMaxWaitingTime())
                 .yataStatus(yata.getYataStatus())
                 .postStatus(yata.getPostStatus())
-                .feulTank(70.0)
+                .fuelTank(70.0)
                 .yataMembers(null)
                 .reservedMemberNum(0)
                 .strPoint(new LocationDto.Response(
@@ -157,7 +155,7 @@ public class YataFactory {
         response.setMaxWaitingTime(yata.getMaxWaitingTime());
         response.setYataStatus(yata.getYataStatus());
         response.setPostStatus(yata.getPostStatus());
-        response.setFeulTank(70.0);
+        response.setFuelTank(70.0);
         response.setYataMembers(null);
         response.setReservedMemberNum(0);
         response.setStrPoint(new LocationDto.Response(
