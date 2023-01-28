@@ -2,6 +2,7 @@ package com.yata.backend.domain.yata.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yata.backend.domain.yata.entity.Yata;
+import com.yata.backend.domain.yata.entity.YataMember;
 import com.yata.backend.domain.yata.entity.YataStatus;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -105,7 +106,7 @@ public class YataDto {
     public static class Response {
         private long yataId;
         private String nickName;
-        private Double feulTank;
+        private Double fuelTank;
         @JsonFormat(shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd'T'HH:mm:ss" , timezone = "Asia/Seoul")
         private Date departureTime;
         @JsonFormat(shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd'T'HH:mm:ss" , timezone = "Asia/Seoul")
@@ -126,6 +127,24 @@ public class YataDto {
         private String email;
         private List<YataMemberDto.Response> yataMembers;
     }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class AcceptedResponse {
+        private YataDto.Response yataResponse;
+        private YataMember.GoingStatus goingStatus;
+        private boolean yataPaid;
+
+    }
+
+    //내가 야타 멤버로 참가한 야타 게시물을 가져올 때
+    //응답 값에 받을거
+    //야타 정보? 아이디, 타이틀 가격 등등..?
+    //도착여부
+    //결제여부?
 
 
 }

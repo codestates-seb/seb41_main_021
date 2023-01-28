@@ -1,4 +1,4 @@
-import useGetData from './useGetData';
+import { useGetData } from './useGetData';
 import usePostData from './usePostData';
 import usePatchData from './usePatchData';
 import { toast } from 'react-toastify';

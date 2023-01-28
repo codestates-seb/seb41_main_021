@@ -80,7 +80,7 @@ public class YataControllerTest extends AbstractControllerTest {
 
         List<YataMember> yataMembers = new ArrayList<>();
         Member member = new Member();
-        yataMembers.add(new YataMember(1L, true, 2,YataMember.GoingStatus.STARTED_YET, null, null));
+        yataMembers.add(new YataMember(1L, true, 2, YataMember.GoingStatus.STARTED_YET, null, null));
 
         member.setNickname("채은");
 
@@ -166,7 +166,7 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
                         fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각"),
-                        fieldWithPath("data.feulTank").type(JsonFieldType.NUMBER).description("작성자 연료통 점수"),
+                        fieldWithPath("data.fuelTank").type(JsonFieldType.NUMBER).description("작성자 연료통 점수"),
                         fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
                         fieldWithPath("data.yataMembers").type(JsonFieldType.NULL).description("예약 인원 정보(null)")
 
@@ -265,7 +265,7 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각"),
                         fieldWithPath("data.nickName").type(JsonFieldType.STRING).description("작성자 닉네임"),
                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
-                        fieldWithPath("data.feulTank").type(JsonFieldType.NUMBER).description("작성자 연료통 점수"),
+                        fieldWithPath("data.fuelTank").type(JsonFieldType.NUMBER).description("작성자 연료통 점수"),
                         fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약인원"),
                         fieldWithPath("data.yataMembers").type(JsonFieldType.NULL).description("예약 인원 정보(null)")
 
@@ -311,9 +311,9 @@ public class YataControllerTest extends AbstractControllerTest {
                 .andDo(document("yata-delete",
                                 getRequestPreProcessor(),
                                 getResponsePreProcessor(),
-                        requestHeaders(
-                                headerWithName("Authorization").description("JWT 토큰")
-                        ),
+                                requestHeaders(
+                                        headerWithName("Authorization").description("JWT 토큰")
+                                ),
                                 pathParameters(
                                         parameterWithName("yataId").description("야타 ID")
                                 )
@@ -333,7 +333,7 @@ public class YataControllerTest extends AbstractControllerTest {
         YataDto.Response response = createYataResponseDto(yata);
 
         YataMemberDto.Response yataMemberResponse = new YataMemberDto.Response(1L, 1L, "test1@gmail.com", "nickname",
-                true, 2,YataMember.GoingStatus.STARTED_YET, "https://avatars.githubusercontent.com/u/48292190?v=4");
+                true, 2, YataMember.GoingStatus.STARTED_YET, "https://avatars.githubusercontent.com/u/48292190?v=4");
         List<YataMemberDto.Response> yataMembers = new ArrayList<>();
         yataMembers.add(yataMemberResponse);
 
@@ -391,7 +391,7 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.nickName").type(JsonFieldType.STRING).description("작성자 닉네임"),
                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("게시글 작성 시각"),
                         fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("게시글 수정 시각"),
-                        fieldWithPath("data.feulTank").type(JsonFieldType.NUMBER).description("작성자 연료통 점수"),
+                        fieldWithPath("data.fuelTank").type(JsonFieldType.NUMBER).description("작성자 연료통 점수"),
                         fieldWithPath("data.reservedMemberNum").type(JsonFieldType.NUMBER).description("총 예약 인원"),
                         fieldWithPath("data.yataMembers").type(JsonFieldType.ARRAY).description("예약 인원 정보"),
                         fieldWithPath("data.yataMembers[].yataId").type(JsonFieldType.NUMBER).description("야타 아이디"),
@@ -403,7 +403,6 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.yataMembers[].goingStatus").type(JsonFieldType.STRING).description("가는 상태 'STARTED_YET,ARRIVED'"),
                         fieldWithPath("data.yataMembers[].imgUrl").type(JsonFieldType.STRING).description("야타 멤버 프로필 이미지")
 
-                       
 
                 )));
     }
@@ -496,7 +495,36 @@ public class YataControllerTest extends AbstractControllerTest {
                 getResponsePreProcessor(),
                 requestHeaders(
                         headerWithName("Authorization").description("JWT 토큰")
-                ),YataSnippet.getSliceResponses()));
+                ), YataSnippet.getSliceResponses()));
+    }
+
+    @Test
+    @WithMockUser(username = "test@gmail.com", roles = "USER")
+    @DisplayName("내가 카풀한 야타목록(신청 수락상태)")
+    void getMyAcceptedYata() throws Exception {
+        List<Yata> yatas = YataFactory.createYataList();
+        List<YataDto.AcceptedResponse> responses = YataFactory.createYataAcceptedResponseDtoList(yatas);
+        Slice<Yata> yataSlice = new SliceImpl<>(yatas);
+
+        given(yataService.findMyAcceptedYata(anyString(), any())).willReturn(yataSlice);
+        given(mapper.yataToMyYatas(yataSlice.getContent(),"test@gmail.com")).willReturn(responses);
+        ResultActions actions =
+                mockMvc.perform(RestDocumentationRequestBuilders.
+                        get(BASE_URL + "/accept/yatas")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .headers(GeneratedToken.getMockHeaderToken())
+                        .with(csrf()));
+
+        actions.andExpect(status().isOk())
+                .andDo(print());
+
+        actions.andDo(document("yata-getMyAccepted",
+                getRequestPreProcessor(),
+                getResponsePreProcessor(),
+                requestHeaders(
+                        headerWithName("Authorization").description("JWT 토큰")
+                ), YataSnippet.getAcceptedSliceResponse()));
 
     }
 

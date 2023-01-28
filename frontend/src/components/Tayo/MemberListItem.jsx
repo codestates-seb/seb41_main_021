@@ -3,6 +3,7 @@ import { VscAccount } from 'react-icons/vsc';
 import { useState } from 'react';
 import Button from '../common/Button';
 import { useNavigate, useParams } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 
 export default function MemberListItem(props) {
   const { state, nickname, yataMemberId } = props;
@@ -11,6 +12,12 @@ export default function MemberListItem(props) {
   const yataId = params.yataId;
 
   const [isPay, setisPay] = useState(true);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const reviewHandler = () => {
+    setSearchParams(`yataMemberId: '${yataMemberId}'`);
+    navigate(`/rating-add-passenger/${yataId}?yataMemberId=${yataMemberId}`);
+  };
 
   return (
     <Container>
@@ -18,7 +25,7 @@ export default function MemberListItem(props) {
         <VscAccount />
         <Username>{nickname}</Username>
         {isPay ? (
-          <ReviewBtn onClick={() => navigate(`/rating-add-passenger/${yataId}`)}>리뷰 남기기</ReviewBtn>
+          <ReviewBtn onClick={reviewHandler}>리뷰 남기기</ReviewBtn>
         ) : (
           <TagContainer state={state}>{state === true ? '결제 완료' : '결제 대기'}</TagContainer>
         )}

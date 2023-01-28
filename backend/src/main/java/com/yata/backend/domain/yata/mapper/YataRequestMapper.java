@@ -51,6 +51,8 @@ public interface YataRequestMapper {
                     return YataRequestDto.RequestResponse.builder()
                             .yataId(yataRequest.getYata().getYataId())
                             .yataRequestId(yataRequest.getYataRequestId())
+                            .email(yataRequest.getMember().getEmail())
+                            .nickname(yataRequest.getMember().getNickname())
                             .yataRequestStatus(yataRequest.getRequestStatus())
                             .approvalStatus(yataRequest.getApprovalStatus())
                             .title(yataRequest.getTitle())
@@ -78,6 +80,8 @@ public interface YataRequestMapper {
             response.yataRequestId(yataRequest.getYataRequestId());
         }
         response.yataId(yataRequest.getYata().getYataId());
+        response.email(yataRequest.getMember().getEmail());
+        response.nickname(yataRequest.getMember().getNickname());
         response.yataRequestStatus(yataRequest.getRequestStatus());
         response.approvalStatus(yataRequest.getApprovalStatus());
         response.createdAt(yataRequest.getCreatedAt());

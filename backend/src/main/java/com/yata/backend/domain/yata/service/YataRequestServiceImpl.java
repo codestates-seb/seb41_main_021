@@ -61,9 +61,9 @@ public class YataRequestServiceImpl implements YataRequestService {
         verifyMaxPeople(yataRequest.getBoardingPersonCount(), yata.getMaxPeople()); // 인원 수 검증
 
         // (게시물의 가격 * 타려는 인원) 만큼 해당 멤버가 포인트가 충분한지 검증
-        Long price = yata.getAmount() * yataRequest.getBoardingPersonCount();
-        Long point = member.getPoint();
-        verifyPoint(price, point);
+//        Long price = yata.getAmount() * yataRequest.getBoardingPersonCount();
+//        Long point = member.getPoint();
+//        verifyPoint(price, point);
 
         yataRequest.setYata(yata);
         yataRequest.setMember(member);

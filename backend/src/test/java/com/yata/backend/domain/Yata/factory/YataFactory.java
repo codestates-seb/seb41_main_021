@@ -4,7 +4,6 @@ import com.yata.backend.common.utils.RandomUtils;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.yata.dto.LocationDto;
 import com.yata.backend.domain.yata.dto.YataDto;
-import com.yata.backend.domain.yata.dto.YataMemberDto;
 import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataMember;
@@ -17,7 +16,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.yata.backend.common.utils.RandomUtils.*;
 
@@ -73,7 +71,7 @@ public class YataFactory {
                 .maxWaitingTime(yata.getMaxWaitingTime())
                 .yataStatus(yata.getYataStatus())
                 .postStatus(yata.getPostStatus())
-                .feulTank(70.0)
+                .fuelTank(70.0)
                 .yataMembers(null)
                 .reservedMemberNum(0)
                 .strPoint(new LocationDto.Response(
@@ -140,5 +138,47 @@ public class YataFactory {
         yata.setYataMembers(yatamembers);
         yata.setMember(member);
         return yata;
+    }
+    public static YataDto.AcceptedResponse createYataAcceptedResponseDto(Yata yata){
+        YataDto.Response response = new YataDto.Response();
+        response.setYataId(yata.getYataId());
+        response.setTitle(yata.getTitle());
+        response.setSpecifics(yata.getSpecifics());
+        response.setTimeOfArrival(yata.getTimeOfArrival());
+        response.setDepartureTime(yata.getDepartureTime());
+        response.setCreatedAt(yata.getCreatedAt());
+        response.setModifiedAt(yata.getModifiedAt());
+        response.setAmount(yata.getAmount());
+        response.setCarModel(yata.getCarModel());
+        response.setMaxPeople(yata.getMaxPeople());
+        response.setNickName(yata.getMember().getNickname());
+        response.setMaxWaitingTime(yata.getMaxWaitingTime());
+        response.setYataStatus(yata.getYataStatus());
+        response.setPostStatus(yata.getPostStatus());
+        response.setFuelTank(70.0);
+        response.setYataMembers(null);
+        response.setReservedMemberNum(0);
+        response.setStrPoint(new LocationDto.Response(
+                        yata.getStrPoint().getLocation().getX(),
+                        yata.getStrPoint().getLocation().getY(),
+                        yata.getStrPoint().getAddress()));
+        response.setDestination(new LocationDto.Response(
+                        yata.getDestination().getLocation().getX(),
+                        yata.getDestination().getLocation().getY(),
+                        yata.getDestination().getAddress()));
+        response.setEmail(RandomUtils.getRandomWord() + "@gmail.com");
+
+        return YataDto.AcceptedResponse.builder()
+                .yataResponse(response)
+                .yataPaid(true)
+                .goingStatus(YataMember.GoingStatus.STARTED_YET).build();
+    }
+
+    public static List<YataDto.AcceptedResponse> createYataAcceptedResponseDtoList(List<Yata> yataList){
+        List<YataDto.AcceptedResponse> yataAcceptedResponseDtoList = new ArrayList<>();
+        for (Yata yata : yataList) {
+            yataAcceptedResponseDtoList.add(createYataAcceptedResponseDto(yata));
+        }
+        return yataAcceptedResponseDtoList;
     }
 }

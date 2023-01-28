@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import RegisterListItem from './RegisterListItem';
 import { useState, useEffect } from 'react';
 import { dateFormat } from '../common/DateFormat';
-import useGetData from '../../hooks/useGetData';
+import { useGetData } from '../../hooks/useGetData';
 
 import { useParams } from 'react-router';
 
@@ -27,7 +27,7 @@ const RegisterListView = () => {
           <RegisterListItem
             key={el.yataId}
             date={dateFormat(el.createdAt)}
-            userInfo="이이잉"
+            userInfo={el.nickname}
             yataId={el.yataId}
             yataRequestId={el.yataRequestId}></RegisterListItem>
         );

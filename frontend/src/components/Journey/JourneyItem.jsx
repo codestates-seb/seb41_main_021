@@ -7,10 +7,10 @@ import { useNavigate, useParams } from 'react-router';
 
 const JourneyItem = props => {
   const navigate = useNavigate();
-  const params = useParams();
-  const yataId = params.yataId;
+  // const params = useParams();
+  // const yataId = params.yataId;
   // api 응답 어떻게 올지 몰라서 대충 넣어놓음
-  const { date, journeyStart, journeyEnd, transit, price, people, state, onClick, isPay } = props;
+  const { date, journeyStart, journeyEnd, price, people, state, onClick, isPay, yataId } = props;
   return (
     <>
       <Container onClick={onClick}>
@@ -25,7 +25,6 @@ const JourneyItem = props => {
               {journeyStart}
               <IoIosArrowRoundForward />
               {journeyEnd}
-              <TransitContainer>경유 {transit}회</TransitContainer>
             </JourneyText>
             {isPay ? (
               <Button onClick={() => navigate(`/rating-add-driver/${yataId}`)}>리뷰 남기기</Button>
@@ -114,11 +113,6 @@ const JourneyText = styled.span`
   }
 `;
 
-const TransitContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-left: 1rem;
-`;
 const BottomContainer = styled.div`
   display: flex;
   flex-direction: row;

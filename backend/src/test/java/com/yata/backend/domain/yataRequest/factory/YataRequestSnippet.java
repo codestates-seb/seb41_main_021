@@ -12,6 +12,8 @@ public class YataRequestSnippet {
                 fieldWithPath("data").type(JsonFieldType.ARRAY).description("신청 정보"),
                 fieldWithPath("data[].yataId").type(JsonFieldType.NUMBER).description("야타 ID"),
                 fieldWithPath("data[].yataRequestId").type(JsonFieldType.NUMBER).description("야타 신청/초대 ID"),
+                fieldWithPath("data[].email").type(JsonFieldType.STRING).description("신청/초대한 회원 이메일"),
+                fieldWithPath("data[].nickname").type(JsonFieldType.STRING).description("신청/초대한 회원 닉네임"),
                 fieldWithPath("data[].yataRequestStatus").type(JsonFieldType.STRING).description("야타 요청 종류 ( INVITE / APPLY )"),
                 fieldWithPath("data[].approvalStatus").type(JsonFieldType.STRING).description("야타 승인 상태 ( ACCEPTED / REJECTED / NOT_YET )"),
                 fieldWithPath("data[].title").type(JsonFieldType.STRING).description("야타 제목"),

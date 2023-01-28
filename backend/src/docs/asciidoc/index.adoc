@@ -368,6 +368,18 @@ include::{snippets}/yata-getMyYatas/http-response.adoc[]
 .response-fields
 include::{snippets}/yata-getMyYatas/response-fields.adoc[]
 
+=== 내가 신청한 야타 게시글 중 신청 수락된 게시글
+GET api/ve/yata/accept/yatas
+
+.http-request
+include::{snippets}/yata-getMyAccepted/http-request.adoc[]
+.request-headers
+include::{snippets}/yata-getMyAccepted/request-headers.adoc[]
+.response-body
+include::{snippets}/yata-getMyAccepted/response-body.adoc[]
+.http-response
+include::{snippets}/yata-getMyAccepted/http-response.adoc[]
+
 
 === YATA 위치 검색
 ==== 페이징 처리 예정 (현재는 해당 검색 사항 전체 반환)
