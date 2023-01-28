@@ -9,13 +9,9 @@ import com.yata.backend.domain.yata.entity.YataMember;
 import com.yata.backend.global.utils.GeometryUtils;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.ParseException;
-import org.locationtech.jts.io.WKTReader;
 import org.mapstruct.Mapper;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
@@ -82,7 +78,7 @@ public interface YataMapper {
         response.yataStatus(yata.getYataStatus());
         response.email(yata.getMember().getEmail());
         response.nickName(yata.getMember().getNickname());
-        response.feulTank(yata.getMember().getFuelTank());
+        response.fuelTank(yata.getMember().getFuelTank());
         if (yata.getYataMembers() != null) {
             response.yataMembers(yata.getYataMembers().stream()
                     .map(yataMember -> {
