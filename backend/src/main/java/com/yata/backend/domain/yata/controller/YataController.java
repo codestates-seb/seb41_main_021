@@ -90,6 +90,7 @@ public class YataController {
                 new SliceResponseDto<>(mapper.yatasToYataResponses(requests.getContent()), sliceInfo), HttpStatus.OK);
     }
 
+    // 내가 쓴 게시물 전체 조회
     @GetMapping("/myYatas")
     public ResponseEntity getMyYatas(@AuthenticationPrincipal User authMember, Pageable pageable) {
         Slice<Yata> requests = yataService.findMyYatas(authMember.getUsername(), pageable);

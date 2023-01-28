@@ -46,6 +46,8 @@ public class YataRequestDto {
     public static class RequestResponse {
         private Long yataId;
         private Long yataRequestId;
+        private String email;
+        private String nickname;
         private YataRequest.RequestStatus yataRequestStatus;
         private YataRequest.ApprovalStatus approvalStatus;
         private String title;
@@ -70,6 +72,8 @@ public class YataRequestDto {
     public static class InvitationResponse {
         private Long yataRequestId;
         private Long yataId;
+        private String email;
+        private String nickname;
         private YataRequest.RequestStatus yataRequestStatus;
         private YataRequest.ApprovalStatus approvalStatus;
         private LocalDateTime createdAt;
