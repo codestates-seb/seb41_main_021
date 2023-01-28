@@ -20,27 +20,27 @@ export default function InfoContainer(props) {
           {data.postStatus === 'YATA_OPEN' ? '신청 가능' : '신청 마감'}
         </TagContainer>
       </JourneyContainer>
-      <DateContainer>
+      <DateContainer title="출발일 및 시간">
         <BsCalendar4 />
         <p className="date-txt"> {dateFormat(data.departureTime)}</p>
       </DateContainer>
-      <PriceContainer>
+      <PriceContainer title="인당 금액">
         <BiWon />
-        <p className="price-txt">{data.amount}원</p>
+        <p className="price-txt">{data.amount.toLocaleString('ko-KR')}원</p>
       </PriceContainer>
       <AmountContainer>
         <BsPeople />
         <p className="amount-txt">{data.reservedMemberNum} 명</p>
       </AmountContainer>
       {data.yataStatus === 'YATA_NEOTA' ? (
-        <CarContainer>
+        <CarContainer title="차종">
           <AiOutlineCar />
           <p className="car-txt">XM3</p>
         </CarContainer>
       ) : (
         <></>
       )}
-      <MemoContainer>
+      <MemoContainer title="기타 사항">
         <BiCommentDetail />
         <p className="memo-txt">{data.specifics}</p>
       </MemoContainer>
