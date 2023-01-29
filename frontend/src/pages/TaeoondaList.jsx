@@ -25,6 +25,7 @@ export default function TaeoondaList() {
     useGetData('https://server.yata.kro.kr/api/v1/yata?yataStatus=neota').then(res => setList(res.data.data));
     dispatch(clearAll());
   }, []);
+
   return (
     <>
       <Header title="태웁니다" />

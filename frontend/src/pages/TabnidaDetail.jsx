@@ -19,17 +19,10 @@ export default function TabnidaDetail() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
-  const [modalData, setModalData] = useState([]);
 
   useEffect(() => {
     useGetData(`https://server.yata.kro.kr/api/v1/yata/${yataId}`).then(res => {
       setData(res.data.data, setLoading(false));
-    });
-  }, []);
-
-  useEffect(() => {
-    useGetData(`https://server.yata.kro.kr/api/v1/yata/myYatas/neota/notClosed`).then(res => {
-      setModalData(res.data.data);
     });
   }, []);
 
@@ -55,7 +48,7 @@ export default function TabnidaDetail() {
               }}>
               초대하기
             </InviteButton>
-            <Modal show={show} onClose={() => setShow(false)} data={data} modalData={modalData} />
+            <Modal show={show} onClose={() => setShow(false)} data={data} />
           </Container>
           <NavBar />
         </>
