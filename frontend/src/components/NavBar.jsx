@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { AiOutlineUser } from 'react-icons/ai';
-import { FaCarSide } from 'react-icons/fa';
+import { FaCarSide, FaRegHandshake } from 'react-icons/fa';
 import { RiSteeringLine } from 'react-icons/ri';
 import { TbHeartHandshake } from 'react-icons/tb';
-import { BsCheck2Circle } from 'react-icons/bs';
+import { BsCheck2Circle, BsHandIndex } from 'react-icons/bs';
+import { HiOutlineEnvelope } from 'react-icons/hi2';
 
 export default function Navbar() {
   return (
@@ -20,13 +21,17 @@ export default function Navbar() {
             <p>탑니다</p>
           </NavLink>
           <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/register-list">
-            <BsCheck2Circle />
-            <p>내가 받은 요청</p>
+            <TbHeartHandshake />
+            <p>내가 받은 신청</p>
           </NavLink>
-          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journey-state">
+          <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/invite-list">
+            <HiOutlineEnvelope />
+            <p>내가 받은 초대</p>
+          </NavLink>
+          {/* <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journey-state">
             <TbHeartHandshake />
             <p>확정된 여정</p>
-          </NavLink>
+          </NavLink> */}
           <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/my-page">
             <AiOutlineUser />
             <p>마이페이지</p>

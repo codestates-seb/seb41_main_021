@@ -9,12 +9,11 @@ import { useParams } from 'react-router';
 const RegisterListView = () => {
   const params = useParams();
   const yataId = params.yataId;
-
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    useGetData(`https://server.yata.kro.kr/api/v1/yata/requests/${yataId}`).then(res => {
+    useGetData(`api/v1/yata/requests/${yataId}`).then(res => {
       setList(res.data.data);
       setLoading(false);
     });
@@ -29,7 +28,8 @@ const RegisterListView = () => {
             date={dateFormat(el.createdAt)}
             userInfo={el.nickname}
             yataId={el.yataId}
-            yataRequestId={el.yataRequestId}></RegisterListItem>
+            yataRequestId={el.yataRequestId}
+            state={el.approvalStatus}></RegisterListItem>
         );
       })}
     </RegisterBlock>

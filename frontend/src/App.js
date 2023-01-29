@@ -30,6 +30,7 @@ import Purchase from './pages/Purchase';
 import Request from './pages/Request';
 import JourneyState from './pages/JourneyState';
 import MyRegisterHistory from './pages/MyRegisterHistory';
+import InviteList from './pages/InviteList';
 
 import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
@@ -92,6 +93,7 @@ function App() {
               <Route path="/request" element={<Request />}></Route>
               <Route path="/journey-state" element={<JourneyState />}></Route>
               <Route path="/my-register-history" element={<MyRegisterHistory />}></Route>
+              <Route path="/invite-list" element={<InviteList />}></Route>
             </Routes>
             <ToastContainer position="top-center" />
           </Screen>

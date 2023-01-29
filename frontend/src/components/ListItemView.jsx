@@ -6,8 +6,6 @@ import { useState, useEffect } from 'react';
 const ListItemView = props => {
   const { list, children } = props;
 
-  useEffect(() => {}, []);
-
   return (
     <>
       <Container>
