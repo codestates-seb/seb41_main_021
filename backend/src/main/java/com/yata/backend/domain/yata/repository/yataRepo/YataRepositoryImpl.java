@@ -1,5 +1,6 @@
 package com.yata.backend.domain.yata.repository.yataRepo;
 
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.yata.entity.*;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.Date;
 import java.util.List;
 
@@ -30,21 +32,29 @@ public class YataRepositoryImpl implements YataRepository {
     }
 
     @Override
-    public Slice<Yata> findYataByStartAndEndLocation(Location startLocation, Location endLocation, double distance, Pageable pageable) {
-        // MBR
-        Geometry startMBR = GeometryUtils.getMBR(startLocation.getLocation(), distance / 100);
-        Geometry endMBR = GeometryUtils.getMBR(endLocation.getLocation(), distance / 100);
+    public Slice<Yata> findYataByStartAndEndLocation(Location startLocation, Location endLocation, double distance,YataStatus yataStatus, Pageable pageable) {
+
         // QueryDsl
-        List<Yata> yatas = queryFactory.selectFrom(yata)
+        JPAQuery<Yata> query = queryFactory.selectFrom(yata)
                 .join(yata.member).fetchJoin()
                 .join(yata.strPoint).fetchJoin()
                 .join(yata.destination).fetchJoin()
                 .leftJoin(yata.yataMembers, yataMember).fetchJoin()
-                .where(yata.strPoint.location.intersects(startMBR)
-                        .and(yata.destination.location.intersects(endMBR)))
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
+                .limit(pageable.getPageSize());
+        // MBR
+        if(startLocation.getLocation().getX() != 0 && startLocation.getLocation().getY() != 0) {
+            Geometry startMBR = GeometryUtils.getMBR(startLocation.getLocation(), distance / 100);
+            query.where(yata.strPoint.location.intersects(startMBR));
+        }
+        if(endLocation.getLocation().getX() != 0 && endLocation.getLocation().getY() != 0) {
+            Geometry endMBR = GeometryUtils.getMBR(endLocation.getLocation(), distance / 100);
+            query.where(yata.destination.location.intersects(endMBR));
+        }
+        if(yataStatus != null){
+            query.where(yata.yataStatus.eq(yataStatus));
+        }
+        List<Yata> yatas = query.fetch();
         boolean hasNext = false;
         if (yatas.size() > pageable.getPageSize()) {
             yatas.remove(pageable.getPageSize());
@@ -53,6 +63,8 @@ public class YataRepositoryImpl implements YataRepository {
         return new SliceImpl<>(yatas, pageable, hasNext);
 
     }
+
+
 
     @Override
     @Transactional
@@ -142,13 +154,14 @@ public class YataRepositoryImpl implements YataRepository {
                 .fetch();
     }
 
+
     @Override
     public Slice<Yata> findAllByMember_Email(String userName, Pageable pageable) {
         List<Yata> yatas = queryFactory.selectFrom(yata)
                 .join(yata.member).fetchJoin()
                 .join(yata.strPoint).fetchJoin()
                 .join(yata.destination).fetchJoin()
-                .leftJoin(yata.yataMembers , yataMember).fetchJoin()
+                .leftJoin(yata.yataMembers, yataMember).fetchJoin()
                 .where(yata.member.email.eq(userName)) // 해당 게시물의 멤버가 userName 과 같은 애들 중에
                 .orderBy(yata.yataId.desc())
                 .offset(pageable.getOffset())

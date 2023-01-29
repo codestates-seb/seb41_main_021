@@ -326,7 +326,7 @@ include::{snippets}/yata-get/response-fields.adoc[]
 
 
 === 게시글 전체조회
-
+==== 삭제 예정
 GET /api/v1/yata?yataStatus=nata/neota
 
 .http-request
@@ -382,10 +382,19 @@ include::{snippets}/yata-getMyAccepted/http-response.adoc[]
 
 
 === YATA 위치 검색
-==== 페이징 처리 예정 (현재는 해당 검색 사항 전체 반환)
 
 
-GET /api/v1/yata/search/location?startLon=126.972533&startLat=37.55315&startAddress=서울시 노원구 77&endLon=126.929573&endLat=37.484216&endAddress=도착지주소&distance=1000
+
+GET /api/v1/yata/search/location?startLon=126.972533&startLat=37.55315&startAddress=서울시 노원구 77&endLon=126.929573&endLat=37.484216&endAddress=도착지주소&distance=10&yataStatus=YATA_NEOTA
+
+YATASTATUS = YATA_NATA, YATA_NEOTA
+YATASTATUS == null 이면 구분 없이 전체검색
+
+distance = km 단위
+distance 만 주고 아무것도 안주면 일반 전체 검색... 이 되네요
+
+
+통합 하면 좋을 것 같아요!
 
 .http-request
 include::{snippets}/yata/get-location/http-request.adoc[]
