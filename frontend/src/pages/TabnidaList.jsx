@@ -16,28 +16,73 @@ export default function TabnidaList() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [list, setList] = useState([]);
+  const [target, setTarget] = useState(null);
+  const [page, setPage] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [hasNext, setHasNext] = useState(false);
 
+  const fetch = () => {
+    useGetData(
+      `https://server.yata.kro.kr/api/v1/yata/search/location?distance=1&yataStatus=YATA_NATA&page=${page}&size=20`,
+    ).then(res => {
+      setList(prev => prev.concat(res.data.data));
+      setPage(prev => prev + 1);
+      setHasNext(res.data.sliceInfo.hasNext);
+      setLoading(false);
+    });
+  };
   const add = () => {
     setOpen(!open);
     navigate('/tabnida-add');
   };
 
+  const temp = () => {
+    console.log(page);
+    console.log(list);
+    console.log(hasNext);
+  };
+
   useEffect(() => {
-    useGetData('https://server.yata.kro.kr/api/v1/yata?yataStatus=nata').then(res => setList(res.data.data));
+    fetch();
     dispatch(clearAll());
   }, []);
 
+  useEffect(() => {
+    let observer;
+    if (target) {
+      const onIntersect = async ([entry], observer) => {
+        if (entry.isIntersecting) {
+          observer.unobserve(entry.target);
+          fetch();
+          console.log('관측');
+          setTimeout(() => {
+            observer.observe(entry.target);
+          }, 1000);
+        }
+      };
+      observer = new IntersectionObserver(onIntersect, { threshold: 1 });
+      observer.observe(target);
+    }
+    return () => observer && observer.disconnect();
+  }, [target]);
+
   return (
     <>
-      <Header title="탑니다" />
-      <Container>
-        <DestinationInput />
-        <ListItemView list={list} />
-        <CircleButton onClick={add} open={open}>
-          <MdAdd />
-        </CircleButton>
-      </Container>
-      <Navbar />
+      {loading || (
+        <>
+          <Header title="탑니다" />
+          <Container onClick={temp}>
+            <DestinationInput />
+            <ListItemView list={list}>
+              <div ref={setTarget}></div>
+            </ListItemView>
+            <CircleButton onClick={add} open={open}>
+              <MdAdd />
+            </CircleButton>
+          </Container>
+          <Navbar />
+        </>
+      )}
     </>
   );
 }

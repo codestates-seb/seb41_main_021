@@ -22,7 +22,6 @@ export default function EditDeleteContainer(props) {
   const editHandler = () => {
     dispatch(tayoDataFetch(`https://server.yata.kro.kr/api/v1/yata/${yataId}`))
       .then(res => {
-        console.log(res.payload.destination);
         dispatch(
           setAll(
             {
