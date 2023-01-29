@@ -117,7 +117,7 @@ public class YataRequestServiceImpl implements YataRequestService {
 
     }
 
-    // Yata 신청 목록 조회 - by driver
+    // Yata 신청/초대 목록 조회
     @Override
     public Slice<YataRequest> findRequestsByYataOwner(String userEmail, Long yataId, Pageable pageable) {
         Yata yata = yataService.findYata(yataId);
@@ -129,7 +129,7 @@ public class YataRequestServiceImpl implements YataRequestService {
         return jpaYataRequestRepository.findAllByYata(yata, pageable);
     }
 
-    // 자기가 한 신청 목록 조회 - by Passenger
+    // 자기가 한 신청/초대 목록 조회
     @Override
     public Slice<YataRequest> findRequestsByRequester(String userEmail, Pageable pageable) {
 
