@@ -61,10 +61,8 @@ public class YataMemberServiceImpl implements YataMemberService {
 
     public void validateRequest(Long yataRequestId, Long yataId, Yata yata, YataRequest yataRequest) {
         yataRequestService.verifyAppliedRequest(yata, yataRequestId);
-
         // 게시물의 출발 시간이 현재 시간을 지났으면 승인 불가
         TimeCheckUtils.verifyTime(yata.getDepartureTime().getTime(), System.currentTimeMillis());
-
         // 승인 한 번 하면 다시 못하도록
         if (yataRequest.getApprovalStatus().equals(YataRequest.ApprovalStatus.ACCEPTED))
             throw new CustomLogicException(ExceptionCode.ALREADY_APPROVED);
@@ -77,6 +75,11 @@ public class YataMemberServiceImpl implements YataMemberService {
         if (yata.getMaxPeople() < sum + yataRequest.getBoardingPersonCount()) {
             throw new CustomLogicException(ExceptionCode.CANNOT_APPROVE);
         }
+        // 포인트 충분한 애만 승인 가능 초대 수락이든 신청 수락이든
+        Long price = yata.getAmount() * yataRequest.getBoardingPersonCount();
+        Long point = yataRequest.getMember().getPoint();
+        yataRequestService.verifyPoint(price,point);
+
     }
 
     public void saveYataMember(YataRequest yataRequest) {

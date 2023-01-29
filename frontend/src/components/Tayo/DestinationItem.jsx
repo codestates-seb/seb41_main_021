@@ -5,12 +5,16 @@ import { useNavigate } from 'react-router-dom';
 export default function DestinationItem(props) {
   const navigate = useNavigate();
   // address_name // id // x // y //place_name
-  const { addressName, placeName, x, y } = props;
+  const { addressName, placeName, longitude, latitude } = props;
 
   return (
     <>
       <Container
-        onClick={() => navigate(`/destination-detail?address=${addressName}&place=${placeName}&x=${x}&y=${y}`)}>
+        onClick={() =>
+          navigate(
+            `/destination-detail?address=${addressName}&place=${placeName}&longitude=${longitude}&latitude=${latitude}`,
+          )
+        }>
         <div className="place-container">
           <h2 className="place-name">{placeName}</h2>
           <div className="place-address">{addressName}</div>

@@ -70,6 +70,7 @@ class YataInviteControllerTest extends AbstractControllerTest {
         YataRequestDto.InvitePost requestBody = YataRequestDto.InvitePost.builder()
                 .inviteEmail("test1@gmail.com")
                 .yataId(1L)
+                .invitedYataId(2L)
                 .build();
         Member member = MemberFactory.createMember("YataOwner@gmail.com");
         Yata yata = YataFactory.createYataInMember(member);
@@ -113,7 +114,8 @@ class YataInviteControllerTest extends AbstractControllerTest {
                         ),
                         requestFields(
                                 fieldWithPath("inviteEmail").type(JsonFieldType.STRING).description("초대할 유저 이메일"),
-                                fieldWithPath("yataId").type(JsonFieldType.NUMBER).description("초대할 야타 게시물")
+                                fieldWithPath("yataId").type(JsonFieldType.NUMBER).description("초대할 야타 게시물"),
+                                fieldWithPath("invitedYataId").type(JsonFieldType.NUMBER).description("초대받을 야타 게시물")
 
                         ),
                         responseFields(
