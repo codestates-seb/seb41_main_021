@@ -86,7 +86,10 @@ public class YataRequestServiceImpl implements YataRequestService {
         Yata yata = yataService.findYata(invitationRequestDto.getYataId());
         Yata invitedYata = yataService.findYata(invitationRequestDto.getInvitedYataId());
         yataService.equalMember(yataOwner.getEmail(), yata.getMember().getEmail()); // 게시글을 쓴 멤버만 초대 가능하도록
-
+        yataService.equalMember(invitedYata.getMember().getEmail(), invitedMember.getEmail()); // 초대할 게시글의 멤버와 초대할 멤버가 같아야함
+        if (invitedYata.getYataStatus().equals(YataStatus.YATA_NEOTA)) {
+            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT); // 초대할 게시물이 너타면 안댐
+        }
         // 초대 시간과 게시글의 출발 시간 비교 --> 게시물의 출발시간이 이미 지난 경우(마감인 경우) 익셉션
         TimeCheckUtils.verifyTime(yata.getDepartureTime().getTime(), System.currentTimeMillis());
         YataStatus yataStatus = yata.getYataStatus();
