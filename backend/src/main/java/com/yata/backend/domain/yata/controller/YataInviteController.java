@@ -38,8 +38,7 @@ public class YataInviteController {
                                          @AuthenticationPrincipal User authMember) throws Exception {
         YataRequest yataRequest = yataRequestService.createInvitation(
                 authMember.getUsername(),
-                requestBody.getInviteEmail(),
-                requestBody.getYataId()
+                requestBody
         );
         return new ResponseEntity<>(
                 new SingleResponse<>(mapper.yataRequestToYataRequestResponse(yataRequest)), HttpStatus.CREATED);

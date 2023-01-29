@@ -79,8 +79,9 @@ public class SecurityConfig {
                                 // yata
                                 .antMatchers("/api/v1/yata/apply/**").authenticated()
                                 .antMatchers(HttpMethod.GET, "/api/v1/yata/*/accept/yataRequests").authenticated()
-                                .antMatchers(HttpMethod.GET, "/api/v1/yata/requests/*").authenticated()
-                                .antMatchers(HttpMethod.GET, "/api/v1/yata/myYatas/*").authenticated()
+                                .antMatchers(HttpMethod.GET, "/api/v1/yata/requests/**").authenticated()
+                                .antMatchers(HttpMethod.GET, "/api/v1/yata/myYatas/**").authenticated()
+                                .antMatchers(HttpMethod.GET, "/api/v1/yata/accept/**").authenticated()
                                 .antMatchers("/api/v1/yata/invite/**").authenticated()
                                 .antMatchers(HttpMethod.GET, "/api/v1/yata/**").permitAll()
                                 .antMatchers("/api/v1/yata/**").authenticated()

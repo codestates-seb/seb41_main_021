@@ -49,6 +49,8 @@ public class YataRequestDto {
         private String inviteEmail;
         @NotNull(message = "초대할 야타 게시물을 입력 해주세요")
         private Long yataId;
+
+        private Long invitedYataId;
     }
 
     @AllArgsConstructor
