@@ -11,7 +11,7 @@ import java.util.List;
 
 
 public interface YataRepository {
-    Slice<Yata> findYataByStartAndEndLocation(Location startLocation, Location endLocation, double distance , Pageable pageable);
+    Slice<Yata> findYataByStartAndEndLocation(Location startLocation, Location endLocation, double distance,YataStatus yataStatus , Pageable pageable);
     void updateYataOverDepartureTime();
     Slice<Yata> findAllByYataStatusIs(YataStatus yataStatus, Pageable pageable);
     Slice<Yata> findAllByMemberAndYata_YataMembersIsNotNull(Pageable pageable, Member member);
@@ -19,4 +19,6 @@ public interface YataRepository {
     Slice<Yata> findAllByYata_YataMember_Member(Pageable pageable, Member member);
 
     List<Yata> findAllByMember_EmailAndYataStatusIsNot(String username, Yata.PostStatus postOpen);
+
+
 }

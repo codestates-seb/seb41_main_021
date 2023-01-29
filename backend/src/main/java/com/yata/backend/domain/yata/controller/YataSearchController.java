@@ -2,6 +2,7 @@ package com.yata.backend.domain.yata.controller;
 
 import com.yata.backend.domain.yata.dto.LocationDto;
 import com.yata.backend.domain.yata.entity.Yata;
+import com.yata.backend.domain.yata.entity.YataStatus;
 import com.yata.backend.domain.yata.mapper.YataMapper;
 import com.yata.backend.domain.yata.service.YataSearchService;
 import com.yata.backend.global.response.SliceInfo;
@@ -31,23 +32,33 @@ public class YataSearchController {
         this.yataSearchService = yataSearchService;
         this.mapper = mapper;
     }
-
+    // TODO 어떻게 코드 이쁘게 짜지?
 
     @GetMapping("/location")
-    public ResponseEntity getLocation(@RequestParam double startLon,
-                                      @RequestParam double startLat,
-                                      @RequestParam String startAddress,
-                                      @RequestParam double endLon,
-                                      @RequestParam double endLat,
-                                      @RequestParam String endAddress,
+    public ResponseEntity getLocation(@RequestParam(required = false) Double startLon,
+                                      @RequestParam(required = false) Double startLat,
+                                      @RequestParam(required = false) String startAddress,
+                                      @RequestParam(required = false) Double endLon,
+                                      @RequestParam(required = false) Double endLat,
+                                      @RequestParam(required = false) String endAddress,
                                       @RequestParam double distance,
+                                      @RequestParam(required = false) String yataStatus,
                                       @PageableDefault Pageable pageable) throws ParseException {
-        LocationDto.Post startLocationDto = LocationDto.Post.of(startLon, startLat, startAddress);
-        LocationDto.Post endLocationDto = LocationDto.Post.of(endLon, endLat, endAddress);
+        LocationDto.Post startLocationDto = LocationDto.Post.of(
+                startLon == null ? 0 : startLon,
+                startLat == null ? 0 : startLat,
+                startAddress == null ? "" : startAddress
+        );
+        LocationDto.Post endLocationDto = LocationDto.Post.of(
+                endLon == null ? 0 : endLon,
+                endLat == null ? 0 : endLat,
+                endAddress == null ? "" : endAddress
+        );
         Slice<Yata> yataList = yataSearchService.findYataByLocation(
                 mapper.postToLocation(startLocationDto),
                 mapper.postToLocation(endLocationDto),
                 distance,
+                yataStatus == null ? null : YataStatus.valueOf(yataStatus),
                 pageable
         );
         //mapper.yatasToYataResponses(yataList)

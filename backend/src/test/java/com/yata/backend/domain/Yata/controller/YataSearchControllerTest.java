@@ -8,6 +8,7 @@ import com.yata.backend.domain.yata.controller.YataSearchController;
 import com.yata.backend.domain.yata.dto.YataDto;
 import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.Yata;
+import com.yata.backend.domain.yata.entity.YataStatus;
 import com.yata.backend.domain.yata.mapper.YataMapper;
 import com.yata.backend.domain.yata.service.YataSearchService;
 import org.junit.jupiter.api.Test;
@@ -58,11 +59,12 @@ class YataSearchControllerTest extends AbstractControllerTest {
                 .append("distance=").append("1").append("&")
                 .append("page=").append("0").append("&")
                 .append("size=").append("10").append("&")
+                .append("yataStatus=").append(YataStatus.YATA_NATA).append("&")
                 .append("sort=").append("yataId,desc");
         List<Yata> yataList = YataFactory.createYataList();
         List<YataDto.Response> responseList = YataFactory.createYataResponseDtoList(yataList);
         Slice<Yata> yataSlice = new SliceImpl<>(yataList , PageRequest.of(0, 10), true);
-        given(yataSearchService.findYataByLocation(any(), any(), anyDouble(), any())).willReturn(yataSlice);
+        given(yataSearchService.findYataByLocation(any(), any(), anyDouble(), any(),any())).willReturn(yataSlice);
         given(mapper.yatasToYataResponses(yataList)).willReturn(responseList);
         given(mapper.postToLocation(any())).willReturn(new Location());
         // when
@@ -86,6 +88,7 @@ class YataSearchControllerTest extends AbstractControllerTest {
                                 parameterWithName("page").description("페이지"),
                                 parameterWithName("size").description("사이즈"),
                                 parameterWithName("sort").description("정렬"),
+                                parameterWithName("yataStatus").description("야타 상태 (YATA_NATA, YATA_NEOTA"),
                                 parameterWithName("_csrf").description("무시 : csrf 토큰")
                         ),
                         YataSnippet.getSliceResponses()
