@@ -2,6 +2,7 @@ package com.yata.backend.domain.yata.service;
 
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.service.MemberService;
+import com.yata.backend.domain.yata.dto.YataRequestDto;
 import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataRequest;
@@ -76,13 +77,14 @@ public class YataRequestServiceImpl implements YataRequestService {
 
     // Yata 초대
     @Override
-    public YataRequest createInvitation(String userName, String invitedUser, Long yataId) {
+    public YataRequest createInvitation(String userName, YataRequestDto.InvitePost invitationRequestDto) {
         Member yataOwner = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
-        Member invitedMember = memberService.findMember(invitedUser); // 초대할 멤버가 있는지 확인하고
+        Member invitedMember = memberService.findMember(invitationRequestDto.getInviteEmail()); // 초대할 멤버가 있는지 확인하고
         // TODO verify 조작
-        verifyInvitation(userName, yataId); // 신청 목록에 있는 애인지 확인하고 (초대한 애가 아닌지 확인하고)
-        // 초대 할려는 게시물이 있는지 확인
-        Yata yata = yataService.findYata(yataId);
+        verifyInvitation(userName, invitationRequestDto.getYataId()); // 신청 목록에 있는 애인지 확인하고 (초대한 애가 아닌지 확인하고)
+        // 내가 초대 할려는 게시물이 있는지 확인
+        Yata yata = yataService.findYata(invitationRequestDto.getYataId());
+        Yata invitedYata = yataService.findYata(invitationRequestDto.getInvitedYataId());
         yataService.equalMember(yataOwner.getEmail(), yata.getMember().getEmail()); // 게시글을 쓴 멤버만 초대 가능하도록
 
         // 초대 시간과 게시글의 출발 시간 비교 --> 게시물의 출발시간이 이미 지난 경우(마감인 경우) 익셉션
@@ -98,10 +100,10 @@ public class YataRequestServiceImpl implements YataRequestService {
                 .member(invitedMember) // 초대 받는 사람
                 .timeOfArrival(yata.getTimeOfArrival())
                 .departureTime(yata.getDepartureTime())
-                .boardingPersonCount(1)
-                .maxWaitingTime(0)
-                .specifics("")
-                .title("")
+                .boardingPersonCount(invitedYata.getMaxPeople())
+                .maxWaitingTime(invitedYata.getMaxWaitingTime())
+                .specifics(invitedYata.getSpecifics())
+                .title(invitedYata.getTitle())
                 .build();
 
         return jpaYataRequestRepository.save(yataRequest);
