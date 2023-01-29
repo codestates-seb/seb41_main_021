@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import KakaoMap from '../components/KakaoMap';
 import Header from '../components/Header';
 import DestinationForm from '../components/Tayo/DestinationForm';
-import TabnidaDesForm from '../components/Tayo/TabnidaDesForm';
+import DestinationInputForm from '../components/Tayo/DestinationInputForm';
 
 import { useSelector } from 'react-redux';
 
@@ -54,7 +54,7 @@ export default function TabnidaEdit() {
           <KakaoMap />
         </div>
         <DestinationForm>
-          <TabnidaDesForm submit={editTabnida} />
+          <DestinationInputForm submit={editTabnida} />
         </DestinationForm>
       </Container>
     </>

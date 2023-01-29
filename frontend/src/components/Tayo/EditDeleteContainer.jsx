@@ -44,6 +44,7 @@ export default function EditDeleteContainer(props) {
               amount: res.payload.amount,
               maxPeople: res.payload.maxPeople,
               specifics: res.payload.specifics,
+              carModel: res.payload.carModel,
             },
             navigate(`/${state}-edit/${yataId}`),
           ),

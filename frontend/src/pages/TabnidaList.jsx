@@ -19,7 +19,6 @@ export default function TabnidaList() {
 
   const add = () => {
     setOpen(!open);
-    dispatch(clearAll());
     navigate('/tabnida-add');
   };
 

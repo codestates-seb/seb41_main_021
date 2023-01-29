@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import KakaoMap from '../components/KakaoMap';
 import Header from '../components/Header';
 import DestinationForm from '../components/Tayo/DestinationForm';
-import TabnidaDesForm from '../components/Tayo/TabnidaDesForm';
+import DestinationInputForm from '../components/Tayo/DestinationInputForm';
 
 import { useTayoCreate } from '../hooks/useTayo';
 import { useNavigate } from 'react-router-dom';
@@ -51,7 +51,7 @@ export default function TabnidaAdd() {
           <KakaoMap />
         </div>
         <DestinationForm>
-          <TabnidaDesForm submit={createTabnida} />
+          <DestinationInputForm submit={createTabnida} />
         </DestinationForm>
       </Container>
     </>
