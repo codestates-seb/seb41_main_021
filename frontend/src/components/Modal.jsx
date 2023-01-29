@@ -1,39 +1,24 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useTayoInvite } from '../hooks/useTayo';
 import Button from './common/Button';
 import { FiX } from 'react-icons/fi';
-import { dateFormat } from './common/DateFormat';
+import ModalItem from './ModalItem';
+import { useGetData } from '../hooks/useGetData';
 
 const Modal = props => {
-  const { data, modalData } = props;
+  const { data } = props;
 
-  const requestHandler = () => {
-    const newData = {
-      inviteEmail: data.email,
-      yataId: data.yataId,
-    };
+  const [modalData, setModalData] = useState([]);
 
-    useTayoInvite(`https://server.yata.kro.kr/api/v1/yata/invite`, newData).then(res => {
-      console.log(newData);
-      console.log(res);
+  useEffect(() => {
+    useGetData(`https://server.yata.kro.kr/api/v1/yata/myYatas/neota/notClosed`).then(res => {
+      setModalData(res.data.data);
     });
-  };
+  }, []);
 
   if (!props.show) {
     return null;
   }
-
-  const shortWords = (str, length = 19) => {
-    let result = '';
-    if (str.length > length) {
-      result = str.substr(0, length) + '...';
-    } else {
-      result = str;
-    }
-    return result;
-  };
-
   return (
     <>
       <ModalContainer onClick={props.onClose}>
@@ -44,21 +29,17 @@ const Modal = props => {
           </ModalHeader>
           {modalData.map(el => {
             return (
-              <>
-                <ModalBody key={el.yataId}>
-                  <InfoContainer>
-                    <JourneyContainer>
-                      <div>출발지: {shortWords(el.strPoint.address)}</div>
-                      <div>도착지: {shortWords(el.destination.address)}</div>
-                    </JourneyContainer>
-                    <PeopleContainer>
-                      인원: {el.reservedMemberNum} / {el.maxPeople}
-                    </PeopleContainer>
-                    <DateContainer>시간: {dateFormat(el.departureTime)}</DateContainer>
-                  </InfoContainer>
-                  <InviteBtn onClick={requestHandler}>선택하기</InviteBtn>
-                </ModalBody>
-              </>
+              <ModalItem
+                key={data.yataId}
+                yataId={el.yataId}
+                invitedYataId={data.yataId}
+                inviteEmail={data.email}
+                strPoint={el.strPoint.address}
+                destination={el.destination.address}
+                resNum={el.reservedMemberNum}
+                maxPeople={el.maxPeople}
+                departureTime={el.departureTime}
+              />
             );
           })}
         </ModalContent>
@@ -86,6 +67,8 @@ const ModalContent = styled.div`
   border-radius: 1rem;
   opacity: 100%;
   box-shadow: 0px 0px 1px gray;
+  overflow: scroll;
+
   @media only screen and (min-width: 800px) {
     width: 430px;
     height: 790px;
@@ -111,38 +94,6 @@ const ModalHeader = styled.div`
 
 const ModalTitle = styled.h1`
   font-size: 1.2rem;
-`;
-
-const ModalBody = styled.div`
-  padding: 10px;
-  border-bottom: 1px solid #dddddd;
-  display: flex;
-  align-items: center;
-`;
-
-const InfoContainer = styled.div`
-  width: 80%;
-`;
-
-const InviteBtn = styled(Button)`
-  height: 2.5rem;
-`;
-
-const JourneyContainer = styled.div`
-  margin-bottom: 0.5rem;
-  div {
-    font-weight: bold;
-    font-size: 1.2rem;
-    padding: 0.3rem;
-  }
-`;
-
-const PeopleContainer = styled.div`
-  padding: 0.1rem 0 0.5rem 0.3rem;
-`;
-
-const DateContainer = styled.div`
-  padding-left: 0.3rem;
 `;
 
 export default Modal;

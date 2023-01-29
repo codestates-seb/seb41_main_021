@@ -62,7 +62,7 @@ export default function MyPage() {
                   {info.email}
                 </div>
               </Info>
-              {info.roles[1] === 'DRIVER' ? (
+              {info.roles.includes('DRIVER') ? (
                 <CompleteAuth>운전자 인증</CompleteAuth>
               ) : (
                 <UncompleteAuth>운전자 미인증</UncompleteAuth>
@@ -105,22 +105,13 @@ export default function MyPage() {
           </PointContainer>
           <ListContainer>
             <List>
-              <ListTitle>포인트 관리</ListTitle>
-              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/point-history">
-                <JourneyRecord>
-                  <div className="title">충전 내역</div>
-                  <IoIosArrowForward />
-                </JourneyRecord>
-              </NavLink>
-              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/exchange-page">
-                <JourneyRecord>
-                  <div className="title">환전하기</div>
-                  <IoIosArrowForward />
-                </JourneyRecord>
-              </NavLink>
-            </List>
-            <List>
               <ListTitle>탑니다/태웁니다 관리</ListTitle>
+              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journey-state">
+                <JourneyRecord>
+                  <div className="title">확정된 여정</div>
+                  <IoIosArrowForward />
+                </JourneyRecord>
+              </NavLink>
               <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journey-history">
                 <JourneyRecord>
                   <div className="title">내가 작성한 글</div>
@@ -140,6 +131,22 @@ export default function MyPage() {
                 </JourneyRecord>
               </NavLink>
             </List>
+            <List>
+              <ListTitle>포인트 관리</ListTitle>
+              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/point-history">
+                <JourneyRecord>
+                  <div className="title">충전 내역</div>
+                  <IoIosArrowForward />
+                </JourneyRecord>
+              </NavLink>
+              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/exchange-page">
+                <JourneyRecord>
+                  <div className="title">환전하기</div>
+                  <IoIosArrowForward />
+                </JourneyRecord>
+              </NavLink>
+            </List>
+
             <List>
               <ListTitle>일반</ListTitle>
               {info.roles.indexOf('DRIVER') === -1 && (

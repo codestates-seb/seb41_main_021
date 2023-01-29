@@ -2,36 +2,39 @@ import styled from 'styled-components';
 import MemberListItem from './MemberListItem';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import useGetData from '../../hooks/useGetData';
+import { useGetData } from '../../hooks/useGetData';
 
-export default function MemberContainer(props) {
+export default function MemberContainer({ data }) {
+  const [newdata, setnewData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const { data } = props;
+  useEffect(() => {
+    useGetData(`api/v1/yata/${data.yataId}/accept/yataRequests`).then(res =>
+      setnewData(res.data.data, setLoading(false)),
+    );
+  }, []);
 
   return (
     <>
       <ContentContainer>
-        <h2>
-          확정된 탑승자 {data.reservedMemberNum}/{data.maxPeople}
-        </h2>
-        {data.reservedMemberNum === 0 ? (
+        <h2>확정된 탑승자</h2>
+        {newdata.length === 0 ? (
           <div className="current-member">현재 확정된 탑승자가 없습니다.</div>
         ) : (
-          data.yataMembers.map(el => {
+          newdata.map(el => {
             return (
               <MemberListItem
                 key={el.yataId}
                 yataId={el.yataId}
                 yataMemberId={el.yataMemberId}
                 email={el.email}
-                nickname={el.nickname}
+                nickname={el.nickName}
                 state={el.yataPaid}
               />
             );
           })
         )}
       </ContentContainer>
-
     </>
   );
 }

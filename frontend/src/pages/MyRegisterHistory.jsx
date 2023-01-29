@@ -16,7 +16,6 @@ export default function MyRegisterHistory() {
   return (
     <>
       <Header title="나의 신청/초대 내역" />
-      {console.log(list)}
       {list.length !== 0 ? (
         <Container>
           <ListItemView list={list} />

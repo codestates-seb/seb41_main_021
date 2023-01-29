@@ -39,15 +39,27 @@ export default function DestinationInputForm({ submit, taeoonda }) {
         {/* 이 부분 컴포넌트 화 해서 태웁니다랑 구분, useTayoCreate, useTayoEdit 구분 */}
         <Input label="출발 일시" type="datetime-local" state={des.departureTime} onChange={departureTimeHan} />
         <Input label="인당 금액" type="number" placeholder="인당 금액 입력" state={des.amount} onChange={amountHan} />
-        <Input
-          label="탑승 인원"
-          type="number"
-          min="1"
-          max="10"
-          placeholder="1"
-          state={des.maxPeople}
-          onChange={maxPeopleHan}
-        />
+        {taeoonda ? (
+          <Input
+            label="탑승가능 인원"
+            type="number"
+            min="1"
+            max="10"
+            placeholder="1"
+            state={des.maxPeople}
+            onChange={maxPeopleHan}
+          />
+        ) : (
+          <Input
+            label="탑승 인원"
+            type="number"
+            min="1"
+            max="10"
+            placeholder="1"
+            state={des.maxPeople}
+            onChange={maxPeopleHan}
+          />
+        )}
         {taeoonda && (
           <Input
             label="차종"
