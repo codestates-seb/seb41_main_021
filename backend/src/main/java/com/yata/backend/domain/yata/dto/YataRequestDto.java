@@ -46,10 +46,11 @@ public class YataRequestDto {
     public static class InvitePost{
         // email pattern
         @Pattern(regexp = "^[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]+$", message = "이메일 형식이 아닙니다.")
+        @NotNull(message = "초대할 유저의 이메일을 입력해주세요.")
         private String inviteEmail;
-        @NotNull(message = "초대할 야타 게시물을 입력 해주세요")
+        @NotNull(message = "초대할 나의 너타 게시물을 입력 해주세요")
         private Long yataId;
-
+        @NotNull(message = "초대할 나타 게시물을 입력해주세요")
         private Long invitedYataId;
     }
 

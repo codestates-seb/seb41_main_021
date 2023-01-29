@@ -25,20 +25,13 @@ public class NotifyAspect {
         this.notifyService = notifyService;
     }
 
-    @Pointcut("execution(* com.yata.backend.domain.yata.service.YataRequestService.createRequest(..))")
-    public void requestNotify() {
-    }
 
-    @Pointcut("execution(* com.yata.backend.domain.yata.service.YataRequestService.createInvitation(..))")
-    public void inviteNotify() {
-    }
-
-    // 포인트 컷 합치기
-    public void notifying() {
+    @Pointcut("@annotation(com.yata.backend.domain.notify.annotation.NeedNotify)")
+    public void annotationPointcut() {
     }
 
     @Async
-    @AfterReturning(pointcut = "requestNotify() || inviteNotify()", returning = "result")
+    @AfterReturning(pointcut = "annotationPointcut()", returning = "result")
     public void checkValue(JoinPoint joinPoint, Object result) throws Throwable {
         YataRequest yataResult = (YataRequest) result;
         notifyService.send(
