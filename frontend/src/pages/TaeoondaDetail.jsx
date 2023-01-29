@@ -55,9 +55,15 @@ export default function TabnidaDetail() {
         <>
           <Header title={'태웁니다'}></Header>
           <Container>
-            <EditDeleteContainer state={'taeoonda'} yataId={yataId} />
+            <EditDeleteContainer
+              state={'taeoonda'}
+              data={data}
+              yataId={yataId}
+              ableTag={'신청 가능'}
+              disableTag={'신청 마감'}
+            />
             <ProfileContainer data={data} />
-            <InfoContainer data={data} ableTag={'신청 가능'} disableTag={'신청 마감'} />
+            <InfoContainer data={data} />
             <MemberContainer data={data} />
             <InviteButton onClick={requestHandler}>신청하기</InviteButton>
           </Container>

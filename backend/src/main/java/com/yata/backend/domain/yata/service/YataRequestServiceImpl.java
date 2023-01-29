@@ -2,6 +2,7 @@ package com.yata.backend.domain.yata.service;
 
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.service.MemberService;
+import com.yata.backend.domain.notify.annotation.NeedNotify;
 import com.yata.backend.domain.yata.dto.YataRequestDto;
 import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.Yata;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 import static com.yata.backend.domain.yata.entity.YataRequest.RequestStatus.APPLY;
@@ -37,6 +39,7 @@ public class YataRequestServiceImpl implements YataRequestService {
 
     // Yata 신청
     @Override
+    @NeedNotify
     public YataRequest createRequest(YataRequest yataRequest, String userName, Long yataId) {
         Member member = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
         verifyRequest(userName, yataId); // 신청을 이미 했었는지 확인하고
@@ -77,6 +80,7 @@ public class YataRequestServiceImpl implements YataRequestService {
 
     // Yata 초대
     @Override
+    @NeedNotify
     public YataRequest createInvitation(String userName, YataRequestDto.InvitePost invitationRequestDto) {
         Member yataOwner = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
         Member invitedMember = memberService.findMember(invitationRequestDto.getInviteEmail()); // 초대할 멤버가 있는지 확인하고

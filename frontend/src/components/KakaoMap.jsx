@@ -8,7 +8,7 @@ import { f } from '../util/f';
 
 const { kakao } = window;
 
-const KakaoMap = () => {
+const KakaoMap = ({ taeoonda }) => {
   const dispatch = useDispatch();
   const des = useSelector(state => {
     return state.destination;
@@ -84,7 +84,7 @@ const KakaoMap = () => {
           lat: lat, // 위도
           lng: lng, // 경도
         },
-        level: f(diff, 0.005, 4),
+        level: taeoonda ? f(diff, 0.005, 5) : f(diff, 0.005, 4),
         isLoading: false,
       }));
     } else if (navigator.geolocation) {

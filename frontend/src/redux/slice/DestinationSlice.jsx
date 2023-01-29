@@ -23,6 +23,7 @@ const initialState = {
   amount: '',
   maxPeople: '',
   specifics: '',
+  carModel: '',
 };
 
 const DestinationSlice = createSlice({
@@ -49,6 +50,9 @@ const DestinationSlice = createSlice({
     },
     setMaxPeople: (state, action) => {
       state.maxPeople = action.payload.maxPeople;
+    },
+    setCarModel: (state, action) => {
+      state.carModel = action.payload.carModel;
     },
     setSpecifics: (state, action) => {
       state.specifics = action.payload.specifics;
@@ -79,28 +83,6 @@ const DestinationSlice = createSlice({
       state.isDestination = false;
     },
     setAll: (state, action) => {
-      state.departure = '';
-      state.destination = '';
-      state.isFilled = false;
-      state.departurePoint = {
-        longitude: 0,
-        latitude: 0,
-        address: '',
-      };
-      state.destinationPoint = {
-        longitude: 0,
-        latitude: 0,
-        address: '',
-      };
-      state.places = [];
-      state.isFilled = false;
-      state.isDeparture = false;
-      state.isDestination = false;
-      state.departureTime = '';
-      state.amount = '';
-      state.maxPeople = '';
-      state.specifics = '';
-
       state.departure = action.payload.departure;
       state.destination = action.payload.destination;
       state.departurePoint = action.payload.departurePoint;
@@ -111,6 +93,7 @@ const DestinationSlice = createSlice({
       state.amount = action.payload.amount;
       state.maxPeople = action.payload.maxPeople;
       state.specifics = action.payload.specifics;
+      state.carModel = action.payload.carModel;
     },
     clearAll: state => {
       state.departure = '';
@@ -134,6 +117,7 @@ const DestinationSlice = createSlice({
       state.amount = '';
       state.maxPeople = '';
       state.specifics = '';
+      state.carModel = '';
     },
   },
 });
@@ -148,6 +132,7 @@ export const {
   setDestination,
   setIsFilled,
   setPlaces,
+  setCarModel,
   clearAll,
   setDepartureTime,
   setAmount,
