@@ -4,8 +4,14 @@ import Button from '../common/Button';
 import Input from '../common/Input';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setAmount, setDepartureTime, setMaxPeople, setSpecifics } from '../../redux/slice/DestinationSlice';
-export default function TabnidaDesForm({ submit }) {
+import {
+  setAmount,
+  setDepartureTime,
+  setMaxPeople,
+  setSpecifics,
+  setCarModel,
+} from '../../redux/slice/DestinationSlice';
+export default function DestinationInputForm({ submit, taeoonda }) {
   const des = useSelector(state => {
     return state.destination;
   });
@@ -23,6 +29,9 @@ export default function TabnidaDesForm({ submit }) {
   const specificsHan = e => {
     dispatch(setSpecifics({ specifics: e.target.value }));
   };
+  const carModelHan = e => {
+    dispatch(setCarModel({ carModel: e.target.value }));
+  };
 
   return (
     <>
@@ -39,6 +48,15 @@ export default function TabnidaDesForm({ submit }) {
           state={des.maxPeople}
           onChange={maxPeopleHan}
         />
+        {taeoonda && (
+          <Input
+            label="차종"
+            type="text"
+            placeholder="XM3, 싼타페, 그랜저 IG, 등"
+            state={des.carModel}
+            onChange={carModelHan}
+          />
+        )}
         <Input
           label="특이사항"
           placeholder="아이가 있어요, 흡연자입니다, 짐이 많아요, 등"

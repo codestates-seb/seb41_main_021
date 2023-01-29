@@ -8,8 +8,11 @@ import DestinationInput from '../components/DestinationInput';
 import { useNavigate } from 'react-router-dom';
 import { MdAdd } from 'react-icons/md';
 import { useGetData } from '../hooks/useGetData';
+import { useDispatch } from 'react-redux';
+import { clearAll } from '../redux/slice/DestinationSlice';
 
 export default function TaeoondaList() {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [list, setList] = useState([]);
   const navigate = useNavigate();
@@ -20,6 +23,7 @@ export default function TaeoondaList() {
 
   useEffect(() => {
     useGetData('https://server.yata.kro.kr/api/v1/yata?yataStatus=neota').then(res => setList(res.data.data));
+    dispatch(clearAll());
   }, []);
   return (
     <>
