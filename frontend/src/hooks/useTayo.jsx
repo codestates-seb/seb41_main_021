@@ -66,7 +66,12 @@ const useTayoRequest = async (url, data) => {
 
 const useTayoInvite = async (url, data) => {
   try {
-    const response = await instance.post(url, data);
+    const response = await instance.post(url, data, {
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        Authorization: localStorage.getItem('ACCESS'),
+      },
+    });
     toast.success('초대 완료');
     return response;
   } catch (error) {
