@@ -1,25 +1,26 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
-import { MdDone, MdDelete } from 'react-icons/md';
 import Button from '../common/Button';
 import usePostData from '../../hooks/usePostData';
+import { useEffect } from 'react';
+import { useGetData } from '../../hooks/useGetData';
 
 const RegisterListItem = props => {
   // api 응답 어떻게 올지 몰라서 대충 넣어놓음
-  const { date, userInfo, yataId, yataRequestId, state, onClick } = props;
+  const { date, userInfo, yataId, yataRequestId, state, onClick, update, setUpdate } = props;
   const [check, setCheck] = useState(false);
 
   const approveHandler = () => {
     const data = {};
-    usePostData(`https://server.yata.kro.kr/api/v1/yata/${yataRequestId}/${yataId}/accept`, data).then(res => {
-      console.log(res);
+    usePostData(`https://server.yata.kro.kr/api/v1/yata/${yataId}/${yataRequestId}/accept`, data).then(res => {
+      setUpdate(true);
     });
   };
 
   const rejectHandler = () => {
     const data = {};
     usePostData(`https://server.yata.kro.kr/api/v1/yata/${yataId}/${yataRequestId}/reject`, data).then(res => {
-      console.log(res);
+      setUpdate(true);
     });
   };
 
@@ -29,11 +30,11 @@ const RegisterListItem = props => {
       <Container>
         <TextContainer>
           <DateContainer>
-            {state && (
+            {/* {state && (
               <InviteOrRequestText state={state}>
                 {state === 'APPLY' ? '신청합니다!' : '초대합니다!'}
               </InviteOrRequestText>
-            )}
+            )} */}
             {date}
           </DateContainer>
           <UserInfoContainer>

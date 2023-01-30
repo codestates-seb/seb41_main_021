@@ -6,7 +6,7 @@ import RegisterListView from '../components/registerList/RegisterListView';
 export default function RegisterCheckList() {
   return (
     <>
-      <Header title="RegisterCheckList" />
+      <Header title="" />
       <Content>
         <RegisterListView />
       </Content>

@@ -25,9 +25,19 @@ export default function RegisterList() {
     });
   }, []);
 
+  const shortWords = (str, length = 10) => {
+    let result = '';
+    if (str.length > length) {
+      result = str.substr(0, length) + '...';
+    } else {
+      result = str;
+    }
+    return result;
+  };
+
   return (
     <>
-      <Header title="내가 받은 요청" />
+      <Header title="내가 받은 신청" />
       {list.length !== 0 && !loading ? (
         <Container>
           {list.map(el => {
@@ -49,16 +59,16 @@ export default function RegisterList() {
                 </DateContainer>
                 <JourneyContainer>
                   <JourneyText>
-                    {el.strPoint.address}
+                    {shortWords(el.strPoint.address)}
                     <IoIosArrowRoundForward />
-                    {el.destination.address}
+                    {shortWords(el.destination.address)}
                   </JourneyText>
                   <IoIosArrowForward />
                 </JourneyContainer>
                 <BottomContainer>
                   <PriceContainer>
                     <BiWon />
-                    {el.amount}원
+                    {el.amount.toLocaleString('ko-KR')}원
                   </PriceContainer>
                   <PeopleContainer>
                     <BsPeople />

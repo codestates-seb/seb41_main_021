@@ -54,7 +54,7 @@ export default function InviteList() {
                 <BottomContainer>
                   <PriceContainer>
                     <BiWon />
-                    {el.amount}원
+                    {el.amount.toLocaleString('ko-KR')}원
                   </PriceContainer>
                   <PeopleContainer>
                     <BsPeople />
