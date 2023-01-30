@@ -64,8 +64,11 @@ public class YataRequestDto {
         private Long amount;
         private int maxPeople;
         private Long yataRequestId;
-        private String email;
+        private String email; // 신청 || 초대 당하는 애들 이메일 닉네임
         private String nickname;
+
+        private String yataOwnerEmail; // 나타 주인 이메일 닉네임
+        private String yataOwnerNickname;
         private YataRequest.RequestStatus yataRequestStatus;
         private YataRequest.ApprovalStatus approvalStatus;
         private String title;
@@ -80,6 +83,7 @@ public class YataRequestDto {
         private LocationDto.Response destination;
         private LocalDateTime createdAt;
         private String imgUrl;
+        private String yataOwnerImgUrl;
     }
 
 }
