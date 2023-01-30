@@ -24,6 +24,7 @@ public class PayHistoryDto {
         private Long point; // 잔액
         // private Long referenceId;
         private PayHistory.Type type;
+        private PayHistory.Gain gain;
         private LocalDateTime createdAt; // 지불한 일시
     }
 }

@@ -79,7 +79,7 @@ public class PaymentController {
                         .cancelPaymentPoint(principal.getUsername(), paymentKey, cancelReason)));
     }
 
-    @GetMapping("history")
+    @GetMapping("/history")
     public ResponseEntity getChargingHistory(@AuthenticationPrincipal User authMember,
                                              Pageable pageable) {
         Slice<Payment> chargingHistories = paymentService.findAllChargingHistories(authMember.getUsername(), pageable);

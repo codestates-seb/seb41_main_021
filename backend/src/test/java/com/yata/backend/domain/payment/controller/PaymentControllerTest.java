@@ -229,6 +229,7 @@ class PaymentControllerTest extends AbstractControllerTest {
                         fieldWithPath("data[].amount").type(JsonFieldType.NUMBER).description("충전한 가격"),
                         fieldWithPath("data[].orderName").type(JsonFieldType.STRING).description("충전한 유형 ( ex. 포인트 충전인지 다른 거 인지 <- 이후 다른 충전 생기면 확장성 고려하여 )"),
                         fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("충전된 시각"),
+                        fieldWithPath("data[].paySuccessYN").type("Boolean").description("결제 성공 여부"),
                         fieldWithPath("sliceInfo").type(JsonFieldType.OBJECT).description("슬라이스 정보"),
                         fieldWithPath("sliceInfo.getNumber").type(JsonFieldType.NUMBER).description("현재 슬라이스 번호"),
                         fieldWithPath("sliceInfo.getSize").type(JsonFieldType.NUMBER).description("현재 슬라이스 크기"),
