@@ -48,7 +48,7 @@ export default function InviteList() {
                   )} */}
                 </DateContainer>
                 <JourneyContainer>
-                  <JourneyText>{el.nickname}</JourneyText>
+                  <JourneyText>{el.yataOwnerNickname}</JourneyText>
                   <IoIosArrowForward />
                 </JourneyContainer>
                 <BottomContainer>
@@ -58,7 +58,7 @@ export default function InviteList() {
                   </PriceContainer>
                   <PeopleContainer>
                     <BsPeople />
-                    {el.reservedMemberNum}/{el.maxPeople}
+                    {el.boardingPersonCount}
                   </PeopleContainer>
                 </BottomContainer>
               </TextContainer>
