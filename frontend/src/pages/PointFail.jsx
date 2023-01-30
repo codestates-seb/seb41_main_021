@@ -12,9 +12,6 @@ const PointFail = () => {
       <Container>
         <IoIosCloseCircleOutline></IoIosCloseCircleOutline>
         <SuccessMessage>포인트 충전 실패 ㅠㅜ 흑</SuccessMessage>
-        {/* <InfoContainer>
-          <Price>충전 금액: 10,000원</Price>
-        </InfoContainer> */}
         <MypageButton
           onClick={() => {
             navigate('/my-page');
