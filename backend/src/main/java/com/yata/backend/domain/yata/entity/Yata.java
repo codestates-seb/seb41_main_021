@@ -1,5 +1,7 @@
 package com.yata.backend.domain.yata.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.global.audit.Auditable;
 import lombok.*;
@@ -22,6 +24,9 @@ import java.util.List;
         @Index(name = "idx_yata_member", columnList = "EMAIL"),
         @Index(name = "idx_yata_memberAndYata", columnList = "EMAIL,yataId", unique = true),
 })
+@Cacheable
+@org.hibernate.annotations.Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_WRITE)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "yataId")
 public class Yata extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -71,7 +76,7 @@ public class Yata extends Auditable {
     @ManyToOne
     @JoinColumn(name = "EMAIL")
     private Member member;
-
+    @org.hibernate.annotations.Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_WRITE)
     @OneToMany(mappedBy = "yata", cascade = CascadeType.REMOVE , fetch = FetchType.LAZY)
     private List<YataMember> yataMembers = new ArrayList<>();
 

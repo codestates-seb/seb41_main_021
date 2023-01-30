@@ -3,6 +3,7 @@ package com.yata.backend.domain.yata.entity;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.global.audit.Auditable;
 import lombok.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
@@ -13,6 +14,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = "member")
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class YataMember extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,10 +33,12 @@ public class YataMember extends Auditable {
 
     @ManyToOne
     @JoinColumn(name = "YATA_ID")
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Yata yata;
 
     @ManyToOne
     @JoinColumn(name = "EMAIL")
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Member member;
 
     public enum GoingStatus {
