@@ -15,5 +15,7 @@ public class ChargingHistoryDto {
     private Long amount;
     @NonNull
     private String orderName;
+
+    private boolean isPaySuccessYN;
     private LocalDateTime createdAt;
 }

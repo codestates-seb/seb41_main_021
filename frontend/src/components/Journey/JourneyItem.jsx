@@ -4,12 +4,20 @@ import { BsCalendar4, BsPeople } from 'react-icons/bs';
 import { BiWon } from 'react-icons/bi';
 import Button from '../common/Button';
 import { useNavigate, useParams } from 'react-router';
+import usePostData from '../../hooks/usePostData';
 
 const JourneyItem = props => {
   const navigate = useNavigate();
-  // const params = useParams();
-  // const yataId = params.yataId;
-  // api 응답 어떻게 올지 몰라서 대충 넣어놓음
+  const params = useParams();
+  const yataMemberId = params.yataId;
+
+  const payHandler = () => {
+    const data = {};
+    usePostData(`https://server.yata.kro.kr/api/v1/yata/${yataId}/${yataRequestId}/payPoint`, data).then(res => {
+      console.log(res);
+    });
+  };
+
   const { date, journeyStart, journeyEnd, price, people, state, onClick, isPay, yataId } = props;
   return (
     <>
@@ -29,7 +37,7 @@ const JourneyItem = props => {
             {isPay ? (
               <Button onClick={() => navigate(`/rating-add-driver/${yataId}`)}>리뷰 남기기</Button>
             ) : (
-              <Button>결제하기</Button>
+              <Button onClick={payHandler}>결제하기</Button>
             )}
           </JourneyContainer>
           <BottomContainer>

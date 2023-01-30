@@ -1,6 +1,7 @@
 package com.yata.backend.domain.payHistory.entity;
 
 import com.yata.backend.domain.member.entity.Member;
+import com.yata.backend.domain.payment.dto.PayType;
 import com.yata.backend.global.audit.Auditable;
 import lombok.*;
 
@@ -29,6 +30,10 @@ public class PayHistory extends Auditable {
     @Column(length = 20, nullable = false)
     private Type type;
 
+    @Enumerated(value = EnumType.STRING)
+    @Column(length = 20, nullable = false)
+    private Gain gain;
+
 //    private Long referenceId; // 외래키
 
     public enum Type {
@@ -39,6 +44,17 @@ public class PayHistory extends Auditable {
         private String status;
 
         Type(String status) {
+            this.status = status;
+        }
+    }
+    public enum Gain {
+        GAIN("수입"),
+        PAY("지불");
+
+        @Getter
+        private String status;
+
+        Gain(String status) {
             this.status = status;
         }
     }

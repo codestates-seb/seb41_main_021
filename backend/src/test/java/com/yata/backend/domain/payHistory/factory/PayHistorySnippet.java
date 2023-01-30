@@ -17,6 +17,7 @@ public class PayHistorySnippet {
                 fieldWithPath("data[].point").type(JsonFieldType.NUMBER).description("포인트 잔액"),
                 fieldWithPath("data[].type").type(JsonFieldType.STRING).description("지불한 유형 ex. 야타 / 이모티콘(추후 추가한다면 확장성을 위해)"),
                 fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("지불한 일시"),
+                fieldWithPath("data[].gain").type(JsonFieldType.STRING).description("GAIN,PAY 지불인지 수입 내역인지 "),
                 fieldWithPath("sliceInfo").type(JsonFieldType.OBJECT).description("슬라이스 정보"),
                 fieldWithPath("sliceInfo.getNumber").type(JsonFieldType.NUMBER).description("현재 슬라이스 번호"),
                 fieldWithPath("sliceInfo.getSize").type(JsonFieldType.NUMBER).description("현재 슬라이스 크기"),

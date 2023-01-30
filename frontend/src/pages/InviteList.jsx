@@ -48,17 +48,17 @@ export default function InviteList() {
                   )} */}
                 </DateContainer>
                 <JourneyContainer>
-                  <JourneyText>{el.nickname}</JourneyText>
+                  <JourneyText>{el.yataOwnerNickname}</JourneyText>
                   <IoIosArrowForward />
                 </JourneyContainer>
                 <BottomContainer>
                   <PriceContainer>
                     <BiWon />
-                    {el.amount}원
+                    {el.amount.toLocaleString('ko-KR')}원
                   </PriceContainer>
                   <PeopleContainer>
                     <BsPeople />
-                    {el.reservedMemberNum}/{el.maxPeople}
+                    {el.boardingPersonCount}
                   </PeopleContainer>
                 </BottomContainer>
               </TextContainer>
