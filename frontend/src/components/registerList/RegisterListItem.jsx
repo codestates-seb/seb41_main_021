@@ -12,7 +12,6 @@ const RegisterListItem = props => {
 
   const approveHandler = () => {
     const data = {};
-
     usePostData(`https://server.yata.kro.kr/api/v1/yata/${yataId}/${yataRequestId}/accept`, data).then(res => {
       setUpdate(true);
     });

@@ -27,4 +27,5 @@ public interface YataService {
 
 
     List<Yata> findMyYatasNotClosed(String username);
+
 }
