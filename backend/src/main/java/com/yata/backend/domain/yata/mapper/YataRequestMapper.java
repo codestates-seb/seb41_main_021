@@ -30,6 +30,11 @@ public interface YataRequestMapper {
         response.maxPeople(yataRequest.getYata().getMaxPeople());
         response.email(yataRequest.getMember().getEmail());
         response.nickname(yataRequest.getMember().getNickname());
+        response.yataOwnerEmail(yataRequest.getYata().getMember().getEmail());
+        response.yataOwnerNickname(yataRequest.getYata().getMember().getNickname());
+        response.imgUrl(yataRequest.getYata().getMember().getImgUrl() != null ? yataRequest.getYata().getMember().getImgUrl().getUrl() : null);
+        response.yataOwnerImgUrl(yataRequest.getYata().getMember().getImgUrl() != null ? yataRequest.getYata().getMember().getImgUrl().getUrl() : null);
+
         response.yataRequestStatus(yataRequest.getRequestStatus());
         response.approvalStatus(yataRequest.getApprovalStatus());
         response.title(yataRequest.getTitle());
@@ -53,28 +58,7 @@ public interface YataRequestMapper {
         }
 
         return yataRequests.stream()
-                .map(yataRequest -> {
-                    return YataRequestDto.RequestResponse.builder()
-                            .yataId(yataRequest.getYata().getYataId())
-                            .amount(yataRequest.getYata().getAmount())
-                            .maxPeople(yataRequest.getYata().getMaxPeople())
-                            .yataRequestId(yataRequest.getYataRequestId())
-                            .email(yataRequest.getMember().getEmail())
-                            .nickname(yataRequest.getMember().getNickname())
-                            .yataRequestStatus(yataRequest.getRequestStatus())
-                            .approvalStatus(yataRequest.getApprovalStatus())
-                            .title(yataRequest.getTitle())
-                            .specifics(yataRequest.getSpecifics())
-                            .departureTime(yataRequest.getDepartureTime())
-                            .timeOfArrival(yataRequest.getTimeOfArrival())
-                            .boardingPersonCount(yataRequest.getBoardingPersonCount())
-                            .maxWaitingTime(yataRequest.getMaxWaitingTime())
-                            .strPoint(locationToResponse(yataRequest.getStrPoint()))
-                            .destination(locationToResponse(yataRequest.getDestination()))
-                            .createdAt(yataRequest.getCreatedAt())
-                            .imgUrl(yataRequest.getMember().getImgUrl() != null ? yataRequest.getMember().getImgUrl().getUrl() : null)
-                            .build();
-                }).collect(Collectors.toList());
+                .map(this::yataRequestToYataRequestResponse).collect(Collectors.toList());
     }
 
 

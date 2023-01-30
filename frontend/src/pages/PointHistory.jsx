@@ -9,7 +9,7 @@ export default function PointHistory() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    useChargeList('https://server.yata.kro.kr/api/v1/payments/history').then(res => {
+    useChargeList('https://server.yata.kro.kr/api/v1/payHistory').then(res => {
       setList(res.data.data);
       setData(res.data.data);
       console.log(res.data.data);

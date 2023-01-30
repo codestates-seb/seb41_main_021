@@ -78,6 +78,9 @@ public class YataRequestFactory {
                 .timeOfArrival(yataRequest.getTimeOfArrival())
                 .boardingPersonCount(yataRequest.getBoardingPersonCount())
                 .maxWaitingTime(yataRequest.getMaxWaitingTime())
+                .yataOwnerImgUrl(yataRequest.getYata().getMember().getImgUrl() == null ? "" : yataRequest.getYata().getMember().getImgUrl().getUrl())
+                .yataOwnerEmail(yataRequest.getYata().getMember().getEmail())
+                .yataOwnerNickname(yataRequest.getYata().getMember().getNickname())
                 .strPoint(new LocationDto.Response(
                         yataRequest.getStrPoint().getLocation().getX(),
                         yataRequest.getStrPoint().getLocation().getY(),
