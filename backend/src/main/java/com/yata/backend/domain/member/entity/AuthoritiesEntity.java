@@ -21,6 +21,7 @@ public class AuthoritiesEntity extends Auditable {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "member_email")
     @JsonSerialize
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Member member;
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
