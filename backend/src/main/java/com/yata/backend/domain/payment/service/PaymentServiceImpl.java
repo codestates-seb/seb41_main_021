@@ -9,8 +9,10 @@ import com.yata.backend.domain.payment.repository.JpaPaymentRepository;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
 import net.minidev.json.JSONObject;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -40,7 +42,7 @@ public class PaymentServiceImpl implements PaymentService {
     public Payment requestTossPayment(Payment payment, String userEmail) {
         Member member = memberService.findMember(userEmail);
         if (payment.getAmount() < 1000) {
-            throw new IllegalArgumentException("최소 결제 금액은 1000원 입니다.");
+            throw new CustomLogicException(ExceptionCode.INVALID_PAYMENT_AMOUNT);
         }
         payment.setCustomer(member);
         return paymentRepository.save(payment);
@@ -120,8 +122,10 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public Slice<Payment> findAllChargingHistories(String username, Pageable pageable) {
         memberService.verifyMember(username);
-
-        return paymentRepository.findAllByCustomer_Email(username, pageable);
+        return paymentRepository.findAllByCustomer_Email(username,
+                PageRequest.of(pageable.getPageNumber(), pageable.getPageSize() ,
+                        Sort.Direction.DESC, "paymentId")
+        );
     }
 
     private HttpHeaders getHeaders() {
