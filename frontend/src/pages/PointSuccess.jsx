@@ -4,10 +4,24 @@ import { IoIosCheckmarkCircleOutline } from 'react-icons/io';
 import { BiWon } from 'react-icons/bi';
 import { BsCreditCard, BsCalendarCheck } from 'react-icons/bs';
 import Button from '../components/common/Button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useGetData } from '../hooks/useGetData';
+import { useEffect, useState } from 'react';
+import { dateFormat } from '../components/common/DateFormat';
 
+// /api/v1/payments/toss/success?paymentKey=paymentKey&orderId=d3134662-748f-44e7-a76c-3be4bccc7528&amount=15000
 const PointSuccess = () => {
+  const [data, setData] = useState([]);
   const navigate = useNavigate();
+  const [SearchParams, setSearchParams] = useSearchParams();
+  const paymentKey = SearchParams.get('paymentKey'),
+    orderId = SearchParams.get('orderId'),
+    amount = SearchParams.get('amount');
+  useEffect(() => {
+    useGetData(`/api/v1/payments/toss/success?paymentKey=${paymentKey}&orderId=${orderId}&amount=${amount}`).then(res =>
+      setData(res.data.data),
+    );
+  });
   return (
     <>
       <Header title="포인트 충전 "></Header>
@@ -16,13 +30,13 @@ const PointSuccess = () => {
         <SuccessMessage>포인트 충전 성공!</SuccessMessage>
         <InfoContainer>
           <Info>
-            <BiWon></BiWon>충전 금액: 10,000원
+            <BiWon></BiWon>충전 금액: {amount}원
           </Info>
           <Info>
-            <BsCreditCard></BsCreditCard>결제 수단: 카드
+            <BsCreditCard></BsCreditCard>결제 수단: {data.method}
           </Info>
           <Info>
-            <BsCalendarCheck></BsCalendarCheck>충전 일시: 2023-01-30
+            <BsCalendarCheck></BsCalendarCheck>충전 일시: {dateFormat(data.approvedAt)}
           </Info>
         </InfoContainer>
         <MypageButton

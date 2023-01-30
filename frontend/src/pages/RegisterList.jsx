@@ -81,7 +81,7 @@ export default function RegisterList() {
         </Container>
       ) : (
         <Container>
-          <div className="no-content">요청 내역이 없습니다.</div>
+          <div className="no-content">받은 신청 내역이 없습니다.</div>
         </Container>
       )}
       <Navbar />
