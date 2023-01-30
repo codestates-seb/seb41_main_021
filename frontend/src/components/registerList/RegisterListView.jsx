@@ -3,7 +3,6 @@ import RegisterListItem from './RegisterListItem';
 import { useState, useEffect } from 'react';
 import { dateFormat } from '../common/DateFormat';
 import { useGetData } from '../../hooks/useGetData';
-
 import { useParams } from 'react-router';
 
 const RegisterListView = () => {
@@ -11,13 +10,17 @@ const RegisterListView = () => {
   const yataId = params.yataId;
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [update, setUpdate] = useState(true);
 
   useEffect(() => {
-    useGetData(`api/v1/yata/requests/${yataId}`).then(res => {
-      setList(res.data.data);
-      setLoading(false);
-    });
-  }, []);
+    if (update) {
+      useGetData(`api/v1/yata/requests/${yataId}`).then(res => {
+        setList(res.data.data);
+        setUpdate(!update);
+        setLoading(false);
+      });
+    }
+  }, [update]);
 
   return (
     <RegisterBlock>
@@ -29,7 +32,9 @@ const RegisterListView = () => {
             userInfo={el.nickname}
             yataId={el.yataId}
             yataRequestId={el.yataRequestId}
-            state={el.approvalStatus}></RegisterListItem>
+            state={el.approvalStatus}
+            update={update}
+            setUpdate={setUpdate}></RegisterListItem>
         );
       })}
     </RegisterBlock>
