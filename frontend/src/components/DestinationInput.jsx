@@ -1,6 +1,13 @@
 import styled from 'styled-components';
 import { IoEllipseOutline, IoEllipse } from 'react-icons/io5';
 export default function DestinationInput() {
+  // const startHan = e => {
+  //   setStart(prev => ({
+  //     ...prev,
+  //     address: e.target.value,
+  //   }));
+  // };
+
   return (
     <IputContainer>
       <InputContent>
