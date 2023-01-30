@@ -4,7 +4,7 @@ import { dateFormat } from './common/DateFormat';
 import { useState, useEffect } from 'react';
 
 const ListItemView = props => {
-  const { list } = props;
+  const { list, children } = props;
 
   return (
     <>
@@ -24,6 +24,7 @@ const ListItemView = props => {
           );
         })}
         {/* {loading && <Loading>데이터를 불러오는 중입니다..</Loading>} */}
+        {children}
       </Container>
     </>
   );

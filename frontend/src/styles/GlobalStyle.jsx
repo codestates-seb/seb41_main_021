@@ -72,11 +72,6 @@ const GlobalStyle = createGlobalStyle`
   footer, header, hgroup, menu, nav, section {
     display: block;
   }
-  body {
-    line-height: 1;
-    background-color: #FBFBFB;
-    overflow-y: scroll !important;
-  }
   ol, ul {
     list-style: none;
   }
@@ -92,7 +87,12 @@ const GlobalStyle = createGlobalStyle`
     border-collapse: collapse;
     border-spacing: 0;
   }
-
+  
+  /* body {
+    line-height: 1;
+    background-color: #FBFBFB;
+    overflow-y: scroll !important;
+  }
   body::-webkit-scrollbar {
     width: 8px;
     background: transparent;
@@ -100,6 +100,13 @@ const GlobalStyle = createGlobalStyle`
   body::-webkit-scrollbar-thumb {
       background: rgba(0, 0, 0, 0.3);
       border-radius: 100px;
+  } */
+  div{
+     -ms-overflow-style: none; /* 인터넷 익스플로러 */
+    scrollbar-width: none; /* 파이어폭스 */
+  }
+  div::-webkit-scrollbar {
+    display:none; /* 크롬, 사파리, 오페라, 엣지 */
   }
 `;
 

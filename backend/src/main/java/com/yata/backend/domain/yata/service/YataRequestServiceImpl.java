@@ -85,7 +85,7 @@ public class YataRequestServiceImpl implements YataRequestService {
         Member yataOwner = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
         Member invitedMember = memberService.findMember(invitationRequestDto.getInviteEmail()); // 초대할 멤버가 있는지 확인하고
         // TODO verify 조작
-        verifyInvitation(userName, invitationRequestDto.getYataId()); // 신청 목록에 있는 애인지 확인하고 (초대한 애가 아닌지 확인하고)
+        verifyInvitation(invitationRequestDto.getInviteEmail(), invitationRequestDto.getYataId()); // 신청 목록에 있는 애인지 확인하고 (초대한 애가 아닌지 확인하고)
         // 내가 초대 할려는 게시물이 있는지 확인
         Yata yata = yataService.findYata(invitationRequestDto.getYataId());
         Yata invitedYata = yataService.findYata(invitationRequestDto.getInvitedYataId());
@@ -117,7 +117,7 @@ public class YataRequestServiceImpl implements YataRequestService {
 
     }
 
-    // Yata 신청 목록 조회 - by driver
+    // Yata 신청/초대 목록 조회
     @Override
     public Slice<YataRequest> findRequestsByYataOwner(String userEmail, Long yataId, Pageable pageable) {
         Yata yata = yataService.findYata(yataId);
@@ -129,7 +129,7 @@ public class YataRequestServiceImpl implements YataRequestService {
         return jpaYataRequestRepository.findAllByYata(yata, pageable);
     }
 
-    // 자기가 한 신청 목록 조회 - by Passenger
+    // 자기가 한 신청/초대 목록 조회
     @Override
     public Slice<YataRequest> findRequestsByRequester(String userEmail, Pageable pageable) {
 
