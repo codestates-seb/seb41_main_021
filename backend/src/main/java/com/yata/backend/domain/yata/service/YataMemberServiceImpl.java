@@ -174,8 +174,8 @@ public class YataMemberServiceImpl implements YataMemberService {
         yataMember.setYataPaid(true); // 지불 여부 true 로
         yataMember.setGoingStatus(YataMember.GoingStatus.ARRIVED); // goingStatus 도착으로
 
-        PayHistory yataMemberHistory = makePayHistory(member, PayHistory.Type.YATA, paidPrice);
-        PayHistory yataOwnerHistory = makePayHistory(yataOwner, PayHistory.Type.YATA, paidPrice);
+        PayHistory yataMemberHistory = makePayHistory(member, PayHistory.Type.YATA, paidPrice , PayHistory.Gain.PAY);
+        PayHistory yataOwnerHistory = makePayHistory(yataOwner, PayHistory.Type.YATA, paidPrice , PayHistory.Gain.GAIN);
 
         memberService.updateMemberCache(yataMember.getMember());
         memberService.updateMemberCache(member);
@@ -183,10 +183,11 @@ public class YataMemberServiceImpl implements YataMemberService {
 
         jpaPayHistoryRepository.saveAll(List.of(yataMemberHistory, yataOwnerHistory));
     }
-    private PayHistory makePayHistory(Member member, PayHistory.Type type, Long paidPrice) {
+    private PayHistory makePayHistory(Member member, PayHistory.Type type, Long paidPrice, PayHistory.Gain gain) {
         PayHistory payHistory = new PayHistory();
         payHistory.setMember(member);
         payHistory.setType(type);
+        payHistory.setGain(gain);
         payHistory.setPaidPrice(paidPrice);
         return payHistory;
     }

@@ -24,6 +24,7 @@ public class PayHistoryFactory {
                 .paidPrice(getRandomLong())
                 .member(member)
                 .type(PayHistory.Type.YATA)
+                .gain(PayHistory.Gain.PAY)
                 .build();
     }
     public static List<PayHistory> createPayHistoryList() throws java.text.ParseException, org.locationtech.jts.io.ParseException {
@@ -43,6 +44,7 @@ public class PayHistoryFactory {
                 .paidPrice(payHistory.getPaidPrice())
                 .point(payHistory.getMember().getPoint())
                 .createdAt(LocalDateTime.now())
+                .gain(payHistory.getGain())
                 .type(payHistory.getType())
                 .build();
     }
