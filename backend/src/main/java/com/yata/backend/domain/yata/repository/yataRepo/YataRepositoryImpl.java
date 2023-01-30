@@ -40,8 +40,9 @@ public class YataRepositoryImpl implements YataRepository {
                 .join(yata.strPoint).fetchJoin()
                 .join(yata.destination).fetchJoin()
                 .leftJoin(yata.yataMembers, yataMember).fetchJoin()
+                .orderBy(yata.yataId.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
+                .limit(pageable.getPageSize() + 1L);
         // MBR
         if(startLocation.getLocation().getX() != 0 && startLocation.getLocation().getY() != 0) {
             Geometry startMBR = GeometryUtils.getMBR(startLocation.getLocation(), distance / 100);

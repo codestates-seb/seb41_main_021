@@ -28,8 +28,8 @@ public interface YataRequestMapper {
         response.yataId(yataRequest.getYata().getYataId());
         response.amount(yataRequest.getYata().getAmount());
         response.maxPeople(yataRequest.getYata().getMaxPeople());
-        response.email(yataRequest.getMember().getEmail());
-        response.nickname(yataRequest.getMember().getNickname());
+        response.email(YataRequest.RequestStatus.APPLY.equals(yataRequest.getRequestStatus()) ? yataRequest.getMember().getEmail() : yataRequest.getYata().getMember().getEmail());
+        response.nickname(YataRequest.RequestStatus.APPLY.equals(yataRequest.getRequestStatus()) ? yataRequest.getMember().getNickname() : yataRequest.getYata().getMember().getNickname());
         response.yataRequestStatus(yataRequest.getRequestStatus());
         response.approvalStatus(yataRequest.getApprovalStatus());
         response.title(yataRequest.getTitle());
