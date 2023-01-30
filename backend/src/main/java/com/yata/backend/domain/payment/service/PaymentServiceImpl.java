@@ -53,6 +53,7 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setPaymentKey(paymentKey);
         payment.setPaySuccessYN(true);
         payment.getCustomer().setPoint(payment.getCustomer().getPoint() + amount);
+        memberService.updateMemberCache(payment.getCustomer());
         return result;
     }
 

@@ -148,7 +148,7 @@ public class YataMemberServiceImpl implements YataMemberService {
         Member member = memberService.findMember(userName); // 해당 member 가 있는지 확인 ( 결제하려는 주체 )
         Yata yata = yataService.findYata(yataId); // 해당 yata 가 있는지 확인 ( 결제할 게시물 )
         YataMember yataMember = verifyYataMember(yataMemberId);
-
+        Member yataOwner = yata.getMember(); // yata 의 주인
         // 해당 yataMember 가 해당 yata 에 있는 yataMember 인지 검증
         verifyPossibleYataMember(yataMemberId, yata);
 
@@ -169,16 +169,26 @@ public class YataMemberServiceImpl implements YataMemberService {
         // 포인트 잔액 = member 에서 가져온 point - 지불한 금액
         Long balance = member.getPoint() - paidPrice;
         member.setPoint(balance);
+        yataOwner.setPoint(yata.getMember().getPoint() + paidPrice); // yata 게시물 작성자에게 포인트 추가
 
         yataMember.setYataPaid(true); // 지불 여부 true 로
         yataMember.setGoingStatus(YataMember.GoingStatus.ARRIVED); // goingStatus 도착으로
 
+        PayHistory yataMemberHistory = makePayHistory(member, PayHistory.Type.YATA, paidPrice);
+        PayHistory yataOwnerHistory = makePayHistory(yataOwner, PayHistory.Type.YATA, paidPrice);
+
+        memberService.updateMemberCache(yataMember.getMember());
+        memberService.updateMemberCache(member);
+        memberService.updateMemberCache(yataOwner);
+
+        jpaPayHistoryRepository.saveAll(List.of(yataMemberHistory, yataOwnerHistory));
+    }
+    private PayHistory makePayHistory(Member member, PayHistory.Type type, Long paidPrice) {
         PayHistory payHistory = new PayHistory();
         payHistory.setMember(member);
-        payHistory.setType(PayHistory.Type.YATA);
+        payHistory.setType(type);
         payHistory.setPaidPrice(paidPrice);
-
-        jpaPayHistoryRepository.save(payHistory);
+        return payHistory;
     }
 
     /*검증 로직*/
