@@ -75,11 +75,9 @@ public class YataMemberServiceImpl implements YataMemberService {
         if (yata.getMaxPeople() < sum + yataRequest.getBoardingPersonCount()) {
             throw new CustomLogicException(ExceptionCode.CANNOT_APPROVE);
         }
-        // 포인트 충분한 신청/초대만 승인 가능
-        Long price = yata.getAmount() * yataRequest.getBoardingPersonCount();
-        Long point = yataRequest.getMember().getPoint();
-        yataRequestService.verifyPoint(price,point);
 
+        // 포인트 충분한 신청/초대만 승인 가능
+        yataRequestService.verifyPriceAndPoint(yata, yataRequest, yataRequest.getMember());
     }
 
     public void saveYataMember(YataRequest yataRequest) {
