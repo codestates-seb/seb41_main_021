@@ -88,12 +88,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         if (userInfo.getName() != null && !member.getName().equals(userInfo.getName())) {
             member.setName(userInfo.getName());
         }
-        if(member.getProviderType().equals(ProviderType.NATIVE)) {
-            throw new CustomLogicException(ExceptionCode.ALREADY_REGISTERED);
-        }
-
-      /*  if (userInfo.getImageUrl() != null && !member.getImgUrl().equals(userInfo.getImageUrl())) {
+        if (userInfo.getImageUrl() != null && !member.getImgUrl().getUrl().equals(userInfo.getImageUrl())) {
             member.setImgUrl(new ImageEntity(UUID.randomUUID() , "OAUTH2" , userInfo.getImageUrl()));
-        }*/
+        }
     }
 }
