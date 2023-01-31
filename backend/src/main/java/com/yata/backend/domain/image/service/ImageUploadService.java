@@ -28,6 +28,9 @@ public class ImageUploadService implements ImageUploader {
 
     @Override
     public String uploadImage(MultipartFile file, String email) throws IOException {
+        if(file.isEmpty()) {
+            throw new CustomLogicException(ExceptionCode.FILE_NOT_SUPPORTED);
+        }
         String[] info = uploadImage(file);
         ImageEntity imageEntity = ImageEntity.builder()
                 .bucket(info[1])

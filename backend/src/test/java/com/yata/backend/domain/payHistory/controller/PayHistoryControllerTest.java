@@ -47,7 +47,7 @@ public class PayHistoryControllerTest extends AbstractControllerTest {
         List<PayHistory> payHistories = PayHistoryFactory.createPayHistoryList();
         List<PayHistoryDto.Response> responses = PayHistoryFactory.createPayHistoryResponseDtoList(payHistories);
 
-        given(payHistoryService.findPayHistory(any(),any())).willReturn(new SliceImpl<>(payHistories));
+        given(payHistoryService.findPayHistory(any(), any())).willReturn(new SliceImpl<>(payHistories));
         given(mapper.payHistoryToPayHistoryResponse(any())).willReturn(responses);
         //when
         ResultActions actions = mockMvc.perform(get(BASE_URL)
