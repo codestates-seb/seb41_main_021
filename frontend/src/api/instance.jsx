@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 // url 호출 시 기본 값 셋팅
 const instance = axios.create({
@@ -93,10 +94,12 @@ function onAccessTokenFetched(accessToken) {
 import { useDispatch } from 'react-redux';
 import { clearUser } from '../redux/slice/UserSlice';
 function signOut() {
+  toast.warning('로그인 정보가 만료되었습니다.');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   localStorage.clear();
   dispatch(clearUser());
-  window.location.href = '/';
+  navigate('/');
 }
 
 const useTokenRefresh = async () => {
@@ -114,8 +117,6 @@ const useTokenRefresh = async () => {
     );
     return response;
   } catch (error) {
-    signOut();
-    toast.warning('로그인 정보가 만료되었습니다.');
     return Promise.reject(error);
   }
 };
