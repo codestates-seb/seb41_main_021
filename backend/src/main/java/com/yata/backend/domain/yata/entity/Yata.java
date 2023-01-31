@@ -7,7 +7,6 @@ import com.yata.backend.global.audit.Auditable;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -94,14 +93,6 @@ public class Yata extends Auditable {
             this.status = status;
             this.statusNumber = statusNumber;
         }
-    }
-
-    public void addStrPoint(Location strPoint) {
-        this.strPoint = strPoint;
-    }
-
-    public void addDestination(Location destination) {
-        this.destination = destination;
     }
 
     //테스트 위한 생성자

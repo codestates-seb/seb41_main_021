@@ -17,7 +17,6 @@ public interface YataRepository {
     Slice<Yata> findAllByMemberAndYata_YataMembersIsNotNull(Pageable pageable, Member member);
     Slice<Yata> findAllByMember_Email(String userName, Pageable pageable);
     Slice<Yata> findAllByYata_YataMember_Member(Pageable pageable, Member member);
-
     List<Yata> findAllByMember_EmailAndYataStatusIsNot(String username, Yata.PostStatus postOpen);
 
 
