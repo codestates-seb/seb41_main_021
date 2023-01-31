@@ -32,18 +32,22 @@ export default function MyPage() {
   };
 
   const handleClick = e => {
-    const formdata = new FormData();
-    formdata.append('uploadImage', files[0]);
+    e.preventDefault();
+    // const formdata = new FormData();
+    // formdata.append('uploadImage', files[0]);
+    console.log(files[0]);
+    // console.log(formdata);
 
-    const config = {
-      Headers: {
-        'Content-Type': 'multipart/form-data;charset=UTF-8',
-      },
-    };
-
-    usePostData(`https://server.yata.kro.kr/api/v1/images/profile`, formdata, config).then(res => {
-      console.log(res);
-    });
+    axios
+      .post('https://server.yata.kro.kr/api/v1/images/profile', files[0], {
+        headers: {
+          'Content-Type': 'multipart/form-data;charset=UTF-8',
+          Authorization: localStorage.getItem('ACCESS'),
+        },
+      })
+      .then(res => {
+        console.log(res);
+      });
   };
 
   const logout = () => {
