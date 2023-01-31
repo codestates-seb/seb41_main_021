@@ -6,18 +6,43 @@ import { BiTrip, BiLike } from 'react-icons/bi';
 import { RiArrowLeftSFill, RiOilLine } from 'react-icons/ri';
 import { IoIosArrowForward } from 'react-icons/io';
 import { RiCoinsFill } from 'react-icons/ri';
-
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { checkIfLogined } from '../hooks/useLogin';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearUser } from '../redux/slice/UserSlice';
 import { useGetData } from '../hooks/useGetData';
+import usePostData from '../hooks/usePostData';
+import axios from 'axios';
+import { MdPreview } from 'react-icons/md';
 
 export default function MyPage() {
   const [review, setReview] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const [files, setFiles] = useState('');
+
+  const onLoadFile = e => {
+    const file = e.target.files;
+    console.log(file);
+    setFiles(file);
+  };
+
+  const handleClick = e => {
+    const formdata = new FormData();
+    formdata.append('uploadImage', files[0]);
+
+    const config = {
+      Headers: {
+        'Content-Type': 'multipart/form-data;charset=UTF-8',
+      },
+    };
+
+    usePostData(`https://server.yata.kro.kr/api/v1/images/profile`, formdata, config).then(res => {
+      console.log(res);
+    });
+  };
 
   const logout = () => {
     localStorage.clear();
@@ -47,10 +72,16 @@ export default function MyPage() {
   return (
     <>
       <Container>
+        <form>
+          <label htmlFor="image">이미지 업로드</label>
+          <input type="file" id="image" accept="img/*" onChange={onLoadFile} multiple />
+          <button onClick={handleClick}>저장하기</button>
+        </form>
         <MyPageContainer>
           <ProfileContainer>
             <Profile>
               <VscAccount />
+              <img src={info.imgUrl} alt="profile picture" />
               <Info>
                 <div className="text" title="이름">
                   {info.name}

@@ -42,8 +42,8 @@ export default function DriverRatingAdd(props) {
           <Profile>
             <VscAccount />
             <Info>
-              <div className="name">닉네임</div>
-              <div className="date">2023.01.11 (수) </div>
+              <div className="name">Yata</div>
+              <div className="date">2023.01.30 (월) </div>
             </Info>
           </Profile>
         </ProfileCotainer>

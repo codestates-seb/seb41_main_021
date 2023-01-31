@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 const Input = props => {
-  const { label, state, setState, type, placeholder, maxLength, onChange, onFocus, onBlur, min, max, readOnly } = props;
+  const { label, state, setState, type, placeholder, maxLength, onChange, onFocus, onBlur, min, max, readOnly, step } =
+    props;
 
   const handleChange = e => {
     setState?.(e.target.value);
@@ -22,6 +23,7 @@ const Input = props => {
           placeholder={placeholder}
           maxLength={maxLength}
           readOnly={readOnly}
+          step={step}
         />
       ) : (
         <StyledInput
@@ -36,6 +38,7 @@ const Input = props => {
           placeholder={placeholder}
           maxLength={maxLength}
           readOnly={readOnly}
+          step={step}
         />
       )}
     </StyledDiv>
