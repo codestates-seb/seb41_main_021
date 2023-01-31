@@ -22,6 +22,7 @@ const useGetUserInfo = async () => {
     const response = await instance.get('/api/v1/members');
     return response.data.data;
   } catch (error) {
+    return error;
     toast.warning('유저 정보를 불러오지 못했습니다.');
   }
 };
