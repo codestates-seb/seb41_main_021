@@ -1,7 +1,6 @@
 package com.yata.backend.domain.member.mapper;
 
 import com.yata.backend.domain.member.dto.MemberDto;
-import com.yata.backend.domain.member.entity.AuthoritiesEntity;
 import com.yata.backend.domain.member.entity.Member;
 import org.mapstruct.Mapper;
 

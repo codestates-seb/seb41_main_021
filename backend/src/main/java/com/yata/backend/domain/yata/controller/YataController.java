@@ -62,6 +62,7 @@ public class YataController {
     }
 
     //너타/나타 목록 불러오기
+    // 삭제 예정
     @GetMapping
     public ResponseEntity getAllYata(@RequestParam String yataStatus, Pageable pageable) {
         Slice<Yata> requests = yataService.findAllYata(yataStatus, pageable);
@@ -79,9 +80,10 @@ public class YataController {
 
     }
 
-    //내가 쓴 게시물 중 조회(신청 온 것만, 마감상태여도 보이게)
+    //내가 쓴 게시물 중 신청 온 것 조회(마감상태 제외)
     @GetMapping("/myYatas/myRequested")
-    public ResponseEntity getMyRequestedYatas(@AuthenticationPrincipal User authMember, Pageable pageable) {
+    public ResponseEntity getMyRequestedYatas(
+            @AuthenticationPrincipal User authMember, Pageable pageable) {
         Slice<Yata> requests = yataService.findMyRequestedYatas(authMember.getUsername(), pageable);
         SliceInfo sliceInfo = new SliceInfo(pageable, requests.getNumberOfElements(), requests.hasNext());
         return new ResponseEntity<>(
@@ -90,12 +92,16 @@ public class YataController {
 
     // 내가 쓴 게시물 전체 조회
     @GetMapping("/myYatas")
-    public ResponseEntity getMyYatas(@AuthenticationPrincipal User authMember, Pageable pageable) {
-        Slice<Yata> requests = yataService.findMyYatas(authMember.getUsername(), pageable);
+    public ResponseEntity getMyYatas(@AuthenticationPrincipal User authMember,
+                                     Pageable pageable,
+                                     @RequestParam(required = false) String yataStatus,
+                                     @RequestParam(required = false) Boolean isExpired) {
+        Slice<Yata> requests = yataService.findMyYatas(authMember.getUsername(), pageable , yataStatus, isExpired);
         SliceInfo sliceInfo = new SliceInfo(pageable, requests.getNumberOfElements(), requests.hasNext());
         return new ResponseEntity<>(
                 new SliceResponseDto<>(mapper.yatasToYataResponses(requests.getContent()), sliceInfo), HttpStatus.OK);
     }
+
     @GetMapping("/myYatas/neota/notClosed")
     public ResponseEntity getMyYatasNotClosed(@AuthenticationPrincipal User authMember) {
         List<Yata> requests = yataService.findMyYatasNotClosed(authMember.getUsername());
@@ -109,7 +115,7 @@ public class YataController {
         Slice<Yata> requests = yataService.findMyAcceptedYata(authMember.getUsername(), pageable);
         SliceInfo sliceInfo = new SliceInfo(pageable, requests.getNumberOfElements(), requests.hasNext());
         return new ResponseEntity<>(
-                new SliceResponseDto<>(mapper.yataToMyYatas(requests.getContent(),authMember.getUsername()), sliceInfo), HttpStatus.OK);
+                new SliceResponseDto<>(mapper.yataToMyYatas(requests.getContent(), authMember.getUsername()), sliceInfo), HttpStatus.OK);
     }
 
 }

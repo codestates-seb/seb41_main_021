@@ -4,7 +4,6 @@ import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.service.MemberService;
 import com.yata.backend.domain.notify.annotation.NeedNotify;
 import com.yata.backend.domain.yata.dto.YataRequestDto;
-import com.yata.backend.domain.yata.entity.Location;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataRequest;
 import com.yata.backend.domain.yata.entity.YataStatus;
@@ -18,7 +17,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 import static com.yata.backend.domain.yata.entity.YataRequest.RequestStatus.APPLY;
@@ -67,9 +65,7 @@ public class YataRequestServiceImpl implements YataRequestService {
         verifyMaxPeople(yataRequest.getBoardingPersonCount(), yata.getMaxPeople()); // 인원 수 검증
 
         // (게시물의 가격 * 타려는 인원) 만큼 해당 멤버가 포인트가 충분한지 검증
-//        Long price = yata.getAmount() * yataRequest.getBoardingPersonCount();
-//        Long point = member.getPoint();
-//        verifyPoint(price, point);
+        verifyPriceAndPoint(yata, yataRequest, member);
 
         yataRequest.setYata(yata);
         yataRequest.setMember(member);
@@ -84,22 +80,26 @@ public class YataRequestServiceImpl implements YataRequestService {
     public YataRequest createInvitation(String userName, YataRequestDto.InvitePost invitationRequestDto) {
         Member yataOwner = memberService.findMember(userName); // 해당 멤버가 있는지 확인하고
         Member invitedMember = memberService.findMember(invitationRequestDto.getInviteEmail()); // 초대할 멤버가 있는지 확인하고
-        // TODO verify 조작
+
         verifyInvitation(invitationRequestDto.getInviteEmail(), invitationRequestDto.getYataId()); // 신청 목록에 있는 애인지 확인하고 (초대한 애가 아닌지 확인하고)
-        // 내가 초대 할려는 게시물이 있는지 확인
-        Yata yata = yataService.findYata(invitationRequestDto.getYataId());
-        Yata invitedYata = yataService.findYata(invitationRequestDto.getInvitedYataId());
+        Yata yata = yataService.findYata(invitationRequestDto.getYataId()); // 내 게시물이 있는지 확인
+        Yata invitedYata = yataService.findYata(invitationRequestDto.getInvitedYataId()); // 내가 초대 하려는 게시물이 있는지 확인
+
         yataService.equalMember(yataOwner.getEmail(), yata.getMember().getEmail()); // 게시글을 쓴 멤버만 초대 가능하도록
         yataService.equalMember(invitedYata.getMember().getEmail(), invitedMember.getEmail()); // 초대할 게시글의 멤버와 초대할 멤버가 같아야함
+
         if (invitedYata.getYataStatus().equals(YataStatus.YATA_NEOTA)) {
-            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT); // 초대할 게시물이 너타면 안댐
+            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT); // 초대할 게시물이 너타면 안됨
         }
+
         // 초대 시간과 게시글의 출발 시간 비교 --> 게시물의 출발시간이 이미 지난 경우(마감인 경우) 익셉션
         TimeCheckUtils.verifyTime(yata.getDepartureTime().getTime(), System.currentTimeMillis());
+
         YataStatus yataStatus = yata.getYataStatus();
         if (yataStatus == YataStatus.YATA_NATA) {
-            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
+            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT); // 내 게시물이 나타면 안됨
         }
+
         YataRequest yataRequest = YataRequest.builder()
                 .requestStatus(INVITE)
                 .approvalStatus(YataRequest.ApprovalStatus.NOT_YET)
@@ -117,7 +117,7 @@ public class YataRequestServiceImpl implements YataRequestService {
 
     }
 
-    // Yata 신청/초대 목록 조회
+    // Yata 게시글로 온 신청/초대 목록 조회
     @Override
     public Slice<YataRequest> findRequestsByYataOwner(String userEmail, Long yataId, Pageable pageable) {
         Yata yata = yataService.findYata(yataId);
@@ -136,12 +136,12 @@ public class YataRequestServiceImpl implements YataRequestService {
         return jpaYataRequestRepository.findAllByMember_Email(userEmail, pageable);
     }
 
-    // Yata 신청 취소 / 초대 취소
+    // 자기가 한 신청/초대 취소
     @Override
     public void deleteRequest(String userName, Long yataRequestId, Long yataId) {
         Member member = memberService.verifyMember(userName); // 해당 member 가 있는지
-        Yata yata = yataService.findYata(yataId); // 해당 yataId 가 있는지 ( 게시물 )
-        YataRequest yataRequest = findRequest(yataRequestId); // 해당 yataRequestId 로 한 신청/초대가 있는지 ( 신청/초대 )
+        Yata yata = yataService.findYata(yataId); // 해당 게시물이 있는지
+        YataRequest yataRequest = findRequest(yataRequestId); // 해당 yataRequestId 로 한 신청/초대가 있는지
 
         // 삭제하려는 사람 == 신청했던 사람 인지 확인
         if (yataRequest.getRequestStatus().equals(APPLY)) {
@@ -158,6 +158,12 @@ public class YataRequestServiceImpl implements YataRequestService {
                     throw new CustomLogicException(ExceptionCode.CANNOT_DELETE); // 승인/거절 받았으면 삭제 불가 (운전자만 삭제 가능)
             default -> jpaYataRequestRepository.delete(yataRequest); // 아닌 경우 삭제 가능
         }
+    }
+
+    @Override
+    public Slice<YataRequest> findRequestsInvite(String username, Pageable pageable) {
+
+        return jpaYataRequestRepository.findByMember_EmailAndRequestStatus(username, INVITE, pageable);
     }
 
     /*검증 로직*/
@@ -184,7 +190,16 @@ public class YataRequestServiceImpl implements YataRequestService {
         );
     }
 
-    // 신청/초대 id 로 해당 내역을 가져오는 로직
+    // 해당 yataRequest 가 해당 yata 게시물에 신청한 request 인지 검증
+    @Override
+    public void verifyAppliedRequest(Yata yata, Long yataRequestId) {
+        YataRequest request = findRequest(yataRequestId);
+        if (!request.getYata().equals(yata)) {
+            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
+        }
+    }
+
+    // yataRequestId 로 해당 신청 내역을 가져오는 로직
     @Override
     public YataRequest findRequest(Long yataRequestId) {
         Optional<YataRequest> optionalYataRequest = jpaYataRequestRepository.findById(yataRequestId);
@@ -211,23 +226,13 @@ public class YataRequestServiceImpl implements YataRequestService {
 
     // 게시물의 가격과 비교하여 해당 멤버가 포인트가 충분한지 검증
     @Override
-    public void verifyPoint(Long price, Long point) {
+    public void verifyPriceAndPoint(Yata yata, YataRequest yataRequest, Member member) {
+        // (게시물의 가격 * 타려는 인원) 만큼 해당 멤버가 포인트가 충분한지 검증
+        Long price = yata.getAmount() * yataRequest.getBoardingPersonCount();
+        Long point = member.getPoint();
+
         if (price > point) {
             throw new CustomLogicException(ExceptionCode.PAYMENT_NOT_ENOUGH_POINT);
         }
-    }
-
-    // 승인하려는 yataRequest 가 해당 yata 게시물에 신청한 request 인지 검증
-    @Override
-    public void verifyAppliedRequest(Yata yata, Long yataRequestId) {
-        YataRequest request = findRequest(yataRequestId);
-        if (!request.getYata().equals(yata)) {
-            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
-        }
-    }
-
-    @Override
-    public Slice<YataRequest> findRequestsInvite(String username, Pageable pageable) {
-        return jpaYataRequestRepository.findByMember_EmailAndRequestStatus(username, INVITE, pageable);
     }
 }

@@ -1,6 +1,5 @@
 package com.yata.backend.domain.notify.annotation;
 
-import javax.inject.Scope;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;

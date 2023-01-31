@@ -1,7 +1,6 @@
 package com.yata.backend.domain.yata.repository.yataMemberRepo;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.entity.QMember;
 import com.yata.backend.domain.yata.entity.*;
 

@@ -9,20 +9,17 @@ import usePostData from '../hooks/usePostData';
 export default function Purchase() {
   const [amount, setAmount] = useState('');
   var clientKey = 'test_ck_OALnQvDd2VJno4oBOBaVMj7X41mN';
-  var tossPayments = loadTossPayments(clientKey); // 클라이언트 키로 초기화하기
   // 이 아래 부분은 서버에 요청해서 가져올 내용
   const payment = () => {
     const body = {
       payType: 'CARD',
       amount,
       orderName: '포인트 충전',
-      yourSuccessUrl: 'http://localhost:3000/payment/success',
-      yourFailUrl: 'http://localhost:3000/payment/fail',
+      yourSuccessUrl: 'http://localhost:3000/point-success',
+      yourFailUrl: 'http://localhost:3000/point-fail',
     };
     usePostData('/api/v1/payments/toss', body).then(res => {
-      console.log(res);
       const data = res.data.data;
-      console.log(data);
       loadTossPayments(clientKey).then(tossPayments => {
         tossPayments
           .requestPayment(data.payType, {
@@ -51,7 +48,7 @@ export default function Purchase() {
       <Header title="포인트 충전하기" />
       <Container>
         <Contents>
-          <Input label="충전 금액" placeholder={'10,000'} state={amount} setState={setAmount}></Input>
+          <Input label="충전 금액" placeholder={'최소 충전 금액: 1,000원'} state={amount} setState={setAmount}></Input>
           <AuthBtn onClick={payment}>Toss Pay로 충전하기</AuthBtn>
         </Contents>
       </Container>

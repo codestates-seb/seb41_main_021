@@ -1,9 +1,8 @@
 package com.yata.backend.domain.notify.aop;
 
 import com.yata.backend.domain.notify.dto.NotifyMessage;
-import com.yata.backend.domain.notify.entity.Notify;
 import com.yata.backend.domain.notify.service.NotifyService;
-import com.yata.backend.domain.yata.entity.YataRequest;
+import com.yata.backend.domain.notify.aop.proxy.NotifyInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -33,12 +32,12 @@ public class NotifyAspect {
     @Async
     @AfterReturning(pointcut = "annotationPointcut()", returning = "result")
     public void checkValue(JoinPoint joinPoint, Object result) throws Throwable {
-        YataRequest yataResult = (YataRequest) result;
+        NotifyInfo notifyProxy = (NotifyInfo) result;
         notifyService.send(
-                yataResult.getYata().getMember(),
-                Notify.NotificationType.YATA,
+                notifyProxy.getReceiver(),
+                notifyProxy.getNotificationType(),
                 NotifyMessage.YATA_NEW_REQUEST.getMessage(),
-                "/api/v1/yata/" + (yataResult.getYata().getYataId())
+                "/api/v1/yata/" + (notifyProxy.getGoUrlId())
         );
         log.info("result = {}", result);
     }

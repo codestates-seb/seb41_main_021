@@ -1,24 +1,22 @@
 import styled from 'styled-components';
 import Header from '../components/Header';
 import ChargeList from '../components/ChargeList';
-import useChargeList from '../hooks/useChargeList';
+import { useGetData } from '../hooks/useGetData';
 import { useState, useEffect } from 'react';
 
 export default function PointHistory() {
   const [list, setList] = useState([]);
-  const [data, setData] = useState([]);
 
   useEffect(() => {
-    useChargeList('https://server.yata.kro.kr/api/v1/payHistory').then(res => {
+    useGetData('/api/v1/payments/history').then(res => {
       setList(res.data.data);
-      setData(res.data.data);
       console.log(res.data.data);
     });
   }, []);
   return (
     <>
       <Header title="충전 내역" />
-      {data.length !== 0 ? (
+      {list.length !== 0 ? (
         <Container>
           <ChargeList list={list} />
         </Container>

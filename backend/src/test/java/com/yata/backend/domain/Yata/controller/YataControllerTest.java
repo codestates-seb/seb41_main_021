@@ -473,15 +473,21 @@ public class YataControllerTest extends AbstractControllerTest {
     @WithMockUser(username = "test@gmail.com", roles = "USER")
     @DisplayName("내가 쓴 야타 전체 조회")
     void getMyYatas() throws Exception {
+        String params = new StringBuilder()
+                .append("?yataStatus=").append(YataStatus.YATA_NEOTA)
+                .append("&isExpired=").append("false")
+                .append("&page=0")
+                .append("&size=10")
+                .toString();
         List<Yata> yatas = YataFactory.createYataList();
         List<YataDto.Response> responses = YataFactory.createYataResponseDtoList(yatas);
-        Slice<Yata> yataSlice = new SliceImpl<>(yatas);
+        Slice<Yata> yataSlice = new SliceImpl<>(yatas , PageRequest.of(0, 10), true);
 
-        given(yataService.findMyYatas(anyString(), any())).willReturn(yataSlice);
+        given(yataService.findMyYatas(anyString(), any(),anyString(),anyBoolean())).willReturn(yataSlice);
         given(mapper.yatasToYataResponses(yataSlice.getContent())).willReturn(responses);
         ResultActions actions =
                 mockMvc.perform(RestDocumentationRequestBuilders.
-                        get(BASE_URL + "/myYatas")
+                        get(BASE_URL + "/myYatas/" + params )
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .headers(GeneratedToken.getMockHeaderToken())

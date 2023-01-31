@@ -6,6 +6,7 @@ const Input = props => {
   const handleChange = e => {
     setState?.(e.target.value);
   };
+
   return (
     <StyledDiv>
       <StyledLabel htmlFor={label}>{label}</StyledLabel>
