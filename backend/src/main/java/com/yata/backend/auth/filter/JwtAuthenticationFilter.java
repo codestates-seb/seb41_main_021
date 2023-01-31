@@ -6,6 +6,10 @@ import com.yata.backend.auth.service.RefreshService;
 import com.yata.backend.auth.token.AuthToken;
 import com.yata.backend.auth.token.AuthTokenProvider;
 import com.yata.backend.domain.member.entity.Member;
+import com.yata.backend.global.exception.CustomLogicException;
+import com.yata.backend.global.exception.ExceptionCode;
+import com.yata.backend.global.response.ErrorResponder;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -39,7 +43,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         try {
             loginDto = gson.fromJson(request.getReader(), LoginDto.class);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
+        }
+        if(loginDto == null) {
+            try {
+                ErrorResponder.sendErrorResponse(response, HttpStatus.BAD_REQUEST);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            return null;
         }
         UsernamePasswordAuthenticationToken authenticationToken
                 = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
