@@ -48,7 +48,7 @@ public class YataMemberServiceImpl implements YataMemberService {
         Yata yata = yataService.findYata(yataId); // 해당 yata 가 있는지 확인 ( 승인하려는 게시물Id )
         YataRequest yataRequest = yataRequestService.findRequest(yataRequestId); // 해당 yataRequest 가 있는지 확인 ( 승인하려는 신청Id )
         // 초대 한 애들은 승인 X
-        if(yataRequest.getRequestStatus().equals(YataRequest.RequestStatus.INVITE)){
+        if (yataRequest.getRequestStatus().equals(YataRequest.RequestStatus.INVITE)) {
             throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
         }
         yataService.equalMember(member.getEmail(), yata.getMember().getEmail()); // 승인하려는 member = 게시글 작성한 member 인지 확인
@@ -75,11 +75,9 @@ public class YataMemberServiceImpl implements YataMemberService {
         if (yata.getMaxPeople() < sum + yataRequest.getBoardingPersonCount()) {
             throw new CustomLogicException(ExceptionCode.CANNOT_APPROVE);
         }
-        // 포인트 충분한 신청/초대만 승인 가능
-        Long price = yata.getAmount() * yataRequest.getBoardingPersonCount();
-        Long point = yataRequest.getMember().getPoint();
-        yataRequestService.verifyPoint(price,point);
 
+        // 포인트 충분한 신청/초대만 승인 가능
+        yataRequestService.verifyPriceAndPoint(yata, yataRequest, yataRequest.getMember());
     }
 
     public void saveYataMember(YataRequest yataRequest) {
@@ -171,8 +169,8 @@ public class YataMemberServiceImpl implements YataMemberService {
         yataMember.setYataPaid(true); // 지불 여부 true 로
         yataMember.setGoingStatus(YataMember.GoingStatus.ARRIVED); // goingStatus 도착으로
 
-        PayHistory yataMemberHistory = makePayHistory(member, PayHistory.Type.YATA, paidPrice , PayHistory.Gain.PAY);
-        PayHistory yataOwnerHistory = makePayHistory(yataOwner, PayHistory.Type.YATA, paidPrice , PayHistory.Gain.GAIN);
+        PayHistory yataMemberHistory = makePayHistory(member, PayHistory.Type.YATA, paidPrice, PayHistory.Gain.PAY);
+        PayHistory yataOwnerHistory = makePayHistory(yataOwner, PayHistory.Type.YATA, paidPrice, PayHistory.Gain.GAIN);
 
         memberService.updateMemberCache(yataMember.getMember());
         memberService.updateMemberCache(member);
@@ -180,6 +178,7 @@ public class YataMemberServiceImpl implements YataMemberService {
 
         jpaPayHistoryRepository.saveAll(List.of(yataMemberHistory, yataOwnerHistory));
     }
+
     private PayHistory makePayHistory(Member member, PayHistory.Type type, Long paidPrice, PayHistory.Gain gain) {
         PayHistory payHistory = new PayHistory();
         payHistory.setMember(member);
@@ -213,6 +212,7 @@ public class YataMemberServiceImpl implements YataMemberService {
         return optionalYataMember.orElseThrow(() ->
                 new CustomLogicException(ExceptionCode.CANNOT_CREATE_REVIEW));
     }
+
     @Cacheable(value = "myYataCount", key = "#email")
     public Integer yataCount(String email) {
         return jpaYataMemberRepository.countByMember_email(email);

@@ -1,5 +1,6 @@
 package com.yata.backend.domain.yata.service;
 
+import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.yata.dto.YataRequestDto;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataRequest;
@@ -17,10 +18,9 @@ public interface YataRequestService {
     /*검증 로직*/
     void verifyRequest(String userName, Long yataId);
     void verifyInvitation(String userName, Long yataId);
+    void verifyAppliedRequest(Yata yata, Long yataRequestId);
     YataRequest findRequest(Long yataRequestId);
     void verifyMaxPeople(int requestPeople, int maxPeople);
     void compareMember(String email, String postEmail);
-    void verifyPoint(Long price, Long point);
-    void verifyAppliedRequest(Yata yata, Long yataRequestId);
-
+    void verifyPriceAndPoint(Yata yata, YataRequest yataRequest, Member member);
 }

@@ -27,9 +27,10 @@ public class PayHistoryFactory {
                 .gain(PayHistory.Gain.PAY)
                 .build();
     }
+
     public static List<PayHistory> createPayHistoryList() throws java.text.ParseException, org.locationtech.jts.io.ParseException {
         List<PayHistory> payHistoryList = new ArrayList<>();
-        for(int i=0; i<10; i++){
+        for (int i = 0; i < 10; i++) {
             payHistoryList.add(createPayHistory());
         }
         return payHistoryList;
@@ -49,9 +50,9 @@ public class PayHistoryFactory {
                 .build();
     }
 
-    public static List<PayHistoryDto.Response> createPayHistoryResponseDtoList(List<PayHistory> payHistoriesList){
+    public static List<PayHistoryDto.Response> createPayHistoryResponseDtoList(List<PayHistory> payHistoriesList) {
         List<PayHistoryDto.Response> payHistoryResponseDtoList = new ArrayList<>();
-        for(PayHistory payHistory : payHistoriesList){
+        for (PayHistory payHistory : payHistoriesList) {
             payHistoryResponseDtoList.add(createPayHistoryResponseDto(payHistory));
         }
         return payHistoryResponseDtoList;

@@ -356,6 +356,9 @@ include::{snippets}/yata-getMyRequestedYatas/response-fields.adoc[]
 === 내가 쓴 야타 전체 조회
 내가 쓴 게시물 전체 조회
 GET /api/v1/yata/myYatas
+parameters : page, size , yataStatus(required = false) , isExpired(required = false)
+yataStatus : YATA_NEOTA, YATA_NATA 없으면 구분 없이 전체 조회
+isExpired : true, false 없으면 구분 없이 전체 조회 , true 면 마감된 야타만 조회, false 면 마감되지 않은 야타만 조회
 
 .http-request
 include::{snippets}/yata-getMyYatas/http-request.adoc[]
