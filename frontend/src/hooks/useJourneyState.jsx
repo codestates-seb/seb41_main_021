@@ -1,16 +1,9 @@
 import axios from 'axios';
 import instance from '../api/instance';
 
-const header = {
-  headers: {
-    'Content-Type': 'application/json;charset=UTF-8',
-    Authorization: localStorage.getItem('ACCESS'),
-  },
-};
-
 const useJourneyState = async url => {
   try {
-    const response = await instance.get(url, header);
+    const response = await instance.get(url);
     return response;
   } catch (error) {
     return console.log(error);

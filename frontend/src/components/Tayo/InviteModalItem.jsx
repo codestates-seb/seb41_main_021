@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useTayoInvite } from '../hooks/useTayo';
-import Button from './common/Button';
-import { dateFormat } from './common/DateFormat';
+import { useTayoInvite } from '../../hooks/useTayo';
+import Button from '../common/Button';
+import { dateFormat } from '../common/DateFormat';
 
-const ModalItem = props => {
+const InviteModalItem = props => {
   const { yataId, invitedYataId, inviteEmail, strPoint, destination, resNum, maxPeople, departureTime } = props;
 
   const requestHandler = () => {
@@ -78,4 +78,4 @@ const DateContainer = styled.div`
   padding-left: 0.3rem;
 `;
 
-export default ModalItem;
+export default InviteModalItem;

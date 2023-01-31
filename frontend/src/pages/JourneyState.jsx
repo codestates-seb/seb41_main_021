@@ -11,31 +11,36 @@ import { dateFormat } from '../components/common/DateFormat';
 export default function JourneyState() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isUpdate, setIsUpdate] = useState(true);
 
   useEffect(() => {
-    useJourneyState('https://server.yata.kro.kr/api/v1/yata/accept/yatas').then(res => {
-      setData(res.data.data);
-      console.log(res.data.data);
-    });
-  }, []);
+    if (isUpdate) {
+      useJourneyState('https://server.yata.kro.kr/api/v1/yata/accept/yatas').then(res => {
+        setData(res.data.data);
+        setIsUpdate(false);
+      });
+    }
+  }, [isUpdate]);
 
   return (
     <>
-      <Header title="여정 현황" />
+      <Header title="확정된 여정" />
       {data.length !== 0 ? (
         <Container>
           <HelpContainer>결제하기를 누르면, 자동으로 포인트가 차감됩니다.</HelpContainer>
           {data.map(el => {
             return (
               <JourneyItem
-                key={el.yataId}
-                date={dateFormat(el.departureTime)}
-                journeyStart={el.strPoint.address}
-                journeyEnd={el.destination.address}
-                price={el.amount}
-                people={`1/${el.maxPeople}`}
-                state={'대기'}
-                isPay={false}
+                key={el.yataResponse.yataId}
+                yataId={el.yataResponse.yataId}
+                yataMemberId={el.yataResponse.yataMembers[0].yataMemberId}
+                date={dateFormat(el.yataResponse.departureTime)}
+                journeyStart={el.yataResponse.strPoint.address}
+                journeyEnd={el.yataResponse.destination.address}
+                price={el.yataResponse.amount}
+                people={`${el.yataResponse.reservedMemberNum}/${el.yataResponse.maxPeople}`}
+                isPay={el.yataPaid}
+                setIsUpdate={setIsUpdate}
               />
             );
           })}
@@ -56,6 +61,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  svg {
+    position: static;
+  }
 
   .no-content {
     height: 100%;
