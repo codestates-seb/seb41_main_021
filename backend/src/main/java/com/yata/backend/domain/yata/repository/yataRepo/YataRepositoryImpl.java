@@ -74,7 +74,7 @@ public class YataRepositoryImpl implements YataRepository {
 
     @Override
     public Slice<Yata> findAllByYataStatusIs(YataStatus yataStatus, Pageable pageable) {
-        List<Yata> yatas = queryFactory.selectFrom(yata)
+        JPAQuery<Yata> yataJPAQuery = queryFactory.selectFrom(yata)
                 .join(yata.member).fetchJoin()
                 .join(yata.strPoint).fetchJoin()
                 .join(yata.destination).fetchJoin()
@@ -82,20 +82,14 @@ public class YataRepositoryImpl implements YataRepository {
                 .where(yata.yataStatus.eq(yataStatus))
                 .orderBy(yata.yataId.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize() + 1L)
-                .fetch();
+                .limit(pageable.getPageSize() + 1L);
 
-        boolean hasNext = false;
-        if (yatas.size() > pageable.getPageSize()) {
-            yatas.remove(pageable.getPageSize());
-            hasNext = true;
-        }
-        return new SliceImpl<>(yatas, pageable, hasNext);
+        return generateYataSlice(pageable, yataJPAQuery);
     }
 
     @Override
     public Slice<Yata> findAllByMemberAndYata_YataMembersIsNotNull(Pageable pageable, Member member) {
-        List<Yata> yatas = queryFactory.selectFrom(yata) //selectFrom(yata) yata가 저장되어 있는 테이블로부터 조회한다.
+        JPAQuery<Yata> yataJPAQuery = queryFactory.selectFrom(yata) //selectFrom(yata) yata가 저장되어 있는 테이블로부터 조회한다.
                 .join(yata.member).fetchJoin() //
                 .join(yata.strPoint).fetchJoin()
                 .join(yata.destination).fetchJoin()
@@ -106,20 +100,15 @@ public class YataRepositoryImpl implements YataRepository {
                 .where(yata.postStatus.eq(Yata.PostStatus.POST_OPEN)) //게시글이 열려있는 것
                 .orderBy(yata.yataId.desc())
                 .offset(pageable.getOffset()) //가져올 레코드의 시작점을 결정
-                .limit(pageable.getPageSize() + 1L) //가져올 레코드의 개수를 정한다
-                .fetch(); //query를 생성하고 결과를 list로 반환하는 역할
+                .limit(pageable.getPageSize() + 1L); //가져올 레코드의 개수를 정한다
+        //query를 생성하고 결과를 list로 반환하는 역할
 
-        boolean hasNext = false;
-        if (yatas.size() > pageable.getPageSize()) {
-            yatas.remove(pageable.getPageSize());
-            hasNext = true;
-        }
-        return new SliceImpl<>(yatas, pageable, hasNext);
+        return generateYataSlice(pageable, yataJPAQuery);
     }
 
     @Override
     public Slice<Yata> findAllByYata_YataMember_Member(Pageable pageable, Member member) {
-        List<Yata> yatas = queryFactory.selectFrom(yata)
+        JPAQuery<Yata> yataJPAQuery = queryFactory.selectFrom(yata)
                 .join(yata.member).fetchJoin() //
                 .join(yata.strPoint).fetchJoin()
                 .join(yata.destination).fetchJoin()
@@ -127,14 +116,8 @@ public class YataRepositoryImpl implements YataRepository {
                 .where(yataMember.member.eq(member))
                 .orderBy(yata.yataId.desc())
                 .offset(pageable.getOffset()) //가져올 레코드의 시작점을 결정
-                .limit(pageable.getPageSize() + 1L) //가져올 레코드의 개수를 정한다
-                .fetch(); //query를 생성하고 결과를 list로 반환하는 역할
-        boolean hasNext = false;
-        if (yatas.size() > pageable.getPageSize()) {
-            yatas.remove(pageable.getPageSize());
-            hasNext = true;
-        }
-        return new SliceImpl<>(yatas, pageable, hasNext);
+                .limit(pageable.getPageSize() + 1L); //가져올 레코드의 개수를 정한다 query를 생성하고 결과를 list로 반환하는 역할
+        return generateYataSlice(pageable, yataJPAQuery);
     }
 
     @Override
