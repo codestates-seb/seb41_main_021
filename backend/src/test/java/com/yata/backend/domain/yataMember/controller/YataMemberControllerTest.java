@@ -1,6 +1,5 @@
 package com.yata.backend.domain.yataMember.controller;
 
-import com.google.gson.Gson;
 import com.yata.backend.common.token.GeneratedToken;
 import com.yata.backend.domain.AbstractControllerTest;
 import com.yata.backend.domain.Yata.factory.YataFactory;
@@ -42,8 +41,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(YataMemberController.class)
 public class YataMemberControllerTest extends AbstractControllerTest {
     private final String BASE_URL = "/api/v1/yata";
-    @Autowired
-    private Gson gson;
     @MockBean
     private YataMemberService yataMemberService;
     @MockBean
