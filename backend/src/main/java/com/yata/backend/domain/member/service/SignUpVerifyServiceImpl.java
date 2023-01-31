@@ -1,10 +1,7 @@
 package com.yata.backend.domain.member.service;
 
-import com.yata.backend.domain.member.dto.DriverAuthDto;
 import com.yata.backend.domain.member.dto.EmailAuthDto;
-import com.yata.backend.domain.member.entity.AuthoritiesEntity;
 import com.yata.backend.domain.member.entity.EmailVerifyEntity;
-import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.event.EmailAuthApplicationEvent;
 import com.yata.backend.domain.member.repository.JpaEmailVerifyRepository;
 import com.yata.backend.global.exception.CustomLogicException;

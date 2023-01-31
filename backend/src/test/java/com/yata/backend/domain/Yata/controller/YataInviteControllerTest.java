@@ -16,13 +16,11 @@ import com.yata.backend.domain.yata.service.YataInviteService;
 import com.yata.backend.domain.yata.service.YataRequestService;
 import com.yata.backend.domain.yataRequest.factory.YataRequestFactory;
 import com.yata.backend.domain.yataRequest.factory.YataRequestSnippet;
-import com.yata.backend.global.response.PageInfo;
-import com.yata.backend.global.response.SliceInfo;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.restdocs.payload.JsonFieldType;

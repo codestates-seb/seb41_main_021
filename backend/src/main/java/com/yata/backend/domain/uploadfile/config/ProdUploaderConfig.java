@@ -4,7 +4,6 @@ import com.yata.backend.domain.image.repository.JpaImageRepository;
 import com.yata.backend.domain.image.service.ImageUploader;
 import com.yata.backend.domain.image.service.ImageUploadService;
 import com.yata.backend.domain.member.service.MemberService;
-import com.yata.backend.domain.uploadfile.service.LocalUploader;
 import com.yata.backend.domain.uploadfile.service.Uploader;
 import com.yata.backend.domain.uploadfile.service.S3Uploader;
 import org.springframework.context.annotation.Bean;

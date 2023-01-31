@@ -24,7 +24,6 @@ public class PayHistoryServiceImpl implements PayHistoryService {
     @Override
     public Slice<PayHistory> findPayHistory(String userName, Pageable pageable) {
         Member member = memberService.verifyMember(userName);
-        // 결제된 내역만 가져오는 거 어차피 저 레포에 다 저장되어 있는 대로만 가져옴
 
         return jpaPayHistoryRepository.findAllByMember(member, pageable);
     }

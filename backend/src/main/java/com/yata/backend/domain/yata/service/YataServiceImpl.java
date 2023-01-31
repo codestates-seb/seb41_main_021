@@ -100,10 +100,10 @@ public class YataServiceImpl implements YataService {
     }
 
     @Override
-    public Slice<Yata> findMyYatas(String userName, Pageable pageable) {
+    public Slice<Yata> findMyYatas(String userName, Pageable pageable , String yataStatus , Boolean isExpired) {
 
         memberService.findMember(userName);
-        return jpaYataRepository.findAllByMember_Email(userName, pageable);
+        return jpaYataRepository.findAllByMember_Email(userName, pageable , yataStatus , isExpired);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.yata.backend.domain.image.entity;
 
-import com.yata.backend.global.audit.Auditable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.UUID;
 
 @Entity

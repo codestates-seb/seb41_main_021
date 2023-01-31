@@ -21,7 +21,7 @@ public interface YataService {
     Slice<Yata> findMyAcceptedYata(String userName, Pageable pageable);
     Slice<Yata> findMyRequestedYatas(String userName, Pageable pageable);
 
-    Slice<Yata> findMyYatas(String userName, Pageable pageable);
+    Slice<Yata> findMyYatas(String userName, Pageable pageable , String yataStatus , Boolean isExpired);
 
     void equalMember(String email, String postEmail);
 

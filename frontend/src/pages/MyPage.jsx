@@ -15,6 +15,8 @@ import { useGetData } from '../hooks/useGetData';
 import usePostData from '../hooks/usePostData';
 import axios from 'axios';
 import { MdPreview } from 'react-icons/md';
+import { useGetUserInfo } from '../hooks/useLogin';
+import { loginUser } from '../redux/slice/UserSlice';
 
 export default function MyPage() {
   const [review, setReview] = useState([]);
@@ -60,6 +62,7 @@ export default function MyPage() {
     if (!isLogin) {
       return navigate('/');
     }
+    useGetUserInfo().then(res => dispatch(loginUser(res)));
     useGetData(`https://server.yata.kro.kr/api/v1/review/${info.email}`).then(res => {
       if (res.status === 200) {
         setReview(res.data.data);
@@ -259,6 +262,7 @@ const CompleteAuth = styled.div`
 `;
 const UncompleteAuth = styled(CompleteAuth)`
   background-color: ${props => props.theme.colors.gray};
+  width: 8rem;
 `;
 
 const PointContainer = styled.div`

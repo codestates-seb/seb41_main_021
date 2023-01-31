@@ -3,7 +3,6 @@ package com.yata.backend.domain.yata.controller;
 import com.yata.backend.domain.yata.entity.YataMember;
 import com.yata.backend.domain.yata.mapper.YataMemberMapper;
 import com.yata.backend.domain.yata.service.YataMemberService;
-import com.yata.backend.global.response.SingleResponse;
 import com.yata.backend.global.response.SliceInfo;
 import com.yata.backend.global.response.SliceResponseDto;
 import org.springframework.data.domain.Pageable;
@@ -38,8 +37,8 @@ public class YataMemberController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    // 신청 거절
-    // yata 거절 / 승인된 yata 거절 - 204
+
+    // yata 신청 거절 / 승인된 yata 거절 - 204
     @PostMapping("/{yataRequestId}/reject")
     public ResponseEntity rejectRequest(@PathVariable("yataId") @Positive long yataId,
                                         @PathVariable("yataRequestId") @Positive long yataRequestId,
@@ -49,7 +48,7 @@ public class YataMemberController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // 승인된 yataReq 전체 조회 - 200
+    // 승인된 yataRequests 전체 조회 - 200
     @GetMapping("/accept/yataRequests")
     public ResponseEntity getApprovedRequests(@PathVariable("yataId") @Positive long yataId,
                                               @AuthenticationPrincipal User authMember,

@@ -1,6 +1,5 @@
 package com.yata.backend.domain.payHistory.controller;
 
-import com.google.gson.Gson;
 import com.yata.backend.common.token.GeneratedToken;
 import com.yata.backend.domain.AbstractControllerTest;
 import com.yata.backend.domain.payHistory.dto.PayHistoryDto;
@@ -11,7 +10,6 @@ import com.yata.backend.domain.payHistory.mapper.PayHistoryMapper;
 import com.yata.backend.domain.payHistory.service.PayHistoryService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.SliceImpl;
@@ -35,8 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(PayHistoryController.class)
 public class PayHistoryControllerTest extends AbstractControllerTest {
     private final String BASE_URL = "/api/v1/payHistory";
-    @Autowired
-    private Gson gson;
     @MockBean
     private PayHistoryService payHistoryService;
     @MockBean
@@ -51,7 +47,7 @@ public class PayHistoryControllerTest extends AbstractControllerTest {
         List<PayHistory> payHistories = PayHistoryFactory.createPayHistoryList();
         List<PayHistoryDto.Response> responses = PayHistoryFactory.createPayHistoryResponseDtoList(payHistories);
 
-        given(payHistoryService.findPayHistory(any(),any())).willReturn(new SliceImpl<>(payHistories));
+        given(payHistoryService.findPayHistory(any(), any())).willReturn(new SliceImpl<>(payHistories));
         given(mapper.payHistoryToPayHistoryResponse(any())).willReturn(responses);
         //when
         ResultActions actions = mockMvc.perform(get(BASE_URL)

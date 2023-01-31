@@ -10,7 +10,6 @@ import com.yata.backend.domain.member.utils.AuthoritiesUtils;
 import com.yata.backend.global.exception.CustomLogicException;
 import com.yata.backend.global.exception.ExceptionCode;
 import com.yata.backend.global.utils.CustomBeanUtils;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;

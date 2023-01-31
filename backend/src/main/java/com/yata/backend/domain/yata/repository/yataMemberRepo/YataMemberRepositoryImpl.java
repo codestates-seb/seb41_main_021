@@ -1,7 +1,6 @@
 package com.yata.backend.domain.yata.repository.yataMemberRepo;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.entity.QMember;
 import com.yata.backend.domain.yata.entity.*;
 
@@ -12,7 +11,6 @@ public class YataMemberRepositoryImpl implements YataMemberRepository {
     private final JPAQueryFactory queryFactory;
     private QYata qYata = QYata.yata;
     private QYataMember qYataMember = QYataMember.yataMember;
-    private QMember qMember = QMember.member;
 
     public YataMemberRepositoryImpl(EntityManager em) {
         this.em = em;
