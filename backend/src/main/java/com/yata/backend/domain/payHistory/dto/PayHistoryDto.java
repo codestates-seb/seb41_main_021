@@ -1,7 +1,6 @@
 package com.yata.backend.domain.payHistory.dto;
 
 import com.yata.backend.domain.payHistory.entity.PayHistory;
-import com.yata.backend.domain.yata.entity.YataMember;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -20,11 +19,11 @@ public class PayHistoryDto {
         private Long payHistoryId;
         private String email;
         private String nickname;
-        private Long paidPrice; // 지불한 가격
-        private Long point; // 잔액
+        private Long paidPrice;
+        private Long point;
         // private Long referenceId;
         private PayHistory.Type type;
         private PayHistory.Gain gain;
-        private LocalDateTime createdAt; // 지불한 일시
+        private LocalDateTime createdAt;
     }
 }

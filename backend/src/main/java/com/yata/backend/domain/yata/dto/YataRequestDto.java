@@ -44,7 +44,6 @@ public class YataRequestDto {
     @Builder
     @NoArgsConstructor
     public static class InvitePost{
-        // email pattern
         @Pattern(regexp = "^[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]+$", message = "이메일 형식이 아닙니다.")
         @NotNull(message = "초대할 유저의 이메일을 입력해주세요.")
         private String inviteEmail;
