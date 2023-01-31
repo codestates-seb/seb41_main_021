@@ -43,8 +43,7 @@ public class YataRequestController {
 
 
 
-    // Yata 신청/초대 목록 조회 - 200
-    // 이 야타에 초대한 애들이랑 신청한 애들 조회
+    // Yata 게시물에 온 신청/초대 목록 조회 - 200
     @GetMapping("/requests/{yataId}")
     public ResponseEntity<SliceResponseDto<YataRequestDto.RequestResponse>> getRequestsByDriver(@PathVariable("yataId") @Positive long yataId,
                                                                                                 @AuthenticationPrincipal User authMember,
@@ -66,7 +65,7 @@ public class YataRequestController {
     }
 
 
-    //Yata 신청/초대 했다가 삭제 - 204
+    // 자기가 한 신청/초대 삭제 - 204
     @DeleteMapping("/requests/{yataId}/{yataRequestId}")
     public ResponseEntity deleteRequest(@PathVariable("yataId") @Positive long yataId,
                                         @PathVariable("yataRequestId") @Positive long yataRequestId,

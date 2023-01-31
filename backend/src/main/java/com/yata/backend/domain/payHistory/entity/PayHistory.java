@@ -1,7 +1,6 @@
 package com.yata.backend.domain.payHistory.entity;
 
 import com.yata.backend.domain.member.entity.Member;
-import com.yata.backend.domain.payment.dto.PayType;
 import com.yata.backend.global.audit.Auditable;
 import lombok.*;
 

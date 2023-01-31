@@ -6,7 +6,6 @@ import com.yata.backend.domain.review.entity.Checklist;
 import com.yata.backend.domain.review.entity.Review;
 import com.yata.backend.domain.review.entity.ReviewChecklist;
 import com.yata.backend.domain.review.repository.Review.JpaReviewRepository;
-import com.yata.backend.domain.review.repository.ReviewChecklist.JpaReviewChecklistRepository;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataMember;
 import com.yata.backend.domain.yata.service.YataMemberService;
@@ -30,21 +29,18 @@ public class ReviewServiceImpl implements ReviewService {
     private final MemberService memberService;
     private final YataMemberService yataMemberService;
     private final CheckListService checkListService;
-    private final JpaReviewChecklistRepository jpaReviewChecklistRepository;
 
     public ReviewServiceImpl(YataService yataService,
                              MemberService memberService,
                              JpaReviewRepository jpaReviewRepository,
                              YataMemberService yataMemberservice,
-                             CheckListService checkListService,
-                             JpaReviewChecklistRepository jpaReviewChecklistRepository) {
+                             CheckListService checkListService) {
 
         this.yataService = yataService;
         this.memberService = memberService;
         this.jpaReviewRepository = jpaReviewRepository;
         this.yataMemberService = yataMemberservice;
         this.checkListService = checkListService;
-        this.jpaReviewChecklistRepository = jpaReviewChecklistRepository;
     }
 
     public Review createReview(List<Long> checkListIds, String username, long yataId, Long yataMemberId) {
@@ -52,21 +48,21 @@ public class ReviewServiceImpl implements ReviewService {
         Member fromMember = memberService.findMember(username); //작성자
         Review review = new Review();
         YataMember yataMember = null;
+
         if (yataMemberId == null) {
-            yataMember = yataMemberService.verifyPossibleYataMemberByuserName(yata, fromMember);
-            review.setToMember(yata.getMember()); //대상자 : yata글주인
+            yataMember = yataMemberService.verifyPossibleYataMemberByUserName(yata, fromMember);
+            review.setToMember(yata.getMember()); //대상자 : yata 글주인
         } else {
             yataMember = yataMemberService.verifyPossibleYataMember(yataMemberId, yata);//존재하는 야타멤버아이딘지 확인해주고
-            review.setToMember(yataMember.getMember()); //대상자 yataMember 리뷰 조회,
+            review.setToMember(yataMember.getMember()); //대상자 yataMember 리뷰 조회
         }
+
         validateYataOwner(yataMemberId, yata, fromMember); // 운전자 일 경우 글주인 체크
         alreadyReviewed(yata, fromMember, review); // 리뷰 있는지 확인
         verifyPaidYataMember(yataMember); // 지불 했는지 확인
         review.setFromMember(fromMember);
         review.setYata(yata);
 
-
-        //todo n+1 문제 어떻게 해결해야 할까?!?!? 생각해보자
         List<Checklist> checklists = checkListService.checklistIdsToChecklists(checkListIds);
         List<ReviewChecklist> reviewChecklists = checkListService.checklistsToReviewChecklists(checklists, review);
 
@@ -85,7 +81,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .collect(Collectors.groupingBy(ReviewChecklist::getChecklist,
                         Collectors.counting()));
 
-        return checklistCount; //countioncollector의 반환 타입은 Long임
+        return checklistCount;
     }
 
     /*검증로직*/
@@ -101,7 +97,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     private void alreadyReviewed(Yata yata, Member fromMember, Review review) {
-        //todo stream ? 이미 같은 야타 아이디 있으면 중복 작성 안되게 + 같은 yatamember
+        // 해당 yataId 에 해당 member 가 한 리뷰가 이미 있는지
         jpaReviewRepository.findByYataAndFromMemberAndToMember(yata, fromMember, review.getToMember()).ifPresent(r -> {
             throw new CustomLogicException(ExceptionCode.ALREADY_REVIEWED);
         });
