@@ -46,10 +46,11 @@ public class YataInviteController {
 
     @PostMapping("/accept/{yataRequestId}")
     public ResponseEntity acceptInvitation(@AuthenticationPrincipal User authMember,
-                                             @PathVariable Long yataRequestId) throws Exception {
+                                           @PathVariable Long yataRequestId) throws Exception {
         yataInviteService.acceptInvitation(authMember.getUsername(), yataRequestId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
     @PatchMapping("/reject/{yataRequestId}")
     public ResponseEntity rejectInvitation(@AuthenticationPrincipal User authMember,
                                            @PathVariable Long yataRequestId) throws Exception {
