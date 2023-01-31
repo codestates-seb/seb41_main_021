@@ -4,7 +4,10 @@ package com.yata.backend.auth.filter;
 import com.yata.backend.auth.token.AuthToken;
 import com.yata.backend.auth.token.AuthTokenProvider;
 import com.yata.backend.auth.utils.HeaderUtil;
+import com.yata.backend.global.exception.CustomLogicException;
+import com.yata.backend.global.response.ErrorResponder;
 import com.yata.backend.global.utils.RedisUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -35,8 +38,14 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
       AuthToken token = tokenProvider.convertAuthToken(tokenStr);
 
       if (token.validate() && !redisUtils.hasKeyBlackList(tokenStr)) {
-         Authentication authentication = tokenProvider.getAuthentication(token);
+         Authentication authentication = null;
+         try {
+             authentication = tokenProvider.getAuthentication(token);
+         } catch (CustomLogicException e) {
+            ErrorResponder.sendErrorResponse(response, HttpStatus.BAD_REQUEST);
+         }
          SecurityContextHolder.getContext().setAuthentication(authentication);
+
       }
 
       filterChain.doFilter(request, response);

@@ -4,7 +4,6 @@ import com.yata.backend.auth.oauth2.dto.ProviderType;
 import com.yata.backend.domain.member.entity.Member;
 import lombok.*;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.List;

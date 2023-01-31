@@ -1,6 +1,8 @@
 package com.yata.backend.domain.yata.entity;
 
 import com.yata.backend.domain.member.entity.Member;
+import com.yata.backend.domain.notify.entity.Notify;
+import com.yata.backend.domain.notify.aop.proxy.NotifyInfo;
 import com.yata.backend.global.audit.Auditable;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -8,7 +10,6 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Getter
@@ -17,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = "yata")
-public class YataRequest extends Auditable {
+public class YataRequest extends Auditable implements NotifyInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long YataRequestId;
@@ -62,6 +63,21 @@ public class YataRequest extends Auditable {
 
     @OneToOne(cascade = CascadeType.ALL)
      private Location destination;
+
+    @Override
+    public Member getReceiver() {
+        return yata.getMember();
+    }
+
+    @Override
+    public Long getGoUrlId() {
+        return yata.getYataId();
+    }
+
+    @Override
+    public Notify.NotificationType getNotificationType() {
+        return Notify.NotificationType.YATA;
+    }
 
     public enum RequestStatus {
         INVITE("초대"),
