@@ -2,7 +2,7 @@ package com.yata.backend.domain.notify.aop;
 
 import com.yata.backend.domain.notify.dto.NotifyMessage;
 import com.yata.backend.domain.notify.service.NotifyService;
-import com.yata.backend.global.aop.proxy.NotifyAdapter;
+import com.yata.backend.domain.notify.aop.proxy.NotifyInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -32,7 +32,7 @@ public class NotifyAspect {
     @Async
     @AfterReturning(pointcut = "annotationPointcut()", returning = "result")
     public void checkValue(JoinPoint joinPoint, Object result) throws Throwable {
-        NotifyAdapter notifyProxy = (NotifyAdapter) result;
+        NotifyInfo notifyProxy = (NotifyInfo) result;
         notifyService.send(
                 notifyProxy.getReceiver(),
                 notifyProxy.getNotificationType(),
