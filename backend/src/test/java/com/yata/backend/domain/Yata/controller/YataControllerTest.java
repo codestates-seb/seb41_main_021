@@ -477,7 +477,7 @@ public class YataControllerTest extends AbstractControllerTest {
         List<YataDto.Response> responses = YataFactory.createYataResponseDtoList(yatas);
         Slice<Yata> yataSlice = new SliceImpl<>(yatas);
 
-        given(yataService.findMyYatas(anyString(), any())).willReturn(yataSlice);
+        given(yataService.findMyYatas(anyString(), any(),anyString(),anyBoolean())).willReturn(yataSlice);
         given(mapper.yatasToYataResponses(yataSlice.getContent())).willReturn(responses);
         ResultActions actions =
                 mockMvc.perform(RestDocumentationRequestBuilders.
