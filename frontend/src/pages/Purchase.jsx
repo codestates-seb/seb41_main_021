@@ -9,14 +9,15 @@ import usePostData from '../hooks/usePostData';
 export default function Purchase() {
   const [amount, setAmount] = useState('');
   var clientKey = 'test_ck_OALnQvDd2VJno4oBOBaVMj7X41mN';
+  console.log(process.env.REACT_APP_URL);
   // 이 아래 부분은 서버에 요청해서 가져올 내용
   const payment = () => {
     const body = {
       payType: 'CARD',
       amount,
       orderName: '포인트 충전',
-      yourSuccessUrl: 'http://localhost:3000/point-success',
-      yourFailUrl: 'http://localhost:3000/point-fail',
+      yourSuccessUrl: `${process.env.REACT_APP_URL}/point-success`,
+      yourFailUrl: `${process.env.REACT_APP_URL}/point-fail`,
     };
     usePostData('/api/v1/payments/toss', body).then(res => {
       const data = res.data.data;

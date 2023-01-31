@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 // url 호출 시 기본 값 셋팅
 const instance = axios.create({
@@ -89,7 +90,10 @@ function onAccessTokenFetched(accessToken) {
   subscribers = [];
 }
 
+import { useDispatch } from 'react-redux';
+import { clearUser } from '../redux/slice/UserSlice';
 function signOut() {
+  const dispatch = useDispatch();
   localStorage.clear();
   dispatch(clearUser());
   window.location.href = '/';
@@ -110,8 +114,9 @@ const useTokenRefresh = async () => {
     );
     return response;
   } catch (error) {
+    signOut();
+    toast.warning('로그인 정보가 만료되었습니다.');
     return Promise.reject(error);
-    // toast.warning('유저 정보를 불러오지 못했습니다.');
   }
 };
 
