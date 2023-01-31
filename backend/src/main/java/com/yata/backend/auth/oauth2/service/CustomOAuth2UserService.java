@@ -10,6 +10,8 @@ import com.yata.backend.domain.image.entity.ImageEntity;
 import com.yata.backend.domain.member.entity.Member;
 import com.yata.backend.domain.member.repository.JpaMemberRepository;
 import com.yata.backend.domain.member.utils.AuthoritiesUtils;
+import com.yata.backend.global.exception.CustomLogicException;
+import com.yata.backend.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
@@ -86,9 +88,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         if (userInfo.getName() != null && !member.getName().equals(userInfo.getName())) {
             member.setName(userInfo.getName());
         }
-
-      /*  if (userInfo.getImageUrl() != null && !member.getImgUrl().equals(userInfo.getImageUrl())) {
+        if (userInfo.getImageUrl() != null && member.getImgUrl() != null && !member.getImgUrl().getUrl().equals(userInfo.getImageUrl())) {
             member.setImgUrl(new ImageEntity(UUID.randomUUID() , "OAUTH2" , userInfo.getImageUrl()));
-        }*/
+        }
     }
 }
