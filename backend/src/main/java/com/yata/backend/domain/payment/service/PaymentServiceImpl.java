@@ -67,9 +67,16 @@ public class PaymentServiceImpl implements PaymentService {
         params.put("orderId", orderId);
         params.put("amount", amount);
 
-        return restTemplate.postForObject(TossPaymentConfig.URL + paymentKey,
-                new HttpEntity<>(params, headers),
-                PaymentSuccessDto.class);
+        PaymentSuccessDto result = null;
+        try {
+            result = restTemplate.postForObject(TossPaymentConfig.URL + paymentKey,
+                    new HttpEntity<>(params, headers),
+                    PaymentSuccessDto.class);
+        } catch (Exception e) {
+            throw new CustomLogicException(ExceptionCode.ALREADY_APPROVED);
+        }
+
+        return result;
 
     }
 
@@ -98,7 +105,7 @@ public class PaymentServiceImpl implements PaymentService {
             throw new CustomLogicException(ExceptionCode.PAYMENT_NOT_FOUND);
         });
         // 취소 할려는데 포인트가 그만큼 없으면 환불 몬하지~
-        if(payment.getCustomer().getPoint() >= payment.getAmount()) {
+        if (payment.getCustomer().getPoint() >= payment.getAmount()) {
             payment.setCancelYN(true);
             payment.setCancelReason(cancelReason);
             payment.getCustomer().setPoint(payment.getCustomer().getPoint() - payment.getAmount());
@@ -123,7 +130,7 @@ public class PaymentServiceImpl implements PaymentService {
     public Slice<Payment> findAllChargingHistories(String username, Pageable pageable) {
         memberService.verifyMember(username);
         return paymentRepository.findAllByCustomer_Email(username,
-                PageRequest.of(pageable.getPageNumber(), pageable.getPageSize() ,
+                PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
                         Sort.Direction.DESC, "paymentId")
         );
     }
