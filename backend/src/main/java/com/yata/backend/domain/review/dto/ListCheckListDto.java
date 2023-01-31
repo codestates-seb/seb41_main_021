@@ -4,7 +4,6 @@ import com.yata.backend.domain.member.dto.ChecklistDto;
 import lombok.*;
 
 import java.util.List;
-import java.util.Map;
 
 @Setter
 @Getter
