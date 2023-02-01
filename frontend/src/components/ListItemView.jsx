@@ -10,6 +10,7 @@ const ListItemView = props => {
     <>
       <Container>
         {list.map(el => {
+          console.log(el.yataStatus);
           return (
             <ListItem
               key={el.yataId}
@@ -20,6 +21,7 @@ const ListItemView = props => {
               price={el.amount}
               people={`1/${el.maxPeople}`}
               yataStatus={el.yataStatus}
+              postStatus={el.postStatus}
             />
           );
         })}

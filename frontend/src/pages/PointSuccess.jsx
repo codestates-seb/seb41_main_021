@@ -21,7 +21,7 @@ const PointSuccess = () => {
     useGetData(`/api/v1/payments/toss/success?paymentKey=${paymentKey}&orderId=${orderId}&amount=${amount}`).then(res =>
       setData(res.data.data),
     );
-  });
+  }, []);
   return (
     <>
       <Header title="포인트 충전 "></Header>

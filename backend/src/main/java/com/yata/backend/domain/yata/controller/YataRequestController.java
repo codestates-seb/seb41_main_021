@@ -42,7 +42,6 @@ public class YataRequestController {
     }
 
 
-
     // Yata 게시물에 온 신청/초대 목록 조회 - 200
     @GetMapping("/requests/{yataId}")
     public ResponseEntity<SliceResponseDto<YataRequestDto.RequestResponse>> getRequestsByDriver(@PathVariable("yataId") @Positive long yataId,

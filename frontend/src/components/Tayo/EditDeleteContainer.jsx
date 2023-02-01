@@ -14,13 +14,13 @@ export default function EditDeleteContainer(props) {
   const dispatch = useDispatch();
 
   const deleteHandler = () => {
-    useDeleteData(`https://server.yata.kro.kr/api/v1/yata/${yataId}`).then(() => {
+    useDeleteData(`/api/v1/yata/${yataId}`).then(() => {
       navigate(`/${state}-list`);
     });
   };
 
   const editHandler = () => {
-    dispatch(tayoDataFetch(`https://server.yata.kro.kr/api/v1/yata/${yataId}`))
+    dispatch(tayoDataFetch(`${process.env.REACT_APP_SERVER_URL}/api/v1/yata/${yataId}`))
       .then(res => {
         dispatch(
           setAll(
@@ -58,9 +58,9 @@ export default function EditDeleteContainer(props) {
 
   return (
     <Container>
-      <TagContainer>
+      {/* <TagContainer>
         <Tag state={data.postStatus}>{data.postStatus === 'POST_OPEN' ? ableTag : disableTag}</Tag>
-      </TagContainer>
+      </TagContainer> */}
       <CRUDContainer>
         <FiEdit onClick={editHandler} title="수정하기" />
         <FiTrash onClick={deleteHandler} title="삭제하기" />

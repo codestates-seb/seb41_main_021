@@ -5,20 +5,33 @@ import { BiWon } from 'react-icons/bi';
 import Button from '../common/Button';
 import { useNavigate, useParams } from 'react-router';
 import usePostData from '../../hooks/usePostData';
+import { useState } from 'react';
+import Modal from '../common/Modal';
 
 const JourneyItem = props => {
+  const [show, setShow] = useState(false);
+
   const navigate = useNavigate();
-  const params = useParams();
-  const yataMemberId = params.yataId;
+
+  const shortWords = (str, length = 8) => {
+    let result = '';
+    if (str.length > length) {
+      result = str.substr(0, length) + '...';
+    } else {
+      result = str;
+    }
+    return result;
+  };
 
   const payHandler = () => {
     const data = {};
-    usePostData(`https://server.yata.kro.kr/api/v1/yata/${yataId}/${yataRequestId}/payPoint`, data).then(res => {
-      console.log(res);
+    usePostData(`/api/v1/yata/${yataId}/${yataMemberId}/payPoint`, data).then(res => {
+      window.location.reload();
     });
   };
 
-  const { date, journeyStart, journeyEnd, price, people, state, onClick, isPay, yataId } = props;
+  const { date, journeyStart, journeyEnd, price, people, state, onClick, isPay, yataId, yataMemberId } = props;
+
   return (
     <>
       <Container onClick={onClick}>
@@ -26,18 +39,29 @@ const JourneyItem = props => {
           <DateContainer>
             <BsCalendar4 />
             {date}
-            {state && <TagContainer state={state}>{state === '대기' ? '도착 전' : '도착'}</TagContainer>}
+            <TagContainer isPay={isPay}>{isPay ? '도착' : '도착 전'}</TagContainer>
           </DateContainer>
           <JourneyContainer>
             <JourneyText>
-              {journeyStart}
+              {shortWords(journeyStart)}
               <IoIosArrowRoundForward />
-              {journeyEnd}
+              {shortWords(journeyEnd)}
             </JourneyText>
             {isPay ? (
               <Button onClick={() => navigate(`/rating-add-driver/${yataId}`)}>리뷰 남기기</Button>
             ) : (
-              <Button onClick={payHandler}>결제하기</Button>
+              <>
+                <Button
+                  onClick={() => {
+                    setShow(true);
+                  }}>
+                  결제하기
+                </Button>
+                <Modal show={show} onClose={() => setShow(false)} title={'결제하시겠습니까?'} event={payHandler}>
+                  결제를 하면 <Strong>'도착 전'</Strong>에서 <Strong>'도착'</Strong> 상태로 변경되며,
+                  <br /> 포인트가 자동으로 차감됩니다.
+                </Modal>
+              </>
             )}
           </JourneyContainer>
           <BottomContainer>
@@ -94,7 +118,7 @@ const TagContainer = styled.div`
   border-radius: 0.2rem;
   font-size: 0.9rem;
 
-  background-color: ${props => (props.state === '대기' ? props.theme.colors.light_red : props.theme.colors.main_blue)};
+  background-color: ${props => (props.isPay ? props.theme.colors.main_blue : props.theme.colors.light_red)};
 `;
 
 const JourneyContainer = styled.div`
@@ -128,17 +152,14 @@ const BottomContainer = styled.div`
 const PriceContainer = styled.div`
   margin-right: 2rem;
   color: ${props => props.theme.colors.dark_gray};
-  svg {
-    position: relative;
-    top: 0.1rem;
-  }
 `;
 const PeopleContainer = styled.div`
   color: ${props => props.theme.colors.dark_gray};
-  svg {
-    position: relative;
-    top: 0.1rem;
-  }
+`;
+
+const Strong = styled.span`
+  font-size: 1.2rem;
+  font-weight: bold;
 `;
 
 export default JourneyItem;

@@ -1,8 +1,10 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 // url 호출 시 기본 값 셋팅
 const instance = axios.create({
-  baseURL: 'https://server.yata.kro.kr',
+  baseURL: process.env.REACT_APP_SERVER_URL,
   headers: {
     'Content-Type': 'application/json;charset=UTF-8',
   },
@@ -90,15 +92,18 @@ function onAccessTokenFetched(accessToken) {
 }
 
 function signOut() {
-  localStorage.clear();
-  dispatch(clearUser());
-  window.location.href = '/';
+  localStorage.removeItem('ACCESS');
+  localStorage.removeItem('REFRESH');
+  toast.warning('로그인 정보가 만료되었습니다.');
+  // setTimeout(() => {
+  //   window.location.href = '/';
+  // }, 1500);
 }
 
 const useTokenRefresh = async () => {
   try {
     const response = await axios.post(
-      'https://server.yata.kro.kr/api/v1/auth/refresh',
+      `${process.env.REACT_APP_SERVER_URL}/api/v1/auth/refresh`,
       {},
       {
         headers: {
@@ -111,7 +116,6 @@ const useTokenRefresh = async () => {
     return response;
   } catch (error) {
     return Promise.reject(error);
-    // toast.warning('유저 정보를 불러오지 못했습니다.');
   }
 };
 

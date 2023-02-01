@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -48,6 +49,7 @@ public class YataDto {
         private YataStatus yataStatus;
 
         @NotNull
+        @PositiveOrZero
         private Long amount;
 
         @NotBlank

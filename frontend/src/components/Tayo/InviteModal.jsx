@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import Button from './common/Button';
+import Button from '../common/Button';
 import { FiX } from 'react-icons/fi';
-import ModalItem from './ModalItem';
-import { useGetData } from '../hooks/useGetData';
+import InviteModalItem from './InviteModalItem';
+import { useGetData } from '../../hooks/useGetData';
 
 const Modal = props => {
   const { data } = props;
@@ -11,7 +11,7 @@ const Modal = props => {
   const [modalData, setModalData] = useState([]);
 
   useEffect(() => {
-    useGetData(`https://server.yata.kro.kr/api/v1/yata/myYatas/neota/notClosed`).then(res => {
+    useGetData(`/api/v1/yata/myYatas/neota/notClosed`).then(res => {
       setModalData(res.data.data);
     });
   }, []);
@@ -29,7 +29,7 @@ const Modal = props => {
           </ModalHeader>
           {modalData.map(el => {
             return (
-              <ModalItem
+              <InviteModalItem
                 key={data.yataId}
                 yataId={el.yataId}
                 invitedYataId={data.yataId}

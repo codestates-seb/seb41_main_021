@@ -1,28 +1,52 @@
 import styled from 'styled-components';
 import NavBar from '../components/NavBar';
 import { NavLink } from 'react-router-dom';
-import { VscAccount } from 'react-icons/vsc';
-import { BiTrip, BiLike } from 'react-icons/bi';
+import { BiTrip, BiLike, BiEdit } from 'react-icons/bi';
 import { RiArrowLeftSFill, RiOilLine } from 'react-icons/ri';
 import { IoIosArrowForward } from 'react-icons/io';
 import { RiCoinsFill } from 'react-icons/ri';
-
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { checkIfLogined } from '../hooks/useLogin';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearUser } from '../redux/slice/UserSlice';
 import { useGetData } from '../hooks/useGetData';
+import usePostData from '../hooks/usePostData';
+import axios from 'axios';
+import { MdPreview } from 'react-icons/md';
 import { useGetUserInfo } from '../hooks/useLogin';
 import { loginUser } from '../redux/slice/UserSlice';
+import Modal from '../components/common/Modal';
+import defaultProf from '../images/Logo.svg';
+import { toast } from 'react-toastify';
+import instance from '../api/instance';
 
 export default function MyPage() {
   const [review, setReview] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    useGetUserInfo().then(res => {
+      if (res.name === 'AxiosError') {
+        toast.warning('로그인이 필요한 페이지입니다.');
+        return navigate('/');
+      }
+      dispatch(loginUser(res));
+      useGetData(`/api/v1/review/${res.email}`).then(res => {
+        if (res.status === 200) {
+          setReview(res.data.data);
+        } else {
+          console.log('리뷰 정보를 가져오는데 실패하였습니다.');
+        }
+      });
+    });
+  }, []);
 
   const logout = () => {
-    localStorage.clear();
+    localStorage.removeItem('ACCESS');
+    localStorage.removeItem('REFRESH');
     dispatch(clearUser());
     navigate('/');
   };
@@ -31,29 +55,26 @@ export default function MyPage() {
     return state.user;
   });
 
-  const isLogin = checkIfLogined();
-
-  useEffect(() => {
-    if (!isLogin) {
-      return navigate('/');
-    }
-    useGetUserInfo().then(res => dispatch(loginUser(res)));
-    useGetData(`https://server.yata.kro.kr/api/v1/review/${info.email}`).then(res => {
-      if (res.status === 200) {
-        setReview(res.data.data);
-      } else {
-        console.log('리뷰 정보를 가져오는데 실패하였습니다.');
-      }
-    });
-  }, []);
-
   return (
     <>
       <Container>
         <MyPageContainer>
           <ProfileContainer>
             <Profile>
-              <VscAccount />
+              {info.imgUrl === null ? (
+                <ProfPic src={defaultProf} alt="profile picture" className="profile" />
+              ) : (
+                <ProfPic src={info.imgUrl} alt="profile picture" className="profile" />
+              )}
+              <ImgUploadContainer>
+                <BiEdit
+                  className="edit"
+                  onClick={() => {
+                    setShow(true);
+                  }}
+                />
+                <Modal show={show} onClose={() => setShow(false)} title={'이미지 업로드'} isUpload={true}></Modal>
+              </ImgUploadContainer>
               <Info>
                 <div className="text" title="이름">
                   {info.name}
@@ -202,13 +223,30 @@ const Profile = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-
-  svg {
-    margin-right: 2rem;
-    font-size: 5rem;
-    border-radius: 1rem;
-  }
+  position: relative;
 `;
+
+const ProfPic = styled.img`
+  width: 7rem;
+  padding: 0.2rem;
+  margin-right: 1.5rem;
+  border-radius: 1rem;
+`;
+
+const ImgUploadContainer = styled.div`
+  width: auto;
+  height: auto;
+  display: flex;
+  position: absolute;
+  padding: 0.2rem;
+  font-size: 2rem;
+  left: 5rem;
+  bottom: 0;
+  background-color: white;
+  border-radius: 50%;
+  cursor: pointer;
+`;
+
 const Info = styled.div`
   display: flex;
   flex-direction: column;

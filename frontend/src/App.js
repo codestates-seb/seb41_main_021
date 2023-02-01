@@ -33,31 +33,35 @@ import MyRegisterHistory from './pages/MyRegisterHistory';
 import InviteList from './pages/InviteList';
 import PointSuccess from './pages/PointSuccess';
 import PointFail from './pages/PointFail';
+import Oauth2Redirect from './pages/Oauth2Redirect';
 
 import { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from './redux/slice/UserSlice';
-import { useTokenRefresh, useGetUserInfo, useIsLogin } from './hooks/useLogin';
+import { clearUser, loginUser } from './redux/slice/UserSlice';
+import { useGetUserInfo } from './hooks/useLogin';
 
 function App() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     if (localStorage.getItem('ACCESS')) {
       useGetUserInfo()
-        .then(res => dispatch(loginUser(res)))
+        .then(res => {
+          if (res.name === 'AxiosError') {
+            navigate('/');
+            dispatch(clearUser());
+          } else {
+            dispatch(loginUser(res));
+          }
+        })
         .then(setTimeout(() => setIsLoading(false), 500));
     } else {
       setIsLoading(false);
     }
-    // if (localStorage.REFRESH) {
-    //   console.log(localStorage);
-    //   useTokenRefresh();
-    //   setIsLoading(false);
-    // }
   }, []);
   return (
     <>
@@ -98,6 +102,7 @@ function App() {
               <Route path="/invite-list" element={<InviteList />}></Route>
               <Route path="/point-success" element={<PointSuccess />}></Route>
               <Route path="/point-fail" element={<PointFail />}></Route>
+              <Route path="/oauth2-redirect" element={<Oauth2Redirect />}></Route>
             </Routes>
             <ToastContainer position="top-center" />
           </Screen>
