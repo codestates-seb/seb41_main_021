@@ -4,10 +4,13 @@ import { useState } from 'react';
 import Button from '../common/Button';
 import { useNavigate, useParams } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
+import dataSlice from '../../redux/slice/DataSlice';
+import { toast } from 'react-toastify';
 import defaultProf from '../../images/Logo.svg';
 
 export default function MemberListItem(props) {
-  const { state, nickname, yataMemberId, img } = props;
+  const { state, nickname, yataMemberId, reviewReceived, img } = props;
+
   const navigate = useNavigate();
   const params = useParams();
   const yataId = params.yataId;
@@ -17,7 +20,12 @@ export default function MemberListItem(props) {
 
   const reviewHandler = () => {
     setSearchParams(`yataMemberId: '${yataMemberId}'`);
-    navigate(`/rating-add-passenger/${yataId}?yataMemberId=${yataMemberId}`);
+    console.log(reviewReceived);
+    if (!reviewReceived) {
+      navigate(`/rating-add-passenger/${yataId}?yataMemberId=${yataMemberId}`);
+    } else {
+      toast.warning('이미 리뷰를 작성했습니다.');
+    }
   };
 
   return (

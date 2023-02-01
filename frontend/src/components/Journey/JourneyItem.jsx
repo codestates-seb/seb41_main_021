@@ -23,6 +23,11 @@ const JourneyItem = props => {
     return result;
   };
 
+  const reviewHandler = () => {
+    navigate(`/rating-add-driver/${yataId}`);
+    console.log(reviewReceived);
+  };
+
   const payHandler = () => {
     const data = {};
     usePostData(`/api/v1/yata/${yataId}/${yataMemberId}/payPoint`, data).then(res => {
@@ -30,8 +35,10 @@ const JourneyItem = props => {
     });
   };
 
-  const { date, journeyStart, journeyEnd, price, people, state, onClick, isPay, yataId, yataMemberId } = props;
 
+  const { date, journeyStart, journeyEnd, price, people, state, onClick, isPay, yataId, yataMemberId, reviewReceived } =
+    props;
+    
   return (
     <>
       <Container onClick={onClick}>
@@ -47,9 +54,7 @@ const JourneyItem = props => {
               <IoIosArrowRoundForward />
               {shortWords(journeyEnd)}
             </JourneyText>
-            {isPay ? (
-              <Button onClick={() => navigate(`/rating-add-driver/${yataId}`)}>리뷰 남기기</Button>
-            ) : (
+            {!isPay ? (
               <>
                 <Button
                   onClick={() => {
@@ -62,6 +67,10 @@ const JourneyItem = props => {
                   <br /> 포인트가 자동으로 차감됩니다.
                 </Modal>
               </>
+            ) : reviewReceived ? (
+              <Button onClick={reviewHandler}>리뷰 남기기</Button>
+            ) : (
+              <CompleteBtn>리뷰 완료</CompleteBtn>
             )}
           </JourneyContainer>
           <BottomContainer>
@@ -160,6 +169,17 @@ const PeopleContainer = styled.div`
 const Strong = styled.span`
   font-size: 1.2rem;
   font-weight: bold;
+`;
+const CompleteBtn = styled(Button)`
+  background-color: ${props => props.theme.colors.gray};
+
+  :hover {
+    background-color: ${props => props.theme.colors.gray};
+  }
+  :active {
+    background-color: ${props => props.theme.colors.gray};
+  }
+  cursor: initial;
 `;
 
 export default JourneyItem;
