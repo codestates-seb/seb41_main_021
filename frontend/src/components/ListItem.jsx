@@ -11,7 +11,7 @@ const ListItem = props => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    yataStatus === 'YATA_NEOTA' ? navigate(`/taeoonda-detail/${yataId}`) : navigate(`/tabnida-detail/${yataId}`);
+    yataStatus === 'YATA_NEOTA' ? navigate(`/tabnida-detail/${yataId}`) : navigate(`/taeoonda-detail/${yataId}`);
   };
 
   const shortWords = (str, length = 10) => {
