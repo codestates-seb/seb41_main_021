@@ -138,6 +138,9 @@ public class YataDto {
         private YataMember.GoingStatus goingStatus;
         private boolean yataPaid;
 
+        private boolean reviewWritten;
+        private boolean reviewReceived;
+
     }
 
     //내가 야타 멤버로 참가한 야타 게시물을 가져올 때
