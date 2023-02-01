@@ -5,7 +5,7 @@ import { BsCalendar4, BsPeople } from 'react-icons/bs';
 import { BiWon } from 'react-icons/bi';
 
 const ListItem = props => {
-  const { date, journeyStart, journeyEnd, price, people, state, yataId, yataStatus } = props;
+  const { date, journeyStart, journeyEnd, price, people, state, yataId, yataStatus, postStatus } = props;
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -30,6 +30,11 @@ const ListItem = props => {
           <DateContainer title="출발일 및 시간">
             <BsCalendar4 />
             {date}
+            {yataStatus && (
+              <YataTagContainer postStatus={postStatus}>
+                {postStatus === 'POST_OPEN' ? '신청 가능' : '신청 마감'}
+              </YataTagContainer>
+            )}
             {state && (
               <TagContainer state={state}>
                 {state === '대기' ? '승인 대기' : state === '수락' ? '승인 확정' : '승인 거절'}
@@ -105,6 +110,23 @@ const TagContainer = styled.div`
       : props.state === '수락'
       ? props.theme.colors.main_blue
       : props.theme.colors.light_red};
+`;
+
+const YataTagContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+
+  width: 4rem;
+  height: 1.1rem;
+  color: white;
+  border-radius: 0.2rem;
+
+  font-size: 0.7rem;
+
+  background-color: ${props =>
+    props.postStatus === 'POST_OPEN' ? props.theme.colors.main_blue : props.theme.colors.light_gray};
 `;
 
 const JourneyContainer = styled.div`

@@ -10,6 +10,7 @@ import MemberContainer from '../components/Tayo/MemberContainer';
 import EditDeleteContainer from '../components/Tayo/EditDeleteContainer';
 import { useGetData } from '../hooks/useGetData';
 import InviteModal from '../components/Tayo/InviteModal';
+import { useSelector } from 'react-redux';
 
 export default function TabnidaDetail() {
   const params = useParams();
@@ -18,10 +19,14 @@ export default function TabnidaDetail() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
+  const email = useSelector(state => {
+    return state.user.email;
+  });
 
   useEffect(() => {
     useGetData(`https://server.yata.kro.kr/api/v1/yata/${yataId}`).then(res => {
-      setData(res.data.data, setLoading(false));
+      setData(res.data.data);
+      setLoading(false);
     });
   }, []);
 
@@ -31,16 +36,18 @@ export default function TabnidaDetail() {
         <>
           <Header title={'탑니다'}></Header>
           <Container>
-            <EditDeleteContainer
-              state={'tabnida'}
-              yataId={yataId}
-              data={data}
-              ableTag={'초대 가능'}
-              disableTag={'초대 마감'}
-            />
+            {data.email === email && (
+              <EditDeleteContainer
+                state={'tabnida'}
+                yataId={yataId}
+                data={data}
+                ableTag={'초대 가능'}
+                disableTag={'초대 마감'}
+              />
+            )}
             <ProfileContainer data={data} />
             <InfoContainer data={data} />
-            <MemberContainer data={data} />
+            {data.email === email && <MemberContainer data={data} />}
             <InviteButton
               onClick={() => {
                 setShow(true);
