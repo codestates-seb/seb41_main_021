@@ -6,6 +6,7 @@ import Button from '../components/common/Button';
 import { toast } from 'react-toastify';
 import { useDriverAuth } from '../hooks/useDriverAuth';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export default function DriverAuth() {
   const [name, setName] = useState('');
@@ -32,19 +33,19 @@ export default function DriverAuth() {
         toast.success('운전자 인증에 성공했습니다.');
         navigate('/my-page');
       }
-      return console.log(res);
     });
   };
 
   const nameValidation = e => {
     setName(e.target.value.replace(/[a-z0-9]|[ \[\]{}()<>?|`~!@#$%^&*-_+=,.;:\"'\\]/g, ''));
+  };
+  useEffect(() => {
     if (name.length < 2 || name.length > 5) {
       setNameValidity(true);
     } else {
       setNameValidity(false);
     }
-  };
-
+  }, [name]);
   const LicenseNumValidation = e => {
     setLicenseNumber(
       e.target.value
