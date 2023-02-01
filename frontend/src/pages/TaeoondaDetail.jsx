@@ -68,7 +68,7 @@ export default function TabnidaDetail() {
             )}
             <ProfileContainer data={data} />
             <InfoContainer data={data} />
-            {data.email === email && <MemberContainer data={data} />}
+            <MemberContainer data={data} email={email} />
             <InviteButton onClick={requestHandler}>신청하기</InviteButton>
           </Container>
           <NavBar />
