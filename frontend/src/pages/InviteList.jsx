@@ -63,7 +63,7 @@ export default function InviteList() {
                     onClick={() => {
                       navigate(`/taeoonda-detail/${el.yataId}`);
                     }}>
-                    게시물 확인하기
+                    게시물 확인하기 >
                   </GoToButton>
                 </DateContainer>
                 <JourneyContainer>

@@ -7,7 +7,9 @@ import Button from '../components/common/Button';
 import RatingList from '../components/rating/RatingList';
 import { useGetData } from '../hooks/useGetData';
 import usePostData from '../hooks/usePostData';
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
+import HelpContainer from '../components/Journey/HelpContainer';
+import { toast } from 'react-toastify';
 
 export default function DriverRatingAdd(props) {
   const [positiveList, setPositiveList] = useState([]);
@@ -16,6 +18,7 @@ export default function DriverRatingAdd(props) {
 
   const params = useParams();
   const yataId = params.yataId;
+  const navigate = useNavigate();
 
   useEffect(() => {
     useGetData('/api/v1/checklist').then(res => {
@@ -29,8 +32,8 @@ export default function DriverRatingAdd(props) {
       checklistIds: isChecked,
     };
     usePostData(`/api/v1/review/${yataId}`, data).then(res => {
-      console.log(data);
-      console.log(res);
+      navigate('/journey-state');
+      toast.success('매너 평가하기 성공');
     });
   };
 
@@ -38,15 +41,7 @@ export default function DriverRatingAdd(props) {
     <>
       <Header title={'운전자 매너 평가'}></Header>
       <Container>
-        <ProfileCotainer>
-          <Profile>
-            <VscAccount />
-            <Info>
-              <div className="name">Yata</div>
-              <div className="date">2023.01.30 (월) </div>
-            </Info>
-          </Profile>
-        </ProfileCotainer>
+        <HelpContainer>운전자의 매너를 평가해주세요 !</HelpContainer>
         <RatingList
           isChecked={isChecked}
           setIsChecked={setIsChecked}

@@ -33,6 +33,7 @@ export default function MemberContainer({ data }) {
                 email={el.email}
                 nickname={el.nickname}
                 state={el.yataPaid}
+                img={el.imgUrl}
               />
             );
           })
