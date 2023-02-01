@@ -144,7 +144,7 @@ export default function MyPage() {
               </NavLink>
               <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/my-register-history">
                 <JourneyRecord>
-                  <div className="title">나의 신청/초대 내역</div>
+                  <div className="title">나의 신청 내역</div>
                   <IoIosArrowForward />
                 </JourneyRecord>
               </NavLink>
@@ -181,12 +181,12 @@ export default function MyPage() {
                   </JourneyRecord>
                 </NavLink>
               )}
-              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/rating-list/">
+              {/* <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/rating-list/">
                 <JourneyRecord>
                   <div className="title">받은 매너 평가</div>
                   <IoIosArrowForward />
                 </JourneyRecord>
-              </NavLink>
+              </NavLink> */}
 
               <JourneyRecord onClick={logout}>
                 <div className="title">로그아웃</div>
@@ -264,7 +264,7 @@ const CompleteAuth = styled.div`
   height: 1.8rem;
   color: #ffffff;
   border-radius: 0.2rem;
-  font-size: 1rem;
+  font-size: 0.9rem;
   background-color: ${props => props.theme.colors.main_blue};
 `;
 const UncompleteAuth = styled(CompleteAuth)`

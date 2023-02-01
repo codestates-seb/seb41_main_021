@@ -28,7 +28,7 @@ export default function MemberContainer({ data, email }) {
         ) : (
           data.email === email &&
           data.yataMembers.map(el => {
-            console.log(el);
+
             return (
               <>
                 <MemberListItem
@@ -38,6 +38,7 @@ export default function MemberContainer({ data, email }) {
                   email={el.email}
                   nickname={el.nickname}
                   state={el.yataPaid}
+                  reviewReceived={el.reviewReceived}
                 />
               </>
             );

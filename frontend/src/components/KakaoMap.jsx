@@ -159,7 +159,6 @@ const KakaoMap = ({ taeoonda }) => {
     let coord = new kakao.maps.LatLng(lat, lng);
     let callback = function (result, status) {
       if (status === kakao.maps.services.Status.OK) {
-        console.log(result[0].address.address_name);
         dispatch(
           addDeparture({
             departurePoint: {

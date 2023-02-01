@@ -10,7 +10,6 @@ const ListItemView = props => {
     <>
       <Container>
         {list.map(el => {
-          console.log(el.yataStatus);
           return (
             <ListItem
               key={el.yataId}
@@ -22,6 +21,7 @@ const ListItemView = props => {
               people={`1/${el.maxPeople}`}
               yataStatus={el.yataStatus}
               postStatus={el.postStatus}
+              yataRequestStatus={el.yataRequestStatus}
             />
           );
         })}

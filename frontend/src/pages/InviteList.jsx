@@ -11,6 +11,7 @@ import { dateFormat } from '../components/common/DateFormat';
 import { useParams } from 'react-router-dom';
 import Button from '../components/common/Button';
 import usePostData from '../hooks/usePostData';
+import usePatchData from '../hooks/usePatchData';
 
 export default function InviteList() {
   const navigate = useNavigate();
@@ -22,11 +23,14 @@ export default function InviteList() {
   const [update, setUpdate] = useState(true);
 
   useEffect(() => {
-    useGetData(`/api/v1/yata/invite/requests/myYataRequests`).then(res => {
-      setList(res.data.data);
-      setLoading(false);
-    });
-  }, []);
+    if (update) {
+      useGetData(`/api/v1/yata/invite/requests/myYataRequests`).then(res => {
+        setList(res.data.data);
+        setUpdate(!update);
+        setLoading(false);
+      });
+    }
+  }, [update]);
 
   return (
     <>
@@ -43,7 +47,7 @@ export default function InviteList() {
                   </div>
                   <GoToButton
                     onClick={() => {
-                      navigate(`/taeoonda-detail/${el.yataId}`);
+                      navigate(`/tabnida-detail/${el.yataId}`);
                     }}>
                     게시물 확인하기 >
                   </GoToButton>
@@ -65,18 +69,15 @@ export default function InviteList() {
                     <div className="two-buttons">
                       <RejectButton
                         onClick={() => {
-                          const data = {};
-                          usePostData(`/api/v1/yata/${el.yataId}/${el.yataRequestId}/reject`, data).then(res => {
+                          usePatchData(`/api/v1/yata/invite/reject/${el.yataRequestId}`).then(res => {
                             setUpdate(true);
-                            console.log(res);
                           });
                         }}>
                         거절하기
                       </RejectButton>
                       <Button
                         onClick={() => {
-                          const data = {};
-                          usePostData(`/api/v1/yata/${el.yataId}/${el.yataRequestId}/accept`, data).then(res => {
+                          usePostData(`/api/v1/yata/invite/accept/${el.yataRequestId}`).then(res => {
                             setUpdate(true);
                           });
                         }}>
@@ -251,7 +252,7 @@ const StateTagContainer = styled.div`
   background-color: ${props =>
     props.approvalStatus === 'NOT_YET'
       ? props.theme.colors.gray
-      : props.state === 'ACCEPTED'
+      : props.approvalStatus === 'ACCEPTED'
       ? props.theme.colors.main_blue
       : props.theme.colors.light_red};
 `;

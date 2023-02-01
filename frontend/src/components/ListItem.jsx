@@ -3,13 +3,15 @@ import styled from 'styled-components';
 import { IoIosArrowForward, IoIosArrowRoundForward } from 'react-icons/io';
 import { BsCalendar4, BsPeople } from 'react-icons/bs';
 import { BiWon } from 'react-icons/bi';
+import { red } from '@mui/material/colors';
 
 const ListItem = props => {
-  const { date, journeyStart, journeyEnd, price, people, state, yataId, yataStatus, postStatus } = props;
+  const { date, journeyStart, journeyEnd, price, people, state, yataId, yataStatus, postStatus, yataRequestStatus } =
+    props;
   const navigate = useNavigate();
 
   const handleClick = () => {
-    yataStatus === 'YATA_NEOTA' ? navigate(`/taeoonda-detail/${yataId}`) : navigate(`/tabnida-detail/${yataId}`);
+    yataStatus === 'YATA_NEOTA' ? navigate(`/tabnida-detail/${yataId}`) : navigate(`/taeoonda-detail/${yataId}`);
   };
 
   const shortWords = (str, length = 10) => {
@@ -30,11 +32,17 @@ const ListItem = props => {
           <DateContainer title="출발일 및 시간">
             <BsCalendar4 />
             {date}
+            {/* {yataRequestStatus && (
+              <YataRequestTagContainer yataRequestStatus={yataRequestStatus}>
+                {yataRequestStatus === 'APPLY' ? '신청' : '초대'}
+              </YataRequestTagContainer>
+            )} */}
             {yataStatus && (
               <YataTagContainer postStatus={postStatus}>
                 {postStatus === 'POST_OPEN' ? '신청 가능' : '신청 마감'}
               </YataTagContainer>
             )}
+
             {state && (
               <TagContainer state={state}>
                 {state === '대기' ? '승인 대기' : state === '수락' ? '승인 확정' : '승인 거절'}
@@ -176,6 +184,21 @@ const PeopleContainer = styled.div`
     position: relative;
     top: 0.1rem;
   }
+`;
+
+const YataRequestTagContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+
+  width: 4rem;
+  height: 1.1rem;
+  color: white;
+  border-radius: 0.2rem;
+  font-size: 0.7rem;
+
+  background-color: ${props => (props.yataRequestStatus === 'APPLY' ? '#7c92c0' : '#7c7cc0')};
 `;
 
 export default ListItem;
