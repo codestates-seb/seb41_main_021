@@ -10,7 +10,6 @@ const ListItemView = props => {
     <>
       <Container>
         {list.map(el => {
-          console.log(el.yataStatus);
           return (
             <ListItem
               key={el.yataId}
