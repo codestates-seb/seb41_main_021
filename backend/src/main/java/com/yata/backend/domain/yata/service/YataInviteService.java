@@ -11,43 +11,7 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class YataInviteService {
-    private final MemberService memberService;
-    private final YataRequestService yataRequestService;
-    private final YataMemberService yataMemberService;
-
-    public YataInviteService(MemberService memberService, YataRequestService yataRequestService, YataMemberService yataMemberService) {
-        this.memberService = memberService;
-        this.yataRequestService = yataRequestService;
-        this.yataMemberService = yataMemberService;
-    }
-
-    public void acceptInvitation(String username, Long yataRequestId) {
-        Member member = memberService.findMember(username);
-        YataRequest yataRequest = yataRequestService.findRequest(yataRequestId);
-        validateInviteRequest(member, yataRequest);
-        yataMemberService.validateRequest(yataRequestId, yataRequest.getYata().getYataId(), yataRequest.getYata(), yataRequest);
-        yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.ACCEPTED);
-        yataMemberService.saveYataMember(yataRequest);
-
-    }
-
-    public void rejectInvitation(String username, Long yataRequestId) {
-        Member member = memberService.findMember(username);
-        YataRequest yataRequest = yataRequestService.findRequest(yataRequestId);
-        validateInviteRequest(member, yataRequest);
-        if(yataRequest.getApprovalStatus().equals(YataRequest.ApprovalStatus.ACCEPTED)) {
-            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
-        }
-        yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.REJECTED);
-    }
-
-    private static void validateInviteRequest(Member member, YataRequest yataRequest) {
-        if(!yataRequest.getMember().equals(member)) {
-            throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
-        }
-        if(yataRequest.getRequestStatus().equals(YataRequest.RequestStatus.APPLY)) {
-            throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
-        }
-    }
+public interface YataInviteService {
+    void acceptInvitation(String username, Long yataRequestId);
+    void rejectInvitation(String username, Long yataRequestId);
 }
