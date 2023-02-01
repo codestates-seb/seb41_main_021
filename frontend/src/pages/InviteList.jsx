@@ -9,6 +9,7 @@ import { BsCalendar4, BsPeople } from 'react-icons/bs';
 import { BiWon } from 'react-icons/bi';
 import { dateFormat } from '../components/common/DateFormat';
 import { useParams } from 'react-router-dom';
+import Button from '../components/common/Button';
 
 export default function InviteList() {
   const navigate = useNavigate();
@@ -25,6 +26,20 @@ export default function InviteList() {
     });
   }, []);
 
+  const approveHandler = () => {
+    const data = {};
+    usePostData(`https://server.yata.kro.kr/api/v1/yata/${yataId}/${yataRequestId}/accept`, data).then(res => {
+      setUpdate(true);
+    });
+  };
+
+  const rejectHandler = () => {
+    const data = {};
+    usePostData(`https://server.yata.kro.kr/api/v1/yata/${yataId}/${yataRequestId}/reject`, data).then(res => {
+      setUpdate(true);
+    });
+  };
+
   return (
     <>
       <Header title="내가 받은 초대" />
@@ -32,24 +47,33 @@ export default function InviteList() {
         <Container>
           {list.map(el => {
             return (
-              <TextContainer
-                key={el.yataId}
-                onClick={() => {
-                  navigate(`/register-checklist/${el.yataId}`);
-                }}>
+              <TextContainer key={el.yataId}>
                 <DateContainer>
-                  <BsCalendar4 />
-                  {dateFormat(el.departureTime)}
+                  <div className="date">
+                    <BsCalendar4 />
+                    {dateFormat(el.departureTime)}
+                  </div>
 
                   {/* {state && (
                   <TagContainer>
                     {state === '대기' ? '승인 대기' : state === '수락' ? '승인 확정' : '승인 거절'}
                   </TagContainer>
                   )} */}
+                  <GoToButton
+                    onClick={() => {
+                      navigate(`/taeoonda-detail/${el.yataId}`);
+                    }}>
+                    게시물 확인하기
+                  </GoToButton>
                 </DateContainer>
                 <JourneyContainer>
                   <JourneyText>{el.yataOwnerNickname}</JourneyText>
-                  <IoIosArrowForward />
+                  <ButtonContainer>
+                    <div className="two-buttons">
+                      <RejectButton onClick={rejectHandler}>거절하기</RejectButton>
+                      <Button onClick={approveHandler}>수락하기</Button>
+                    </div>
+                  </ButtonContainer>
                 </JourneyContainer>
                 <BottomContainer>
                   <PriceContainer>
@@ -109,6 +133,12 @@ const DateContainer = styled.div`
   color: ${props => props.theme.colors.gray};
   font-weight: bold;
   margin-bottom: 0.8rem;
+  justify-content: space-between;
+
+  .date {
+    display: flex;
+    align-items: center;
+  }
 `;
 
 const TagContainer = styled.div`
@@ -121,13 +151,6 @@ const TagContainer = styled.div`
   color: white;
   border-radius: 0.2rem;
   font-size: 0.9rem;
-
-  /* background-color: ${props =>
-    props.state === '대기'
-      ? props.theme.colors.gray
-      : props.state === '수락'
-      ? props.theme.colors.main_blue
-      : props.theme.colors.light_red}; */
 `;
 
 const JourneyContainer = styled.div`
@@ -172,4 +195,33 @@ const PeopleContainer = styled.div`
     position: relative;
     top: 0.1rem;
   }
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+
+  .two-buttons {
+    display: flex;
+    margin-top: 0.5rem;
+  }
+`;
+
+const RejectButton = styled(Button)`
+  margin-right: 1rem;
+  background: ${props => props.theme.colors.gray};
+  &:hover {
+    background: ${props => props.theme.colors.light_gray};
+  }
+  &:active {
+    background: ${props => props.theme.colors.dark_gray};
+  }
+`;
+
+const GoToButton = styled(Button)`
+  /* width: 100%; */
+  background-color: pink;
+  color: black;
 `;

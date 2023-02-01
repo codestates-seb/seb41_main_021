@@ -2,17 +2,19 @@ import styled from 'styled-components';
 import NavBar from '../components/NavBar';
 import { NavLink } from 'react-router-dom';
 import { VscAccount } from 'react-icons/vsc';
-import { BiTrip, BiLike } from 'react-icons/bi';
+import { BiTrip, BiLike, BiEdit } from 'react-icons/bi';
 import { RiArrowLeftSFill, RiOilLine } from 'react-icons/ri';
 import { IoIosArrowForward } from 'react-icons/io';
 import { RiCoinsFill } from 'react-icons/ri';
-
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { checkIfLogined } from '../hooks/useLogin';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearUser } from '../redux/slice/UserSlice';
 import { useGetData } from '../hooks/useGetData';
+import usePostData from '../hooks/usePostData';
+import axios from 'axios';
+import { MdPreview } from 'react-icons/md';
 import { useGetUserInfo } from '../hooks/useLogin';
 import { loginUser } from '../redux/slice/UserSlice';
 
@@ -21,8 +23,36 @@ export default function MyPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [files, setFiles] = useState('');
+
+  const onLoadFile = e => {
+    const file = e.target.files;
+    console.log(file);
+    setFiles(file);
+  };
+
+  const handleClick = e => {
+    e.preventDefault();
+    // const formdata = new FormData();
+    // formdata.append('uploadImage', files[0]);
+    console.log(files[0]);
+    // console.log(formdata);
+
+    axios
+      .post('https://server.yata.kro.kr/api/v1/images/profile', files[0], {
+        headers: {
+          'Content-Type': 'multipart/form-data;charset=UTF-8',
+          Authorization: localStorage.getItem('ACCESS'),
+        },
+      })
+      .then(res => {
+        console.log(res);
+      });
+  };
+
   const logout = () => {
-    localStorage.clear();
+    localStorage.removeItem('ACCESS');
+    localStorage.removeItem('REFRESH');
     dispatch(clearUser());
     navigate('/');
   };
@@ -50,10 +80,17 @@ export default function MyPage() {
   return (
     <>
       <Container>
+        {/* <form>
+          <label htmlFor="image">이미지 업로드</label>
+          <input type="file" id="image" accept="img/*" onChange={onLoadFile} multiple />
+          <button onClick={handleClick}>저장하기</button>
+        </form> */}
         <MyPageContainer>
           <ProfileContainer>
             <Profile>
-              <VscAccount />
+              <VscAccount className="profile" />
+              {/* <img src={info.imgUrl} alt="profile picture" /> */}
+              <BiEdit className="edit" />
               <Info>
                 <div className="text" title="이름">
                   {info.name}
@@ -202,11 +239,19 @@ const Profile = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+  position: relative;
 
-  svg {
+  .profile {
     margin-right: 2rem;
     font-size: 5rem;
     border-radius: 1rem;
+  }
+
+  .edit {
+    position: absolute;
+    font-size: 1rem;
+    left: 4rem;
+    bottom: 0;
   }
 `;
 const Info = styled.div`

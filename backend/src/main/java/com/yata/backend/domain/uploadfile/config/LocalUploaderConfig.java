@@ -9,6 +9,8 @@ import com.yata.backend.domain.uploadfile.service.Uploader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 @Configuration
 @Profile("local")
@@ -28,5 +30,11 @@ public class LocalUploaderConfig {
    @Bean
    public Uploader uploader() {
       return new LocalUploader();
+   }
+   @Bean
+   public MultipartResolver multipartResolver() {
+      CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+      multipartResolver.setMaxUploadSize(2000000000);
+      return multipartResolver;
    }
 }

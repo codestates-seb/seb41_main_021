@@ -15,6 +15,7 @@ export default function TabnidaEdit() {
   const des = useSelector(state => {
     return state.destination;
   });
+
   const params = useParams();
   const yataId = params.yataId;
   const navigate = useNavigate();
