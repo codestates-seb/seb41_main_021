@@ -88,7 +88,8 @@ public class SecurityConfig {
 
 
                                 .antMatchers("/api/v1/images/**").authenticated()
-
+                                // review
+                                .antMatchers("/api/v1/review/**").authenticated()
 
                                 // notify
                                 .antMatchers(HttpMethod.GET, "/api/v1/notify/**").authenticated()
