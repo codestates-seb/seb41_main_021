@@ -86,6 +86,8 @@ public interface YataMapper {
                                 .yataId(yataMember.getYata().getYataId())
                                 .yataMemberId(yataMember.getYataMemberId())
                                 .yataPaid(yataMember.isYataPaid())
+                                .nickname(yataMember.getMember().getNickname())
+                                .email(yataMember.getMember().getEmail())
                                 .goingStatus(yataMember.getGoingStatus()).build();
                     }).collect(Collectors.toList())); //여기선 넣어주고
         }
