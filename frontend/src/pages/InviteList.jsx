@@ -63,7 +63,7 @@ export default function InviteList() {
                     onClick={() => {
                       navigate(`/taeoonda-detail/${el.yataId}`);
                     }}>
-                    게시물 확인하기
+                    게시물 확인하기 >
                   </GoToButton>
                 </DateContainer>
                 <JourneyContainer>
@@ -220,8 +220,9 @@ const RejectButton = styled(Button)`
   }
 `;
 
-const GoToButton = styled(Button)`
-  /* width: 100%; */
-  background-color: pink;
-  color: black;
+const GoToButton = styled.div`
+  background-color: white;
+  color: darkgray;
+  cursor: pointer;
+  margin-right: 0.3rem;
 `;

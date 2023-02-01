@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import NavBar from '../components/NavBar';
 import { NavLink } from 'react-router-dom';
-import { VscAccount } from 'react-icons/vsc';
 import { BiTrip, BiLike, BiEdit } from 'react-icons/bi';
 import { RiArrowLeftSFill, RiOilLine } from 'react-icons/ri';
 import { IoIosArrowForward } from 'react-icons/io';
@@ -17,38 +16,13 @@ import axios from 'axios';
 import { MdPreview } from 'react-icons/md';
 import { useGetUserInfo } from '../hooks/useLogin';
 import { loginUser } from '../redux/slice/UserSlice';
+import Modal from '../components/common/Modal';
 
 export default function MyPage() {
   const [review, setReview] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const [files, setFiles] = useState('');
-
-  const onLoadFile = e => {
-    const file = e.target.files;
-    console.log(file);
-    setFiles(file);
-  };
-
-  const handleClick = e => {
-    e.preventDefault();
-    // const formdata = new FormData();
-    // formdata.append('uploadImage', files[0]);
-    console.log(files[0]);
-    // console.log(formdata);
-
-    axios
-      .post('https://server.yata.kro.kr/api/v1/images/profile', files[0], {
-        headers: {
-          'Content-Type': 'multipart/form-data;charset=UTF-8',
-          Authorization: localStorage.getItem('ACCESS'),
-        },
-      })
-      .then(res => {
-        console.log(res);
-      });
-  };
+  const [show, setShow] = useState(false);
 
   const logout = () => {
     localStorage.removeItem('ACCESS');
@@ -80,17 +54,19 @@ export default function MyPage() {
   return (
     <>
       <Container>
-        {/* <form>
-          <label htmlFor="image">이미지 업로드</label>
-          <input type="file" id="image" accept="img/*" onChange={onLoadFile} multiple />
-          <button onClick={handleClick}>저장하기</button>
-        </form> */}
         <MyPageContainer>
           <ProfileContainer>
             <Profile>
-              <VscAccount className="profile" />
-              {/* <img src={info.imgUrl} alt="profile picture" /> */}
-              <BiEdit className="edit" />
+              <img src={info.imgUrl} alt="profile picture" className="profile" />
+              <ImgUploadContainer>
+                <BiEdit
+                  className="edit"
+                  onClick={() => {
+                    setShow(true);
+                  }}
+                />
+                <Modal show={show} onClose={() => setShow(false)} title={'이미지 업로드'} isUpload={true}></Modal>
+              </ImgUploadContainer>
               <Info>
                 <div className="text" title="이름">
                   {info.name}
@@ -242,18 +218,27 @@ const Profile = styled.div`
   position: relative;
 
   .profile {
-    margin-right: 2rem;
-    font-size: 5rem;
+    width: 7rem;
+    padding: 0.2rem;
+    margin-right: 1.5rem;
     border-radius: 1rem;
   }
-
-  .edit {
-    position: absolute;
-    font-size: 1rem;
-    left: 4rem;
-    bottom: 0;
-  }
 `;
+
+const ImgUploadContainer = styled.div`
+  width: auto;
+  height: auto;
+  display: flex;
+  position: absolute;
+  padding: 0.2rem;
+  font-size: 2rem;
+  left: 5rem;
+  bottom: 0;
+  background-color: white;
+  border-radius: 50%;
+  cursor: pointer;
+`;
+
 const Info = styled.div`
   display: flex;
   flex-direction: column;
