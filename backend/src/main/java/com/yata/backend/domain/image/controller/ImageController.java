@@ -7,6 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,7 +23,7 @@ public class ImageController {
     }
 
     @PostMapping("/profile")
-    public ResponseEntity profileImage(MultipartFile file, @AuthenticationPrincipal User principal) throws IOException {
+    public ResponseEntity profileImage(@RequestParam MultipartFile file, @AuthenticationPrincipal User principal) throws IOException {
         //imageUploader.uploadImage(file , principal.getUsername());
         return new ResponseEntity(new SingleResponse<>(imageUploader.uploadImage(file, principal.getUsername())), null, 200);
     }
