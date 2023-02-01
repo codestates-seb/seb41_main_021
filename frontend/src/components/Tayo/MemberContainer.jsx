@@ -28,7 +28,6 @@ export default function MemberContainer({ data, email }) {
         ) : (
           data.email === email &&
           data.yataMembers.map(el => {
-            console.log(el);
             return (
               <>
                 <MemberListItem
