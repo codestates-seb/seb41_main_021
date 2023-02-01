@@ -35,10 +35,10 @@ public class YataInviteServiceImpl implements YataInviteService {
     public void rejectInvitation(String username, Long yataRequestId) {
         Member member = memberService.findMember(username);
         YataRequest yataRequest = yataRequestService.findRequest(yataRequestId);
+        // 주인이 맞는지 아니면 다른 사람이 취소를 요청했는지 확인
         validateInviteRequest(member, yataRequest);
-        if(yataRequest.getApprovalStatus().equals(YataRequest.ApprovalStatus.ACCEPTED)) {
-            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
-        }
+        // 이미 돈을 지불했는지 안했는지 확인 후 지불했으면 취소 안댐
+        yataMemberService.validatePaidAndDelete(yataRequest.getYata(), yataRequest);
         yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.REJECTED);
     }
 
