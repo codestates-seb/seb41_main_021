@@ -18,6 +18,8 @@ public class YataMemberSnippet {
                 fieldWithPath("data[].imgUrl").type(JsonFieldType.STRING).description("야타 멤버의 사진 URL"),
                 fieldWithPath("data[].boardingPersonCount").type(JsonFieldType.NUMBER).description("탑승 인원"),
                 fieldWithPath("data[].goingStatus").type(JsonFieldType.STRING).description("카풀 현황 상태 ( STARTED_YET / ARRIVED )"),
+                fieldWithPath("data[].reviewWritten").type(JsonFieldType.BOOLEAN).description("리뷰 작성 여부"),
+                fieldWithPath("data[].reviewReceived").type(JsonFieldType.BOOLEAN).description("리뷰 받은 여부"),
                 fieldWithPath("sliceInfo").type(JsonFieldType.OBJECT).description("슬라이스 정보"),
                 fieldWithPath("sliceInfo.getNumber").type(JsonFieldType.NUMBER).description("현재 슬라이스 번호"),
                 fieldWithPath("sliceInfo.getSize").type(JsonFieldType.NUMBER).description("현재 슬라이스 크기"),

@@ -75,6 +75,7 @@ public class SecurityConfig {
                                 .antMatchers("/api/v1/validation/**").permitAll()
                                 // pay
                                 .antMatchers(HttpMethod.POST, "/api/v1/payments/**").authenticated()
+                                .antMatchers(HttpMethod.GET, "/api/v1/payments/history").authenticated()
                                 .antMatchers("/api/v1/payments/**").permitAll()
                                 // yata
                                 .antMatchers("/api/v1/yata/apply/**").authenticated()
@@ -88,7 +89,8 @@ public class SecurityConfig {
 
 
                                 .antMatchers("/api/v1/images/**").authenticated()
-
+                                // review
+                                .antMatchers("/api/v1/review/**").authenticated()
 
                                 // notify
                                 .antMatchers(HttpMethod.GET, "/api/v1/notify/**").authenticated()
