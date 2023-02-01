@@ -40,7 +40,7 @@ export default function TabnidaAdd() {
       },
     };
 
-    useTayoEdit(`https://server.yata.kro.kr/api/v1/yata/${yataId}`, data).then(res => {
+    useTayoEdit(`/api/v1/yata/${yataId}`, data).then(res => {
       console.log(res);
       navigate(`/taeoonda-detail/${yataId}`);
     });

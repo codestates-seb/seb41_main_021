@@ -11,7 +11,7 @@ const Modal = props => {
   const [modalData, setModalData] = useState([]);
 
   useEffect(() => {
-    useGetData(`https://server.yata.kro.kr/api/v1/yata/myYatas/neota/notClosed`).then(res => {
+    useGetData(`/api/v1/yata/myYatas/neota/notClosed`).then(res => {
       setModalData(res.data.data);
     });
   }, []);

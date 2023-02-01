@@ -22,15 +22,11 @@ export default function OtherUserPage() {
   const [review, setReview] = useState([]);
 
   useEffect(() => {
-    useGetData(`https://server.yata.kro.kr/api/v1/members/${email}`).then(res =>
-      setData(res.data.data, setLoading(false)),
-    );
+    useGetData(`/api/v1/members/${email}`).then(res => setData(res.data.data, setLoading(false)));
   }, []);
 
   useEffect(() => {
-    useGetData(`https://server.yata.kro.kr/api/v1/review/${email}`).then(res =>
-      setReview(res.data.data, setLoading(false)),
-    );
+    useGetData(`/api/v1/review/${email}`).then(res => setReview(res.data.data, setLoading(false)));
   }, []);
 
   return (

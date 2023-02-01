@@ -42,15 +42,13 @@ export default function TabnidaDetail() {
       },
     };
 
-    useTayoRequest(`https://server.yata.kro.kr/api/v1/yata/apply/${yataId}`, newData).then(res => {
+    useTayoRequest(`/api/v1/yata/apply/${yataId}`, newData).then(res => {
       console.log(res);
     });
   };
 
   useEffect(() => {
-    useGetData(`https://server.yata.kro.kr/api/v1/yata/${yataId}`).then(res =>
-      setData(res.data.data, setLoading(false)),
-    );
+    useGetData(`/api/v1/yata/${yataId}`).then(res => setData(res.data.data, setLoading(false)));
   }, []);
 
   return (
