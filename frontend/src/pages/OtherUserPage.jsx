@@ -66,16 +66,7 @@ export default function OtherUserPage() {
               <div className="bottom">{review.length === 0 && '리뷰가 없음'}</div>
             </Compliment>
           </SummaryContainer>
-          <ListContainer>
-            {/* <List>
-              <ListTitle>탑니다/태웁니다 관리</ListTitle>
-              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journey-list">
-                <JourneyRecord>
-                  <div className="title">여정 내역</div>
-                  <IoIosArrowForward />
-                </JourneyRecord>
-              </NavLink>
-            </List> */}
+          {/* <ListContainer>
             <List>
               <ListTitle>일반</ListTitle>
               <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to={`/rating-list/${email}`}>
@@ -85,7 +76,7 @@ export default function OtherUserPage() {
                 </JourneyRecord>
               </NavLink>
             </List>
-          </ListContainer>
+          </ListContainer> */}
         </MyPageContainer>
       </Container>
       <NavBar />
