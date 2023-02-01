@@ -21,14 +21,14 @@ public class YataMember extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long yataMemberId;
 
-    @Column
+    @Column(nullable = false)
     private boolean yataPaid; // 지불 여부
 
     @Column
     private boolean reviewWritten; // 리뷰 작성 여부
 
     // 리뷰 당햇는지
-    @Column(nullable = false)
+    @Column
     private boolean reviewReceived;
 
     @Column(length = 20, nullable = false)
