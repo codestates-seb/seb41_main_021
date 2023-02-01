@@ -6,9 +6,11 @@ import { useNavigate, useParams } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 import dataSlice from '../../redux/slice/DataSlice';
 import { toast } from 'react-toastify';
+import defaultProf from '../../images/Logo.svg';
 
 export default function MemberListItem(props) {
-  const { state, nickname, yataMemberId, reviewReceived } = props;
+  const { state, nickname, yataMemberId, reviewReceived, img } = props;
+
   const navigate = useNavigate();
   const params = useParams();
   const yataId = params.yataId;
@@ -29,7 +31,12 @@ export default function MemberListItem(props) {
   return (
     <Container>
       <ProfileContainer>
-        <VscAccount />
+        {img === null ? (
+          <ProfPic src={defaultProf} alt="profile picture" className="profile" />
+        ) : (
+          <ProfPic src={img} alt="profile picture" className="profile" />
+        )}
+
         <Username>{nickname}</Username>
         {isPay ? (
           <ReviewBtn onClick={reviewHandler}>리뷰 남기기</ReviewBtn>
@@ -79,4 +86,10 @@ const ReviewBtn = styled(Button)`
   padding: 0rem 0.5rem;
   height: 1.5rem;
   font-size: 0.8rem;
+`;
+
+const ProfPic = styled.img`
+  width: 1.4rem;
+  margin-right: 0.5rem;
+  border-radius: 1rem;
 `;

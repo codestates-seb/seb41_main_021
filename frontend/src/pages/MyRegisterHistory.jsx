@@ -8,14 +8,14 @@ export default function MyRegisterHistory() {
   const [list, setList] = useState([]);
 
   useEffect(() => {
-    useGetData('https://server.yata.kro.kr/api/v1/yata/requests/myYataRequests').then(res => {
+    useGetData('/api/v1/yata/requests/myYataRequests').then(res => {
       setList(res.data.data);
     });
   }, []);
 
   return (
     <>
-      <Header title="나의 신청/초대 내역" />
+      <Header title="나의 신청 내역" />
       {list.length !== 0 ? (
         <Container>
           <ListItemView list={list} />

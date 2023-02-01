@@ -19,7 +19,7 @@ export default function RegisterList() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    useGetData(`https://server.yata.kro.kr/api/v1/yata/myYatas/myRequested`).then(res => {
+    useGetData(`/api/v1/yata/myYatas/myRequested`).then(res => {
       setList(res.data.data);
       setLoading(false);
     });
@@ -50,11 +50,11 @@ export default function RegisterList() {
                 <DateContainer>
                   <BsCalendar4 />
                   {dateFormat(el.departureTime)}
-
-                  {/* {state && (
-                  <TagContainer>
-                    {state === '대기' ? '승인 대기' : state === '수락' ? '승인 확정' : '승인 거절'}
-                  </TagContainer>
+                  {console.log(el.yataStatus)}
+                  {/* {yataRequestStatus && (
+                    <YataRequestTagContainer yataRequestStatus={yataRequestStatus}>
+                      {yataRequestStatus === 'APPLY' ? '신청' : '초대'}
+                    </YataRequestTagContainer>
                   )} */}
                 </DateContainer>
                 <JourneyContainer>
@@ -186,4 +186,19 @@ const PeopleContainer = styled.div`
     position: relative;
     top: 0.1rem;
   }
+`;
+
+const YataRequestTagContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+
+  width: 4rem;
+  height: 1.1rem;
+  color: white;
+  border-radius: 0.2rem;
+  font-size: 0.7rem;
+
+  background-color: ${props => (props.yataRequestStatus === 'APPLY' ? '#7c92c0' : '#7c7cc0')};
 `;

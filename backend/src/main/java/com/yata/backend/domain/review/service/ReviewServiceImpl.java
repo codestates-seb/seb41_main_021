@@ -52,9 +52,11 @@ public class ReviewServiceImpl implements ReviewService {
         if (yataMemberId == null) {
             yataMember = yataMemberService.verifyPossibleYataMemberByUserName(yata, fromMember);
             review.setToMember(yata.getMember()); //대상자 : yata 글주인
+            yataMember.setReviewWritten(true);
         } else {
             yataMember = yataMemberService.verifyPossibleYataMember(yataMemberId, yata);//존재하는 야타멤버아이딘지 확인해주고
             review.setToMember(yataMember.getMember()); //대상자 yataMember 리뷰 조회
+            yataMember.setReviewReceived(true);
         }
 
         validateYataOwner(yataMemberId, yata, fromMember); // 운전자 일 경우 글주인 체크

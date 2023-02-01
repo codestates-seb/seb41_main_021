@@ -82,6 +82,8 @@ public class YataSnippet {
                 fieldWithPath("data[].yataResponse.yataMembers").type(JsonFieldType.NULL).description("예약 인원 정보(null)"),
                 fieldWithPath("data[].goingStatus").type(JsonFieldType.STRING).description("카풀 현황 상태 '도착전/도착 완료'"),
                 fieldWithPath("data[].yataPaid").type(JsonFieldType.BOOLEAN).description("결제 여부"),
+                fieldWithPath("data[].reviewWritten").type(JsonFieldType.BOOLEAN).description("리뷰 썻는지 내역"),
+                fieldWithPath("data[].reviewReceived").type(JsonFieldType.BOOLEAN).description("리뷰 받았는지 내역"),
                 fieldWithPath("sliceInfo").type(JsonFieldType.OBJECT).description("슬라이스 정보"),
                 fieldWithPath("sliceInfo.getNumber").type(JsonFieldType.NUMBER).description("현재 슬라이스 번호"),
                 fieldWithPath("sliceInfo.getSize").type(JsonFieldType.NUMBER).description("현재 슬라이스 크기"),

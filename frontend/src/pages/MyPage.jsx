@@ -17,12 +17,32 @@ import { MdPreview } from 'react-icons/md';
 import { useGetUserInfo } from '../hooks/useLogin';
 import { loginUser } from '../redux/slice/UserSlice';
 import Modal from '../components/common/Modal';
+import defaultProf from '../images/Logo.svg';
+import { toast } from 'react-toastify';
+import instance from '../api/instance';
 
 export default function MyPage() {
   const [review, setReview] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    useGetUserInfo().then(res => {
+      if (res.name === 'AxiosError') {
+        toast.warning('로그인이 필요한 페이지입니다.');
+        return navigate('/');
+      }
+      dispatch(loginUser(res));
+      useGetData(`/api/v1/review/${res.email}`).then(res => {
+        if (res.status === 200) {
+          setReview(res.data.data);
+        } else {
+          console.log('리뷰 정보를 가져오는데 실패하였습니다.');
+        }
+      });
+    });
+  }, []);
 
   const logout = () => {
     localStorage.removeItem('ACCESS');
@@ -35,29 +55,17 @@ export default function MyPage() {
     return state.user;
   });
 
-  const isLogin = checkIfLogined();
-
-  useEffect(() => {
-    if (!isLogin) {
-      return navigate('/');
-    }
-    useGetUserInfo().then(res => dispatch(loginUser(res)));
-    useGetData(`https://server.yata.kro.kr/api/v1/review/${info.email}`).then(res => {
-      if (res.status === 200) {
-        setReview(res.data.data);
-      } else {
-        console.log('리뷰 정보를 가져오는데 실패하였습니다.');
-      }
-    });
-  }, []);
-
   return (
     <>
       <Container>
         <MyPageContainer>
           <ProfileContainer>
             <Profile>
-              <img src={info.imgUrl} alt="profile picture" className="profile" />
+              {info.imgUrl === null ? (
+                <ProfPic src={defaultProf} alt="profile picture" className="profile" />
+              ) : (
+                <ProfPic src={info.imgUrl} alt="profile picture" className="profile" />
+              )}
               <ImgUploadContainer>
                 <BiEdit
                   className="edit"
@@ -136,7 +144,7 @@ export default function MyPage() {
               </NavLink>
               <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/my-register-history">
                 <JourneyRecord>
-                  <div className="title">나의 신청/초대 내역</div>
+                  <div className="title">나의 신청 내역</div>
                   <IoIosArrowForward />
                 </JourneyRecord>
               </NavLink>
@@ -173,12 +181,12 @@ export default function MyPage() {
                   </JourneyRecord>
                 </NavLink>
               )}
-              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/rating-list/">
+              {/* <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/rating-list/">
                 <JourneyRecord>
                   <div className="title">받은 매너 평가</div>
                   <IoIosArrowForward />
                 </JourneyRecord>
-              </NavLink>
+              </NavLink> */}
 
               <JourneyRecord onClick={logout}>
                 <div className="title">로그아웃</div>
@@ -216,13 +224,13 @@ const Profile = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+`;
 
-  .profile {
-    width: 7rem;
-    padding: 0.2rem;
-    margin-right: 1.5rem;
-    border-radius: 1rem;
-  }
+const ProfPic = styled.img`
+  width: 7rem;
+  padding: 0.2rem;
+  margin-right: 1.5rem;
+  border-radius: 1rem;
 `;
 
 const ImgUploadContainer = styled.div`

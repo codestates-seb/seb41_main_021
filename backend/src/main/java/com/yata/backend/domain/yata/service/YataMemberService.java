@@ -12,6 +12,7 @@ public interface YataMemberService {
     void validateRequest(Long yataRequestId, Long yataId, Yata yata, YataRequest yataRequest);
     void saveYataMember(YataRequest yataRequest);
     void reject(String userName, Long yataRequestId, Long yataId);
+    void validatePaidAndDelete(Yata yata, YataRequest yataRequest);
     Slice<YataMember> findAcceptedRequests(String userEmail, Long yataId, Pageable pageable);
     void payPoint(String userName, Long yataId, Long yataMemberId);
 
