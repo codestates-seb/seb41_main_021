@@ -31,6 +31,7 @@ const JourneyItem = props => {
   };
 
   const { date, journeyStart, journeyEnd, price, people, state, onClick, isPay, yataId, yataMemberId } = props;
+
   return (
     <>
       <Container onClick={onClick}>

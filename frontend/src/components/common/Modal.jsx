@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Button from '../common/Button';
 import { FiX } from 'react-icons/fi';
-import axios from 'axios';
+import instance from '../../api/instance';
 
 const Modal = props => {
   const { title, children, event, isUpload } = props;
@@ -21,11 +21,10 @@ const Modal = props => {
     formdata.append('file', files[0]);
     console.log(files[0]);
 
-    axios
-      .post('https://server.yata.kro.kr/api/v1/images/profile', formdata, {
+    instance
+      .post('/api/v1/images/profile', formdata, {
         headers: {
           'Content-Type': 'multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm',
-          Authorization: localStorage.getItem('ACCESS'),
         },
       })
       .then(res => {
@@ -127,7 +126,11 @@ const ModalBody = styled.div`
 `;
 
 const ModalText = styled.div`
-  font-size: 1.2rem;
+  width: 95%;
+
+  form {
+    overflow: hidden;
+  }
 `;
 
 const ButtonContainer = styled.div`

@@ -17,6 +17,7 @@ import { MdPreview } from 'react-icons/md';
 import { useGetUserInfo } from '../hooks/useLogin';
 import { loginUser } from '../redux/slice/UserSlice';
 import Modal from '../components/common/Modal';
+import defaultProf from '../images/Logo.svg';
 
 export default function MyPage() {
   const [review, setReview] = useState([]);
@@ -57,7 +58,11 @@ export default function MyPage() {
         <MyPageContainer>
           <ProfileContainer>
             <Profile>
-              <img src={info.imgUrl} alt="profile picture" className="profile" />
+              {info.imgUrl === null ? (
+                <ProfPic src={defaultProf} alt="profile picture" className="profile" />
+              ) : (
+                <ProfPic src={info.imgUrl} alt="profile picture" className="profile" />
+              )}
               <ImgUploadContainer>
                 <BiEdit
                   className="edit"
@@ -216,13 +221,13 @@ const Profile = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+`;
 
-  .profile {
-    width: 7rem;
-    padding: 0.2rem;
-    margin-right: 1.5rem;
-    border-radius: 1rem;
-  }
+const ProfPic = styled.img`
+  width: 7rem;
+  padding: 0.2rem;
+  margin-right: 1.5rem;
+  border-radius: 1rem;
 `;
 
 const ImgUploadContainer = styled.div`

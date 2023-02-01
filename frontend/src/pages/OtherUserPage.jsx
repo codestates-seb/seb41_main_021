@@ -11,6 +11,7 @@ import Header from '../components/Header';
 import { useState, useEffect } from 'react';
 import { useGetData } from '../hooks/useGetData';
 import { useParams } from 'react-router-dom';
+import defaultProf from '../images/Logo.svg';
 
 export default function OtherUserPage() {
   const navigate = useNavigate();
@@ -40,7 +41,11 @@ export default function OtherUserPage() {
         <MyPageContainer>
           <ProfileContainer>
             <Profile>
-              <VscAccount />
+              {data.imgUrl === null ? (
+                <ProfPic src={defaultProf} alt="profile picture" className="profile" />
+              ) : (
+                <ProfPic src={data.imgUrl} alt="profile picture" className="profile" />
+              )}
               <Info>
                 <div className="text">{data.name}</div>
                 <div className="text">{data.nickname}</div>
@@ -262,4 +267,11 @@ const JourneyRecord = styled.div`
   .title {
     font-size: 1.2rem;
   }
+`;
+
+const ProfPic = styled.img`
+  width: 7rem;
+  padding: 0.2rem;
+  margin-right: 1.5rem;
+  border-radius: 1rem;
 `;
