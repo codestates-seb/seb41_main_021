@@ -38,6 +38,7 @@ export default function MemberContainer({ data, email }) {
                   email={el.email}
                   nickname={el.nickname}
                   state={el.yataPaid}
+                  reviewReceived={el.reviewReceived}
                 />
               </>
             );

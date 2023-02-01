@@ -256,7 +256,7 @@ const CompleteAuth = styled.div`
   height: 1.8rem;
   color: #ffffff;
   border-radius: 0.2rem;
-  font-size: 1rem;
+  font-size: 0.9rem;
   background-color: ${props => props.theme.colors.main_blue};
 `;
 const UncompleteAuth = styled(CompleteAuth)`
