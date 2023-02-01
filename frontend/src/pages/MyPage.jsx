@@ -144,7 +144,7 @@ export default function MyPage() {
               </NavLink>
               <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/my-register-history">
                 <JourneyRecord>
-                  <div className="title">나의 신청/초대 내역</div>
+                  <div className="title">나의 신청 내역</div>
                   <IoIosArrowForward />
                 </JourneyRecord>
               </NavLink>
