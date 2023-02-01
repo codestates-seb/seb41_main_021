@@ -116,15 +116,26 @@ public class YataMemberServiceImpl implements YataMemberService {
             memberService.checkDriver(member);
         }
 
-        // 신청을 한 멤버의 email 을 가진 멤버가 있는지 검증하고 걔를 빼옴
+        // 신청을 한 멤버의 email 을 가진 멤버가 있는지 검증하고 걔를 빼와서 그 멤버가 돈을 지불햇는지 확인 후 지불햇으면 취소 불가
+        validatePaidAndDelete(yata, yataRequest);
+        yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.REJECTED); // yataRequest 의 상태를 거절로 변경
+    }
+
+    public void validatePaidAndDelete(Yata yata, YataRequest yataRequest) {
         Optional<YataMember> yataMember = yata.getYataMembers().stream()
                 .filter(r -> r.getMember().equals(yataRequest.getMember()))
                 .findAny();
 
         // 레포에서 delete
-        yataMember.ifPresent(jpaYataMemberRepository::delete);
+        //yataMember.ifPresent(jpaYataMemberRepository::delete);
+        yataMember.ifPresent(deleteMember -> {
+            if(deleteMember.isYataPaid()) {
+                // 지불한 애면 포인트 돌려주기
+                throw new CustomLogicException(ExceptionCode.ALREADY_PAY);
+            }
+            jpaYataMemberRepository.delete(deleteMember);
 
-        yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.REJECTED); // yataRequest 의 상태를 거절로 변경
+        });
     }
 
     // yataMember 전체 조회 ( 승인된 애들 조회 )

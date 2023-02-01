@@ -171,6 +171,8 @@ public class YataFactory {
         return YataDto.AcceptedResponse.builder()
                 .yataResponse(response)
                 .yataPaid(true)
+                .reviewReceived(true)
+                .reviewWritten(true)
                 .goingStatus(YataMember.GoingStatus.STARTED_YET).build();
     }
 

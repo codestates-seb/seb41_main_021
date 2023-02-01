@@ -103,12 +103,15 @@ public interface YataMapper {
         return yatas.stream().map(yata -> {
             YataDto.AcceptedResponse response = new YataDto.AcceptedResponse();
             response.setYataResponse(yataToYataResponse(yata));
+            response.getYataResponse().setYataMembers(null);
             YataMember yataMember = yata.getYataMembers()
                     .stream()
                     .filter(yataMember1 ->
                             yataMember1.getMember().getEmail().equals(email)).findFirst().orElse(null);
             response.setYataPaid(yataMember != null && yataMember.isYataPaid());
             response.setGoingStatus(yataMember != null ? yataMember.getGoingStatus() : null);
+            response.setReviewReceived(yataMember != null && yataMember.isReviewReceived());
+            response.setReviewWritten(yataMember != null && yataMember.isReviewWritten());
             return response;
         }).collect(Collectors.toList());
     }
