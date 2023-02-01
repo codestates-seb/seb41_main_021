@@ -9,9 +9,12 @@ export default function MemberContainer({ data }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    useGetData(`api/v1/yata/${data.yataId}/accept/yataRequests`).then(res =>
-      setnewData(res.data.data, setLoading(false)),
-    );
+    useGetData(`api/v1/yata/${data.yataId}/accept/yataRequests`).then(res => {
+      if (res.request.status === 200) {
+        setnewData(res.data.data);
+        setLoading(false);
+      }
+    });
   }, []);
 
   return (
@@ -28,7 +31,7 @@ export default function MemberContainer({ data }) {
                 yataId={el.yataId}
                 yataMemberId={el.yataMemberId}
                 email={el.email}
-                nickname={el.nickName}
+                nickname={el.nickname}
                 state={el.yataPaid}
               />
             );

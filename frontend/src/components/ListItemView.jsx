@@ -20,6 +20,7 @@ const ListItemView = props => {
               price={el.amount}
               people={`1/${el.maxPeople}`}
               yataStatus={el.yataStatus}
+              postStatus={el.postStatus}
             />
           );
         })}

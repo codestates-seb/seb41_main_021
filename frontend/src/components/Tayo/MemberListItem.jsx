@@ -68,6 +68,8 @@ const TagContainer = styled.div`
 `;
 
 const ReviewBtn = styled(Button)`
-  padding: 5px 10px;
-  font-size: 0.9rem;
+  margin-left: 1rem;
+  padding: 0rem 0.5rem;
+  height: 1.5rem;
+  font-size: 0.8rem;
 `;
