@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import NavBar from '../components/NavBar';
 import { NavLink } from 'react-router-dom';
 import { VscAccount } from 'react-icons/vsc';
-import { BiTrip, BiLike } from 'react-icons/bi';
+import { BiTrip, BiLike, BiEdit } from 'react-icons/bi';
 import { RiArrowLeftSFill, RiOilLine } from 'react-icons/ri';
 import { IoIosArrowForward } from 'react-icons/io';
 import { RiCoinsFill } from 'react-icons/ri';
@@ -79,16 +79,17 @@ export default function MyPage() {
   return (
     <>
       <Container>
-        <form>
+        {/* <form>
           <label htmlFor="image">이미지 업로드</label>
           <input type="file" id="image" accept="img/*" onChange={onLoadFile} multiple />
           <button onClick={handleClick}>저장하기</button>
-        </form>
+        </form> */}
         <MyPageContainer>
           <ProfileContainer>
             <Profile>
-              <VscAccount />
-              <img src={info.imgUrl} alt="profile picture" />
+              <VscAccount className="profile" />
+              {/* <img src={info.imgUrl} alt="profile picture" /> */}
+              <BiEdit className="edit" />
               <Info>
                 <div className="text" title="이름">
                   {info.name}
@@ -237,11 +238,19 @@ const Profile = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+  position: relative;
 
-  svg {
+  .profile {
     margin-right: 2rem;
     font-size: 5rem;
     border-radius: 1rem;
+  }
+
+  .edit {
+    position: absolute;
+    font-size: 1rem;
+    left: 4rem;
+    bottom: 0;
   }
 `;
 const Info = styled.div`
