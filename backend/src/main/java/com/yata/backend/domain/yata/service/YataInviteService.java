@@ -36,6 +36,9 @@ public class YataInviteService {
         Member member = memberService.findMember(username);
         YataRequest yataRequest = yataRequestService.findRequest(yataRequestId);
         validateInviteRequest(member, yataRequest);
+        if(yataRequest.getApprovalStatus().equals(YataRequest.ApprovalStatus.ACCEPTED)) {
+            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
+        }
         yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.REJECTED);
     }
 

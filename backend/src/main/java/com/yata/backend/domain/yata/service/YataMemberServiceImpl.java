@@ -122,8 +122,15 @@ public class YataMemberServiceImpl implements YataMemberService {
                 .findAny();
 
         // 레포에서 delete
-        yataMember.ifPresent(jpaYataMemberRepository::delete);
+        //yataMember.ifPresent(jpaYataMemberRepository::delete);
+        yataMember.ifPresent(deleteMember -> {
+            if(deleteMember.isYataPaid()) {
+                // 지불한 애면 포인트 돌려주기
+                throw new CustomLogicException(ExceptionCode.ALREADY_PAY);
+            }
+            jpaYataMemberRepository.delete(deleteMember);
 
+        });
         yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.REJECTED); // yataRequest 의 상태를 거절로 변경
     }
 
