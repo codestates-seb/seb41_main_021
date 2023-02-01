@@ -22,7 +22,6 @@ public class YataInviteServiceImpl implements YataInviteService {
         this.yataMemberService = yataMemberService;
     }
 
-    @Override
     public void acceptInvitation(String username, Long yataRequestId) {
         Member member = memberService.findMember(username);
         YataRequest yataRequest = yataRequestService.findRequest(yataRequestId);
@@ -33,19 +32,21 @@ public class YataInviteServiceImpl implements YataInviteService {
 
     }
 
-    @Override
     public void rejectInvitation(String username, Long yataRequestId) {
         Member member = memberService.findMember(username);
         YataRequest yataRequest = yataRequestService.findRequest(yataRequestId);
+        // 주인이 맞는지 아니면 다른 사람이 취소를 요청했는지 확인
         validateInviteRequest(member, yataRequest);
+        // 이미 돈을 지불했는지 안했는지 확인 후 지불했으면 취소 안댐
+        yataMemberService.validatePaidAndDelete(yataRequest.getYata(), yataRequest);
         yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.REJECTED);
     }
 
     private static void validateInviteRequest(Member member, YataRequest yataRequest) {
-        if (!yataRequest.getMember().equals(member)) {
+        if(!yataRequest.getMember().equals(member)) {
             throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
         }
-        if (yataRequest.getRequestStatus().equals(YataRequest.RequestStatus.APPLY)) {
+        if(yataRequest.getRequestStatus().equals(YataRequest.RequestStatus.APPLY)) {
             throw new CustomLogicException(ExceptionCode.UNAUTHORIZED);
         }
     }
