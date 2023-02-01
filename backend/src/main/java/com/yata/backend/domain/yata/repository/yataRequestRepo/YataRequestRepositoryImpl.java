@@ -45,8 +45,8 @@ public class YataRequestRepositoryImpl implements YataRequestRepository {
     public Slice<YataRequest> findAllByMember_Email(String Email, Pageable pageable) {
         List<YataRequest> yataRequests = queryFactory.selectFrom(yataRequest)
                 .join(yataRequest.yata, yata).fetchJoin()
-                .leftJoin(yataRequest.strPoint).fetchJoin()
-                .leftJoin(yataRequest.destination).fetchJoin()
+                .join(yataRequest.strPoint).fetchJoin()
+                .join(yataRequest.destination).fetchJoin()
                 .join(yataRequest.member).fetchJoin()
                 .join(yata.strPoint).fetchJoin()
                 .join(yata.destination).fetchJoin()
