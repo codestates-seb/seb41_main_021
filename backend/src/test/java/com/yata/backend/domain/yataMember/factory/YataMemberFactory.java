@@ -25,6 +25,8 @@ public class YataMemberFactory {
                 .yataPaid(false)
                 .boardingPersonCount(2)
                 .goingStatus(YataMember.GoingStatus.STARTED_YET)
+                .reviewReceived(false)
+                .reviewWritten(false)
                 .build();
     }
 
@@ -46,6 +48,8 @@ public class YataMemberFactory {
                 .yataPaid(yataMember.isYataPaid())
                 .imgUrl(yataMember.getMember().getImgUrl() != null ? yataMember.getMember().getImgUrl().getUrl() : null)
                 .boardingPersonCount(yataMember.getBoardingPersonCount())
+                .reviewReceived(yataMember.isReviewReceived())
+                .reviewWritten(yataMember.isReviewWritten())
                 .goingStatus(yataMember.getGoingStatus())
                 .build();
     }
