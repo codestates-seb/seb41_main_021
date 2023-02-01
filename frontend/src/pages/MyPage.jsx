@@ -51,7 +51,8 @@ export default function MyPage() {
   };
 
   const logout = () => {
-    localStorage.clear();
+    localStorage.removeItem('ACCESS');
+    localStorage.removeItem('REFRESH');
     dispatch(clearUser());
     navigate('/');
   };

@@ -91,15 +91,13 @@ function onAccessTokenFetched(accessToken) {
   subscribers = [];
 }
 
-import { useDispatch } from 'react-redux';
-import { clearUser } from '../redux/slice/UserSlice';
 function signOut() {
+  localStorage.removeItem('ACCESS');
+  localStorage.removeItem('REFRESH');
   toast.warning('로그인 정보가 만료되었습니다.');
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  localStorage.clear();
-  dispatch(clearUser());
-  navigate('/');
+  // setTimeout(() => {
+  //   window.location.href = '/';
+  // }, 1500);
 }
 
 const useTokenRefresh = async () => {
