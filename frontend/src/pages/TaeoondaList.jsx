@@ -32,7 +32,9 @@ export default function TaeoondaList() {
   };
 
   useEffect(() => {
-    useGetData('/api/v1/yata?yataStatus=neota&page=0&size=100').then(res => setList(res.data.data));
+    useGetData(`/api/v1/yata/search/location?distance=1&yataStatus=YATA_NEOTA&page=0&size=100`).then(res =>
+      setList(res.data.data),
+    );
     dispatch(clearAll());
   }, []);
 

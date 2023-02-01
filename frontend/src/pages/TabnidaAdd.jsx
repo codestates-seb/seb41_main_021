@@ -36,9 +36,7 @@ export default function TabnidaAdd() {
         address: des.destinationPoint.address,
       },
     };
-    console.log(data);
     useTayoCreate('/api/v1/yata', data).then(res => {
-      console.log(res);
       navigate('/tabnida-list');
       dispatch(clearAll());
     });

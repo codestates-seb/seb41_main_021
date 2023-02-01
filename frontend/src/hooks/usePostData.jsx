@@ -15,9 +15,8 @@ const usePostData = async (url, data) => {
     // return error;
     if (error.response.data.message === 'PAYMENT_NOT_ENOUGH_POINT') {
       toast.warning('포인트가 부족합니다.');
-    } else {
-      toast.warning('잘못된 요청입니다.');
     }
+    return error;
   }
 };
 
