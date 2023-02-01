@@ -86,7 +86,12 @@ public interface YataMapper {
                                 .yataId(yataMember.getYata().getYataId())
                                 .yataMemberId(yataMember.getYataMemberId())
                                 .yataPaid(yataMember.isYataPaid())
-                                .goingStatus(yataMember.getGoingStatus()).build();
+                                .nickname(yataMember.getMember().getNickname())
+                                .email(yataMember.getMember().getEmail())
+                                .goingStatus(yataMember.getGoingStatus())
+                                .reviewReceived(yataMember.isReviewReceived())
+                                .reviewWritten(yataMember.isReviewWritten())
+                                .build();
                     }).collect(Collectors.toList())); //여기선 넣어주고
         }
         return response.build();

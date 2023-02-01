@@ -14,7 +14,7 @@ const InviteModalItem = props => {
       invitedYataId,
     };
 
-    useTayoInvite(`https://server.yata.kro.kr/api/v1/yata/invite`, newData);
+    useTayoInvite(`/api/v1/yata/invite`, newData);
   };
 
   const shortWords = (str, length = 19) => {

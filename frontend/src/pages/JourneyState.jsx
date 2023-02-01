@@ -15,7 +15,7 @@ export default function JourneyState() {
 
   useEffect(() => {
     if (isUpdate) {
-      useJourneyState('https://server.yata.kro.kr/api/v1/yata/accept/yatas').then(res => {
+      useJourneyState('/api/v1/yata/accept/yatas').then(res => {
         setData(res.data.data);
         setIsUpdate(false);
       });

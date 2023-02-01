@@ -14,7 +14,7 @@ export default function Rating() {
   });
 
   useEffect(() => {
-    useGetData(`https://server.yata.kro.kr/api/v1/review/${info.email}`).then(res => {
+    useGetData(`/api/v1/review/${info.email}`).then(res => {
       if (res.data.data.length !== 0) {
         if (res.data.checklistResponse.checkpn === true) {
           setPositiveList(res.data);

@@ -18,6 +18,10 @@ public class YataMemberDto {
         private String email;
         private String nickname;
         private boolean yataPaid;
+
+        private boolean reviewWritten;
+
+        private boolean reviewReceived;
         private int boardingPersonCount;
         private YataMember.GoingStatus goingStatus;
         private String imgUrl;

@@ -96,12 +96,14 @@ export default function SignUp() {
   // 이름 유효성 검사
   const nameValidation = e => {
     setName(e.target.value.replace(/[a-z0-9]|[ \[\]{}()<>?|`~!@#$%^&*-_+=,.;:\"'\\]/g, ''));
+  };
+  useEffect(() => {
     if (name.length < 2 || name.length > 5) {
       setNameValidity(true);
     } else {
       setNameValidity(false);
     }
-  };
+  }, [name]);
 
   // 이메일 유효성 검사
   const emailValidation = e => {
