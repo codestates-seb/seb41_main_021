@@ -58,9 +58,9 @@ export default function EditDeleteContainer(props) {
 
   return (
     <Container>
-      <TagContainer>
+      {/* <TagContainer>
         <Tag state={data.postStatus}>{data.postStatus === 'POST_OPEN' ? ableTag : disableTag}</Tag>
-      </TagContainer>
+      </TagContainer> */}
       <CRUDContainer>
         <FiEdit onClick={editHandler} title="수정하기" />
         <FiTrash onClick={deleteHandler} title="삭제하기" />
