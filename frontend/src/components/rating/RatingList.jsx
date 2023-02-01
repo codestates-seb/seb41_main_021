@@ -14,7 +14,7 @@ const RatingList = props => {
 
   useEffect(() => {
     if (email) {
-      useGetData(`https://server.yata.kro.kr/api/v1/review/${email}`).then(res => {
+      useGetData(`/api/v1/review/${email}`).then(res => {
         console.log(res.data.data);
         setData(res.data.data, setLoading(false));
       });

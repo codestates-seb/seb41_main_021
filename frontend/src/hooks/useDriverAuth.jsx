@@ -1,13 +1,8 @@
 import axios from 'axios';
-
+import instance from '../api/instance';
 const useDriverAuth = async body => {
   try {
-    const response = await axios.patch(`https://server.yata.kro.kr/api/v1/validation/driver-license`, body, {
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-        Authorization: localStorage.getItem('ACCESS'),
-      },
-    });
+    const response = await instance.patch(`/api/v1/validation/driver-license`, body);
     return response;
   } catch (error) {
     return console.log(error);
