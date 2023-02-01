@@ -37,23 +37,26 @@ export default function SignUp() {
   const handleSubmit = e => {
     e.preventDefault();
     if (nameValidity || nickname === '' || emailValidity || pwValidity || pwCheckValidity || numberValidity) {
-      return toast.warning('제대로 입력바람');
+      return toast.warning('모든 항목을 양식에 맞게 입력해주세요.');
     }
     if (!authValidity) {
       return toast.warning('이메일 인증을 해주세요.');
-    }
+    } else {
+      toast.success('회원가입에 성공했습니다!');
+      navigate('/login');
 
-    const body = {
-      email,
-      password,
-      name,
-      nickname,
-      genders: 'MAN',
-    };
-    console.log(body);
-    useSignup(body).then(res => {
-      return console.log(res);
-    });
+      const body = {
+        email,
+        password,
+        name,
+        nickname,
+        genders: 'MAN',
+      };
+      console.log(body);
+      useSignup(body).then(res => {
+        return console.log(res);
+      });
+    }
   };
 
   //인증 요청, 중복 확인
@@ -207,10 +210,6 @@ export default function SignUp() {
               />
               {pwCheckValidity && <ErrorMsg>비밀번호가 일치하지 않습니다.</ErrorMsg>}
             </Wrapper>
-            {/* <Wrapper>
-              <Input type="tel" placeholder="전화번호 입력" label="전화번호" state={number} onChange={autoHyphen} />
-              {numberValidity && <ErrorMsg>올바른 전화번호 형식이 아닙니다.</ErrorMsg>}
-            </Wrapper> */}
             <SubmitButton>회원가입</SubmitButton>
           </SignupForm>
         </Contents>
