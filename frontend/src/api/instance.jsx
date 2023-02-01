@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 // url 호출 시 기본 값 셋팅
 const instance = axios.create({
-  baseURL: 'https://server.yata.kro.kr',
+  baseURL: process.env.REACT_APP_SERVER_URL,
   headers: {
     'Content-Type': 'application/json;charset=UTF-8',
   },
@@ -103,7 +103,7 @@ function signOut() {
 const useTokenRefresh = async () => {
   try {
     const response = await axios.post(
-      'https://server.yata.kro.kr/api/v1/auth/refresh',
+      `${process.env.REACT_APP_SERVER_URL}/api/v1/auth/refresh`,
       {},
       {
         headers: {

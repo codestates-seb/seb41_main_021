@@ -25,7 +25,7 @@ const JourneyItem = props => {
 
   const payHandler = () => {
     const data = {};
-    usePostData(`https://server.yata.kro.kr/api/v1/yata/${yataId}/${yataMemberId}/payPoint`, data).then(res => {
+    usePostData(`/api/v1/yata/${yataId}/${yataMemberId}/payPoint`, data).then(res => {
       window.location.reload();
     });
   };

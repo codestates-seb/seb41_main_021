@@ -17,12 +17,31 @@ import { MdPreview } from 'react-icons/md';
 import { useGetUserInfo } from '../hooks/useLogin';
 import { loginUser } from '../redux/slice/UserSlice';
 import Modal from '../components/common/Modal';
+import { toast } from 'react-toastify';
+import instance from '../api/instance';
 
 export default function MyPage() {
   const [review, setReview] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    useGetUserInfo().then(res => {
+      if (res.name === 'AxiosError') {
+        toast.warning('로그인이 필요한 페이지입니다.');
+        return navigate('/');
+      }
+      dispatch(loginUser(res));
+      useGetData(`/api/v1/review/${res.email}`).then(res => {
+        if (res.status === 200) {
+          setReview(res.data.data);
+        } else {
+          console.log('리뷰 정보를 가져오는데 실패하였습니다.');
+        }
+      });
+    });
+  }, []);
 
   const logout = () => {
     localStorage.removeItem('ACCESS');
@@ -34,22 +53,6 @@ export default function MyPage() {
   const info = useSelector(state => {
     return state.user;
   });
-
-  const isLogin = checkIfLogined();
-
-  useEffect(() => {
-    if (!isLogin) {
-      return navigate('/');
-    }
-    useGetUserInfo().then(res => dispatch(loginUser(res)));
-    useGetData(`https://server.yata.kro.kr/api/v1/review/${info.email}`).then(res => {
-      if (res.status === 200) {
-        setReview(res.data.data);
-      } else {
-        console.log('리뷰 정보를 가져오는데 실패하였습니다.');
-      }
-    });
-  }, []);
 
   return (
     <>

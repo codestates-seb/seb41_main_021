@@ -21,7 +21,7 @@ export default function PassengerRatingAdd(props) {
   const yataMemberId = searchParams.get('yataMemberId');
 
   useEffect(() => {
-    useGetData('https://server.yata.kro.kr/api/v1/checklist').then(res => {
+    useGetData('/api/v1/checklist').then(res => {
       setPositiveList(res.data.data.positiveList);
       setNegativeList(res.data.data.negativeList);
     });
@@ -31,7 +31,7 @@ export default function PassengerRatingAdd(props) {
     const data = {
       checklistIds: isChecked,
     };
-    usePostData(`https://server.yata.kro.kr/api/v1/review/${yataId}?yataMemberId=${yataMemberId}`, data).then(res => {
+    usePostData(`/api/v1/review/${yataId}?yataMemberId=${yataMemberId}`, data).then(res => {
       console.log(data);
       console.log(res);
     });

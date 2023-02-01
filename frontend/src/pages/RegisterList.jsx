@@ -19,7 +19,7 @@ export default function RegisterList() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    useGetData(`https://server.yata.kro.kr/api/v1/yata/myYatas/myRequested`).then(res => {
+    useGetData(`/api/v1/yata/myYatas/myRequested`).then(res => {
       setList(res.data.data);
       setLoading(false);
     });

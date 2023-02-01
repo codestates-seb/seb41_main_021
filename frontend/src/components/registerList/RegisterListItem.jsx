@@ -12,14 +12,14 @@ const RegisterListItem = props => {
 
   const approveHandler = () => {
     const data = {};
-    usePostData(`https://server.yata.kro.kr/api/v1/yata/${yataId}/${yataRequestId}/accept`, data).then(res => {
+    usePostData(`/api/v1/yata/${yataId}/${yataRequestId}/accept`, data).then(res => {
       setUpdate(true);
     });
   };
 
   const rejectHandler = () => {
     const data = {};
-    usePostData(`https://server.yata.kro.kr/api/v1/yata/${yataId}/${yataRequestId}/reject`, data).then(res => {
+    usePostData(`/api/v1/yata/${yataId}/${yataRequestId}/reject`, data).then(res => {
       setUpdate(true);
     });
   };

@@ -18,7 +18,7 @@ export default function DriverRatingAdd(props) {
   const yataId = params.yataId;
 
   useEffect(() => {
-    useGetData('https://server.yata.kro.kr/api/v1/checklist').then(res => {
+    useGetData('/api/v1/checklist').then(res => {
       setPositiveList(res.data.data.positiveList);
       setNegativeList(res.data.data.negativeList);
     });
@@ -28,7 +28,7 @@ export default function DriverRatingAdd(props) {
     const data = {
       checklistIds: isChecked,
     };
-    usePostData(`https://server.yata.kro.kr/api/v1/review/${yataId}`, data).then(res => {
+    usePostData(`/api/v1/review/${yataId}`, data).then(res => {
       console.log(data);
       console.log(res);
     });

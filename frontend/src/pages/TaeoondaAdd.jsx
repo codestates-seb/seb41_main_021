@@ -39,7 +39,7 @@ export default function TaeoondaAdd() {
       },
     };
 
-    useTayoCreate('https://server.yata.kro.kr/api/v1/yata?yataStatus=nata', data).then(res => {
+    useTayoCreate('/api/v1/yata?yataStatus=nata', data).then(res => {
       console.log(res);
       navigate(`/taeoonda-list`);
       dispatch(clearAll());

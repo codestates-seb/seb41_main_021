@@ -11,6 +11,7 @@ import Header from '.././components/Header';
 import { useLogin, useGetUserInfo } from '../hooks/useLogin';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../redux/slice/UserSlice';
+import { toast } from 'react-toastify';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -38,7 +39,7 @@ export default function Login() {
     if (password === '') setIsValidPW(false);
     else setIsValidPW(true);
     if (email === '' || password === '') return;
-    useLogin('https://server.yata.kro.kr/api/v1/auth/login', data).then(res => {
+    useLogin(data).then(res => {
       if (res === 200) {
         useGetUserInfo()
           .then(res => dispatch(loginUser(res)))
@@ -49,6 +50,20 @@ export default function Login() {
           );
       }
     });
+  };
+
+  const FACEBOOK_AUTH_URL = `${process.env.REACT_APP_SERVER_URL}/oauth2/authorization/facebook?redirect_uri=${process.env.REACT_APP_URL}/oauth2-redirect`;
+  const faceBookLogin = () => {
+    // window.location.href = FACEBOOK_AUTH_URL;
+    toast.warning('준비중인 기능 입니다.');
+  };
+  const KAKAO_AUTH_URL = `${process.env.REACT_APP_SERVER_URL}/oauth2/authorization/kakao?redirect_uri=${process.env.REACT_APP_URL}/oauth2-redirect`;
+  const kakaoLogin = () => {
+    window.location.href = KAKAO_AUTH_URL;
+  };
+  const GOOGLE_AUTH_URL = `${process.env.REACT_APP_SERVER_URL}/oauth2/authorization/google?redirect_uri=${process.env.REACT_APP_URL}/oauth2-redirect`;
+  const googleLogin = () => {
+    window.location.href = GOOGLE_AUTH_URL;
   };
 
   return (
@@ -80,13 +95,13 @@ export default function Login() {
           <SNSLoginContainer>
             <LineText>SNS LOGIN</LineText>
             <SNSButtonContainer>
-              <SNSContent>
+              <SNSContent onClick={faceBookLogin}>
                 <SNSImage src={facebook} alt="facebook" />
               </SNSContent>
-              <SNSContent>
+              <SNSContent onClick={googleLogin}>
                 <SNSImage src={google} alt="google" />
               </SNSContent>
-              <SNSContent>
+              <SNSContent onClick={kakaoLogin}>
                 <SNSImage src={kakao} alt="kakao" />
               </SNSContent>
             </SNSButtonContainer>
