@@ -37,7 +37,7 @@ export default function TabnidaAdd() {
       },
     };
     console.log(data);
-    useTayoCreate('https://server.yata.kro.kr/api/v1/yata', data).then(res => {
+    useTayoCreate('/api/v1/yata', data).then(res => {
       console.log(res);
       navigate('/tabnida-list');
       dispatch(clearAll());

@@ -80,7 +80,7 @@ public class YataControllerTest extends AbstractControllerTest {
 
         List<YataMember> yataMembers = new ArrayList<>();
         Member member = new Member();
-        yataMembers.add(new YataMember(1L, true, 2, YataMember.GoingStatus.STARTED_YET, null, null));
+        yataMembers.add(new YataMember(1L, true,true,true ,2, YataMember.GoingStatus.STARTED_YET, null, null));
 
         member.setNickname("채은");
 
@@ -333,7 +333,7 @@ public class YataControllerTest extends AbstractControllerTest {
         YataDto.Response response = createYataResponseDto(yata);
 
         YataMemberDto.Response yataMemberResponse = new YataMemberDto.Response(1L, 1L, "test1@gmail.com", "nickname",
-                true, 2, YataMember.GoingStatus.STARTED_YET, "https://avatars.githubusercontent.com/u/48292190?v=4");
+                true,true,true, 2, YataMember.GoingStatus.STARTED_YET, "https://avatars.githubusercontent.com/u/48292190?v=4");
         List<YataMemberDto.Response> yataMembers = new ArrayList<>();
         yataMembers.add(yataMemberResponse);
 
@@ -401,6 +401,8 @@ public class YataControllerTest extends AbstractControllerTest {
                         fieldWithPath("data.yataMembers[].yataPaid").type(JsonFieldType.BOOLEAN).description("지불 여부"),
                         fieldWithPath("data.yataMembers[].boardingPersonCount").type(JsonFieldType.NUMBER).description("탑승 인원"),
                         fieldWithPath("data.yataMembers[].goingStatus").type(JsonFieldType.STRING).description("가는 상태 'STARTED_YET,ARRIVED'"),
+                        fieldWithPath("data.yataMembers[].reviewWritten").type(JsonFieldType.BOOLEAN).description("리뷰 작성 여부"),
+                        fieldWithPath("data.yataMembers[].reviewReceived").type(JsonFieldType.BOOLEAN).description("리뷰 받은 여부"),
                         fieldWithPath("data.yataMembers[].imgUrl").type(JsonFieldType.STRING).description("야타 멤버 프로필 이미지")
 
 

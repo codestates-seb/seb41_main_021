@@ -25,12 +25,13 @@ const JourneyItem = props => {
 
   const payHandler = () => {
     const data = {};
-    usePostData(`https://server.yata.kro.kr/api/v1/yata/${yataId}/${yataMemberId}/payPoint`, data).then(res => {
+    usePostData(`/api/v1/yata/${yataId}/${yataMemberId}/payPoint`, data).then(res => {
       window.location.reload();
     });
   };
 
   const { date, journeyStart, journeyEnd, price, people, state, onClick, isPay, yataId, yataMemberId } = props;
+
   return (
     <>
       <Container onClick={onClick}>

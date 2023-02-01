@@ -23,7 +23,7 @@ const Container = styled.div`
 
   padding: 1rem;
   border-radius: 0.5rem;
-  margin-top: 1rem;
+  margin: 1rem 0;
 
   svg {
     font-size: 1.4rem;

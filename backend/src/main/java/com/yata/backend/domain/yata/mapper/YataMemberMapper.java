@@ -24,6 +24,8 @@ public interface YataMemberMapper {
                         .imgUrl(yataMember.getMember().getImgUrl() != null ? yataMember.getMember().getImgUrl().getUrl() : null)
                         .boardingPersonCount(yataMember.getBoardingPersonCount())
                         .goingStatus(yataMember.getGoingStatus())
+                        .reviewReceived(yataMember.isReviewReceived())
+                        .reviewWritten(yataMember.isReviewWritten())
                         .build()).collect(Collectors.toList());
     }
 }

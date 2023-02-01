@@ -20,7 +20,7 @@ export default function InviteList() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    useGetData(`https://server.yata.kro.kr/api/v1/yata/invite/requests/myYataRequests`).then(res => {
+    useGetData(`/api/v1/yata/invite/requests/myYataRequests`).then(res => {
       setList(res.data.data);
       setLoading(false);
     });
@@ -28,14 +28,14 @@ export default function InviteList() {
 
   const approveHandler = () => {
     const data = {};
-    usePostData(`https://server.yata.kro.kr/api/v1/yata/${yataId}/${yataRequestId}/accept`, data).then(res => {
+    usePostData(`/api/v1/yata/${yataId}/${yataRequestId}/accept`, data).then(res => {
       setUpdate(true);
     });
   };
 
   const rejectHandler = () => {
     const data = {};
-    usePostData(`https://server.yata.kro.kr/api/v1/yata/${yataId}/${yataRequestId}/reject`, data).then(res => {
+    usePostData(`/api/v1/yata/${yataId}/${yataRequestId}/reject`, data).then(res => {
       setUpdate(true);
     });
   };

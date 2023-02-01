@@ -88,7 +88,10 @@ public interface YataMapper {
                                 .yataPaid(yataMember.isYataPaid())
                                 .nickname(yataMember.getMember().getNickname())
                                 .email(yataMember.getMember().getEmail())
-                                .goingStatus(yataMember.getGoingStatus()).build();
+                                .goingStatus(yataMember.getGoingStatus())
+                                .reviewReceived(yataMember.isReviewReceived())
+                                .reviewWritten(yataMember.isReviewWritten())
+                                .build();
                     }).collect(Collectors.toList())); //여기선 넣어주고
         }
         return response.build();

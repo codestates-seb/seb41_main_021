@@ -1,14 +1,8 @@
 import axios from 'axios';
-
-const header = {
-  headers: {
-    'Content-Type': 'application/json;charset=UTF-8',
-  },
-};
-
+import instance from '../api/instance';
 const useEmailAuth = async email => {
   try {
-    const response = await axios.post(`https://server.yata.kro.kr/api/v1/validation/email/${email}`, header);
+    const response = await instance.post(`/api/v1/validation/email/${email}`);
     return response;
   } catch (error) {
     return console.log(error);
@@ -17,7 +11,7 @@ const useEmailAuth = async email => {
 
 const useEmailAuthConfirm = async body => {
   try {
-    const response = await axios.post(`https://server.yata.kro.kr/api/v1/validation/auth-code`, body, header);
+    const response = await instance.post(`/api/v1/validation/auth-code`, body);
     return response;
   } catch (error) {
     return console.log(error);
@@ -26,7 +20,7 @@ const useEmailAuthConfirm = async body => {
 
 const useEmailExistingConfirm = async email => {
   try {
-    const response = await axios.get(`https://server.yata.kro.kr/api/v1/validation/email/${email}`);
+    const response = await instance.get(`/api/v1/validation/email/${email}`);
     return response;
   } catch (error) {
     return console.log(error);
