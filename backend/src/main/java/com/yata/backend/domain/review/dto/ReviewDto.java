@@ -18,7 +18,6 @@ public class ReviewDto {
     @Builder
     public static class Post{
 
-        //yataId는 파라미터로, 입력 member는 Principal로 받을 것
         private List<Long> checklistIds; //체크한 리스트 아이디만 목록으로 가져옴
 
     }

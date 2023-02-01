@@ -10,5 +10,5 @@ import java.util.Optional;
 
 public interface JpaReviewRepository extends JpaRepository<Review, Long>, ReviewRepository {
     Optional<Review> findByYataAndFromMemberAndToMember(Yata yata, Member fromMember, Member toMember);
-    List<Review> findAllByToMember(Member toMember);
+   // List<Review> findAllByToMember(Member toMember);
 }

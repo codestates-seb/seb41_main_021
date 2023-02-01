@@ -24,8 +24,7 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static com.yata.backend.common.request.ResultActionsUtils.*;
@@ -43,13 +42,13 @@ class ImageControllerTest extends AbstractControllerTest {
         String imageUrl = "https://yata-image.s3.ap-northeast-2.amazonaws.com/1.png";
         given(imageUploader.uploadImage(any(), any())).willReturn(imageUrl);
         String fileName = "testCustomerUpload";
-        String contentType = "xls";
+        String contentType = "png";
         String filePath = "src/test/resources/images/images.png";
         FileInputStream fileInputStream = new FileInputStream(filePath);
         MultipartFile file = new MockMultipartFile(fileName, fileName, contentType, fileInputStream);
 
         // when
-        ResultActions resultActions = requestPostMultipart(mockMvc, "/api/v1/images/profile", file);
+        ResultActions resultActions = requestMultiPart(mockMvc, "/api/v1/images/profile", file);
         //then
         resultActions
                 .andExpect(status().isOk())
@@ -60,9 +59,8 @@ class ImageControllerTest extends AbstractControllerTest {
                         requestHeaders(
                                 headerWithName("Authorization").description("Bearer access token")
                         ),
-                        requestParameters(
-                                parameterWithName("file").description("이미지 파일"),
-                                parameterWithName("_csrf").description("무시 : csrf token ")
+                        requestParts(
+                                partWithName("file").description("업로드 할 파일")
                         ),
                         responseFields(
                                 fieldWithPath("data").description("이미지 URL")

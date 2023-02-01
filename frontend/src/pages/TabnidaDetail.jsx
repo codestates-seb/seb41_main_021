@@ -9,8 +9,7 @@ import InfoContainer from '../components/Tayo/InfoContainer';
 import MemberContainer from '../components/Tayo/MemberContainer';
 import EditDeleteContainer from '../components/Tayo/EditDeleteContainer';
 import { useGetData } from '../hooks/useGetData';
-
-import Modal from '../components/Modal';
+import InviteModal from '../components/Tayo/InviteModal';
 
 export default function TabnidaDetail() {
   const params = useParams();
@@ -48,7 +47,7 @@ export default function TabnidaDetail() {
               }}>
               초대하기
             </InviteButton>
-            <Modal show={show} onClose={() => setShow(false)} data={data} />
+            <InviteModal show={show} onClose={() => setShow(false)} data={data} />
           </Container>
           <NavBar />
         </>
