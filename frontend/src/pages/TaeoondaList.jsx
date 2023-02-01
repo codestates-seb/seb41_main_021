@@ -8,18 +8,27 @@ import DestinationInput from '../components/DestinationInput';
 import { useNavigate } from 'react-router-dom';
 import { MdAdd } from 'react-icons/md';
 import { useGetData } from '../hooks/useGetData';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { clearAll } from '../redux/slice/DestinationSlice';
 import { FcCheckmark } from 'react-icons/fc';
+import { toast } from 'react-toastify';
 
 export default function TaeoondaList() {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [list, setList] = useState([]);
   const navigate = useNavigate();
+  const info = useSelector(state => {
+    return state.user;
+  });
+
   const add = () => {
-    setOpen(!open);
-    navigate('/taeoonda-add');
+    if (info.roles.includes('DRIVER')) {
+      setOpen(!open);
+      navigate('/taeoonda-add');
+    } else {
+      toast.warning('운전자 인증 완료 후, 태웁니다 게시물 작성이 가능합니다');
+    }
   };
 
   useEffect(() => {

@@ -4,36 +4,42 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useGetData } from '../../hooks/useGetData';
 
-export default function MemberContainer({ data }) {
+export default function MemberContainer({ data, email }) {
   const [newdata, setnewData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    useGetData(`api/v1/yata/${data.yataId}/accept/yataRequests`).then(res => {
-      if (res.request.status === 200) {
-        setnewData(res.data.data);
-        setLoading(false);
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   useGetData(`api/v1/yata/${data.yataId}/accept/yataRequests`).then(res => {
+  //     if (res.request.status === 200) {
+  //       setnewData(res.data.data);
+  //       setLoading(false);
+  //     }
+  //   });
+  // }, []);
 
   return (
     <>
       <ContentContainer>
-        <h2>확정된 탑승자</h2>
-        {newdata.length === 0 ? (
-          <div className="current-member">현재 확정된 탑승자가 없습니다.</div>
+        <h2>
+          확정된 탑승자 ({data.yataMembers.length} / {data.maxPeople})
+        </h2>
+        {data.yataMembers.length === 0 ? (
+          <>{<div className="current-member">현재 확정된 탑승자가 없습니다.</div>}</>
         ) : (
-          newdata.map(el => {
+          data.email === email &&
+          data.yataMembers.map(el => {
+            console.log(el);
             return (
-              <MemberListItem
-                key={el.yataId}
-                yataId={el.yataId}
-                yataMemberId={el.yataMemberId}
-                email={el.email}
-                nickname={el.nickname}
-                state={el.yataPaid}
-              />
+              <>
+                <MemberListItem
+                  key={el.yataId}
+                  yataId={el.yataId}
+                  yataMemberId={el.yataMemberId}
+                  email={el.email}
+                  nickname={el.nickname}
+                  state={el.yataPaid}
+                />
+              </>
             );
           })
         )}
