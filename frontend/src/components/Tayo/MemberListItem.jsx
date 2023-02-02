@@ -20,7 +20,6 @@ export default function MemberListItem(props) {
 
   const reviewHandler = () => {
     setSearchParams(`yataMemberId: '${yataMemberId}'`);
-    console.log(reviewReceived);
     if (!reviewReceived) {
       navigate(`/rating-add-passenger/${yataId}?yataMemberId=${yataMemberId}`);
     } else {
@@ -31,7 +30,8 @@ export default function MemberListItem(props) {
   return (
     <Container>
       <ProfileContainer>
-        {img === null ? (
+        {console.log(img)}
+        {img === null || img === undefined ? (
           <ProfPic src={defaultProf} alt="profile picture" className="profile" />
         ) : (
           <ProfPic src={img} alt="profile picture" className="profile" />

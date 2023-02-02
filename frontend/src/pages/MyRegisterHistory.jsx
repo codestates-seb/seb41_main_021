@@ -3,22 +3,27 @@ import Header from '../components/Header';
 import ListItemView from '../components/ListItemView';
 import { useGetData } from '../hooks/useGetData';
 import { useState, useEffect } from 'react';
+// TiDelete
 
 export default function MyRegisterHistory() {
   const [list, setList] = useState([]);
+  const [update, setUpdate] = useState(true);
 
   useEffect(() => {
-    useGetData('/api/v1/yata/requests/myYataRequests').then(res => {
-      setList(res.data.data);
-    });
-  }, []);
+    if (update) {
+      useGetData('/api/v1/yata/requests/myYataRequests').then(res => {
+        setList(res.data.data);
+        setUpdate(false);
+      });
+    }
+  }, [update]);
 
   return (
     <>
       <Header title="나의 신청 내역" />
       {list.length !== 0 ? (
         <Container>
-          <ListItemView list={list} />
+          <ListItemView list={list} isMyRegisterHistory={true} setUpdate={setUpdate} />
         </Container>
       ) : (
         <Container>

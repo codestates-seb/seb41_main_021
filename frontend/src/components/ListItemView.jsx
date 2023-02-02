@@ -4,7 +4,7 @@ import { dateFormat } from './common/DateFormat';
 import { useState, useEffect } from 'react';
 
 const ListItemView = props => {
-  const { list, children } = props;
+  const { list, isMyRegisterHistory, setUpdate } = props;
 
   return (
     <>
@@ -22,11 +22,13 @@ const ListItemView = props => {
               yataStatus={el.yataStatus}
               postStatus={el.postStatus}
               yataRequestStatus={el.yataRequestStatus}
+              yataRequestId={el.yataRequestId}
+              isMyRegisterHistory={isMyRegisterHistory}
+              setUpdate={setUpdate}
             />
           );
         })}
         {/* {loading && <Loading>데이터를 불러오는 중입니다..</Loading>} */}
-        {children}
       </Container>
     </>
   );

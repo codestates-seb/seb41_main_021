@@ -3,15 +3,33 @@ import styled from 'styled-components';
 import { IoIosArrowForward, IoIosArrowRoundForward } from 'react-icons/io';
 import { BsCalendar4, BsPeople } from 'react-icons/bs';
 import { BiWon } from 'react-icons/bi';
-import { red } from '@mui/material/colors';
+import { TiDelete } from 'react-icons/ti';
+import useDeleteData from '../hooks/useDeleteData';
 
 const ListItem = props => {
-  const { date, journeyStart, journeyEnd, price, people, state, yataId, yataStatus, postStatus, yataRequestStatus } =
-    props;
+  const {
+    date,
+    journeyStart,
+    journeyEnd,
+    price,
+    people,
+    state,
+    yataId,
+    yataStatus,
+    postStatus,
+    yataRequestStatus,
+    yataRequestId,
+    isMyRegisterHistory,
+    setUpdate,
+  } = props;
   const navigate = useNavigate();
 
   const handleClick = () => {
-    yataStatus === 'YATA_NEOTA' ? navigate(`/tabnida-detail/${yataId}`) : navigate(`/taeoonda-detail/${yataId}`);
+    if (yataStatus) {
+      yataStatus === 'YATA_NEOTA' ? navigate(`/taeoonda-detail/${yataId}`) : navigate(`/tabnida-detail/${yataId}`);
+    } else {
+      navigate(`/taeoonda-detail/${yataId}`);
+    }
   };
 
   const shortWords = (str, length = 10) => {
@@ -24,11 +42,22 @@ const ListItem = props => {
     return result;
   };
 
+  const deleteItem = () => {
+    useDeleteData(`/api/v1/yata/requests/${yataId}/${yataRequestId}`).then(res => {
+      setUpdate(true);
+    });
+  };
+
   // api 응답 어떻게 올지 몰라서 대충 넣어놓음
   return (
     <>
-      <Container onClick={handleClick}>
-        <TextContainer>
+      <Container>
+        {isMyRegisterHistory && (
+          <DeleteContainer>
+            <TiDelete onClick={deleteItem} />
+          </DeleteContainer>
+        )}
+        <TextContainer onClick={handleClick}>
           <DateContainer title="출발일 및 시간">
             <BsCalendar4 />
             {date}
@@ -70,14 +99,29 @@ const ListItem = props => {
     </>
   );
 };
+const DeleteContainer = styled.div`
+  font-size: 2rem;
+  &:hover {
+    color: #ff6b6b;
+  }
+  display: none;
+`;
 
 const Container = styled.div`
   width: 100%;
   height: 8rem;
   cursor: pointer;
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
 
   border-bottom: 1px solid #f6f6f6;
-  @media only screen and (min-width: 800px) {
+
+  &:hover {
+    ${DeleteContainer} {
+      display: initial;
+    }
   }
 `;
 
@@ -178,6 +222,7 @@ const PriceContainer = styled.div`
     top: 0.1rem;
   }
 `;
+
 const PeopleContainer = styled.div`
   color: ${props => props.theme.colors.dark_gray};
   svg {

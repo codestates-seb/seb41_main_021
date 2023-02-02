@@ -9,39 +9,52 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { checkIfLogined } from '../hooks/useLogin';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearUser } from '../redux/slice/UserSlice';
 import { useGetData } from '../hooks/useGetData';
 import usePostData from '../hooks/usePostData';
 import axios from 'axios';
 import { MdPreview } from 'react-icons/md';
 import { useGetUserInfo } from '../hooks/useLogin';
-import { loginUser } from '../redux/slice/UserSlice';
+import { loginUser, clearUser } from '../redux/slice/UserSlice';
 import Modal from '../components/common/Modal';
 import defaultProf from '../images/Logo.svg';
 import { toast } from 'react-toastify';
 import instance from '../api/instance';
 
 export default function MyPage() {
-  const [review, setReview] = useState([]);
+  const [review, setReview] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    useGetUserInfo().then(res => {
-      if (res.name === 'AxiosError') {
-        toast.warning('로그인이 필요한 페이지입니다.');
-        return navigate('/');
-      }
-      dispatch(loginUser(res));
-      useGetData(`/api/v1/review/${res.email}`).then(res => {
-        if (res.status === 200) {
-          setReview(res.data.data);
-        } else {
-          console.log('리뷰 정보를 가져오는데 실패하였습니다.');
+    if (localStorage.getItem('ACCESS')) {
+      useGetUserInfo().then(res => {
+        if (res.name === 'AxiosError') {
+          toast.warning('로그인이 필요한 페이지입니다.');
+          return logout();
         }
+        dispatch(loginUser(res));
+        useGetData(`/api/v1/review/${res.email}`).then(res => {
+          if (res.status === 200) {
+            // setReview(res.data.data);
+            let max = 0;
+            let maxReview = '';
+            for (const el of res.data.data) {
+              if (max < el.count) {
+                max = el.count;
+                maxReview = el.checklistResponse.checkContent;
+              }
+            }
+            setReview(maxReview);
+          } else {
+            console.log('리뷰 정보를 가져오는데 실패하였습니다.');
+          }
+        });
       });
-    });
+    } else {
+      toast.warning('로그인이 필요한 페이지입니다.');
+      return logout();
+    }
   }, []);
 
   const logout = () => {
@@ -107,7 +120,7 @@ export default function MyPage() {
             <Compliment>
               <BiLike />
               <div className="title">많이 받은 칭찬</div>
-              <div className="bottom">{review.length === 0 && '리뷰가 없음'}</div>
+              <div className="bottom">{review === '' ? '리뷰가 없음' : review}</div>
             </Compliment>
           </SummaryContainer>
           <PointContainer>
@@ -348,7 +361,7 @@ const SummaryContainer = styled.div`
 
   .bottom {
     color: ${props => props.theme.colors.dark_gray};
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 600;
   }
 
@@ -358,7 +371,7 @@ const SummaryContainer = styled.div`
   }
 
   div {
-    width: 7rem;
+    width: auto;
     height: 7rem;
     display: flex;
     flex-direction: column;
