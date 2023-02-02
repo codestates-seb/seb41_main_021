@@ -11,7 +11,7 @@ export default function HomePage() {
   const navigate = useNavigate();
   const isLogin = useSelector(state => state.user.isLogin);
   useEffect(() => {
-    isLogin && navigate('/my-page');
+    if (isLogin && localStorage.getItem('ACCESS')) navigate('/my-page');
   }, []);
   return (
     <>

@@ -3,7 +3,7 @@ import ListItem from './ListItem';
 import { dateFormat } from './common/DateFormat';
 
 const ListItemView = props => {
-  const { list, children, isJourneyHistory } = props;
+  const { list, isMyRegisterHistory, setUpdate, isJourneyHistory, children } = props;
 
   return (
     <>
@@ -21,11 +21,14 @@ const ListItemView = props => {
               yataStatus={el.yataStatus}
               postStatus={el.postStatus}
               yataRequestStatus={el.yataRequestStatus}
+              yataRequestId={el.yataRequestId}
+              isMyRegisterHistory={isMyRegisterHistory}
+              setUpdate={setUpdate}
               isJourneyHistory={isJourneyHistory}
             />
           );
         })}
-        {children}
+        {/* {loading && <Loading>데이터를 불러오는 중입니다..</Loading>} */}
       </Container>
     </>
   );

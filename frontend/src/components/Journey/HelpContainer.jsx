@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { TbBulb } from 'react-icons/tb';
 import { FcIdea } from 'react-icons/fc';
+
 export default function HelpContainer({ children }) {
   return (
     <>

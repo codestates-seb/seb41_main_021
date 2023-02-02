@@ -5,7 +5,7 @@ import instance from '../api/instance';
 const useDeleteData = async url => {
   try {
     const response = await instance.delete(url);
-    toast.warning('삭제 완료.');
+    toast.success('삭제 완료.');
     return response;
   } catch (error) {
     if (error.response.status === 403) {

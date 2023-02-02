@@ -32,8 +32,12 @@ export default function DriverRatingAdd(props) {
       checklistIds: isChecked,
     };
     usePostData(`/api/v1/review/${yataId}`, data).then(res => {
+      if (res.status === 201) {
+        toast.success('매너 평가하기 성공');
+      } else {
+        toast.warning('매너 평가하기 실패');
+      }
       navigate('/journey-state');
-      toast.success('매너 평가하기 성공');
     });
   };
 

@@ -14,7 +14,6 @@ export default function JourneyState() {
   const [isUpdate, setIsUpdate] = useState(true);
 
   useEffect(() => {
-    console.log(data);
     if (isUpdate) {
       useJourneyState('/api/v1/yata/accept/yatas').then(res => {
         setData(res.data.data);
@@ -34,6 +33,7 @@ export default function JourneyState() {
               <JourneyItem
                 key={el.yataResponse.yataId}
                 yataId={el.yataResponse.yataId}
+                yataMemberId={el.yataMemberId}
                 date={dateFormat(el.yataResponse.departureTime)}
                 journeyStart={el.yataResponse.strPoint.address}
                 journeyEnd={el.yataResponse.destination.address}
@@ -42,6 +42,7 @@ export default function JourneyState() {
                 isPay={el.yataPaid}
                 setIsUpdate={setIsUpdate}
                 reviewReceived={el.reviewReceived}
+                reviewWritten={el.reviewWritten}
               />
             );
           })}

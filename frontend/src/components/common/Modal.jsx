@@ -5,13 +5,12 @@ import { FiX } from 'react-icons/fi';
 import instance from '../../api/instance';
 
 const Modal = props => {
-  const { title, children, event, isUpload } = props;
+  const { title, children, event, isUpload, submitText } = props;
 
   const [files, setFiles] = useState('');
 
   const onLoadFile = e => {
     const file = e.target.files;
-    console.log(file);
     setFiles(file);
   };
 
@@ -19,7 +18,6 @@ const Modal = props => {
     e.preventDefault();
     const formdata = new FormData();
     formdata.append('file', files[0]);
-    console.log(files[0]);
 
     instance
       .post('/api/v1/images/profile', formdata, {
@@ -64,7 +62,7 @@ const Modal = props => {
                 <ModalText>{children}</ModalText>
               </ModalBody>
               <ButtonContainer>
-                <Button onClick={event}>결제하기</Button>
+                <Button onClick={event}>{submitText}</Button>
               </ButtonContainer>
             </>
           )}
