@@ -1,10 +1,12 @@
 package com.yata.backend.domain.yata.repository.yataRequestRepo;
 
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.yata.backend.domain.yata.entity.QYata;
 import com.yata.backend.domain.yata.entity.QYataRequest;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataRequest;
+import com.yata.backend.domain.yata.repository.utils.GenerateSlice;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
@@ -13,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.Date;
 import java.util.List;
+
+import static com.yata.backend.domain.yata.repository.utils.GenerateSlice.generateYataSlice;
 
 
 public class YataRequestRepositoryImpl implements YataRequestRepository {
@@ -65,8 +69,8 @@ public class YataRequestRepositoryImpl implements YataRequestRepository {
     }
 
     @Override
-    public Slice<YataRequest> findAllByYata(Yata yatas, Pageable pageable) {
-        List<YataRequest> yataRequests = queryFactory.selectFrom(yataRequest)
+    public Slice<YataRequest> findAllByYata(Yata yatas, Pageable pageable,String type) {
+        JPAQuery<YataRequest> yataRequests = queryFactory.selectFrom(yataRequest)
                 .join(yataRequest.yata, yata).fetchJoin()
                 .leftJoin(yataRequest.strPoint).fetchJoin()
                 .leftJoin(yataRequest.destination).fetchJoin()
@@ -77,14 +81,16 @@ public class YataRequestRepositoryImpl implements YataRequestRepository {
                 .where(yataRequest.yata.eq(yatas))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1L)
-                .orderBy(yataRequest.YataRequestId.desc())
-                .fetch();
-        boolean hasNext = false;
-        if (yataRequests.size() > pageable.getPageSize()) {
-            yataRequests.remove(pageable.getPageSize());
-            hasNext = true;
+                .orderBy(yataRequest.YataRequestId.desc());
+        if(type != null) {
+            if (type.equals("apply")) {
+                yataRequests.where(yataRequest.requestStatus.eq(YataRequest.RequestStatus.APPLY));
+            } else if (type.equals("invite")) {
+                yataRequests.where(yataRequest.requestStatus.eq(YataRequest.RequestStatus.INVITE));
+            }
         }
-        return new SliceImpl<>(yataRequests, pageable, hasNext);
+
+        return (Slice<YataRequest>) generateYataSlice(pageable,yataRequests);
     }
 
     @Override
