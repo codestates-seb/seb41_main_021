@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import Navbar from '../components/NavBar';
 import Header from '../components/Header';
 import CircleButton from '../components/common/CircleButton';
-import DestinationInput from '../components/DestinationInput';
 import { useNavigate } from 'react-router-dom';
 import { MdAdd } from 'react-icons/md';
 import ListItemView from '../components/ListItemView';
@@ -46,7 +45,6 @@ export default function TabnidaList() {
           <FcCheckmark />
           <div>탑승자</div>가 '탑니다' 게시물을 작성할 수 있는 페이지입니다.
         </HelpComent>
-        <DestinationInput />
         <ListItemView list={list}></ListItemView>
         <CircleButton onClick={add} open={open}>
           <MdAdd />
@@ -68,7 +66,7 @@ const Container = styled.div`
 
 const HelpComent = styled.div`
   width: 95%;
-  background-color: #e3f6ff;
+  background-color: #f9ebc8;
   color: #37352f;
 
   display: flex;
@@ -78,6 +76,7 @@ const HelpComent = styled.div`
   padding: 1rem;
   border-radius: 0.5rem;
   margin-top: 1rem;
+  margin-bottom: 1rem;
 
   svg {
     font-size: 1.4rem;

@@ -6,6 +6,7 @@ import { BiWon } from 'react-icons/bi';
 import { TiDelete } from 'react-icons/ti';
 import useDeleteData from '../hooks/useDeleteData';
 
+
 const ListItem = props => {
   const {
     date,
@@ -21,6 +22,7 @@ const ListItem = props => {
     yataRequestId,
     isMyRegisterHistory,
     setUpdate,
+    isJourneyHistory,
   } = props;
   const navigate = useNavigate();
 
@@ -48,7 +50,6 @@ const ListItem = props => {
     });
   };
 
-  // api 응답 어떻게 올지 몰라서 대충 넣어놓음
   return (
     <>
       <Container>
@@ -61,11 +62,11 @@ const ListItem = props => {
           <DateContainer title="출발일 및 시간">
             <BsCalendar4 />
             {date}
-            {/* {yataRequestStatus && (
-              <YataRequestTagContainer yataRequestStatus={yataRequestStatus}>
-                {yataRequestStatus === 'APPLY' ? '신청' : '초대'}
-              </YataRequestTagContainer>
-            )} */}
+            {isJourneyHistory && (
+              <PartTagContainer isJourneyHistory={isJourneyHistory} yataStatus={yataStatus}>
+                {yataStatus === 'YATA_NEOTA' ? '태웁니다' : '탑니다'}
+              </PartTagContainer>
+            )}
             {yataStatus && (
               <YataTagContainer postStatus={postStatus}>
                 {postStatus === 'POST_OPEN' ? '신청 가능' : '신청 마감'}
@@ -181,6 +182,22 @@ const YataTagContainer = styled.div`
     props.postStatus === 'POST_OPEN' ? props.theme.colors.main_blue : props.theme.colors.light_gray};
 `;
 
+const PartTagContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+
+  width: 4rem;
+  height: 1.1rem;
+  color: white;
+  border-radius: 0.2rem;
+
+  font-size: 0.7rem;
+
+  background-color: ${props => (props.yataStatus === 'YATA_NEOTA' ? '#C8E3D4' : '#FFE1AF')};
+`;
+
 const JourneyContainer = styled.div`
   display: flex;
   align-items: center;
@@ -205,11 +222,6 @@ const JourneyText = styled.span`
   }
 `;
 
-const TransitContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-left: 1rem;
-`;
 const BottomContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -229,21 +241,6 @@ const PeopleContainer = styled.div`
     position: relative;
     top: 0.1rem;
   }
-`;
-
-const YataRequestTagContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 0.5rem;
-
-  width: 4rem;
-  height: 1.1rem;
-  color: white;
-  border-radius: 0.2rem;
-  font-size: 0.7rem;
-
-  background-color: ${props => (props.yataRequestStatus === 'APPLY' ? '#7c92c0' : '#7c7cc0')};
 `;
 
 export default ListItem;

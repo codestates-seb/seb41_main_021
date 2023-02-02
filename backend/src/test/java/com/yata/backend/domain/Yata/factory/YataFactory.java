@@ -173,6 +173,7 @@ public class YataFactory {
                 .yataPaid(true)
                 .reviewReceived(true)
                 .reviewWritten(true)
+                .yataMemberId(1L)
                 .goingStatus(YataMember.GoingStatus.STARTED_YET).build();
     }
 

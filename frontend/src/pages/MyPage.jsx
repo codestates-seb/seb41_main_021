@@ -161,12 +161,6 @@ export default function MyPage() {
                   <IoIosArrowForward />
                 </JourneyRecord>
               </NavLink>
-              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journey-history">
-                <JourneyRecord>
-                  <div className="title">나의 모든 여정 내역</div>
-                  <IoIosArrowForward />
-                </JourneyRecord>
-              </NavLink>
             </List>
             <List>
               <ListTitle>포인트 관리</ListTitle>

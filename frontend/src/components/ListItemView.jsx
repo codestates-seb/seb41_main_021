@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 import ListItem from './ListItem';
 import { dateFormat } from './common/DateFormat';
-import { useState, useEffect } from 'react';
 
 const ListItemView = props => {
-  const { list, isMyRegisterHistory, setUpdate } = props;
+  const { list, isMyRegisterHistory, setUpdate, isJourneyHistory, children } = props;
 
   return (
     <>
@@ -25,6 +24,7 @@ const ListItemView = props => {
               yataRequestId={el.yataRequestId}
               isMyRegisterHistory={isMyRegisterHistory}
               setUpdate={setUpdate}
+              isJourneyHistory={isJourneyHistory}
             />
           );
         })}
@@ -41,14 +41,6 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   overflow: scroll;
-`;
-
-const Loading = styled.div`
-  width: 100%;
-  margin: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 `;
 
 export default ListItemView;
