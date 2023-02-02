@@ -10,7 +10,6 @@ export default function PointHistory() {
   useEffect(() => {
     useGetData('/api/v1/payments/history').then(res => {
       setList(res.data.data);
-      console.log(res.data.data);
     });
   }, []);
   return (

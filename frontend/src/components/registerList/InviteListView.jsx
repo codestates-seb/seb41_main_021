@@ -1,10 +1,11 @@
 import styled from 'styled-components';
-import RegisterListItem from './RegisterListItem';
+
+import InviteListItem from './InviteListItem';
 import { useState, useEffect } from 'react';
 import { dateFormat } from '../common/DateFormat';
 import { useGetData } from '../../hooks/useGetData';
 import { useParams } from 'react-router';
-import { FcInspection } from 'react-icons/fc';
+import { FcFeedback } from 'react-icons/fc';
 
 const RegisterListView = () => {
   const params = useParams();
@@ -24,42 +25,50 @@ const RegisterListView = () => {
   }, [update]);
 
   return (
-    <RegisterBlock>
-      {/* <InfoContainer>
-        <FcInspection />이 게시물에 온 신청
+    <>
+      {list.length !== 0 ? (
+        <RegisterBlock>
+          {/* <InfoContainer>
+        <FcFeedback />
+        내가 보낸 초대
       </InfoContainer> */}
-
-      {list.map(el => {
-        return (
-          <RegisterListItem
-            key={el.yataId}
-            date={dateFormat(el.createdAt)}
-            userInfo={el.nickname}
-            yataId={el.yataId}
-            yataRequestId={el.yataRequestId}
-            state={el.approvalStatus}
-            RequestStatus={el.yataRequestStatus}
-            update={update}
-            setUpdate={setUpdate}
-            boardingPersonCount={el.boardingPersonCount}></RegisterListItem>
-        );
-      })}
-    </RegisterBlock>
+          {list.map(el => {
+            return (
+              <InviteListItem
+                key={el.yataId}
+                date={dateFormat(el.createdAt)}
+                userInfo={el.nickname}
+                yataId={el.yataId}
+                yataRequestId={el.yataRequestId}
+                state={el.approvalStatus}
+                RequestStatus={el.yataRequestStatus}
+                update={update}
+                setUpdate={setUpdate}></InviteListItem>
+            );
+          })}
+        </RegisterBlock>
+      ) : (
+        <RegisterBlock>
+          <div className="no-content">받은 신청 내역이 없습니다.</div>
+        </RegisterBlock>
+      )}
+    </>
   );
 };
 
 const RegisterBlock = styled.div`
   width: 100%;
-
+  height: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: scroll;
 `;
 
 const InfoContainer = styled.div`
   width: 95%;
   height: 1.5rem;
-  background-color: #c7daff;
+  background-color: #e9e4ff;
   color: black;
 
   font-size: 1rem;

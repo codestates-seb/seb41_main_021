@@ -50,7 +50,6 @@ export default function RegisterList() {
                 <DateContainer>
                   <BsCalendar4 />
                   {dateFormat(el.departureTime)}
-                  {console.log(el.yataStatus)}
                   {/* {yataRequestStatus && (
                     <YataRequestTagContainer yataRequestStatus={yataRequestStatus}>
                       {yataRequestStatus === 'APPLY' ? '신청' : '초대'}

@@ -52,8 +52,8 @@ function App() {
       useGetUserInfo()
         .then(res => {
           if (res.name === 'AxiosError') {
-            navigate('/');
             dispatch(clearUser());
+            navigate('/');
           } else {
             dispatch(loginUser(res));
           }
