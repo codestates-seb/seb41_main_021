@@ -42,12 +42,14 @@ public class YataRequestController {
     }
 
 
-    // Yata 게시물에 온 신청/초대 목록 조회 - 200
+    // Yata 게시물에 온 신청/ 내가 게시물에 초대한 초대 목록 조회 - 200
     @GetMapping("/requests/{yataId}")
-    public ResponseEntity<SliceResponseDto<YataRequestDto.RequestResponse>> getRequestsByDriver(@PathVariable("yataId") @Positive long yataId,
-                                                                                                @AuthenticationPrincipal User authMember,
-                                                                                                Pageable pageable) {
-        Slice<YataRequest> requests = yataRequestService.findRequestsByYataOwner(authMember.getUsername(), yataId, pageable);
+    public ResponseEntity getRequestsByDriver(@PathVariable("yataId") @Positive long yataId,
+                                              @AuthenticationPrincipal User authMember,
+                                              Pageable pageable,
+                                              @RequestParam(value = "type", required = false) String type
+    ) {
+        Slice<YataRequest> requests = yataRequestService.findRequestsByYataOwner(authMember.getUsername(), yataId, pageable, type);
         SliceInfo sliceInfo = new SliceInfo(pageable, requests.getNumberOfElements(), requests.hasNext());
         return new ResponseEntity<>(
                 new SliceResponseDto<>(mapper.yataRequestsToYataRequestResponses(requests.getContent()), sliceInfo), HttpStatus.OK);

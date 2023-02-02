@@ -119,14 +119,14 @@ public class YataRequestServiceImpl implements YataRequestService {
 
     // Yata 게시글로 온 신청/초대 목록 조회
     @Override
-    public Slice<YataRequest> findRequestsByYataOwner(String userEmail, Long yataId, Pageable pageable) {
+    public Slice<YataRequest> findRequestsByYataOwner(String userEmail, Long yataId, Pageable pageable , String type) {
         Yata yata = yataService.findYata(yataId);
         Member member = memberService.verifyMember(userEmail);
 
         // 게시글 작성자 == 조회하려는 사람 인지 확인
         yataService.equalMember(member.getEmail(), yata.getMember().getEmail());
 
-        return jpaYataRequestRepository.findAllByYata(yata, pageable);
+        return jpaYataRequestRepository.findAllByYata(yata, pageable,type);
     }
 
     // 자기가 한 신청/초대 목록 조회

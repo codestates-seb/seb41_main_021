@@ -16,6 +16,8 @@ import javax.persistence.EntityManager;
 import java.util.Date;
 import java.util.List;
 
+import static com.yata.backend.domain.yata.repository.utils.GenerateSlice.generateYataSlice;
+
 @Repository
 @Transactional(readOnly = true)
 public class YataRepositoryImpl implements YataRepository {
@@ -54,7 +56,7 @@ public class YataRepositoryImpl implements YataRepository {
         if(yataStatus != null){
             query.where(yata.yataStatus.eq(yataStatus));
         }
-        return generateYataSlice(pageable, query);
+        return (Slice<Yata>) generateYataSlice(pageable, query);
 
     }
 
@@ -84,7 +86,7 @@ public class YataRepositoryImpl implements YataRepository {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1L);
 
-        return generateYataSlice(pageable, yataJPAQuery);
+        return (Slice<Yata>) generateYataSlice(pageable, yataJPAQuery);
     }
 
     @Override
@@ -103,7 +105,7 @@ public class YataRepositoryImpl implements YataRepository {
                 .limit(pageable.getPageSize() + 1L); //가져올 레코드의 개수를 정한다
         //query를 생성하고 결과를 list로 반환하는 역할
 
-        return generateYataSlice(pageable, yataJPAQuery);
+        return (Slice<Yata>) generateYataSlice(pageable, yataJPAQuery);
     }
 
     @Override
@@ -117,7 +119,7 @@ public class YataRepositoryImpl implements YataRepository {
                 .orderBy(yata.yataId.desc())
                 .offset(pageable.getOffset()) //가져올 레코드의 시작점을 결정
                 .limit(pageable.getPageSize() + 1L); //가져올 레코드의 개수를 정한다 query를 생성하고 결과를 list로 반환하는 역할
-        return generateYataSlice(pageable, yataJPAQuery);
+        return (Slice<Yata>) generateYataSlice(pageable, yataJPAQuery);
     }
 
     @Override
@@ -152,17 +154,9 @@ public class YataRepositoryImpl implements YataRepository {
             yataJPAQuery.where(yata.postStatus.eq(isExpired ? Yata.PostStatus.POST_CLOSED : Yata.PostStatus.POST_OPEN));
         }
 
-        return generateYataSlice(pageable, yataJPAQuery);
+        return (Slice<Yata>) generateYataSlice(pageable, yataJPAQuery);
     }
 
-    private Slice<Yata> generateYataSlice(Pageable pageable, JPAQuery<Yata> yataJPAQuery) {
-        List<Yata> yatas = yataJPAQuery.fetch();
-        boolean hasNext = false;
-        if (yatas.size() > pageable.getPageSize()) {
-            yatas.remove(pageable.getPageSize());
-            hasNext = true;
-        }
-        return new SliceImpl<>(yatas, pageable, hasNext);
-    }
+
 }
 
