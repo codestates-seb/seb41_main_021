@@ -114,7 +114,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     //yatamember가 결제 상태인지 검증
     private void verifyPaidYataMember(YataMember yataMember) {
-        //   if (!yataMember.isYataPaid()) throw new CustomLogicException(ExceptionCode.PAYMENT_NOT_YET);
+        if (!yataMember.isYataPaid()) throw new CustomLogicException(ExceptionCode.PAYMENT_NOT_YET);
     }
 
 }
