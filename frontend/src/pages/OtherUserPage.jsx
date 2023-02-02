@@ -27,7 +27,22 @@ export default function OtherUserPage() {
   }, []);
 
   useEffect(() => {
-    useGetData(`/api/v1/review/${email}`).then(res => setReview(res.data.data, setLoading(false)));
+    useGetData(`/api/v1/review/${email}`).then(res => {
+      if (res.status === 200) {
+        // setReview(res.data.data);
+        let max = 0;
+        let maxReview = '';
+        for (const el of res.data.data) {
+          if (max < el.count) {
+            max = el.count;
+            maxReview = el.checklistResponse.checkContent;
+          }
+        }
+        setReview(maxReview);
+      } else {
+        console.log('리뷰 정보를 가져오는데 실패하였습니다.');
+      }
+    });
   }, []);
 
   return (
@@ -63,7 +78,7 @@ export default function OtherUserPage() {
             <Compliment>
               <BiLike />
               <div className="title">많이 받은 칭찬</div>
-              <div className="bottom">{review.length === 0 && '리뷰가 없음'}</div>
+              <div className="bottom">{review === '' ? '리뷰가 없음' : review}</div>
             </Compliment>
           </SummaryContainer>
           {/* <ListContainer>

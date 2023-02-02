@@ -47,7 +47,7 @@ export default function InviteList() {
                   </div>
                   <GoToButton
                     onClick={() => {
-                      navigate(`/tabnida-detail/${el.yataId}`);
+                      navigate(`/taeoonda-detail/${el.yataId}`);
                     }}>
                     게시물 확인하기 >
                   </GoToButton>
