@@ -104,9 +104,10 @@ public interface YataMapper {
             response.setYataResponse(yataToYataResponse(yata));
             response.getYataResponse().setYataMembers(null);
             YataMember yataMember = yata.getYataMembers()
-                    .stream()
+                    .stream().distinct()
                     .filter(yataMember1 ->
                             yataMember1.getMember().getEmail().equals(email)).findFirst().orElse(null);
+            response.setYataMemberId(yataMember != null ? yataMember.getYataMemberId() : null);
             response.setYataPaid(yataMember != null && yataMember.isYataPaid());
             response.setGoingStatus(yataMember != null ? yataMember.getGoingStatus() : null);
             response.setReviewReceived(yataMember != null && yataMember.isReviewReceived());
