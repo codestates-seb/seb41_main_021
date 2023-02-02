@@ -4,7 +4,6 @@ import Navbar from '../components/NavBar';
 import Header from '../components/Header';
 import ListItemView from '../components/ListItemView';
 import CircleButton from '../components/common/CircleButton';
-import DestinationInput from '../components/DestinationInput';
 import { useNavigate } from 'react-router-dom';
 import { MdAdd } from 'react-icons/md';
 import { useGetData } from '../hooks/useGetData';
@@ -46,7 +45,6 @@ export default function TaeoondaList() {
           <FcCheckmark />
           <div>운전자</div>가 '태웁니다' 게시물을 작성할 수 있는 페이지입니다.
         </HelpComent>
-        <DestinationInput />
         <ListItemView list={list} />
         <CircleButton onClick={add} open={open}>
           <MdAdd />
@@ -67,7 +65,7 @@ const Container = styled.div`
 
 const HelpComent = styled.div`
   width: 95%;
-  background-color: #e3f6ff;
+  background-color: #c8e3d4;
   color: #37352f;
 
   display: flex;
@@ -77,6 +75,7 @@ const HelpComent = styled.div`
   padding: 1rem;
   border-radius: 0.5rem;
   margin-top: 1rem;
+  margin-bottom: 1rem;
 
   svg {
     font-size: 1.4rem;
