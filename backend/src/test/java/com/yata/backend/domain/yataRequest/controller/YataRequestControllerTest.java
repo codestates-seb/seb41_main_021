@@ -39,8 +39,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -114,14 +113,19 @@ public class YataRequestControllerTest extends AbstractControllerTest {
     @WithMockUser(username = "test1@gmail.com", roles = "USER")
     void getRequestsTest() throws Exception {
         //given
+        String query = new StringBuilder()
+                .append("?type=").append("invite")
+                .append("&page=0")
+                .append("&size=10")
+                .toString();
         List<YataRequest> yataRequests = YataRequestFactory.createYataRequestList();
         List<YataRequestDto.RequestResponse> responses = YataRequestFactory.createYataRquestResponseDtoList(yataRequests);
 
-        given(yataRequestService.findRequestsByYataOwner(any(), anyLong(), any())).willReturn(new SliceImpl<>(yataRequests));
+        given(yataRequestService.findRequestsByYataOwner(any(), anyLong(), any(), anyString())).willReturn(new SliceImpl<>(yataRequests));
         given(mapper.yataRequestsToYataRequestResponses(any())).willReturn(responses);
 
         //when
-        ResultActions actions = mockMvc.perform(get(BASE_URL + "/requests/{yataId}", responses.get(1).getYataId())
+        ResultActions actions = mockMvc.perform(get(BASE_URL + "/requests/{yataId}" + query, responses.get(1).getYataId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(GeneratedToken.getMockHeaderToken())
                 .accept(MediaType.APPLICATION_JSON)
@@ -132,6 +136,12 @@ public class YataRequestControllerTest extends AbstractControllerTest {
                 .andDo(document("yataRequest-getAllByDriver",
                         getRequestPreProcessor(),
                         getResponsePreProcessor(),
+                        requestParameters(
+                                parameterWithName("type").description("신청/초대 구분 invite/apply 없으면 둘 다 전체 조회"),
+                                parameterWithName("page").description("페이지 번호"),
+                                parameterWithName("size").description("페이지 사이즈"),
+                                parameterWithName("_csrf").description("무시 : CSRF 토큰")
+                        ),
                         requestHeaders(
                                 headerWithName("Authorization").description("JWT 토큰")
                         ),
