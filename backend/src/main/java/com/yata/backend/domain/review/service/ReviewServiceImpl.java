@@ -80,6 +80,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         Map<Checklist, Long> checklistCount = myReviews.stream()
                 .flatMap(review -> review.getReviewChecklists().stream())
+                .distinct()
                 .collect(Collectors.groupingBy(ReviewChecklist::getChecklist,
                         Collectors.counting()));
 
