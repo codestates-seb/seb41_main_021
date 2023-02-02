@@ -9,6 +9,7 @@ export default function JourneyHistory() {
   useEffect(() => {
     useGetData('/api/v1/yata/myYatas').then(res => {
       setList(res.data.data);
+      console.log(res);
     });
   }, []);
 
@@ -16,7 +17,7 @@ export default function JourneyHistory() {
     <>
       <Header title="내가 작성한 글" />
       <Container>
-        <ListItemView list={list} />
+        <ListItemView list={list} isJourneyHistory={true} />
       </Container>
     </>
   );
