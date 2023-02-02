@@ -46,3 +46,6 @@ application-payment.yml
 keystore.p12
 /src/main/resources/static/images/
 /src/test/resources/images/
+
+gradle/gradle-wrapper.jar
+gradle-wrapper.jar
