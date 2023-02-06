@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -36,7 +37,7 @@ public class YataRequestDto {
         private Date timeOfArrival;
 
         @NotNull(message = "탑승 인원을 입력해주세요.")
-        @PositiveOrZero
+        @Positive
         private Integer boardingPersonCount;
 
         @NotNull(message = "탑승 인원을 입력해주세요.")
