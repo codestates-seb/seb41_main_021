@@ -550,8 +550,6 @@ include::{snippets}/yataMember-reject/http-response.adoc[]
 include::{snippets}/yata-invite-accept/http-request.adoc[]
 .request-headers
 include::{snippets}/yata-invite-accept/request-headers.adoc[]
-.path-parameters
-include::{snippets}/yata-invite-accept/path-parameters.adoc[]
 .http-response
 include::{snippets}/yata-invite-accept/http-response.adoc[]
 .response-body

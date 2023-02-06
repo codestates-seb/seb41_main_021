@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -22,28 +23,39 @@ public class YataRequestDto {
     public static class RequestPost {
         @NotNull(message = "제목을 입력하세요.")
         private String title;
+
         @NotNull(message = "특이사항을 입력해주세요.")
         private String specifics;
+
         @NotNull(message = "출발 시간을 입력하세요.")
-        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss" , iso = DateTimeFormat.ISO.DATE_TIME)
+        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", iso = DateTimeFormat.ISO.DATE_TIME)
         private Date departureTime;
+
         @NotNull(message = "도착 시간을 입력하세요.")
-        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss" , iso = DateTimeFormat.ISO.DATE_TIME)
+        @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", iso = DateTimeFormat.ISO.DATE_TIME)
         private Date timeOfArrival;
+
         @NotNull(message = "탑승 인원을 입력해주세요.")
+        @PositiveOrZero
         private Integer boardingPersonCount;
-        private int maxWaitingTime;
+
+        @NotNull(message = "탑승 인원을 입력해주세요.")
+        @PositiveOrZero
+        private Integer maxWaitingTime;
+
         @Valid
         private LocationDto.Post strPoint;
+
         @Valid
         private LocationDto.Post destination;
     }
+
     @AllArgsConstructor
     @Getter
     @ToString
     @Builder
     @NoArgsConstructor
-    public static class InvitePost{
+    public static class InvitePost {
         @Pattern(regexp = "^[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]+$", message = "이메일 형식이 아닙니다.")
         @NotNull(message = "초대할 유저의 이메일을 입력해주세요.")
         private String inviteEmail;
@@ -72,9 +84,9 @@ public class YataRequestDto {
         private YataRequest.ApprovalStatus approvalStatus;
         private String title;
         private String specifics;
-        @JsonFormat(shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd'T'HH:mm:ss" , timezone = "Asia/Seoul")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
         private Date departureTime;
-        @JsonFormat(shape = JsonFormat.Shape.STRING , pattern = "yyyy-MM-dd'T'HH:mm:ss" , timezone = "Asia/Seoul")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
         private Date timeOfArrival;
         private int boardingPersonCount;
         private int maxWaitingTime;
