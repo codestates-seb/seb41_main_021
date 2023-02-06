@@ -6,7 +6,6 @@ import com.yata.backend.domain.yata.entity.QYata;
 import com.yata.backend.domain.yata.entity.QYataRequest;
 import com.yata.backend.domain.yata.entity.Yata;
 import com.yata.backend.domain.yata.entity.YataRequest;
-import com.yata.backend.domain.yata.repository.utils.GenerateSlice;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
