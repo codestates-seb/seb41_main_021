@@ -62,7 +62,7 @@ public class YataRequest extends Auditable implements NotifyInfo {
     private Location strPoint;
 
     @OneToOne(cascade = CascadeType.ALL)
-     private Location destination;
+    private Location destination;
 
     @Override
     public Member getReceiver() {
