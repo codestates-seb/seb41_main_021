@@ -40,9 +40,11 @@ public class YataDto {
         private Date timeOfArrival;
 
         @NotNull
+        @PositiveOrZero
         private Integer maxWaitingTime;
 
         @NotNull
+        @PositiveOrZero
         private Integer maxPeople;
 
         @NotNull
@@ -81,10 +83,13 @@ public class YataDto {
         @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss" , iso = DateTimeFormat.ISO.DATE_TIME)
         private Date timeOfArrival;
 
+        @PositiveOrZero
         private Integer maxWaitingTime;
 
+        @PositiveOrZero
         private Integer maxPeople;
 
+        @PositiveOrZero
         private Long amount;
 
         private String carModel;
