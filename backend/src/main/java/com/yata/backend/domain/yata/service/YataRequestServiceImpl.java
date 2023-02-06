@@ -55,10 +55,6 @@ public class YataRequestServiceImpl implements YataRequestService {
         // 신청하는 출발 시간이 게시글의 출발시간 이전이면 익셉션
         TimeCheckUtils.verifyTime(yataRequest.getDepartureTime().getTime(), yata.getDepartureTime().getTime());
 
-        if (yataRequest.getBoardingPersonCount() <= 0) {
-            throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);
-        }
-
         YataStatus yataStatus = yata.getYataStatus();
         if (yataStatus == YataStatus.YATA_NEOTA) {
             yataRequest.setRequestStatus(APPLY);
