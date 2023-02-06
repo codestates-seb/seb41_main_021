@@ -23,6 +23,7 @@
 <br><br>
 
 ## 📌 기술 스택
+![image](https://user-images.githubusercontent.com/110887604/216774612-861d41b0-753d-46be-a60f-67fdc261b3fb.png)
 ### 공통
 ![Notion](https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white)
 ### 프론트엔드
@@ -50,9 +51,13 @@
 ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
 
 <br><br>
-## BE ARCHITECTURE
+## 📌 BE ARCHITECTURE
 
 ![Untitled-2023-01-27-0035.excalidraw.svg](readME_Images%2FUntitled-2023-01-27-0035.excalidraw.svg)
+
+<br><br>
+## 📌 서비스 메뉴얼
+[YATA 서비스 매뉴얼 🚀](https://github.com/codestates-seb/seb41_main_021/files/10608938/21-main.pdf)
 
 <br><br>
 
