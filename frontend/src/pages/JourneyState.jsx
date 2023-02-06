@@ -15,7 +15,7 @@ export default function JourneyState() {
 
   useEffect(() => {
     if (isUpdate) {
-      useJourneyState('https://server.yata.kro.kr/api/v1/yata/accept/yatas').then(res => {
+      useJourneyState('/api/v1/yata/accept/yatas').then(res => {
         setData(res.data.data);
         setIsUpdate(false);
       });
@@ -33,7 +33,7 @@ export default function JourneyState() {
               <JourneyItem
                 key={el.yataResponse.yataId}
                 yataId={el.yataResponse.yataId}
-                yataMemberId={el.yataResponse.yataMembers[0].yataMemberId}
+                yataMemberId={el.yataMemberId}
                 date={dateFormat(el.yataResponse.departureTime)}
                 journeyStart={el.yataResponse.strPoint.address}
                 journeyEnd={el.yataResponse.destination.address}
@@ -41,6 +41,8 @@ export default function JourneyState() {
                 people={`${el.yataResponse.reservedMemberNum}/${el.yataResponse.maxPeople}`}
                 isPay={el.yataPaid}
                 setIsUpdate={setIsUpdate}
+                reviewReceived={el.reviewReceived}
+                reviewWritten={el.reviewWritten}
               />
             );
           })}

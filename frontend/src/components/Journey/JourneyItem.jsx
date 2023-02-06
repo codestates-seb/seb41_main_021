@@ -7,8 +7,24 @@ import { useNavigate, useParams } from 'react-router';
 import usePostData from '../../hooks/usePostData';
 import { useState } from 'react';
 import Modal from '../common/Modal';
+import { toast } from 'react-toastify';
 
 const JourneyItem = props => {
+  const {
+    date,
+    journeyStart,
+    journeyEnd,
+    price,
+    people,
+    state,
+    onClick,
+    isPay,
+    yataId,
+    yataMemberId,
+    reviewReceived,
+    setIsUpdate,
+    reviewWritten,
+  } = props;
   const [show, setShow] = useState(false);
 
   const navigate = useNavigate();
@@ -23,14 +39,22 @@ const JourneyItem = props => {
     return result;
   };
 
+  const reviewHandler = () => {
+    navigate(`/rating-add-driver/${yataId}`);
+  };
+
   const payHandler = () => {
     const data = {};
-    usePostData(`https://server.yata.kro.kr/api/v1/yata/${yataId}/${yataMemberId}/payPoint`, data).then(res => {
-      window.location.reload();
+    usePostData(`/api/v1/yata/${yataId}/${yataMemberId}/payPoint`, data).then(res => {
+      if (res.status === 200) {
+        toast.success('결제에 성공하였습니다.');
+      } else {
+        toast.success('결제에 실패하였습니다.');
+      }
+      setIsUpdate(true);
     });
   };
 
-  const { date, journeyStart, journeyEnd, price, people, state, onClick, isPay, yataId, yataMemberId } = props;
   return (
     <>
       <Container onClick={onClick}>
@@ -46,9 +70,7 @@ const JourneyItem = props => {
               <IoIosArrowRoundForward />
               {shortWords(journeyEnd)}
             </JourneyText>
-            {isPay ? (
-              <Button onClick={() => navigate(`/rating-add-driver/${yataId}`)}>리뷰 남기기</Button>
-            ) : (
+            {!isPay ? (
               <>
                 <Button
                   onClick={() => {
@@ -56,11 +78,20 @@ const JourneyItem = props => {
                   }}>
                   결제하기
                 </Button>
-                <Modal show={show} onClose={() => setShow(false)} title={'결제하시겠습니까?'} event={payHandler}>
+                <Modal
+                  show={show}
+                  onClose={() => setShow(false)}
+                  title={'결제하시겠습니까?'}
+                  event={payHandler}
+                  submitText="결제하기">
                   결제를 하면 <Strong>'도착 전'</Strong>에서 <Strong>'도착'</Strong> 상태로 변경되며,
                   <br /> 포인트가 자동으로 차감됩니다.
                 </Modal>
               </>
+            ) : reviewWritten ? (
+              <CompleteBtn>리뷰 완료</CompleteBtn>
+            ) : (
+              <Button onClick={reviewHandler}>리뷰 남기기</Button>
             )}
           </JourneyContainer>
           <BottomContainer>
@@ -159,6 +190,17 @@ const PeopleContainer = styled.div`
 const Strong = styled.span`
   font-size: 1.2rem;
   font-weight: bold;
+`;
+const CompleteBtn = styled(Button)`
+  background-color: ${props => props.theme.colors.gray};
+
+  :hover {
+    background-color: ${props => props.theme.colors.gray};
+  }
+  :active {
+    background-color: ${props => props.theme.colors.gray};
+  }
+  cursor: initial;
 `;
 
 export default JourneyItem;

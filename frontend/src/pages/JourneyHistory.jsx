@@ -7,8 +7,9 @@ import { useGetData } from '../hooks/useGetData';
 export default function JourneyHistory() {
   const [list, setList] = useState([]);
   useEffect(() => {
-    useGetData('https://server.yata.kro.kr/api/v1/yata/myYatas').then(res => {
+    useGetData('/api/v1/yata/myYatas').then(res => {
       setList(res.data.data);
+      console.log(res);
     });
   }, []);
 
@@ -16,7 +17,7 @@ export default function JourneyHistory() {
     <>
       <Header title="내가 작성한 글" />
       <Container>
-        <ListItemView list={list} />
+        <ListItemView list={list} isJourneyHistory={true} />
       </Container>
     </>
   );

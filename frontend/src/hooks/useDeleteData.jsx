@@ -1,15 +1,11 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import instance from '../api/instance';
 
 const useDeleteData = async url => {
   try {
-    const response = await axios.delete(url, {
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-        Authorization: localStorage.getItem('ACCESS'),
-      },
-    });
-    toast.warning('삭제 완료.');
+    const response = await instance.delete(url);
+    toast.success('삭제 완료.');
     return response;
   } catch (error) {
     if (error.response.status === 403) {

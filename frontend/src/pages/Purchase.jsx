@@ -10,7 +10,6 @@ export default function Purchase() {
   var clientKey = 'test_ck_OALnQvDd2VJno4oBOBaVMj7X41mN'; // 테스트용 클라이언트 키
   // 2. 초기화
   var tossPayments = TossPayments(clientKey);
-  console.log(process.env.REACT_APP_URL);
   // 이 아래 부분은 서버에 요청해서 가져올 내용
   const payment = () => {
     const body = {

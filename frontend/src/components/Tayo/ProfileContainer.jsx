@@ -17,7 +17,6 @@ export default function ProfileContainer(props) {
         <ProfileInfoContainer>
           <h2>작성자 정보</h2>
           <ProfileInfo>
-            <VscAccount />
             <ProfileText>
               <div className="username">{data.nickName}</div>
               <div>기름통 레벨 {data.fuelTank}L</div>

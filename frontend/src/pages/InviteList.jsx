@@ -10,6 +10,8 @@ import { BiWon } from 'react-icons/bi';
 import { dateFormat } from '../components/common/DateFormat';
 import { useParams } from 'react-router-dom';
 import Button from '../components/common/Button';
+import usePostData from '../hooks/usePostData';
+import usePatchData from '../hooks/usePatchData';
 
 export default function InviteList() {
   const navigate = useNavigate();
@@ -18,27 +20,17 @@ export default function InviteList() {
 
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [update, setUpdate] = useState(true);
 
   useEffect(() => {
-    useGetData(`https://server.yata.kro.kr/api/v1/yata/invite/requests/myYataRequests`).then(res => {
-      setList(res.data.data);
-      setLoading(false);
-    });
-  }, []);
-
-  const approveHandler = () => {
-    const data = {};
-    usePostData(`https://server.yata.kro.kr/api/v1/yata/${yataId}/${yataRequestId}/accept`, data).then(res => {
-      setUpdate(true);
-    });
-  };
-
-  const rejectHandler = () => {
-    const data = {};
-    usePostData(`https://server.yata.kro.kr/api/v1/yata/${yataId}/${yataRequestId}/reject`, data).then(res => {
-      setUpdate(true);
-    });
-  };
+    if (update) {
+      useGetData(`/api/v1/yata/invite/requests/myYataRequests`).then(res => {
+        setList(res.data.data);
+        setUpdate(!update);
+        setLoading(false);
+      });
+    }
+  }, [update]);
 
   return (
     <>
@@ -53,25 +45,44 @@ export default function InviteList() {
                     <BsCalendar4 />
                     {dateFormat(el.departureTime)}
                   </div>
-
-                  {/* {state && (
-                  <TagContainer>
-                    {state === '대기' ? '승인 대기' : state === '수락' ? '승인 확정' : '승인 거절'}
-                  </TagContainer>
-                  )} */}
                   <GoToButton
                     onClick={() => {
                       navigate(`/taeoonda-detail/${el.yataId}`);
                     }}>
-                    게시물 확인하기
+                    게시물 확인하기 >
                   </GoToButton>
                 </DateContainer>
                 <JourneyContainer>
-                  <JourneyText>{el.yataOwnerNickname}</JourneyText>
+                  <NameAndTag>
+                    <JourneyText>{el.yataOwnerNickname}</JourneyText>
+                    {el.approvalStatus && (
+                      <StateTagContainer approvalStatus={el.approvalStatus}>
+                        {el.approvalStatus === 'NOT_YET'
+                          ? '승인 대기'
+                          : el.approvalStatus === 'ACCEPTED'
+                          ? '승인 확정'
+                          : '승인 거절'}
+                      </StateTagContainer>
+                    )}
+                  </NameAndTag>
                   <ButtonContainer>
                     <div className="two-buttons">
-                      <RejectButton onClick={rejectHandler}>거절하기</RejectButton>
-                      <Button onClick={approveHandler}>수락하기</Button>
+                      <RejectButton
+                        onClick={() => {
+                          usePatchData(`/api/v1/yata/invite/reject/${el.yataRequestId}`).then(res => {
+                            setUpdate(true);
+                          });
+                        }}>
+                        거절하기
+                      </RejectButton>
+                      <Button
+                        onClick={() => {
+                          usePostData(`/api/v1/yata/invite/accept/${el.yataRequestId}`).then(res => {
+                            setUpdate(true);
+                          });
+                        }}>
+                        수락하기
+                      </Button>
                     </div>
                   </ButtonContainer>
                 </JourneyContainer>
@@ -220,8 +231,33 @@ const RejectButton = styled(Button)`
   }
 `;
 
-const GoToButton = styled(Button)`
-  /* width: 100%; */
-  background-color: pink;
-  color: black;
+const GoToButton = styled.div`
+  background-color: white;
+  color: darkgray;
+  cursor: pointer;
+  margin-right: 0.3rem;
+`;
+
+const StateTagContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+  padding: 0.5rem;
+  height: 1.5rem;
+  color: white;
+  border-radius: 0.2rem;
+  font-size: 0.9rem;
+
+  background-color: ${props =>
+    props.approvalStatus === 'NOT_YET'
+      ? props.theme.colors.gray
+      : props.approvalStatus === 'ACCEPTED'
+      ? props.theme.colors.main_blue
+      : props.theme.colors.light_red};
+`;
+
+const NameAndTag = styled.div`
+  display: flex;
+  align-items: center;
 `;

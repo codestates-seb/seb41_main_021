@@ -3,13 +3,35 @@ import styled from 'styled-components';
 import { IoIosArrowForward, IoIosArrowRoundForward } from 'react-icons/io';
 import { BsCalendar4, BsPeople } from 'react-icons/bs';
 import { BiWon } from 'react-icons/bi';
+import { TiDelete } from 'react-icons/ti';
+import useDeleteData from '../hooks/useDeleteData';
+
 
 const ListItem = props => {
-  const { date, journeyStart, journeyEnd, price, people, state, yataId, yataStatus, postStatus } = props;
+  const {
+    date,
+    journeyStart,
+    journeyEnd,
+    price,
+    people,
+    state,
+    yataId,
+    yataStatus,
+    postStatus,
+    yataRequestStatus,
+    yataRequestId,
+    isMyRegisterHistory,
+    setUpdate,
+    isJourneyHistory,
+  } = props;
   const navigate = useNavigate();
 
   const handleClick = () => {
-    yataStatus === 'YATA_NEOTA' ? navigate(`/taeoonda-detail/${yataId}`) : navigate(`/tabnida-detail/${yataId}`);
+    if (yataStatus) {
+      yataStatus === 'YATA_NEOTA' ? navigate(`/taeoonda-detail/${yataId}`) : navigate(`/tabnida-detail/${yataId}`);
+    } else {
+      navigate(`/taeoonda-detail/${yataId}`);
+    }
   };
 
   const shortWords = (str, length = 10) => {
@@ -22,19 +44,35 @@ const ListItem = props => {
     return result;
   };
 
-  // api 응답 어떻게 올지 몰라서 대충 넣어놓음
+  const deleteItem = () => {
+    useDeleteData(`/api/v1/yata/requests/${yataId}/${yataRequestId}`).then(res => {
+      setUpdate(true);
+    });
+  };
+
   return (
     <>
-      <Container onClick={handleClick}>
-        <TextContainer>
+      <Container>
+        {isMyRegisterHistory && (
+          <DeleteContainer>
+            <TiDelete onClick={deleteItem} />
+          </DeleteContainer>
+        )}
+        <TextContainer onClick={handleClick}>
           <DateContainer title="출발일 및 시간">
             <BsCalendar4 />
             {date}
+            {isJourneyHistory && (
+              <PartTagContainer isJourneyHistory={isJourneyHistory} yataStatus={yataStatus}>
+                {yataStatus === 'YATA_NEOTA' ? '태웁니다' : '탑니다'}
+              </PartTagContainer>
+            )}
             {yataStatus && (
               <YataTagContainer postStatus={postStatus}>
                 {postStatus === 'POST_OPEN' ? '신청 가능' : '신청 마감'}
               </YataTagContainer>
             )}
+
             {state && (
               <TagContainer state={state}>
                 {state === '대기' ? '승인 대기' : state === '수락' ? '승인 확정' : '승인 거절'}
@@ -62,14 +100,29 @@ const ListItem = props => {
     </>
   );
 };
+const DeleteContainer = styled.div`
+  font-size: 2rem;
+  &:hover {
+    color: #ff6b6b;
+  }
+  display: none;
+`;
 
 const Container = styled.div`
   width: 100%;
   height: 8rem;
   cursor: pointer;
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
 
   border-bottom: 1px solid #f6f6f6;
-  @media only screen and (min-width: 800px) {
+
+  &:hover {
+    ${DeleteContainer} {
+      display: initial;
+    }
   }
 `;
 
@@ -129,6 +182,22 @@ const YataTagContainer = styled.div`
     props.postStatus === 'POST_OPEN' ? props.theme.colors.main_blue : props.theme.colors.light_gray};
 `;
 
+const PartTagContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+
+  width: 4rem;
+  height: 1.1rem;
+  color: white;
+  border-radius: 0.2rem;
+
+  font-size: 0.7rem;
+
+  background-color: ${props => (props.yataStatus === 'YATA_NEOTA' ? '#C8E3D4' : '#FFE1AF')};
+`;
+
 const JourneyContainer = styled.div`
   display: flex;
   align-items: center;
@@ -153,11 +222,6 @@ const JourneyText = styled.span`
   }
 `;
 
-const TransitContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-left: 1rem;
-`;
 const BottomContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -170,6 +234,7 @@ const PriceContainer = styled.div`
     top: 0.1rem;
   }
 `;
+
 const PeopleContainer = styled.div`
   color: ${props => props.theme.colors.dark_gray};
   svg {

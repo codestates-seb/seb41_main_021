@@ -53,7 +53,7 @@ public class MemberServiceImpl implements MemberService {
         return verifyMember(email);
     }
     @Override
-    @Cacheable(value = "memberDto", key = "#email")
+    //@Cacheable(value = "memberDto", key = "#email") 운전자 인증 문제로 인한 캐시 제거
     public MemberDto.Response findMemberDto(String email) {
         return findMember(email).toResponseDto();
     }

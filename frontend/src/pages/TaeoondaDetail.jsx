@@ -11,6 +11,7 @@ import EditDeleteContainer from '../components/Tayo/EditDeleteContainer';
 import { useGetData } from '../hooks/useGetData';
 import { useTayoRequest } from '../hooks/useTayo';
 import { useSelector } from 'react-redux';
+import Modal from '../components/common/Modal';
 
 export default function TabnidaDetail() {
   const params = useParams();
@@ -18,6 +19,14 @@ export default function TabnidaDetail() {
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [count, setCount] = useState(1);
+  const [show, setShow] = useState(false);
+
+  const updateValue = e => {
+    const newCount = e.target.value;
+    setCount(newCount);
+  };
+
   const email = useSelector(state => {
     return state.user.email;
   });
@@ -28,7 +37,7 @@ export default function TabnidaDetail() {
       specifics: data.specifics,
       departureTime: data.departureTime,
       timeOfArrival: data.timeOfArrival,
-      boardingPersonCount: 1,
+      boardingPersonCount: count,
       maxWaitingTime: data.maxWaitingTime,
       strPoint: {
         longitude: data.strPoint.longitude,
@@ -42,15 +51,14 @@ export default function TabnidaDetail() {
       },
     };
 
-    useTayoRequest(`https://server.yata.kro.kr/api/v1/yata/apply/${yataId}`, newData).then(res => {
+    useTayoRequest(`/api/v1/yata/apply/${yataId}`, newData).then(res => {
       console.log(res);
     });
+    setShow(false);
   };
 
   useEffect(() => {
-    useGetData(`https://server.yata.kro.kr/api/v1/yata/${yataId}`).then(res =>
-      setData(res.data.data, setLoading(false)),
-    );
+    useGetData(`/api/v1/yata/${yataId}`).then(res => setData(res.data.data, setLoading(false)));
   }, []);
 
   return (
@@ -70,8 +78,22 @@ export default function TabnidaDetail() {
             )}
             <ProfileContainer data={data} />
             <InfoContainer data={data} />
-            {data.email === email && <MemberContainer data={data} />}
-            <InviteButton onClick={requestHandler}>신청하기</InviteButton>
+            <MemberContainer data={data} email={email} />
+            <InviteButton
+              onClick={() => {
+                setShow(true);
+              }}>
+              신청하기
+            </InviteButton>
+            <Modal show={show} onClose={() => setShow(false)} event={requestHandler} submitText="신청하기">
+              <ModalForm>
+                <ModalHeader>탑승 인원</ModalHeader>
+                <ModalDesc>탑승 예정 인원을 입력해주세요.</ModalDesc>
+                <ModalCounter>
+                  <ModalInput type="number" min="1" max="10" placeholder="1" onChange={updateValue} />
+                </ModalCounter>
+              </ModalForm>
+            </Modal>
           </Container>
           <NavBar />
         </>
@@ -91,4 +113,35 @@ const Container = styled.div`
 const InviteButton = styled(Button)`
   width: 40%;
   margin: 2.5rem 0;
+`;
+const ModalForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  /* 
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  } */
+`;
+
+const ModalHeader = styled.h1`
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+`;
+
+const ModalDesc = styled.div``;
+
+const ModalCounter = styled.div`
+  display: flex;
+  align-items: flex-end;
+  margin-top: 2rem;
+`;
+
+const ModalInput = styled.input`
+  margin-left: 2.8rem;
+  font-size: 2rem;
+  outline: none;
 `;

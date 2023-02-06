@@ -4,9 +4,13 @@ import { useState } from 'react';
 import Button from '../common/Button';
 import { useNavigate, useParams } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
+import dataSlice from '../../redux/slice/DataSlice';
+import { toast } from 'react-toastify';
+import defaultProf from '../../images/Logo.svg';
 
 export default function MemberListItem(props) {
-  const { state, nickname, yataMemberId } = props;
+  const { state, nickname, yataMemberId, reviewReceived, img } = props;
+
   const navigate = useNavigate();
   const params = useParams();
   const yataId = params.yataId;
@@ -16,13 +20,23 @@ export default function MemberListItem(props) {
 
   const reviewHandler = () => {
     setSearchParams(`yataMemberId: '${yataMemberId}'`);
-    navigate(`/rating-add-passenger/${yataId}?yataMemberId=${yataMemberId}`);
+    if (!reviewReceived) {
+      navigate(`/rating-add-passenger/${yataId}?yataMemberId=${yataMemberId}`);
+    } else {
+      toast.warning('이미 리뷰를 작성했습니다.');
+    }
   };
 
   return (
     <Container>
       <ProfileContainer>
-        <VscAccount />
+        {console.log(img)}
+        {img === null || img === undefined ? (
+          <ProfPic src={defaultProf} alt="profile picture" className="profile" />
+        ) : (
+          <ProfPic src={img} alt="profile picture" className="profile" />
+        )}
+
         <Username>{nickname}</Username>
         {isPay ? (
           <ReviewBtn onClick={reviewHandler}>리뷰 남기기</ReviewBtn>
@@ -72,4 +86,10 @@ const ReviewBtn = styled(Button)`
   padding: 0rem 0.5rem;
   height: 1.5rem;
   font-size: 0.8rem;
+`;
+
+const ProfPic = styled.img`
+  width: 1.4rem;
+  margin-right: 0.5rem;
+  border-radius: 1rem;
 `;

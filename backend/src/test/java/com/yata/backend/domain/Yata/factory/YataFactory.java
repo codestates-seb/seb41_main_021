@@ -90,7 +90,7 @@ public class YataFactory {
 
     public static Yata createYata() throws org.locationtech.jts.io.ParseException {
         List<YataMember> yatamembers = new ArrayList<>();
-        yatamembers.add(new YataMember(1L, true,2,YataMember.GoingStatus.STARTED_YET, new Yata(1L), null));
+        yatamembers.add(new YataMember(1L, true,true,true,2,YataMember.GoingStatus.STARTED_YET, new Yata(1L), null));
         Member member = new Member();
         member.setNickname("채은");
         Yata yata = Yata.builder()
@@ -171,6 +171,9 @@ public class YataFactory {
         return YataDto.AcceptedResponse.builder()
                 .yataResponse(response)
                 .yataPaid(true)
+                .reviewReceived(true)
+                .reviewWritten(true)
+                .yataMemberId(1L)
                 .goingStatus(YataMember.GoingStatus.STARTED_YET).build();
     }
 

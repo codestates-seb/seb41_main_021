@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import NavBar from '../components/NavBar';
 import { NavLink } from 'react-router-dom';
-import { VscAccount } from 'react-icons/vsc';
 import { BiTrip, BiLike, BiEdit } from 'react-icons/bi';
 import { RiArrowLeftSFill, RiOilLine } from 'react-icons/ri';
 import { IoIosArrowForward } from 'react-icons/io';
@@ -10,45 +9,53 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { checkIfLogined } from '../hooks/useLogin';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearUser } from '../redux/slice/UserSlice';
 import { useGetData } from '../hooks/useGetData';
 import usePostData from '../hooks/usePostData';
 import axios from 'axios';
 import { MdPreview } from 'react-icons/md';
 import { useGetUserInfo } from '../hooks/useLogin';
-import { loginUser } from '../redux/slice/UserSlice';
+import { loginUser, clearUser } from '../redux/slice/UserSlice';
+import Modal from '../components/common/Modal';
+import defaultProf from '../images/Logo.svg';
+import { toast } from 'react-toastify';
+import instance from '../api/instance';
 
 export default function MyPage() {
-  const [review, setReview] = useState([]);
+  const [review, setReview] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [show, setShow] = useState(false);
 
-  const [files, setFiles] = useState('');
-
-  const onLoadFile = e => {
-    const file = e.target.files;
-    console.log(file);
-    setFiles(file);
-  };
-
-  const handleClick = e => {
-    e.preventDefault();
-    // const formdata = new FormData();
-    // formdata.append('uploadImage', files[0]);
-    console.log(files[0]);
-    // console.log(formdata);
-
-    axios
-      .post('https://server.yata.kro.kr/api/v1/images/profile', files[0], {
-        headers: {
-          'Content-Type': 'multipart/form-data;charset=UTF-8',
-          Authorization: localStorage.getItem('ACCESS'),
-        },
-      })
-      .then(res => {
-        console.log(res);
+  useEffect(() => {
+    if (localStorage.getItem('ACCESS')) {
+      useGetUserInfo().then(res => {
+        if (res.name === 'AxiosError') {
+          toast.warning('로그인이 필요한 페이지입니다.');
+          return logout();
+        }
+        dispatch(loginUser(res));
+        useGetData(`/api/v1/review/${res.email}`).then(res => {
+          if (res.status === 200) {
+            // setReview(res.data.data);
+            let max = 0;
+            let maxReview = '';
+            for (const el of res.data.data) {
+              if (max < el.count) {
+                max = el.count;
+                maxReview = el.checklistResponse.checkContent;
+              }
+            }
+            setReview(maxReview);
+          } else {
+            console.log('리뷰 정보를 가져오는데 실패하였습니다.');
+          }
+        });
       });
-  };
+    } else {
+      toast.warning('로그인이 필요한 페이지입니다.');
+      return logout();
+    }
+  }, []);
 
   const logout = () => {
     localStorage.removeItem('ACCESS');
@@ -61,36 +68,26 @@ export default function MyPage() {
     return state.user;
   });
 
-  const isLogin = checkIfLogined();
-
-  useEffect(() => {
-    if (!isLogin) {
-      return navigate('/');
-    }
-    useGetUserInfo().then(res => dispatch(loginUser(res)));
-    useGetData(`https://server.yata.kro.kr/api/v1/review/${info.email}`).then(res => {
-      if (res.status === 200) {
-        setReview(res.data.data);
-      } else {
-        console.log('리뷰 정보를 가져오는데 실패하였습니다.');
-      }
-    });
-  }, []);
-
   return (
     <>
       <Container>
-        {/* <form>
-          <label htmlFor="image">이미지 업로드</label>
-          <input type="file" id="image" accept="img/*" onChange={onLoadFile} multiple />
-          <button onClick={handleClick}>저장하기</button>
-        </form> */}
         <MyPageContainer>
           <ProfileContainer>
             <Profile>
-              <VscAccount className="profile" />
-              {/* <img src={info.imgUrl} alt="profile picture" /> */}
-              <BiEdit className="edit" />
+              {info.imgUrl === null ? (
+                <ProfPic src={defaultProf} alt="profile picture" className="profile" />
+              ) : (
+                <ProfPic src={info.imgUrl} alt="profile picture" className="profile" />
+              )}
+              <ImgUploadContainer>
+                <BiEdit
+                  className="edit"
+                  onClick={() => {
+                    setShow(true);
+                  }}
+                />
+                <Modal show={show} onClose={() => setShow(false)} title={'이미지 업로드'} isUpload={true}></Modal>
+              </ImgUploadContainer>
               <Info>
                 <div className="text" title="이름">
                   {info.name}
@@ -123,7 +120,7 @@ export default function MyPage() {
             <Compliment>
               <BiLike />
               <div className="title">많이 받은 칭찬</div>
-              <div className="bottom">{review.length === 0 && '리뷰가 없음'}</div>
+              <div className="bottom">{review === '' ? '리뷰가 없음' : review}</div>
             </Compliment>
           </SummaryContainer>
           <PointContainer>
@@ -160,13 +157,7 @@ export default function MyPage() {
               </NavLink>
               <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/my-register-history">
                 <JourneyRecord>
-                  <div className="title">나의 신청/초대 내역</div>
-                  <IoIosArrowForward />
-                </JourneyRecord>
-              </NavLink>
-              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journey-history">
-                <JourneyRecord>
-                  <div className="title">나의 모든 여정 내역</div>
+                  <div className="title">나의 신청 내역</div>
                   <IoIosArrowForward />
                 </JourneyRecord>
               </NavLink>
@@ -197,12 +188,12 @@ export default function MyPage() {
                   </JourneyRecord>
                 </NavLink>
               )}
-              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/rating-list/">
+              {/* <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/rating-list/">
                 <JourneyRecord>
                   <div className="title">받은 매너 평가</div>
                   <IoIosArrowForward />
                 </JourneyRecord>
-              </NavLink>
+              </NavLink> */}
 
               <JourneyRecord onClick={logout}>
                 <div className="title">로그아웃</div>
@@ -240,20 +231,29 @@ const Profile = styled.div`
   display: flex;
   align-items: center;
   position: relative;
-
-  .profile {
-    margin-right: 2rem;
-    font-size: 5rem;
-    border-radius: 1rem;
-  }
-
-  .edit {
-    position: absolute;
-    font-size: 1rem;
-    left: 4rem;
-    bottom: 0;
-  }
 `;
+
+const ProfPic = styled.img`
+  width: 7rem;
+  padding: 0.2rem;
+  margin-right: 1.5rem;
+  border-radius: 1rem;
+`;
+
+const ImgUploadContainer = styled.div`
+  width: auto;
+  height: auto;
+  display: flex;
+  position: absolute;
+  padding: 0.2rem;
+  font-size: 2rem;
+  left: 5rem;
+  bottom: 0;
+  background-color: white;
+  border-radius: 50%;
+  cursor: pointer;
+`;
+
 const Info = styled.div`
   display: flex;
   flex-direction: column;
@@ -271,7 +271,7 @@ const CompleteAuth = styled.div`
   height: 1.8rem;
   color: #ffffff;
   border-radius: 0.2rem;
-  font-size: 1rem;
+  font-size: 0.9rem;
   background-color: ${props => props.theme.colors.main_blue};
 `;
 const UncompleteAuth = styled(CompleteAuth)`
@@ -355,7 +355,7 @@ const SummaryContainer = styled.div`
 
   .bottom {
     color: ${props => props.theme.colors.dark_gray};
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 600;
   }
 
@@ -365,7 +365,7 @@ const SummaryContainer = styled.div`
   }
 
   div {
-    width: 7rem;
+    width: auto;
     height: 7rem;
     display: flex;
     flex-direction: column;

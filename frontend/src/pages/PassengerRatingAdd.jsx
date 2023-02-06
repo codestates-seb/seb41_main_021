@@ -7,8 +7,10 @@ import Button from '../components/common/Button';
 import RatingList from '../components/rating/RatingList';
 import { useGetData } from '../hooks/useGetData';
 import usePostData from '../hooks/usePostData';
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
+import HelpContainer from '../components/Journey/HelpContainer';
+import { toast } from 'react-toastify';
 
 export default function PassengerRatingAdd(props) {
   const [positiveList, setPositiveList] = useState([]);
@@ -19,9 +21,10 @@ export default function PassengerRatingAdd(props) {
   const params = useParams();
   const yataId = params.yataId;
   const yataMemberId = searchParams.get('yataMemberId');
+  const navigate = useNavigate();
 
   useEffect(() => {
-    useGetData('https://server.yata.kro.kr/api/v1/checklist').then(res => {
+    useGetData('/api/v1/checklist').then(res => {
       setPositiveList(res.data.data.positiveList);
       setNegativeList(res.data.data.negativeList);
     });
@@ -31,9 +34,10 @@ export default function PassengerRatingAdd(props) {
     const data = {
       checklistIds: isChecked,
     };
-    usePostData(`https://server.yata.kro.kr/api/v1/review/${yataId}?yataMemberId=${yataMemberId}`, data).then(res => {
-      console.log(data);
-      console.log(res);
+
+    usePostData(`/api/v1/review/${yataId}?yataMemberId=${yataMemberId}`, data).then(res => {
+      navigate('/taeoonda-list');
+      toast.success('매너 평가하기 성공');
     });
   };
 
@@ -41,15 +45,7 @@ export default function PassengerRatingAdd(props) {
     <>
       <Header title={'탑승자 매너 평가'}></Header>
       <Container>
-        <ProfileCotainer>
-          <Profile>
-            <VscAccount />
-            <Info>
-              <div className="name">닉네임</div>
-              <div className="date">2023.01.11 (수) </div>
-            </Info>
-          </Profile>
-        </ProfileCotainer>
+        <HelpContainer>탑승자의 매너를 평가해주세요 !</HelpContainer>
         <RatingList
           isChecked={isChecked}
           setIsChecked={setIsChecked}

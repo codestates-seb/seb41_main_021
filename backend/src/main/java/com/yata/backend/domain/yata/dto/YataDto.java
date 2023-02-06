@@ -141,9 +141,15 @@ public class YataDto {
     @AllArgsConstructor
     @Builder
     public static class AcceptedResponse {
+
+        private Long yataMemberId;
         private YataDto.Response yataResponse;
         private YataMember.GoingStatus goingStatus;
         private boolean yataPaid;
+
+        private boolean reviewWritten;
+        private boolean reviewReceived;
+
 
     }
 

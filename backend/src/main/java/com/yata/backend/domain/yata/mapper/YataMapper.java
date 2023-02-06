@@ -60,8 +60,7 @@ public interface YataMapper {
             response.yataId(yata.getYataId());
         }
         if (yata.getYataMembers() == null) response.reservedMemberNum(0);
-        else response.reservedMemberNum(yata.getYataMembers().stream().mapToInt(yataMember ->
-                yataMember.getBoardingPersonCount()).sum());
+        else response.reservedMemberNum(yata.getYataMembers().stream().distinct().mapToInt(YataMember::getBoardingPersonCount).sum());
         response.departureTime(yata.getDepartureTime());
         response.timeOfArrival(yata.getTimeOfArrival());
         response.title(yata.getTitle());
@@ -86,7 +85,12 @@ public interface YataMapper {
                                 .yataId(yataMember.getYata().getYataId())
                                 .yataMemberId(yataMember.getYataMemberId())
                                 .yataPaid(yataMember.isYataPaid())
-                                .goingStatus(yataMember.getGoingStatus()).build();
+                                .nickname(yataMember.getMember().getNickname())
+                                .email(yataMember.getMember().getEmail())
+                                .goingStatus(yataMember.getGoingStatus())
+                                .reviewReceived(yataMember.isReviewReceived())
+                                .reviewWritten(yataMember.isReviewWritten())
+                                .build();
                     }).collect(Collectors.toList())); //여기선 넣어주고
         }
         return response.build();
@@ -98,12 +102,16 @@ public interface YataMapper {
         return yatas.stream().map(yata -> {
             YataDto.AcceptedResponse response = new YataDto.AcceptedResponse();
             response.setYataResponse(yataToYataResponse(yata));
+            response.getYataResponse().setYataMembers(null);
             YataMember yataMember = yata.getYataMembers()
-                    .stream()
+                    .stream().distinct()
                     .filter(yataMember1 ->
                             yataMember1.getMember().getEmail().equals(email)).findFirst().orElse(null);
+            response.setYataMemberId(yataMember != null ? yataMember.getYataMemberId() : null);
             response.setYataPaid(yataMember != null && yataMember.isYataPaid());
             response.setGoingStatus(yataMember != null ? yataMember.getGoingStatus() : null);
+            response.setReviewReceived(yataMember != null && yataMember.isReviewReceived());
+            response.setReviewWritten(yataMember != null && yataMember.isReviewWritten());
             return response;
         }).collect(Collectors.toList());
     }

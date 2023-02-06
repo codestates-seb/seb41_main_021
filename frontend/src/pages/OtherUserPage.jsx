@@ -11,6 +11,7 @@ import Header from '../components/Header';
 import { useState, useEffect } from 'react';
 import { useGetData } from '../hooks/useGetData';
 import { useParams } from 'react-router-dom';
+import defaultProf from '../images/Logo.svg';
 
 export default function OtherUserPage() {
   const navigate = useNavigate();
@@ -22,15 +23,26 @@ export default function OtherUserPage() {
   const [review, setReview] = useState([]);
 
   useEffect(() => {
-    useGetData(`https://server.yata.kro.kr/api/v1/members/${email}`).then(res =>
-      setData(res.data.data, setLoading(false)),
-    );
+    useGetData(`/api/v1/members/${email}`).then(res => setData(res.data.data, setLoading(false)));
   }, []);
 
   useEffect(() => {
-    useGetData(`https://server.yata.kro.kr/api/v1/review/${email}`).then(res =>
-      setReview(res.data.data, setLoading(false)),
-    );
+    useGetData(`/api/v1/review/${email}`).then(res => {
+      if (res.status === 200) {
+        // setReview(res.data.data);
+        let max = 0;
+        let maxReview = '';
+        for (const el of res.data.data) {
+          if (max < el.count) {
+            max = el.count;
+            maxReview = el.checklistResponse.checkContent;
+          }
+        }
+        setReview(maxReview);
+      } else {
+        console.log('리뷰 정보를 가져오는데 실패하였습니다.');
+      }
+    });
   }, []);
 
   return (
@@ -40,7 +52,11 @@ export default function OtherUserPage() {
         <MyPageContainer>
           <ProfileContainer>
             <Profile>
-              <VscAccount />
+              {data.imgUrl === null ? (
+                <ProfPic src={defaultProf} alt="profile picture" className="profile" />
+              ) : (
+                <ProfPic src={data.imgUrl} alt="profile picture" className="profile" />
+              )}
               <Info>
                 <div className="text">{data.name}</div>
                 <div className="text">{data.nickname}</div>
@@ -62,19 +78,10 @@ export default function OtherUserPage() {
             <Compliment>
               <BiLike />
               <div className="title">많이 받은 칭찬</div>
-              <div className="bottom">{review.length === 0 && '리뷰가 없음'}</div>
+              <div className="bottom">{review === '' ? '리뷰가 없음' : review}</div>
             </Compliment>
           </SummaryContainer>
-          <ListContainer>
-            {/* <List>
-              <ListTitle>탑니다/태웁니다 관리</ListTitle>
-              <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to="/journey-list">
-                <JourneyRecord>
-                  <div className="title">여정 내역</div>
-                  <IoIosArrowForward />
-                </JourneyRecord>
-              </NavLink>
-            </List> */}
+          {/* <ListContainer>
             <List>
               <ListTitle>일반</ListTitle>
               <NavLink className={({ isActive }) => (isActive ? 'active' : 'not')} to={`/rating-list/${email}`}>
@@ -84,7 +91,7 @@ export default function OtherUserPage() {
                 </JourneyRecord>
               </NavLink>
             </List>
-          </ListContainer>
+          </ListContainer> */}
         </MyPageContainer>
       </Container>
       <NavBar />
@@ -262,4 +269,11 @@ const JourneyRecord = styled.div`
   .title {
     font-size: 1.2rem;
   }
+`;
+
+const ProfPic = styled.img`
+  width: 7rem;
+  padding: 0.2rem;
+  margin-right: 1.5rem;
+  border-radius: 1rem;
 `;
