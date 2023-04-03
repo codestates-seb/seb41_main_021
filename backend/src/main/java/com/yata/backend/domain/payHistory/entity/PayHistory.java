@@ -34,6 +34,13 @@ public class PayHistory extends Auditable {
     private Gain gain;
 
 //    private Long referenceId; // 외래키
+    /// Member member, PayHistory.Type type, Long paidPrice, PayHistory.Gain gain
+    public PayHistory(Member member, Type type, Long paidPrice, Gain gain) {
+        this.member = member;
+        this.type = type;
+        this.paidPrice = paidPrice;
+        this.gain = gain;
+    }
 
     public enum Type {
         // 추후 결제할 곳이 야타 이외에 더 생기면 추가될 수 있음

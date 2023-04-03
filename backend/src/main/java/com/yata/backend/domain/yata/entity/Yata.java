@@ -78,7 +78,12 @@ public class Yata extends Auditable {
     @org.hibernate.annotations.Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_WRITE)
     @OneToMany(mappedBy = "yata", cascade = CascadeType.REMOVE , fetch = FetchType.LAZY)
     private List<YataMember> yataMembers = new ArrayList<>();
-
+    public long getArrivalTimeByLong() {
+        return timeOfArrival.getTime();
+    }
+    public long getDepartureTimeByLong() {
+        return departureTime.getTime();
+    }
     public enum PostStatus {
         POST_OPEN(1, "신청가능"),
         POST_CLOSED(2, "마감");

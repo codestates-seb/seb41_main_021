@@ -64,10 +64,17 @@ public class YataMemberServiceImpl implements YataMemberService {
         // 게시물의 출발 시간이 현재 시간을 지났으면 승인 불가
         TimeCheckUtils.verifyTime(yata.getDepartureTime().getTime(), System.currentTimeMillis());
         // 승인 한 번 하면 다시 못하도록
-        if (yataRequest.getApprovalStatus().equals(YataRequest.ApprovalStatus.ACCEPTED))
+        if (yataRequest.alreadyApproved()) {
             throw new CustomLogicException(ExceptionCode.ALREADY_APPROVED);
+        }
 
         List<YataMember> savedYataMember = jpaYataMemberRepository.findAllByYata_YataId(yataId);
+        validateMaxPeople(yata, yataRequest, savedYataMember);
+        // 포인트 충분한 신청/초대만 승인 가능
+        yataRequestService.verifyPriceAndPoint(yata, yataRequest, yataRequest.getMember());
+    }
+
+    private static void validateMaxPeople(Yata yata, YataRequest yataRequest, List<YataMember> savedYataMember) {
         int sum = savedYataMember.stream()
                 .mapToInt(YataMember::getBoardingPersonCount)
                 .sum();
@@ -75,9 +82,6 @@ public class YataMemberServiceImpl implements YataMemberService {
         if (yata.getMaxPeople() < sum + yataRequest.getBoardingPersonCount()) {
             throw new CustomLogicException(ExceptionCode.CANNOT_APPROVE);
         }
-
-        // 포인트 충분한 신청/초대만 승인 가능
-        yataRequestService.verifyPriceAndPoint(yata, yataRequest, yataRequest.getMember());
     }
 
     public void saveYataMember(YataRequest yataRequest) {
@@ -96,7 +100,7 @@ public class YataMemberServiceImpl implements YataMemberService {
         YataRequest.ApprovalStatus approvalStatus = yataRequest.getApprovalStatus();
 
         // 거절 한 번 하면 다시 못하도록
-        if (yataRequest.getApprovalStatus().equals(YataRequest.ApprovalStatus.REJECTED)){
+        if (yataRequest.alreadyRejected()) {
             throw new CustomLogicException(ExceptionCode.ALREADY_REJECTED);
         }
 
@@ -117,6 +121,7 @@ public class YataMemberServiceImpl implements YataMemberService {
         yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.REJECTED); // yataRequest 의 상태를 거절로 변경
     }
 
+    @Override
     public void validatePaidAndDelete(Yata yata, YataRequest yataRequest) {
         Optional<YataMember> yataMember = yata.getYataMembers().stream()
                 .filter(r -> r.getMember().equals(yataRequest.getMember()))
@@ -125,7 +130,7 @@ public class YataMemberServiceImpl implements YataMemberService {
         // 레포에서 delete
         //yataMember.ifPresent(jpaYataMemberRepository::delete);
         yataMember.ifPresent(deleteMember -> {
-            if(deleteMember.isYataPaid()) {
+            if (deleteMember.isYataPaid()) {
                 // 지불한 애면 포인트 돌려주기
                 throw new CustomLogicException(ExceptionCode.ALREADY_PAY);
             }
@@ -187,12 +192,7 @@ public class YataMemberServiceImpl implements YataMemberService {
     }
 
     private PayHistory makePayHistory(Member member, PayHistory.Type type, Long paidPrice, PayHistory.Gain gain) {
-        PayHistory payHistory = new PayHistory();
-        payHistory.setMember(member);
-        payHistory.setType(type);
-        payHistory.setGain(gain);
-        payHistory.setPaidPrice(paidPrice);
-        return payHistory;
+        return new PayHistory(member, type, paidPrice, gain);
     }
 
     /*검증 로직*/
@@ -215,7 +215,6 @@ public class YataMemberServiceImpl implements YataMemberService {
 
     public YataMember verifyPossibleYataMemberByUserName(Yata yata, Member member) {
         Optional<YataMember> optionalYataMember = jpaYataMemberRepository.findByYataAndMember(yata, member);
-
         return optionalYataMember.orElseThrow(() ->
                 new CustomLogicException(ExceptionCode.CANNOT_CREATE_REVIEW));
     }

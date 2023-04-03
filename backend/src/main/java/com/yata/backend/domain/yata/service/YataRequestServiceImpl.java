@@ -17,6 +17,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Objects;
 import java.util.Optional;
 
 import static com.yata.backend.domain.yata.entity.YataRequest.RequestStatus.APPLY;
@@ -142,27 +143,24 @@ public class YataRequestServiceImpl implements YataRequestService {
         Member member = memberService.verifyMember(userName); // 해당 member 가 있는지
         Yata yata = yataService.findYata(yataId); // 해당 게시물이 있는지
         YataRequest yataRequest = findRequest(yataRequestId); // 해당 yataRequestId 로 한 신청/초대가 있는지
-
-        // 삭제하려는 사람 == 신청했던 사람 인지 확인
-        if (yataRequest.getRequestStatus().equals(APPLY)) {
+        // 신청일 경우  삭제하려는 사람 == 신청했던 사람 인지 확인
+        if (yataRequest.isApply()) {
             // 신청은 신청자의 이메일과 삭제하려는 사람의 이메일이 같아야 함
             yataService.equalMember(member.getEmail(), yataRequest.getMember().getEmail());
         } else {
+            yataService.equalMember(member.getEmail(), yata.getMember().getEmail()); // 초대일 경우
             // 초대는 게시물 주인과 삭제하려는 사람의 이메일이 같아야 함
-            yataService.equalMember(member.getEmail(), yata.getMember().getEmail());
         }
 
         YataRequest.ApprovalStatus approvalStatus = yataRequest.getApprovalStatus();
-        switch (approvalStatus) {
-            case ACCEPTED, REJECTED ->
-                    throw new CustomLogicException(ExceptionCode.CANNOT_DELETE); // 승인/거절 받았으면 삭제 불가 (운전자만 삭제 가능)
-            default -> jpaYataRequestRepository.delete(yataRequest); // 아닌 경우 삭제 가능
+        if (Objects.requireNonNull(approvalStatus) == YataRequest.ApprovalStatus.NOT_YET) {
+            jpaYataRequestRepository.delete(yataRequest); // 아닌 경우 삭제 가능
         }
+        throw new CustomLogicException(ExceptionCode.CANNOT_DELETE); // 승인/거절 받았으면 삭제 불가 (운전자만 삭제 가능)
     }
 
     @Override
     public Slice<YataRequest> findRequestsInvite(String username, Pageable pageable) {
-
         return jpaYataRequestRepository.findByMember_EmailAndRequestStatus(username, INVITE, pageable);
     }
 
@@ -173,7 +171,7 @@ public class YataRequestServiceImpl implements YataRequestService {
     public void verifyRequest(String userName, Long yataId) {
         Optional<YataRequest> optionalYataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(userName, yataId);
         optionalYataRequest.ifPresent(
-                yr -> {
+                yataRequest -> {
                     throw new CustomLogicException(ExceptionCode.ALREADY_APPLIED);
                 }
         );
@@ -182,9 +180,10 @@ public class YataRequestServiceImpl implements YataRequestService {
     // 이미 초대한 게시물인지 검증
     @Override
     public void verifyInvitation(String userName, Long yataId) {
+        // 이미 초대한 게시물인지 검증
         Optional<YataRequest> optionalYataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(userName, yataId);
         optionalYataRequest.ifPresent(
-                yr -> {
+                yataRequest -> {
                     throw new CustomLogicException(ExceptionCode.ALREADY_INVITED);
                 }
         );
@@ -193,6 +192,7 @@ public class YataRequestServiceImpl implements YataRequestService {
     // 해당 yataRequest 가 해당 yata 게시물에 신청한 request 인지 검증
     @Override
     public void verifyAppliedRequest(Yata yata, Long yataRequestId) {
+        // 해당 yataRequest 가 해당 yata 게시물에 신청한 request 인지 검증
         YataRequest request = findRequest(yataRequestId);
         if (!request.getYata().equals(yata)) {
             throw new CustomLogicException(ExceptionCode.INVALID_ELEMENT);

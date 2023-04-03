@@ -39,11 +39,10 @@ public class YataServiceImpl implements YataService {
 
         if (yata.getYataStatus().equals(YataStatus.YATA_NEOTA)) memberService.checkDriver(member);
         //도착시간이 출발시간보다 빠르면 에러
-        TimeCheckUtils.verifyTime( yata.getTimeOfArrival().getTime(),yata.getDepartureTime().getTime());
+        TimeCheckUtils.verifyTime( yata.getArrivalTimeByLong(),yata.getDepartureTimeByLong());
         //출발시간이 현재시간보다 빠르면 에러
-        TimeCheckUtils.verifyTime(yata.getDepartureTime().getTime(),System.currentTimeMillis());
+        TimeCheckUtils.verifyTime(yata.getDepartureTimeByLong(),System.currentTimeMillis());
         yata.setMember(member);
-
         return jpaYataRepository.save(yata);
     }
 
@@ -71,7 +70,6 @@ public class YataServiceImpl implements YataService {
         Yata findYata = verifyYata(yataId);
         equalMember(member.getEmail(), findYata.getMember().getEmail());
         modifiableYata(yataId);
-
         jpaYataRepository.delete(findYata);
     }
 
@@ -120,7 +118,6 @@ public class YataServiceImpl implements YataService {
 
     private void modifiableYata(long yataId) {
         Yata findYata = verifyYata(yataId);
-
         if (!findYata.getYataMembers().isEmpty()) {
             throw new CustomLogicException(ExceptionCode.YATA_IS_NOT_MODIFIABLE_STATUS);
         }

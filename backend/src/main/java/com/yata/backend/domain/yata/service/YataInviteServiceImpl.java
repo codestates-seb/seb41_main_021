@@ -27,9 +27,8 @@ public class YataInviteServiceImpl implements YataInviteService {
         YataRequest yataRequest = yataRequestService.findRequest(yataRequestId);
         validateInviteRequest(member, yataRequest);
         yataMemberService.validateRequest(yataRequestId, yataRequest.getYata().getYataId(), yataRequest.getYata(), yataRequest);
-        yataRequest.setApprovalStatus(YataRequest.ApprovalStatus.ACCEPTED);
+        yataRequest.approve();
         yataMemberService.saveYataMember(yataRequest);
-
     }
 
     public void rejectInvitation(String username, Long yataRequestId) {

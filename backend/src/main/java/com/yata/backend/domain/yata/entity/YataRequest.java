@@ -78,7 +78,18 @@ public class YataRequest extends Auditable implements NotifyInfo {
     public Notify.NotificationType getNotificationType() {
         return Notify.NotificationType.YATA;
     }
-
+    public void approve() {
+        this.approvalStatus = ApprovalStatus.ACCEPTED;
+    }
+    public boolean alreadyApproved() {
+        return this.approvalStatus == ApprovalStatus.ACCEPTED;
+    }
+    public boolean alreadyRejected() {
+        return this.approvalStatus == ApprovalStatus.REJECTED;
+    }
+    public boolean isApply() {
+        return this.requestStatus == RequestStatus.APPLY;
+    }
     public enum RequestStatus {
         INVITE("초대"),
         APPLY("신청");
