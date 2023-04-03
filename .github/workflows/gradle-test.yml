@@ -1,5 +1,6 @@
 name: earth-github-action-test CI
-
+permissions:
+  contents: write
 # 하기 내용에 해당하는 이벤트 발생 시 github action 동작
 on:
   pull_request: # feature/*와 develop 브랜치에서 PR이 일어났을 때 github action 동작
