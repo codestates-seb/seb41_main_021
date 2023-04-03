@@ -48,6 +48,13 @@ public class YataMember extends Auditable {
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Member member;
 
+    public YataMember(YataRequest yataRequest){
+        this.setYata(yataRequest.getYata());
+        this.setMember(yataRequest.getMember());
+        this.setYataPaid(false); //지불 상태 set
+        this.setGoingStatus(YataMember.GoingStatus.STARTED_YET); //카풀 현황 set
+        this.setBoardingPersonCount(yataRequest.getBoardingPersonCount());
+    }
     public enum GoingStatus {
         STARTED_YET("출발 전"),
         ARRIVED("도착 완료");

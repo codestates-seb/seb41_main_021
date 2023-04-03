@@ -30,7 +30,7 @@ public class YataMemberServiceImpl implements YataMemberService {
     private final YataRequestService yataRequestService;
     private final YataService yataService;
     private final MemberService memberService;
-    private final long LEFT_TIME = 2 * 24 * 60 * 60 * 1000;
+    private static final long TWO_DAYS_MILLIS = 2 * 24 * 60 * 60 * 1000;
 
     public YataMemberServiceImpl(JpaYataMemberRepository jpaYataMemberRepository, JpaYataRequestRepository jpaYataRequestRepository, JpaPayHistoryRepository jpaPayHistoryRepository, YataRequestService yataRequestService, YataService yataService, MemberService memberService) {
         this.jpaYataMemberRepository = jpaYataMemberRepository;
@@ -81,12 +81,7 @@ public class YataMemberServiceImpl implements YataMemberService {
     }
 
     public void saveYataMember(YataRequest yataRequest) {
-        YataMember yataMember = new YataMember();
-        yataMember.setYata(yataRequest.getYata());
-        yataMember.setMember(yataRequest.getMember());
-        yataMember.setYataPaid(false); //지불 상태 set
-        yataMember.setGoingStatus(YataMember.GoingStatus.STARTED_YET); //카풀 현황 set
-        yataMember.setBoardingPersonCount(yataRequest.getBoardingPersonCount());
+        YataMember yataMember = new YataMember(yataRequest);
         jpaYataMemberRepository.save(yataMember);
     }
 
@@ -101,8 +96,9 @@ public class YataMemberServiceImpl implements YataMemberService {
         YataRequest.ApprovalStatus approvalStatus = yataRequest.getApprovalStatus();
 
         // 거절 한 번 하면 다시 못하도록
-        if (yataRequest.getApprovalStatus().equals(YataRequest.ApprovalStatus.REJECTED))
+        if (yataRequest.getApprovalStatus().equals(YataRequest.ApprovalStatus.REJECTED)){
             throw new CustomLogicException(ExceptionCode.ALREADY_REJECTED);
+        }
 
         // 상태가 NOT_YET 이면
         if (approvalStatus.equals(YataRequest.ApprovalStatus.NOT_YET)) {
@@ -112,7 +108,7 @@ public class YataMemberServiceImpl implements YataMemberService {
 
         // 상태가 ACCEPTED 면
         long leftTime = yata.getDepartureTime().getTime() - System.currentTimeMillis();
-        if (leftTime < LEFT_TIME) { // 이틀보다 적게 남았을 경우 운전자인지 체크한 후에
+        if (leftTime < TWO_DAYS_MILLIS) { // 이틀보다 적게 남았을 경우 운전자인지 체크한 후에
             memberService.checkDriver(member);
         }
 
