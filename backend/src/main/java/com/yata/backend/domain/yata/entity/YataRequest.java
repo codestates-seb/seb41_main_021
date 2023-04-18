@@ -90,6 +90,12 @@ public class YataRequest extends Auditable implements NotifyInfo {
     public boolean isApply() {
         return this.requestStatus == RequestStatus.APPLY;
     }
+    public long getTotalBoardingPersonCount() {
+        if (this.yata == null) {
+            return 0;
+        }
+        return this.boardingPersonCount * this.yata.getAmount();
+    }
     public enum RequestStatus {
         INVITE("초대"),
         APPLY("신청");

@@ -155,38 +155,21 @@ public class YataMemberServiceImpl implements YataMemberService {
     public void payPoint(String userName, Long yataId, Long yataMemberId) {
         Member member = memberService.findMember(userName); // 해당 member 가 있는지 확인 ( 결제하려는 주체 )
         Yata yata = yataService.findYata(yataId); // 해당 yata 가 있는지 확인 ( 결제할 게시물 )
-        YataMember yataMember = verifyYataMember(yataMemberId);
+        YataMember yataMember = verifyYataMember(yataMemberId); // 해당 yataMember 가 있는지 확인 ( 결제할 사람 )
         Member yataOwner = yata.getMember(); // yata 의 주인
-        // 해당 yataMember 가 해당 yata 에 있는 yataMember 인지 검증
-        verifyPossibleYataMember(yataMemberId, yata);
-
-        // 해당 yata 에 한 번 지불했으면 다시 지불 못하도록
-        if (yataMember.isYataPaid()) {
+        verifyPossibleYataMember(yataMemberId, yata);  // 해당 yataMember 가 해당 yata 에 있는 yataMember 인지 검증
+        if (yataMember.isYataPaid()) {    // 해당 yata 에 한 번 지불했으면 다시 지불 못하도록
             throw new CustomLogicException(ExceptionCode.AlREADY_PAID);
         }
-
         yataService.equalMember(userName, yataMember.getMember().getEmail()); // 조회하려는 사람 == 해당 yataMember 인지 확인
 
         Optional<YataRequest> yataRequest = jpaYataRequestRepository.findByMember_EmailAndYata_YataId(userName, yataId);
-        int boardingPeopleCount = yataRequest.get().getBoardingPersonCount();
-
-        // 지불한 금액 = yata 게시물의 가격 * yataRequest 에 신청한 인원
-        Long paidPrice = yata.getAmount() * boardingPeopleCount;
-
-        // 포인트 잔액 = member 에서 가져온 point - 지불한 금액
-        Long balance = member.getPoint() - paidPrice;
-        member.setPoint(balance);
-        yataOwner.setPoint(yata.getMember().getPoint() + paidPrice); // yata 게시물 작성자에게 포인트 추가
-
-        yataMember.setYataPaid(true); // 지불 여부 true 로
-        yataMember.setGoingStatus(YataMember.GoingStatus.ARRIVED); // goingStatus 도착으로
-
+        Long paidPrice = yataRequest.orElseThrow().getTotalBoardingPersonCount();
+        member.payPoint(paidPrice); // member 에서 포인트 차감
+        yataOwner.earnPoint(paidPrice); // yataOwner 에게 포인트 지급
+        yataMember.arrivedAndPaid(); // yataMember 의 arrived 와 paid 를 true 로 변경
         PayHistory yataMemberHistory = makePayHistory(member, PayHistory.Type.YATA, paidPrice, PayHistory.Gain.PAY);
         PayHistory yataOwnerHistory = makePayHistory(yataOwner, PayHistory.Type.YATA, paidPrice, PayHistory.Gain.GAIN);
-
-        memberService.updateMemberCache(yataMember.getMember());
-        memberService.updateMemberCache(member);
-        memberService.updateMemberCache(yataOwner);
 
         jpaPayHistoryRepository.saveAll(List.of(yataMemberHistory, yataOwnerHistory));
     }

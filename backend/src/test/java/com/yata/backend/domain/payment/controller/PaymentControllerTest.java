@@ -64,7 +64,7 @@ class PaymentControllerTest extends AbstractControllerTest {
         PaymentDto paymentDto = PaymentFactory.createPaymentDto();
         Payment paymentResDto = PaymentFactory.createPayment(
                 MemberFactory.createMember(new BCryptPasswordEncoder()));
-        given(paymentService.requestTossPayment(any(), any())).willReturn(paymentResDto);
+        given(paymentService.requestPayment(any(), any())).willReturn(paymentResDto);
         given(tossPaymentConfig.getFailUrl()).willReturn("http://localhost:8080/api/v1/payments/toss/fail");
         given(tossPaymentConfig.getSuccessUrl()).willReturn("http://localhost:8080/api/v1/payments/toss/success");
         //when

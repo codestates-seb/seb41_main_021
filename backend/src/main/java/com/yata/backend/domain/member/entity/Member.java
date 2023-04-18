@@ -69,6 +69,13 @@ public class Member extends Auditable  {
 
     // TODO phoneNumbers add
 
+    public void payPoint(Long point){
+        this.point -= point;
+    }
+    public void earnPoint(Long point){
+        this.point += point;
+    }
+
     public enum MemberStatus {
         MEMBER_ACTIVE("활동중"),
         MEMBER_SLEEP("휴면 상태"),

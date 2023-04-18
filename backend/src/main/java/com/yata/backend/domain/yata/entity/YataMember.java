@@ -48,6 +48,11 @@ public class YataMember extends Auditable {
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Member member;
 
+    public void arrivedAndPaid(){
+        this.setGoingStatus(GoingStatus.ARRIVED);
+        this.setYataPaid(true);
+    }
+
     public YataMember(YataRequest yataRequest){
         this.setYata(yataRequest.getYata());
         this.setMember(yataRequest.getMember());

@@ -39,7 +39,7 @@ public class PaymentServiceImpl implements PaymentService {
         this.tossPaymentConfig = tossPaymentConfig;
     }
 
-    public Payment requestTossPayment(Payment payment, String userEmail) {
+    public Payment requestPayment(Payment payment, String userEmail) {
         Member member = memberService.findMember(userEmail);
         if (payment.getAmount() < 1000) {
             throw new CustomLogicException(ExceptionCode.INVALID_PAYMENT_AMOUNT);
